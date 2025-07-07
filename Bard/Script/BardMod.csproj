@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{12345678-1234-4657-1919-BEEFBEEFBEEF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>BardMod</RootNamespace>
+    <AssemblyName>BardMod</AssemblyName>
+    <ReferencePath>$(ElinGamePath)/Elin_Data/Managed</ReferencePath>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <LangVersion>preview</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>$(ElinGamePath)\Package\Mod_$(AssemblyName)\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(ElinGamePath)\Package\Mod_$(AssemblyName)\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>$(ElinGamePath)\BepInEx\core\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="BepInEx.Core">
+      <HintPath>$(ElinGamePath)\BepInEx\core\BepInEx.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="BepInEx.Unity">
+      <HintPath>$(ElinGamePath)\BepInEx\core\BepInEx.Unity.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="CustomWhateverLoader">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\2135150\3370512305\CustomWhateverLoader.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="DOTween">
+      <HintPath>$(ElinGamePath)\Elin_Data\Managed\DOTween.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Elin">
+      <HintPath>$(ElinGamePath)\Elin_Data\Managed\Elin.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="mscorlib">
+      <HintPath>$(ElinGamePath)\Elin_Data\Managed\mscorlib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="netstandard">
+      <HintPath>$(ElinGamePath)\Elin_Data\Managed\netstandard.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Plugins.BaseCore">
+      <HintPath>$(ElinGamePath)\Elin_Data\Managed\Plugins.BaseCore.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Plugins.Sound">
+      <HintPath>$(ElinGamePath)\Elin_Data\Managed\Plugins.Sound.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Plugins.Tween">
+      <HintPath>$(ElinGamePath)\Elin_Data\Managed\Plugins.Tween.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Plugins.UI">
+      <HintPath>$(ElinGamePath)\Elin_Data\Managed\Plugins.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="UnityEngine">
+      <HintPath>$(ElinGamePath)\Elin_Data\Managed\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>$(ElinGamePath)\Elin_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(ElinGamePath)\Elin_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>$(ElinGamePath)\Elin_Data\Managed\UnityEngine.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BardConfig.cs" />
+    <Compile Include="BardMod.cs" />
+    <Compile Include="Common\Constants.cs" />
+    <Compile Include="Common\HelperFunctions.cs" />
+    <Compile Include="Elements\Abilities\BardAbility.cs" />
+    <Compile Include="Elements\Abilities\Niyon\ActNebulosaFrojdMelee.cs" />
+    <Compile Include="Elements\Abilities\Selena\ActThunderousTranspositionMelee.cs" />
+    <Compile Include="Elements\BardSpells\ActBardCheerSong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardDispelSong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardDisruptionSong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardDrowningSong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardElementalSong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardLuckSong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardMirrorSong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardScathingSong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardShellSong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardStrengthSong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardChaosSong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardDishearteningSong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardDisorientationSong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardEchoSong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardTuningSong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardVigorSong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardWitchHuntSong.cs" />
+    <Compile Include="Elements\BardSpells\ActDefenduSong.cs" />
+    <Compile Include="Elements\BardSpells\ActNinnaNannaSong.cs" />
+    <Compile Include="Elements\BardSpells\ActQualiaSong.cs" />
+    <Compile Include="Elements\BardSpells\BardFinales\ActBardFinale.cs" />
+    <Compile Include="Elements\BardSpells\BardFinales\BardAbyssReflectionFinale.cs" />
+    <Compile Include="Elements\BardSpells\BardFinales\BardAfterTempestFinale.cs" />
+    <Compile Include="Elements\BardSpells\BardFinales\BardAlluringRaindropsFinale.cs" />
+    <Compile Include="Elements\BardSpells\BardFinales\BardClearThunderFinale.cs" />
+    <Compile Include="Elements\BardSpells\BardFinales\BardEndlessBlossomsFinale.cs" />
+    <Compile Include="Elements\BardSpells\BardFinales\BardEphemeralFlowersFinale.cs" />
+    <Compile Include="Elements\BardSpells\BardFinales\BardHollowSymphonyFinale.cs" />
+    <Compile Include="Elements\BardSpells\BardFinales\BardFarewellFlamesFinale.cs" />
+    <Compile Include="Elements\BardSpells\BardFinales\BardHeavensFallFinale.cs" />
+    <Compile Include="Elements\BardSpells\BardFinales\BardLonelyTearsFinale.cs" />
+    <Compile Include="Elements\BardSpells\BardFinales\BardLulwyStepFinale.cs" />
+    <Compile Include="Elements\BardSpells\BardFinales\BardMoonlitFlightFinale.cs" />
+    <Compile Include="Elements\BardSpells\BardFinales\BardPrismaticBridgeFinale.cs" />
+    <Compile Include="Elements\BardSpells\BardFinales\BardShimmeringDewFinale.cs" />
+    <Compile Include="Elements\BardSpells\BardFinales\BardShootingStarFinale.cs" />
+    <Compile Include="Elements\BardSpells\ActBardGuardSong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardHealingSong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardKnockbackSong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardMysticSong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardPuritySong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardSlashSong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardSleepSong.cs" />
+    <Compile Include="Elements\BardSpells\BardFinales\BardUnshakingEarthFinale.cs" />
+    <Compile Include="Elements\BardSpells\ActBardSong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardSpeedSong.cs" />
+    <Compile Include="Elements\BardSpells\ActBardWitheringSong.cs" />
+    <Compile Include="Elements\Feats\FeatBard.cs" />
+    <Compile Include="Elements\Feats\FeatConstruct.cs" />
+    <Compile Include="Elements\Feats\FeatDuetPartner.cs" />
+    <Compile Include="Elements\Feats\FeatHarvin.cs" />
+    <Compile Include="Elements\Feats\FeatMysticMusician.cs" />
+    <Compile Include="Elements\Feats\FeatSoulSinger.cs" />
+    <Compile Include="Elements\Feats\FeatTimelessSong.cs" />
+    <Compile Include="Elements\Abilities\Niyon\ActNebulosaFrojd.cs" />
+    <Compile Include="Elements\Abilities\Niyon\ActVintergatanSvala.cs" />
+    <Compile Include="Elements\Abilities\Selena\ActFlamingChord.cs" />
+    <Compile Include="Elements\Abilities\Selena\ActMajesticInterlude.cs" />
+    <Compile Include="Elements\Abilities\Selena\ActRhythmicPiercing.cs" />
+    <Compile Include="Elements\Abilities\Selena\ActThunderousTransposition.cs" />
+    <Compile Include="Patches\BardAttackProcessPatches.cs" />
+    <Compile Include="Patches\BardCardPatches.cs" />
+    <Compile Include="Patches\BardCharaPatches.cs" />
+    <Compile Include="Patches\BardGoalCombatPatches.cs" />
+    <Compile Include="Patches\BardThingPatches.cs" />
+    <Compile Include="Patches\HarvinPatch.cs" />
+    <Compile Include="Patches\BardInvOwnerPatches.cs" />
+    <Compile Include="Patches\PostLoadEvent.cs" />
+    <Compile Include="Source\BardSongData.cs" />
+    <Compile Include="Source\DramaExpansion.cs" />
+    <Compile Include="Source\TraitToolBard.cs" />
+    <Compile Include="Stats\BardSongConditions\ConAfterTempestSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConAlluringRaindropsSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConBardSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConChaosSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConCheerSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConClearThunderSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConDazedSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConDefenduSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConDisheartenSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConDisruptionSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConEndlessBlossomsSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConEphemeralFlowersSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConHeavensFallSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConHollowSymphonySong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConHealingSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConFarewellFlamesSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConLonelyTearsSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConLuckSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConLulwyStepSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConMoonlitFlightSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConMysticSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConMirrorSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConPrismaticBridgeSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConQualiaSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConScathingSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConShellSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConShimmeringDewSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConTuningSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConVigorSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConWitheringSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConSpeedSong.cs" />
+    <Compile Include="Stats\BardSongConditions\ConStrengthSong.cs" />
+    <Compile Include="Stats\ConAbyssalReflection.cs" />
+    <Compile Include="Stats\ConCharmed.cs" />
+    <Compile Include="Stats\ConComatose.cs" />
+    <Compile Include="Stats\ConMatrix.cs" />
+    <Compile Include="Stats\ConOverguard.cs" />
+    <Compile Include="Stats\ConRhythm.cs" />
+    <Compile Include="Stats\ConLightningSunder.cs" />
+    <Compile Include="Stats\ConSereneFantasia.cs" />
+    <Compile Include="Traits\TraitNiyon.cs" />
+    <Compile Include="Traits\TraitSelena.cs" />
+    <Compile Include="Traits\TraitUniqueSummon.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+           Other similar extension points exist, see Microsoft.Common.targets.
+      <Target Name="BeforeBuild">
+      </Target>
+      <Target Name="AfterBuild">
+      </Target>
+      -->
+</Project>

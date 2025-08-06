@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using BardMod.Source;
+using BardMod.Traits;
 using UnityEngine;
-
 namespace BardMod.Common.HelperFunctions;
 
 public static class HelperFunctions
@@ -14,7 +12,7 @@ public static class HelperFunctions
         float normalized = 1f / (1f + Mathf.Exp(-steepness * (power - midpoint)));
         return minEffect + (maxEffect - minEffect) * normalized;
     }
-    
+
     public static int SafeMultiplier(int value, float multiplier)
     {
         try
@@ -29,10 +27,10 @@ public static class HelperFunctions
 
     public static int SafeDice(string element, int power)
     {
-        Dice dice = Dice.Create(element, power, null, null);
+        Dice dice = Dice.Create(element, power);
         try
         {
-            return dice.Roll();    
+            return dice.Roll();
         }
         catch (OverflowException)
         {
@@ -51,12 +49,12 @@ public static class HelperFunctions
             return 2000000000; // Clamp to 2b
         }
     }
-    
+
     public static List<Chara> GetCharasWithinRadius(Point origin, float radius, Chara caster, bool friendly, bool losRequired)
     {
         List<Chara> targets = new List<Chara>();
-        foreach (Point item in EClass.pc.currentZone.map.ListPointsInCircle(origin, radius, mustBeWalkable: false,
-                     los: losRequired))
+        foreach (Point item in EClass.pc.currentZone.map.ListPointsInCircle(origin, radius, false,
+                     losRequired))
         {
 
             List<Chara> pointCharacters = item.detail?.charas;
@@ -73,11 +71,10 @@ public static class HelperFunctions
                 }
             }
         }
-        
 
         return targets;
     }
-    
+
     public static int GetCumulativeBardSkillLevel()
     {
         List<int> allBardSkills = new List<int>
@@ -108,7 +105,7 @@ public static class HelperFunctions
             Constants.BardCheerSongId,
             Constants.BardTuningSongId,
             Constants.BardElementalSongId,
-            Constants.BardFinaleSongId,
+            Constants.BardFinaleSongId
         };
 
         int cumulativeBardSkill = 0;
@@ -125,18 +122,18 @@ public static class HelperFunctions
         // If we have multiple instruments, search for the one with the flag IsSelectedInstrument. Instruments can be anywhere in inventory, including substorage.
         // Search in Inventory
         List<Thing> allInstruments = EClass.pc.things.FindAll(x => x.trait is TraitToolBard);
-		
+
         // Search in Toolbelt.
         Thing toolbelt = EClass.pc.things.Find(x => x.trait is TraitToolBelt);
         allInstruments.AddRange(toolbelt.things.FindAll(x => x.trait is TraitToolBard));
-		
+
         // Storage in Inventory
         List<Thing> inventoryStorage = EClass.pc.things.FindAll(x => x.trait is TraitContainer);
         foreach (Thing inventoryStorageContainer in inventoryStorage)
         {
             allInstruments.AddRange(inventoryStorageContainer.things.FindAll(x => x.trait is TraitToolBard));
         }
-		
+
         // Storage in Toolbelt
         List<Thing> toolBeltStorage = toolbelt.things.FindAll(x => x.trait is TraitContainer);
         foreach (Thing toolBeltContainer in toolBeltStorage)
@@ -145,5 +142,40 @@ public static class HelperFunctions
         }
 
         return allInstruments;
+    }
+
+    public static int GetBardPower(int basePower, Card bard)
+    {
+        if (bard == null) return basePower;
+
+        float powerMultiplier = 1f;
+
+        // Sweet Voice Mutation
+        if (bard.Evalue(1522) > 0) powerMultiplier += 0.125f;
+        // Husky Voice Mutation
+        if (bard.Evalue(1523) > 0) powerMultiplier -= 0.125f;
+
+        // Pianist Multiplier
+        if (bard.c_idJob == "pianist") powerMultiplier += 0.5F;
+
+        // Duet Multiplier
+        if (bard.IsPCParty || bard.IsPC)
+        {
+            foreach (Chara partyMember in EClass.pc.party.members)
+            {
+                if (partyMember != bard && partyMember.Evalue(Constants.FeatDuetPartner) > 0)
+                {
+                    powerMultiplier += 0.5F;
+                }
+            }
+        }
+
+        // Bard Multiplier
+        if (bard.Evalue(Constants.FeatBardId) > 0) powerMultiplier += 0.25f;
+
+        // Apply Multipliers
+        basePower = HelperFunctions.SafeMultiplier(basePower, powerMultiplier);
+
+        return basePower;
     }
 }

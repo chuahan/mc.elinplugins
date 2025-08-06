@@ -2,11 +2,13 @@ using BardMod.Common;
 using BardMod.Common.HelperFunctions;
 using BardMod.Source;
 using BardMod.Stats.BardSongConditions;
-
 namespace BardMod.Elements.BardSpells;
 
 public class ActBardTuningSong : ActBardSong
 {
+
+    protected override BardSongData SongData => new BardTuningSong();
+
     private class BardTuningSong : BardSongData
     {
         public override string SongName => Constants.BardTuningSongName;
@@ -19,7 +21,7 @@ public class ActBardTuningSong : ActBardSong
         public override void ApplyEnemyEffect(Chara bard, Chara target, int power, int rhythmStacks, bool godBlessed)
         {
             float statReduction = HelperFunctions.SigmoidScaling(power, Constants.MaxBardPowerBuff, 1, 5, Constants.BardPowerSlope);
-            
+
             int hexCount = 0;
             foreach (Condition item5 in target.conditions.Copy())
             {
@@ -30,9 +32,7 @@ public class ActBardTuningSong : ActBardSong
             }
 
             int tuneAmount = (int)(statReduction * hexCount);
-            target.AddCondition<ConTuningSong>(tuneAmount, force: true);
+            target.AddCondition<ConTuningSong>(tuneAmount, true);
         }
     }
-
-    protected override BardSongData SongData => new BardTuningSong();
 }

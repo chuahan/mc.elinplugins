@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using BardMod.Common;
 using BardMod.Common.HelperFunctions;
+using BardMod.Patches;
 using BardMod.Source;
 using BardMod.Stats.BardSongConditions;
-
 namespace BardMod.Elements.BardSpells.BardFinales;
 
 /*
@@ -16,8 +15,10 @@ namespace BardMod.Elements.BardSpells.BardFinales;
  * Total stacks is done as Ice damage to all enemies nearby.
  * Enemies are afflicted with brittle which increases damage taken from physical and impact and are slowed.
  * If they take lethal damage, they explode when they die, first re-inflicting brittle, then dealing % of max hp as death as ice damage.
+ *
+ * Kumiromi Blessing - Any enemy that dies due to the shatter is guaranteed to spawn at least 1 plant enemy.
  */
-public class BardEphemeralFlowersFinale: BardSongData
+public class BardEphemeralFlowersFinale : BardSongData
 {
     public override string SongName => Constants.BardFinaleEphemeralFlowersName;
     public override int SongId => Constants.BardFinaleSongId;
@@ -40,25 +41,29 @@ public class BardEphemeralFlowersFinale: BardSongData
     {
         // Calculate Damage.
         int damageBase = HelperFunctions.SafeDice(Constants.BardFinaleEphemeralFlowersName, power);
-        int damageChunk = rhythmStacks switch
+        float chunkPercent = rhythmStacks switch
         {
-            30 => 5,
-            >= 20 => 10,
-            _ => 20
+            30 => 0.05f,
+            >= 20 => 0.10f,
+            _ => 0.20f
         };
-
-        int missingChunks = (bard.MaxHP - bard.hp) / damageChunk;
+        
+        float chunkSize = bard.MaxHP * chunkPercent;
+        int missingChunks = (int)((bard.MaxHP - bard.hp) / chunkSize);
         int multiplier = missingChunks + rhythmStacks / 5;
         int damage = HelperFunctions.SafeMultiplier(damageBase, multiplier);
-        
-        List<Chara> potentialTargets = HelperFunctions.GetCharasWithinRadius(bard.pos, SongRadius, bard,false, true);
+
+        List<Chara> potentialTargets = HelperFunctions.GetCharasWithinRadius(bard.pos, SongRadius, bard, false, true);
         if (potentialTargets.Count != 0)
         {
             foreach (Chara enemy in potentialTargets)
             {
                 ConEphemeralFlowersSong bardDebuff = ConBardSong.Create(nameof(ConEphemeralFlowersSong), power, rhythmStacks, godBlessed, bard) as ConEphemeralFlowersSong;
                 enemy.AddCondition(bardDebuff);
-                enemy.DamageHP(damage, Constants.EleFire, 100, AttackSource.Shockwave, bard);
+                BardCardPatches.CachedInvoker.Invoke(
+                    enemy,
+                    new object[] { damage, Constants.EleFire, 100, AttackSource.Shockwave, bard }
+                );
                 enemy.AddCondition<ConFreeze>(rhythmStacks, true);
             }
         }

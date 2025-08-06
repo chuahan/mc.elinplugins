@@ -1,12 +1,21 @@
 using BardMod.Common;
 using BardMod.Common.HelperFunctions;
+using BardMod.Patches;
 using BardMod.Source;
 using BardMod.Stats;
 using BardMod.Stats.BardSongConditions;
-
 namespace BardMod.Elements.BardSpells.BardFinales;
 
-public class BardLonelyTearsFinale: BardSongData
+/*
+ * Massive heal on allies.
+ * Add Overguard based on Healing Amount.
+ * Purge debuffs.
+ * Buffed Healing Song applied.
+ * Allies gain second chance. If they have more than 33% hp take a grievous strike that is more than that, they will survive with 10% hp.
+ *
+ * Jure Blessed: In addition to the healing aspects, will strike all enemies in range with Holy Damage. Undead enemies will take double damage.
+ */
+public class BardLonelyTearsFinale : BardSongData
 {
     public override string SongName => Constants.BardFinaleLonelyTearsName;
     public override int SongId => Constants.BardFinaleSongId;
@@ -24,27 +33,28 @@ public class BardLonelyTearsFinale: BardSongData
         bard.PlaySound("heal");
     }
 
-    /*
-     * Massive heal on allies.
-     * Add Overguard based on Healing Amount.
-     * Purge debuffs.
-     * Buffed Healing Song applied.
-     * Allies gain second chance. If they have more than 33% hp take a grievous strike that is more than that, they will survive with 10% hp.
-     */
     public override void ApplyFriendlyEffect(Chara bard, Chara target, int power, int rhythmStacks, bool godBlessed)
     {
         int healing = HelperFunctions.SafeDice(Constants.BardFinaleLonelyTearsName, power);
         target.HealHP(healing, HealSource.Magic);
-        (target.AddCondition<ConOverguard>(1) as ConOverguard)?.AddOverGuard(healing);
+        if (target.HasCondition<ConOverguard>())
+        {
+            ConOverguard existingOverguard = target.GetCondition<ConOverguard>();
+            existingOverguard.AddOverguard(healing);
+        }
+        else
+        {
+            target.AddCondition<ConOverguard>(healing);
+        }
         target.AddCondition<ConLonelyTearsSong>(power);
-        
+
         // Purge all debuffs if max Rhythm.
-        bool forcePurge = (rhythmStacks >= 30);
+        bool forcePurge = rhythmStacks >= 30;
         foreach (Condition item5 in target.conditions.Copy())
         {
             if (item5.Type == ConditionType.Debuff &&
                 !item5.IsKilled &&
-                ((EClass.rnd(power * 2) > EClass.rnd(item5.power)) || forcePurge) &&
+                (EClass.rnd(power * 2) > EClass.rnd(item5.power) || forcePurge) &&
                 item5 is not ConWrath && // Don't purge Wrath of God.
                 item5 is not ConDeathSentense) // Don't purge Death Sentence.
             {
@@ -52,16 +62,20 @@ public class BardLonelyTearsFinale: BardSongData
                 item5.Kill();
             }
         }
-        
+
         target.PlayEffect("heal_tick");
     }
-    
+
     // If worshipping Jure, enemies nearby take heavy holy damage. undead enemies take double damage.
     public override void ApplyEnemyEffect(Chara bard, Chara target, int power, int rhythmStacks, bool godBlessed)
     {
         if (!godBlessed) return;
         int damage = HelperFunctions.SafeDice(Constants.BardFinaleLonelyTearsName, power);
         if (target.race.IsUndead) damage = HelperFunctions.SafeMultiplier(damage, 2);
-        target.DamageHP(damage, Constants.EleHoly, 100, AttackSource.None, bard);
+        // target.DamageHP(dmg: damage, ele: Constants.EleHoly, eleP: 100, attackSource: AttackSource.None, origin: bard);
+        BardCardPatches.CachedInvoker.Invoke(
+            target,
+            new object[] { damage, Constants.EleHoly, 100, AttackSource.None, bard }
+        );
     }
 }

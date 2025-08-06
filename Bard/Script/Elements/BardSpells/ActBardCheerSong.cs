@@ -2,11 +2,13 @@ using BardMod.Common;
 using BardMod.Common.HelperFunctions;
 using BardMod.Source;
 using BardMod.Stats.BardSongConditions;
-
 namespace BardMod.Elements.BardSpells;
 
 public class ActBardCheerSong : ActBardSong
 {
+
+    protected override BardSongData SongData => new BardCheerSong();
+
     public class BardCheerSong : BardSongData
     {
         public override string SongName => Constants.BardCheerSongName;
@@ -22,6 +24,4 @@ public class ActBardCheerSong : ActBardSong
             target.AddCondition<ConCheerSong>(cheerPower);
         }
     }
-
-    protected override BardSongData SongData => new BardCheerSong();
 }

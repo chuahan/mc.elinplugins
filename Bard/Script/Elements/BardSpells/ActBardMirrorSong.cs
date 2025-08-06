@@ -1,11 +1,13 @@
 using BardMod.Common;
 using BardMod.Source;
 using BardMod.Stats.BardSongConditions;
-
 namespace BardMod.Elements.BardSpells;
 
 public class ActBardMirrorSong : ActBardSong
 {
+
+    protected override BardSongData SongData => new BardMirrorSong();
+
     public class BardMirrorSong : BardSongData
     {
         public override string SongName => Constants.BardMirrorSongName;
@@ -21,6 +23,4 @@ public class ActBardMirrorSong : ActBardSong
             target.PlaySound("shield_bash");
         }
     }
-
-    protected override BardSongData SongData => new BardMirrorSong();
 }

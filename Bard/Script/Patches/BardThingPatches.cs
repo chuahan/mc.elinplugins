@@ -1,6 +1,5 @@
-using BardMod.Source;
+using BardMod.Traits;
 using HarmonyLib;
-
 namespace BardMod.Patches;
 
 [HarmonyPatch(typeof(Thing))]
@@ -14,11 +13,11 @@ internal class BardThingPatches : EClass
         if (__instance.trait is not TraitToolBard) return;
         if (__instance.elements != null)
         {
-            __instance.elements.AddNote(n, (Element e) => e.IsFlag, null, ElementContainer.NoteMode.BonusTrait,
-                addRaceFeat: false, delegate(Element e, string s)
+            __instance.elements.AddNote(n, e => e.IsFlag, null, ElementContainer.NoteMode.BonusTrait,
+                false, delegate(Element e, string s)
                 {
                     string text = "altEnc".lang("", e.FullName, "");
-                    text +=(" <size=12>" + e.source.GetText("textPhase") + "</size>").TagColor(FontColor.Good);
+                    text += (" <size=12>" + e.source.GetText("textPhase") + "</size>").TagColor(FontColor.Good);
                     return text;
                 });
         }

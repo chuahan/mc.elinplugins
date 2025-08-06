@@ -1,11 +1,12 @@
 using BardMod.Common;
 using BardMod.Source;
-using BardMod.Stats.BardSongConditions;
-
 namespace BardMod.Elements.BardSpells;
 
 public class ActBardSleepSong : ActBardSong
 {
+
+    protected override BardSongData SongData => new BardSleepSong();
+
     public class BardSleepSong : BardSongData
     {
         public override string SongName => Constants.BardSleepSongName;
@@ -17,9 +18,7 @@ public class ActBardSleepSong : ActBardSong
 
         public override void ApplyEnemyEffect(Chara bard, Chara target, int power, int rhythmStacks, bool godBlessed)
         {
-            target.AddCondition<ConSleep>(power, force: true);
+            target.AddCondition<ConSleep>(power, true);
         }
     }
-
-    protected override BardSongData SongData => new BardSleepSong();
 }

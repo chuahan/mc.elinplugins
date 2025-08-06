@@ -1,11 +1,12 @@
-using System;
 using BardMod.Common;
 using BardMod.Common.HelperFunctions;
 using BardMod.Source;
 using BardMod.Stats.BardSongConditions;
-
 namespace BardMod.Elements.BardSpells.BardFinales;
 
+/*
+ * Song that boosts Max Life and Mana, then restores allies to full health and mana.
+ */
 public class BardHollowSymphonyFinale : BardSongData
 {
     public override string SongName => Constants.BardFinaleHollowSymphonyName;
@@ -20,7 +21,7 @@ public class BardHollowSymphonyFinale : BardSongData
         int sigmoidPower = (int)HelperFunctions.SigmoidScaling(power, Constants.MaxBardPowerBuff, 50, 100, Constants.BardPowerSlope);
         ConHollowSymphonySong bardBuff = ConBardSong.Create(nameof(ConHollowSymphonySong), sigmoidPower, rhythmStacks, godBlessed, bard) as ConHollowSymphonySong;
         target.AddCondition(bardBuff);
-        
+
         target.Cure(CureType.Death);
         target.hp = target.MaxHP;
         target.mana.value = target.mana.max;

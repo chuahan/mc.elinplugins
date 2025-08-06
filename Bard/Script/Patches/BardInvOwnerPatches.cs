@@ -1,20 +1,15 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using BardMod.Common.HelperFunctions;
-using BardMod.Source;
+using BardMod.Traits;
+using Cwl.Helper.Extensions;
 using HarmonyLib;
-
 namespace BardMod.Patches;
 
 [HarmonyPatch(typeof(InvOwner))]
 internal class BardInvOwnerPatches : EClass
 {
     // Patch to add the option to mark as selected instrument.
-    [HarmonyPatch(typeof(InvOwner), nameof(InvOwner.ListInteractions), new[] {
-        typeof(ButtonGrid),
-        typeof(bool),
-    })]
+    [HarmonyPatch(typeof(InvOwner), nameof(InvOwner.ListInteractions), typeof(ButtonGrid), typeof(bool))]
     [HarmonyPostfix]
     internal static void OnListInteractions(InvOwner __instance, ref InvOwner.ListInteraction __result, ButtonGrid b, bool context)
     {
@@ -37,21 +32,20 @@ internal class BardInvOwnerPatches : EClass
                             {
                                 if ((instrument.trait as TraitToolBard).IsSelectedInstrument)
                                 {
-                                    (instrument.trait as TraitToolBard).IsSelectedInstrument = false;
+                                    (instrument.trait as TraitToolBard).owner.SetFlagValue(TraitToolBard.IsSelectedInstrumentFlag, 0);
                                     pc.Say("hintUnequippedBardInstrument".lang(pc.NameSimple, instrument.Name));
                                 }
                             }
-                            
+
                         }
                         pc.Say("hintEquippedBardInstrument".lang(pc.NameSimple, t.Name));
                     }
 
-                    tool.IsSelectedInstrument = newState;
-                    
+                    tool.owner.SetFlagValue(TraitToolBard.IsSelectedInstrumentFlag, newState ? 1 : 0);
                     LayerInventory.SetDirty(t);
                     SE.ClickOk();
                 });
-            }   
+            }
         }
     }
 }

@@ -2,11 +2,13 @@ using BardMod.Common;
 using BardMod.Common.HelperFunctions;
 using BardMod.Source;
 using BardMod.Stats.BardSongConditions;
-
 namespace BardMod.Elements.BardSpells;
 
 public class ActBardLuckSong : ActBardSong
 {
+
+    protected override BardSongData SongData => new BardLuckSong();
+
     public class BardLuckSong : BardSongData
     {
         public override string SongName => Constants.BardLuckSongName;
@@ -22,6 +24,4 @@ public class ActBardLuckSong : ActBardSong
             target.AddCondition<ConLuckSong>(luckPower);
         }
     }
-
-    protected override BardSongData SongData => new BardLuckSong();
 }

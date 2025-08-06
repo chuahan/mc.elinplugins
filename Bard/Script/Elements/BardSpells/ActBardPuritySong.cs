@@ -1,11 +1,12 @@
 using BardMod.Common;
 using BardMod.Source;
-using BardMod.Stats.BardSongConditions;
-
 namespace BardMod.Elements.BardSpells;
 
 public class ActBardPuritySong : ActBardSong
 {
+
+    protected override BardSongData SongData => new BardPuritySong();
+
     public class BardPuritySong : BardSongData
     {
         public override string SongName => Constants.BardPuritySongName;
@@ -31,6 +32,4 @@ public class ActBardPuritySong : ActBardSong
             }
         }
     }
-
-    protected override BardSongData SongData => new BardPuritySong();
 }

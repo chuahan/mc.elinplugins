@@ -1,10 +1,14 @@
 using BardMod.Common;
 using BardMod.Source;
 using BardMod.Stats.BardSongConditions;
-
 namespace BardMod.Elements.BardSpells.BardFinales;
 
-public class BardShimmeringDewFinale: BardSongData
+/*
+ * Absorbs a % of incoming damage. When the buff expires, the collected damage is released back
+ * at nearby enemies.
+ * This buff absorbs 10% up to 50% damage from each hit taken.
+ */
+public class BardShimmeringDewFinale : BardSongData
 {
     public override string SongName => Constants.BardFinaleShimmeringDewName;
     public override int SongId => Constants.BardFinaleSongId;

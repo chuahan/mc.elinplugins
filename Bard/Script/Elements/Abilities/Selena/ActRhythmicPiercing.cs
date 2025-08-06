@@ -1,9 +1,9 @@
 using BardMod.Common;
 using BardMod.Common.HelperFunctions;
+using BardMod.Patches;
 using BardMod.Stats;
 using BardMod.Stats.BardSongConditions;
 using UnityEngine;
-
 namespace BardMod.Elements.Abilities.Selena;
 
 public class ActRhythmicPiercing : ActMelee
@@ -19,103 +19,73 @@ public class ActRhythmicPiercing : ActMelee
 
     public override Cost GetCost(Chara c)
     {
-        Act.Cost result2 = default(Act.Cost);
-        result2.type = Act.CostType.MP;
-        
+        Cost result2 = default(Cost);
+        result2.type = CostType.MP;
+
         int num = EClass.curve(Value, 50, 10);
-        result2.cost = source.cost[0] * (100 + ((!source.tag.Contains("noCostInc")) ? (num * 3) : 0)) / 100;
-        
+        result2.cost = source.cost[0] * (100 + (!source.tag.Contains("noCostInc") ? num * 3 : 0)) / 100;
+
         // Higher Music skill will reduce mana costs.
         if (c != null)
         {
             int musicSkill = c.Chara.Evalue(Constants.MusicSkill);
-            result2.cost *= (100 / (100 + musicSkill));
+            result2.cost *= 100 / (100 + musicSkill);
         }
 
         if ((c == null || !c.IsPC) && result2.cost > 2)
         {
             result2.cost /= 2;
         }
-        
+
         return result2;
     }
-    
+
     public override int GetPower(Card bard)
     {
-        // Get Base Power.
-        int basePower = base.GetPower(bard);
-
-        if (bard == null) return basePower;
-
-        float powerMultiplier = 1f;
-        
-        // Sweet Voice Mutation
-        if (bard.Evalue(1522) > 0) powerMultiplier += 0.125f;
-        // Husky Voice Mutation
-        if (bard.Evalue(1523) > 0) powerMultiplier -= 0.125f;
-		
-        // Duet Multiplier
-        if (bard.IsPCParty || bard.IsPC)
-        {
-            foreach (Chara partyMember in pc.party.members)
-            {
-                if (partyMember != CC && partyMember.Evalue(Constants.FeatDuetPartner) > 0)
-                {
-                    powerMultiplier += 0.5F;
-                }
-            }
-        }
-        
-        // Bard Multiplier
-        if (bard.Evalue(Constants.FeatBardId) > 0) powerMultiplier += 0.25f;
-		
-        // Apply Multipliers
-        basePower = HelperFunctions.SafeMultiplier(basePower,powerMultiplier);
-        
-        return basePower;
+        return HelperFunctions.GetBardPower(base.GetPower(bard), bard);
     }
-    
+
     public override void OnMarkMapHighlights()
     {
-        if (!EClass.scene.mouseTarget.pos.IsValid || EClass.scene.mouseTarget.TargetChara == null)
+        if (!scene.mouseTarget.pos.IsValid || scene.mouseTarget.TargetChara == null)
         {
             return;
         }
-        Point dest = EClass.scene.mouseTarget.pos;
-        Los.IsVisible(EClass.pc.pos, dest, delegate(Point p, bool blocked)
+        Point dest = scene.mouseTarget.pos;
+        Los.IsVisible(pc.pos, dest, delegate(Point p, bool blocked)
         {
-            if (!p.Equals(EClass.pc.pos))
+            if (!p.Equals(pc.pos))
             {
-                p.SetHighlight((blocked || p.IsBlocked || (!p.Equals(dest) && p.HasChara)) ? 4 : ((p.Distance(EClass.pc.pos) <= 2) ? 2 : 8));
+                p.SetHighlight(blocked || p.IsBlocked || !p.Equals(dest) && p.HasChara ? 4 : p.Distance(pc.pos) <= 2 ? 2 : 8);
             }
         });
     }
 
     public override bool CanPerform()
     {
-        bool flag = Act.CC.IsPC && !(Act.CC.ai is GoalAutoCombat);
+        bool flag = CC.IsPC && !(CC.ai is GoalAutoCombat);
         if (flag)
         {
-            Act.TC = EClass.scene.mouseTarget.card;
+            TC = scene.mouseTarget.card;
         }
-        if (Act.TC == null)
+        if (TC == null)
         {
             return false;
         }
-        if (Act.TC.isThing && !Act.TC.trait.CanBeAttacked)
+        if (TC.isThing && !TC.trait.CanBeAttacked)
         {
             return false;
         }
-        Act.TP.Set(flag ? EClass.scene.mouseTarget.pos : Act.TC.pos);
-        if (Act.CC.isRestrained)
+        TP.Set(flag ? scene.mouseTarget.pos : TC.pos);
+        if (CC.isRestrained)
         {
             return false;
         }
-        if (Act.CC.host != null || Act.CC.Dist(Act.TP) <= 2)
+        if (CC.host != null || CC.Dist(TP) <= 2)
         {
             return false;
         }
-        if (Los.GetRushPoint(Act.CC.pos, Act.TP) == null)
+        if (Los.GetRushPoint(CC.pos, TP) == null)
         {
             return false;
         }
@@ -124,35 +94,34 @@ public class ActRhythmicPiercing : ActMelee
 
     public override bool Perform()
     {
-        EClass.pc.Say("Performed Rhythmic Piercing");
-        bool flag = Act.CC.IsPC && !(Act.CC.ai is GoalAutoCombat);
+        bool flag = CC.IsPC && !(CC.ai is GoalAutoCombat);
         if (flag)
         {
-            Act.TC = EClass.scene.mouseTarget.card;
+            TC = scene.mouseTarget.card;
         }
-        if (Act.TC == null)
+        if (TC == null)
         {
             return false;
         }
-        Act.TP.Set(flag ? EClass.scene.mouseTarget.pos : Act.TC.pos);
-        int num = Act.CC.Dist(Act.TP);
-        Point rushPoint = Los.GetRushPoint(Act.CC.pos, Act.TP);
-        Act.CC.pos.PlayEffect("vanish");
-        Act.CC.MoveImmediate(rushPoint, focus: true, cancelAI: false);
-        Act.CC.Say("rush", Act.CC, Act.TC);
-        Act.CC.PlaySound("rush");
-        Act.CC.pos.PlayEffect("vanish");
-        return this.ExecuteAttack();
+        TP.Set(flag ? scene.mouseTarget.pos : TC.pos);
+        int num = CC.Dist(TP);
+        Point rushPoint = Los.GetRushPoint(CC.pos, TP);
+        CC.pos.PlayEffect("vanish");
+        CC.MoveImmediate(rushPoint, true, false);
+        CC.Say("rush", CC, TC);
+        CC.PlaySound("rush");
+        CC.pos.PlayEffect("vanish");
+        return ExecuteAttack();
     }
 
     private bool ExecuteAttack()
     {
         // Play Effect
-        int damage = HelperFunctions.SafeDice(Constants.RhythmicPiercingName, this.GetPower(CC));
+        int damage = HelperFunctions.SafeDice(Constants.RhythmicPiercingName, GetPower(CC));
         if (TC.HasCondition<ConFreeze>()) damage = HelperFunctions.SafeMultiplier(damage, 1.5f);
 
         // Modified Effect if Selena has enough Rhythm - Applies Ephemeral Flowers on hit.
-        bool playerRhythm = CC.Evalue(Constants.FeatTimelessSong) > 0 && CC.IsPCParty && EClass.pc.HasCondition<ConRhythm>();
+        bool playerRhythm = CC.Evalue(Constants.FeatTimelessSong) > 0 && CC.IsPCParty && pc.HasCondition<ConRhythm>();
         ConRhythm? rhythm = CC.GetCondition<ConRhythm>();
         bool specialEffect = false;
         if (playerRhythm)
@@ -170,11 +139,14 @@ public class ActRhythmicPiercing : ActMelee
 
         if (specialEffect)
         {
-            ConEphemeralFlowersSong bardDebuff = ConBardSong.Create(nameof(ConEphemeralFlowersSong), this.GetPower(CC), 30, true, CC) as ConEphemeralFlowersSong;
+            ConEphemeralFlowersSong bardDebuff = ConBardSong.Create(nameof(ConEphemeralFlowersSong), GetPower(CC), 30, true, CC) as ConEphemeralFlowersSong;
             TC.Chara.AddCondition(bardDebuff);
         }
-        
-        TC.DamageHP(damage, Constants.EleCold, eleP: 100, AttackSource.MagicSword, CC);
+
+        BardCardPatches.CachedInvoker.Invoke(
+            TC,
+            new object[] { damage, Constants.EleCold, 100, AttackSource.MagicSword, CC }
+        );
         TC.PlaySound("ab_magicsword");
         TC.PlayEffect("hit_slash").SetScale(1f);
 
@@ -182,7 +154,7 @@ public class ActRhythmicPiercing : ActMelee
         if (!CC.IsPC)
         {
             rhythm ??= CC.AddCondition<ConRhythm>() as ConRhythm;
-            rhythm?.ModStacks(3);   
+            rhythm?.ModStacks(3);
         }
 
         return true;

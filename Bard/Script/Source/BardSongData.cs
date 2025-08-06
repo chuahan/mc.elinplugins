@@ -20,13 +20,13 @@ public class BardSongData
     {
         // If we need any SFX or FX to be played once, play it here.
     }
-    
+
     public virtual void ApplyFriendlyEffect(Chara bard, Chara target, int power, int rhythmStacks, bool godBlessed)
     {
         // Should iterate through all friendlies.
         // Some offensive spells are Self Target Songs that have their own loop to avoid repeated calculations.
     }
-    
+
     public virtual void ApplyEnemyEffect(Chara bard, Chara target, int power, int rhythmStacks, bool godBlessed)
     {
         // Should iterate through all enemies.

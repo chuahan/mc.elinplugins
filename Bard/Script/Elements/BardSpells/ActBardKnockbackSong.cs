@@ -1,13 +1,14 @@
-using System.Collections.Generic;
 using BardMod.Common;
 using BardMod.Common.HelperFunctions;
+using BardMod.Patches;
 using BardMod.Source;
-using BardMod.Stats.BardSongConditions;
-
 namespace BardMod.Elements.BardSpells;
 
 public class ActBardKnockbackSong : ActBardSong
 {
+
+    protected override BardSongData SongData => new BardKnockbackSong();
+
     public class BardKnockbackSong : BardSongData
     {
         public override string SongName => Constants.BardKnockbackSongName;
@@ -23,7 +24,7 @@ public class ActBardKnockbackSong : ActBardSong
             spellEffect.Play(bard.pos);
             bard.PlaySound("spell_ball");
         }
-        
+
         public override void ApplyEnemyEffect(Chara bard, Chara target, int power, int rhythmStacks, bool godBlessed)
         {
             int damage = HelperFunctions.SafeDice(Constants.BardKnockbackSongName, power);
@@ -34,12 +35,13 @@ public class ActBardKnockbackSong : ActBardSong
                 {
                     target.renderer.SetFirst(first: true);
                     target.PlaySound("wave_hit_small");
-                    target.AddCondition<ConParalyze>(20, force: true);
+                    target.AddCondition<ConParalyze>(20, true);
                 }
             }
-            target.DamageHP(damage, Constants.EleSound, 100, AttackSource.Shockwave, bard);
+            BardCardPatches.CachedInvoker.Invoke(
+                target,
+                new object[] { damage, Constants.EleSound, 100, AttackSource.Shockwave, bard }
+            );
         }
     }
-
-    protected override BardSongData SongData => new BardKnockbackSong();
 }

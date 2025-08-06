@@ -1,14 +1,15 @@
-using System;
 using System.Collections.Generic;
 using BardMod.Common;
 using BardMod.Common.HelperFunctions;
+using BardMod.Patches;
 using BardMod.Source;
-using BardMod.Stats.BardSongConditions;
-
 namespace BardMod.Elements.BardSpells;
 
 public class ActBardElementalSong : ActBardSong
 {
+
+    protected override BardSongData SongData => new BardElementalSong();
+
     public class BardElementalSong : BardSongData
     {
         public override string SongName => Constants.BardElementalSongName;
@@ -36,21 +37,22 @@ public class ActBardElementalSong : ActBardSong
                 Constants.EleDarkness,
                 Constants.EleHoly,
                 Constants.EleSound,
-                Constants.EleMagic,
+                Constants.EleMagic
             };
-            int randElement = elements[EClass.rnd(5)];
-            
-            List<Chara> potentialTargets = HelperFunctions.GetCharasWithinRadius(bard.pos, SongRadius, bard,false, true);
+            int randElement = elements[EClass.rnd(7)];
+
+            List<Chara> potentialTargets = HelperFunctions.GetCharasWithinRadius(bard.pos, SongRadius, bard, false, true);
             if (potentialTargets.Count != 0)
             {
                 foreach (Chara enemy in potentialTargets)
                 {
                     enemy.PlaySound("wave_hit");
-                    enemy.DamageHP(damage, ele: randElement, eleP: 100, AttackSource.MagicSword, bard);
+                    BardCardPatches.CachedInvoker.Invoke(
+                        enemy,
+                        new object[] { damage, randElement, 100, AttackSource.MagicSword, bard }
+                    );
                 }
             }
         }
     }
-
-    protected override BardSongData SongData => new BardElementalSong();
 }

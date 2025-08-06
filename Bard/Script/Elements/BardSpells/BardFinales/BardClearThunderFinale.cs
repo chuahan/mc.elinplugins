@@ -1,10 +1,17 @@
 using BardMod.Common;
 using BardMod.Source;
 using BardMod.Stats.BardSongConditions;
-
 namespace BardMod.Elements.BardSpells.BardFinales;
 
-public class BardClearThunderFinale: BardSongData
+/*
+ * Offensive thunderstrike song.
+ * Adds buffs to you that picks up to 3 random enemies around every tick and drops a lightning bolt on them.
+ * Every bolt inflicts lightning res down.
+ * The last lightning bolt will also do % hp damage and inflicts paralysis.
+ *
+ * Itzpalt Blessing: Can target the same enemy with each bolt if there are fewer than 3 enemies nearby.
+ */
+public class BardClearThunderFinale : BardSongData
 {
     public override string SongName => Constants.BardFinaleClearThunderName;
     public override int SongId => Constants.BardFinaleSongId;
@@ -17,13 +24,6 @@ public class BardClearThunderFinale: BardSongData
 
     public override void ApplyFriendlyEffect(Chara bard, Chara target, int power, int rhythmStacks, bool godBlessed)
     {
-        /*
-         * - Offensive thunderstrike song.
-         * - Adds buffs to you that picks random enemies every tick and drops a lightning bolt on them.
-         * - Every bolt inflicts lightning res down.
-         * - If worshipping Itzpalt, can target up to 3 enemies at per tick.
-         * - Drops 3 bolts, doing damage twice, then the last hit also does % hp damage and inflicts paralysis.
-         */
         ConClearThunderSong bardBuff = ConBardSong.Create(nameof(ConClearThunderSong), power, rhythmStacks, godBlessed, bard) as ConClearThunderSong;
         target.AddCondition(bardBuff);
     }

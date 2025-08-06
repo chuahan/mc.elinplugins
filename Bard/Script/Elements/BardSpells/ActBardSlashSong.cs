@@ -1,12 +1,14 @@
 using BardMod.Common;
 using BardMod.Common.HelperFunctions;
+using BardMod.Patches;
 using BardMod.Source;
-using BardMod.Stats.BardSongConditions;
-
 namespace BardMod.Elements.BardSpells;
 
 public class ActBardSlashSong : ActBardSong
 {
+
+    protected override BardSongData SongData => new BardSlashSong();
+
     public class BardSlashSong : BardSongData
     {
         public override string SongName => Constants.BardSlashSongName;
@@ -20,9 +22,10 @@ public class ActBardSlashSong : ActBardSong
         {
             int damage = HelperFunctions.SafeDice(Constants.BardSlashSongName, power);
             target.PlaySound("ab_magicsword");
-            target.DamageHP(damage, Constants.EleSound, eleP: 100, AttackSource.Shockwave, bard);
+            BardCardPatches.CachedInvoker.Invoke(
+                target,
+                new object[] { damage, Constants.EleSound, 100, AttackSource.Shockwave, bard }
+            );
         }
     }
-
-    protected override BardSongData SongData => new BardSlashSong();
 }

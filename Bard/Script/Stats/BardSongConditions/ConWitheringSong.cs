@@ -1,5 +1,4 @@
 using BardMod.Common;
-
 namespace BardMod.Stats.BardSongConditions;
 
 // Purely a Stat Debuff Song.

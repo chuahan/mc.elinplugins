@@ -1,42 +1,48 @@
 using BardMod.Common.HelperFunctions;
-
 namespace BardMod.Stats;
 
 public class ConOverguard : BaseBuff
 {
-    public override bool WillOverride => true;
+    public override bool WillOverride => false;
 
-    public int CalcOverguardAmount()
+    public static int CalcOverguardAmount(int power)
     {
         return HelperFunctions.SafeMultiplier(10, 1 + power / 10);
     }
-    
+
     public override void OnStartOrStack()
     {
-        value = CalcOverguardAmount();
+        value = ConOverguard.CalcOverguardAmount(power);
         base.OnStartOrStack();
     }
 
     public override void Tick()
     {
-        if (this.value <= 0)
+        if (value <= 0)
         {
             Kill();
         }
     }
 
-    public void AddOverGuard(int amount)
+    public void AddOverguard(int amount)
     {
-        this.value = HelperFunctions.SafeAdd(this.value, amount);
-        this.OnValueChanged();
+        value = HelperFunctions.SafeAdd(value, amount);
+        OnValueChanged();
     }
-    
+
+    // When a new instance of Overguard arrives
+    // It will evaluate itself against the new condition in OnStacked.
     public override bool CanStack(Condition c)
     {
-        if (c.GetType() == this.GetType())
+        return c.GetType() == GetType();
+    }
+
+    public override void OnStacked(int p)
+    {
+        if (p > value)
         {
-            return c.value > this.value;
+            value = p;
         }
-        return false;
+        SetPhase();
     }
 }

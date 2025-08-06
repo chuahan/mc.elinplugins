@@ -2,11 +2,13 @@ using BardMod.Common;
 using BardMod.Common.HelperFunctions;
 using BardMod.Source;
 using BardMod.Stats.BardSongConditions;
-
 namespace BardMod.Elements.BardSpells;
 
 public class ActBardVigorSong : ActBardSong
 {
+
+    protected override BardSongData SongData => new BardVigorSong();
+
     public class BardVigorSong : BardSongData
     {
         public override string SongName => Constants.BardVigorSongName;
@@ -22,6 +24,4 @@ public class ActBardVigorSong : ActBardSong
             target.AddCondition<ConVigorSong>(vigorPower);
         }
     }
-
-    protected override BardSongData SongData => new BardVigorSong();
 }

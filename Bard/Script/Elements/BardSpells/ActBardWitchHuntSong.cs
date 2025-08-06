@@ -1,12 +1,13 @@
 using BardMod.Common;
 using BardMod.Common.HelperFunctions;
 using BardMod.Source;
-using BardMod.Stats.BardSongConditions;
-
 namespace BardMod.Elements.BardSpells;
 
 public class ActBardWitchHuntSong : ActBardSong
 {
+
+    protected override BardSongData SongData => new BardWitchHuntSong();
+
     public class BardWitchHuntSong : BardSongData
     {
         public override string SongName => Constants.BardWitchHuntSongName;
@@ -25,6 +26,4 @@ public class ActBardWitchHuntSong : ActBardSong
             target.PlaySound("gravity");
         }
     }
-
-    protected override BardSongData SongData => new BardWitchHuntSong();
 }

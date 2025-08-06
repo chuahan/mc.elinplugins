@@ -2,11 +2,13 @@ using BardMod.Common;
 using BardMod.Common.HelperFunctions;
 using BardMod.Source;
 using BardMod.Stats.BardSongConditions;
-
 namespace BardMod.Elements.BardSpells;
 
 public class ActBardMysticSong : ActBardSong
 {
+
+    protected override BardSongData SongData => new BardMysticSong();
+
     public class BardMysticSong : BardSongData
     {
         public override string SongName => Constants.BardMagicSongName;
@@ -22,6 +24,4 @@ public class ActBardMysticSong : ActBardSong
             target.AddCondition<ConMysticSong>(scaledPower);
         }
     }
-
-    protected override BardSongData SongData => new BardMysticSong();
 }

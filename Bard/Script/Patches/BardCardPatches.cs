@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using BardMod.Common;
 using BardMod.Common.HelperFunctions;
 using BardMod.Stats;
 using BardMod.Stats.BardSongConditions;
+using Cwl.Helper.Unity;
 using HarmonyLib;
-
 namespace BardMod.Patches;
 
-[HarmonyPatch(typeof(Card))]
+[HarmonyPatch]
 internal class BardCardPatches : EClass
 {
     /*
@@ -23,49 +25,49 @@ internal class BardCardPatches : EClass
             {
                 if (chara.hp >= chara.MaxHP / 3)
                 {
-                    Msg.Say("lonelytears_secondchance".langGame(chara.NameSimple));
+                    CoroutineHelper.Deferred(() => Msg.Say("lonelytears_secondchance".langGame(chara.NameSimple)));
                     chara.hp = chara.MaxHP / 100;
                     return true;
                 }
             }
-        
+
             // Heavens Fall activates next.
             if (chara.HasCondition<ConHeavensFallSong>())
             {
                 ConHeavensFallSong heavensFall = chara.GetCondition<ConHeavensFallSong>();
                 if (!heavensFall.ActivatedUndying)
                 {
-                    Msg.Say("heavensfallsong_defy".langGame(chara.NameSimple));
+                    CoroutineHelper.Deferred(() => Msg.Say("heavensfallsong_defy".langGame(chara.NameSimple)));
                     heavensFall.ActivateUndying();
                     return true;
                 }
             }
-        
+
             // Homura activates.
             if (chara.HasCondition<ConFarewellFlamesSong>())
             {
                 ConFarewellFlamesSong farewellFlames = chara.GetCondition<ConFarewellFlamesSong>();
-                Msg.Say("flamesong_defy".langGame(chara.NameSimple));
+                CoroutineHelper.Deferred(() => Msg.Say("flamesong_defy".langGame(chara.NameSimple)));
                 chara.hp = 1;
-                if (!farewellFlames.BorrowedTime) chara.Talk("flamesong_declare".langGame());
+                if (!farewellFlames.BorrowedTime) chara.TalkRaw("flamesong_declare".langGame());
                 farewellFlames.BorrowedTime = true;
-                //farewellFlames.Mod(-1);
                 return true;
             }
         }
-        
+
         return false;
     }
     
-    [HarmonyPatch(typeof(Card), nameof(Card.DamageHP), new[] {
-        typeof(int),              // dmg
-        typeof(int),              // ele
-        typeof(int),              // eleP
-        typeof(AttackSource),     // attackSource
-        typeof(Card),             // origin
-        typeof(bool),             // showEffect
-        typeof(Thing)             // weapon
-    })]
+    internal static MethodInfo TargetMethod()
+    {
+        return AccessTools.GetDeclaredMethods(typeof(Card))
+                .Where(mi => mi.Name == nameof(Card.DamageHP))
+                .OrderByDescending(mi => mi.GetParameters().Length)
+                .First();
+    }
+
+    public static readonly FastInvokeHandler CachedInvoker = MethodInvoker.GetHandler(TargetMethod(), true);
+    
     [HarmonyPrefix]
     internal static bool OnDamageHP(Card __instance, ref int dmg, ref int ele, ref int eleP, AttackSource attackSource, Card origin, bool showEffect, Thing weapon)
     {
@@ -79,10 +81,25 @@ internal class BardCardPatches : EClass
                 if (prismaticBridge.Stacks > 0)
                 {
                     prismaticBridge.Stacks -= 1;
-                    dmg = HelperFunctions.SafeMultiplier(dmg,2);
+                    if (prismaticBridge.GodBlessed)
+                    {
+                        // Small Win = Charge Refund.
+                        // Big Win = Stacks set to 5.
+                        if (EClass.rnd(6) == 0)
+                        {
+                            CoroutineHelper.Deferred(() => origin.Say("prismatic_bridge_smallwin".langGame(origin.Name)));
+                            prismaticBridge.Stacks++;
+                        }
+                        if (EClass.rnd(36) == 0 || BardMod.Debug)
+                        {
+                            CoroutineHelper.Deferred(() => origin.Say("prismatic_bridge_bigwin".langGame(origin.Name)));
+                            prismaticBridge.Stacks = 5;
+                        }
+                    }
+                    dmg = HelperFunctions.SafeMultiplier(dmg, 2);
                 }
             }
-            
+
             // Serene Fantasia - If the damage dealer has Serene fantasia and ele is not null, damage set to 0.
             if (origin.Chara.HasCondition<ConSereneFantasia>())
             {
@@ -91,15 +108,15 @@ internal class BardCardPatches : EClass
                     ConSereneFantasia sereneFantasia = origin.Chara.GetCondition<ConSereneFantasia>();
                     sereneFantasia.Mod(-1);
                     dmg = 0;
-                } 
+                }
             }
-            
+
             // Reflection of the Abyss - Take 200% more damage and deal 70% damage.
             if (origin.Chara.HasCondition<ConAbyssalReflection>())
             {
                 dmg = (int)(dmg * 0.7F);
             }
-            
+
             // Farewell and Gratitude of Flames
             // Increased damage by 5/10/20%
             // Forced Fire Damage Conversion
@@ -111,11 +128,11 @@ internal class BardCardPatches : EClass
                 eleP = Math.Max(eleP, farewellFlames.power / 2);
             }
         }
-        
+
         if (__instance.isChara)
         {
             Chara targetChar = __instance.Chara;
-            
+
             // Comatose - Take 50% more damage and remove Comatose.
             if (targetChar.HasCondition<ConComatose>())
             {
@@ -123,23 +140,24 @@ internal class BardCardPatches : EClass
                 targetChar.RemoveCondition<ConComatose>();
                 targetChar.RemoveCondition<ConSleep>();
             }
-                
+
             // Reflection of the Abyss - Take 200% more damage and deal 70% damage.
             if (targetChar.HasCondition<ConAbyssalReflection>())
             {
                 dmg = HelperFunctions.SafeMultiplier(dmg, 2);
             }
-            
+
             // Damage negation only affects these damage sources.
-            List<AttackSource> damageNegationAttackSources = new List<AttackSource> {
+            List<AttackSource> damageNegationAttackSources = new List<AttackSource>
+            {
                 AttackSource.Melee,
                 AttackSource.Range,
-                AttackSource.Throw, 
+                AttackSource.Throw,
                 AttackSource.MagicSword,
                 AttackSource.Shockwave,
                 AttackSource.None
             };
-            
+
             if (damageNegationAttackSources.Contains(attackSource))
             {
                 // Endless Cycle of Plum Blossoms - Target will deflect a part of the damage back at their attack if they are in melee range.
@@ -150,27 +168,31 @@ internal class BardCardPatches : EClass
                     if (origin.isChara && origin.Chara.pos.Distance(targetChar.pos) <= 1)
                     {
                         targetChar.PlayEffect("hit_slash").SetScale(1f);
-                        targetChar.Say("blossomsong_retaliate".langGame(targetChar.NameSimple, origin.Chara.NameSimple));
-                        origin.Chara.DamageHP(retaliationDamage, AttackSource.Condition, targetChar);
+                        CoroutineHelper.Deferred(() => targetChar.Say("blossomsong_retaliate".langGame(targetChar.NameSimple, origin.Chara.NameSimple)));
+                        // origin.Chara.DamageHP(retaliationDamage, AttackSource.Condition, targetChar);
+                        CachedInvoker.Invoke(
+                            origin.Chara,
+                            new object[] { retaliationDamage, (int)AttackSource.Condition, 0, null, targetChar, true, null }
+                        );
                     }
                     else
                     {
-                        targetChar.Say("blossomsong_deflect".langGame(targetChar.NameSimple));
+                        CoroutineHelper.Deferred(() => targetChar.Say("blossomsong_deflect".langGame(targetChar.NameSimple)));
                     }
 
                     // Reduce the damage taken by the retaliation %.
                     dmg = -retaliationDamage;
                 }
-                
+
                 // Shimmering Dew before Daybreak - Absorbs % damage prior to DR.
                 if (targetChar.HasCondition<ConShimmeringDewSong>())
                 {
-                    ConShimmeringDewSong shimmeringDew =  targetChar.GetCondition<ConShimmeringDewSong>();
+                    ConShimmeringDewSong shimmeringDew = targetChar.GetCondition<ConShimmeringDewSong>();
                     int dmgAbsorbed = (int)(dmg * (shimmeringDew.GetDamageAbsorption() / 100));
                     shimmeringDew.DamageAbsorbed = HelperFunctions.SafeAdd(shimmeringDew.DamageAbsorbed, dmgAbsorbed);
                     dmg -= dmgAbsorbed;
                 }
-                
+
                 // Overguard - Protects flat amount of damage prior to DR.
                 if (targetChar.HasCondition<ConOverguard>())
                 {
@@ -185,7 +207,7 @@ internal class BardCardPatches : EClass
                     overguardCon.Kill();
                 }
             }
-            
+
             // The Heavens Shall Fall - When Undying is activated, all damage is done to healing. 
             if (targetChar.HasCondition<ConHeavensFallSong>())
             {
@@ -200,7 +222,11 @@ internal class BardCardPatches : EClass
             // Death Defiance - Lonely Tears of the Youngest, The Heavens Shall Fall, Farewell and Gratitude of Flames
             // If the damage surpasses the remaining HP of the character, activate.
             // TODO: Should I bother with trying to Mana Body here?
-            if (dmg > targetChar.hp) if (ActivatesDeathDefySongs(targetChar)) return false;
+            if (dmg > targetChar.hp)
+            {
+                if (BardCardPatches.ActivatesDeathDefySongs(targetChar))
+                    return false;
+            }
         }
         return true;
     }

@@ -1,12 +1,13 @@
 using BardMod.Common;
-using BardMod.Elements.BardSpells;
 using BardMod.Source;
 using BardMod.Stats.BardSongConditions;
-
 namespace BardMod.Elements.BardSpells;
 
 public class ActBardChaosSong : ActBardSong
 {
+
+    protected override BardSongData SongData => new BardChaosSong();
+
     private class BardChaosSong : BardSongData
     {
         public override string SongName => Constants.BardChaosSongName;
@@ -20,10 +21,8 @@ public class ActBardChaosSong : ActBardSong
         {
             // TODO: Add SFX
             // TODO: Add FX
-            target.AddCondition<ConChaosSong>(power, force: true);
+            target.AddCondition<ConChaosSong>(power, true);
             target.PlayEffect("curse");
         }
     }
-
-    protected override BardSongData SongData => new BardChaosSong();
 }

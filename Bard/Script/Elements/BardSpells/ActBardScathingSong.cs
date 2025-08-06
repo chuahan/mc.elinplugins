@@ -1,12 +1,15 @@
 using BardMod.Common;
 using BardMod.Common.HelperFunctions;
+using BardMod.Patches;
 using BardMod.Source;
 using BardMod.Stats.BardSongConditions;
-
 namespace BardMod.Elements.BardSpells;
 
 public class ActBardScathingSong : ActBardSong
 {
+
+    protected override BardSongData SongData => new BardScathingSong();
+
     private class BardScathingSong : BardSongData
     {
         public override string SongName => Constants.BardScathingSongName;
@@ -21,12 +24,13 @@ public class ActBardScathingSong : ActBardSong
             // Inflicts luck down + does mind damage in AOE.
             int scaledPower = (int)HelperFunctions.SigmoidScaling(power, Constants.MaxBardPowerBuff, 100, 400, Constants.BardPowerSlope);
             target.AddCondition<ConScathingSong>(scaledPower);
-            
+
             int damage = HelperFunctions.SafeDice(Constants.BardScathingSongName, power);
-            target.DamageHP(damage, Constants.EleMind, 100, AttackSource.None, bard);
-            
+            // target.DamageHP(dmg: damage, ele: Constants.EleMind, eleP: 100, attackSource: AttackSource.None, origin: bard);
+            BardCardPatches.CachedInvoker.Invoke(
+                target,
+                new object[] { damage, Constants.EleMind, 100, AttackSource.None, bard }
+            );
         }
     }
-
-    protected override BardSongData SongData => new BardScathingSong();
 }

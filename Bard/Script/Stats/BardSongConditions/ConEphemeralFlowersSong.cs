@@ -1,6 +1,5 @@
 using System;
 using BardMod.Common;
-
 namespace BardMod.Stats.BardSongConditions;
 
 public class ConEphemeralFlowersSong : ConBardSong

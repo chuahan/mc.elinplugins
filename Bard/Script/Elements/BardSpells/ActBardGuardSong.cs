@@ -1,12 +1,13 @@
 using BardMod.Common;
-using BardMod.Common.HelperFunctions;
 using BardMod.Source;
 using BardMod.Stats;
-
 namespace BardMod.Elements.BardSpells;
 
 public class ActBardGuardSong : ActBardSong
 {
+
+    protected override BardSongData SongData => new BardGuardSong();
+
     public class BardGuardSong : BardSongData
     {
         public override string SongName => Constants.BardGuardSongName;
@@ -18,12 +19,9 @@ public class ActBardGuardSong : ActBardSong
 
         public override void ApplyFriendlyEffect(Chara bard, Chara target, int power, int rhythmStacks, bool godBlessed)
         {
-            int overguardAmount = HelperFunctions.SafeMultiplier(10, 1 + (int)(power / 10));
+            int overguardAmount = ConOverguard.CalcOverguardAmount(power);
             target.AddCondition<ConOverguard>(overguardAmount);
-            target.AddCondition<ConOverguard>(power);
             target.PlaySound("shield_bash");
         }
     }
-
-    protected override BardSongData SongData => new BardGuardSong();
 }

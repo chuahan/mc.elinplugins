@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using BardMod.Common;
 using BardMod.Common.HelperFunctions;
-
 namespace BardMod.Stats.BardSongConditions;
 
 /*
@@ -13,25 +12,25 @@ public class ConMysticSong : ConBardSong
 {
     public override Constants.BardSongType SongType => Constants.BardSongType.Verse;
     public override ConditionType Type => ConditionType.Buff;
-    
+
     public int GetRestorationPercent()
     {
         int maxMP = owner.mana.max;
-        float powerPercent = HelperFunctions.SigmoidScaling(base.power, Constants.MaxBardPowerBuff, 2, 15, Constants.BardPowerSlope);
+        float powerPercent = HelperFunctions.SigmoidScaling(power, Constants.MaxBardPowerBuff, 2, 15, Constants.BardPowerSlope);
         return (int)(maxMP * (powerPercent / 100));
     }
-    
+
     public override void Tick()
     {
-        if (this.value % 5 == 0)
+        if (value % 5 == 0)
         {
-            owner.mana.Mod(this.GetRestorationPercent());
+            owner.mana.Mod(GetRestorationPercent());
         }
         Mod(-1);
     }
 
     public override void OnWriteNote(List<string> list)
     {
-        list.Add("hintBardMysticSong".lang(HelperFunctions.SigmoidScaling(base.power, Constants.MaxBardPowerBuff, 2, 15, Constants.BardPowerSlope).ToString(CultureInfo.InvariantCulture)));
+        list.Add("hintBardMysticSong".lang(HelperFunctions.SigmoidScaling(power, Constants.MaxBardPowerBuff, 2, 15, Constants.BardPowerSlope).ToString(CultureInfo.InvariantCulture)));
     }
 }

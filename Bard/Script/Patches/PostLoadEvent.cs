@@ -1,7 +1,5 @@
-﻿using System.Linq;
-using Cwl.API.Attributes;
+﻿using Cwl.API.Attributes;
 using Cwl.API.Processors;
-
 namespace BardMod.Patches;
 
 internal class PostLoadEvent : EClass
@@ -9,7 +7,8 @@ internal class PostLoadEvent : EClass
     [CwlPostLoad]
     internal static void AddDebugItems(GameIOProcessor.GameIOContext context)
     {
-        if (!core.IsGameStarted) {
+        if (!core.IsGameStarted)
+        {
             return;
         }
 
@@ -30,7 +29,7 @@ internal class PostLoadEvent : EClass
             if (pc.things.Find("bard_waldmeister") is null) pc.Add("bard_waldmeister");
             if (pc.things.Find("bard_sarastro") is null) pc.Add("bard_sarastro");
             if (pc.things.Find("bard_orpheuscradle") is null) pc.Add("bard_orpheuscradle");
-            if (pc.things.Find("bard_dreamroamer") is null) pc.Add("bard_dreamroamer");    
+            if (pc.things.Find("bard_dreamroamer") is null) pc.Add("bard_dreamroamer");
         }
     }
 }

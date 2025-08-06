@@ -2,8 +2,8 @@ using BardMod.Common;
 using BardMod.Common.HelperFunctions;
 using BardMod.Stats;
 using BardMod.Stats.BardSongConditions;
+using Cwl.Helper.Unity;
 using HarmonyLib;
-
 namespace BardMod.Patches;
 
 [HarmonyPatch(typeof(AttackProcess))]
@@ -14,10 +14,10 @@ internal class BardAttackProcessPatches : EClass
     internal static bool OnPerform(AttackProcess __instance, int count, bool hasHit, float dmgMulti, bool maxRoll,
         bool subAttack)
     {
-        if (__instance.TC.isChara)
+        if (__instance != null && __instance.TC != null && __instance.TC.isChara)
         {
             Chara target = __instance.TC.Chara;
-            
+
             // Steps of the Wind Goddess - Target has a chance of evading Ranged and Melee attacks completely.
             // Do not counterattack for training purposes.
             if (target.HasCondition<ConLulwyStepSong>() && !target.isRestrained)
@@ -32,7 +32,7 @@ internal class BardAttackProcessPatches : EClass
                 {
                     windDodged = EClass.rnd(100) <= conLulwyStepSong.CalcMeleeDodge();
                 }
-                
+
                 // True Dodge.
                 // If the Bard worships Lulwy, the condition will counterattack and stun the attacker.
                 if (windDodged)
@@ -41,21 +41,22 @@ internal class BardAttackProcessPatches : EClass
                     {
                         target.PlaySound("miss_arrow");
                         __instance.CC.PlaySound("whip");
-                        int damage =  HelperFunctions.SafeDice(Constants.BardFinaleLulwyStepName, conLulwyStepSong.power);
-                        Msg.Say("windsong_retaliate".langGame(target.NameSimple));
-                        __instance.CC.DamageHP(damage, Constants.EleLightning, conLulwyStepSong.GetRetaliationPower() * 10, AttackSource.Condition);
+                        int damage = HelperFunctions.SafeDice(Constants.BardFinaleLulwyStepName, conLulwyStepSong.power);
+                        CoroutineHelper.Deferred(() => Msg.Say("windsong_retaliate".langGame(target.NameSimple)));
+                        // __instance.CC.DamageHP(dmg: damage, ele: Constants.EleLightning, eleP: conLulwyStepSong.GetRetaliationPower() * 10, attackSource: AttackSource.Condition);
+                        BardCardPatches.CachedInvoker.Invoke(
+                            __instance.CC,
+                            new object[] { damage, Constants.EleLightning, conLulwyStepSong.GetRetaliationPower() * 10, AttackSource.Condition }
+                        );
                         __instance.CC.AddCondition<ConParalyze>(30 + conLulwyStepSong.GetRetaliationPower());
                         return false;
                     }
-                    else
-                    {
-                        target.PlaySound("miss_arrow");
-                        Msg.Say("windsong_protect".langGame(target.NameSimple));
-                        return false;
-                    }
+                    target.PlaySound("miss_arrow");
+                    CoroutineHelper.Deferred(() => Msg.Say("windsong_protect".langGame(target.NameSimple)));
+                    return false;
                 }
             }
-            
+
             // Moonlit Flight of Dreams - When attacked, Moonlit stacks increase.
             if (target.HasCondition<ConMoonlitFlightSong>() && !target.isRestrained)
             {
@@ -80,7 +81,7 @@ internal class BardAttackProcessPatches : EClass
                         // TODO: Add SFX
                         // TODO: Add FX
                         __instance.TC.Chara.AddCooldown(Constants.FeatConstruct, 15);
-                        __instance.TC.Chara.AddCondition<ConMatrix>(1, force:true);
+                        __instance.TC.Chara.AddCondition<ConMatrix>(1, true);
                     }
                 }
             }

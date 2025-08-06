@@ -1,11 +1,13 @@
 using BardMod.Common;
 using BardMod.Source;
 using BardMod.Stats.BardSongConditions;
-
 namespace BardMod.Elements.BardSpells;
 
 public class ActBardDishearteningSong : ActBardSong
 {
+
+    protected override BardSongData SongData => new BardDishearteningSong();
+
     private class BardDishearteningSong : BardSongData
     {
         public override string SongName => Constants.BardDishearteningSongName;
@@ -21,6 +23,4 @@ public class ActBardDishearteningSong : ActBardSong
             target.PlayEffect("curse");
         }
     }
-
-    protected override BardSongData SongData => new BardDishearteningSong();
 }

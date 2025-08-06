@@ -1,11 +1,15 @@
 using BardMod.Common;
-using BardMod.Common.HelperFunctions;
 using BardMod.Source;
 using BardMod.Stats.BardSongConditions;
-
 namespace BardMod.Elements.BardSpells.BardFinales;
 
-public class BardPrismaticBridgeFinale: BardSongData
+/*
+ * All allies gain massive elemental resistances across the board.
+ * Grants up to 5 charges of Charged Strikes which double instances of outgoing damage.
+ *
+ * Ehekatl Blessed - 1/6 chance to not consume a charged strike. 1/36 Chance to instead add 5 charged strikes.
+ */
+public class BardPrismaticBridgeFinale : BardSongData
 {
     public override string SongName => Constants.BardFinalePrismaticBridgeName;
     public override int SongId => Constants.BardFinaleSongId;
@@ -13,6 +17,8 @@ public class BardPrismaticBridgeFinale: BardSongData
     public override int SongLength => Constants.VerseSongDuration;
     public override Constants.BardSongType SongType => Constants.BardSongType.Finale;
     public override Constants.BardSongTarget SongTarget => Constants.BardSongTarget.Friendly;
+
+    public override string? AffiliatedReligion => "luck";
 
     public override void ApplyFriendlyEffect(Chara bard, Chara target, int power, int rhythmStacks, bool godBlessed)
     {
@@ -32,7 +38,7 @@ public class BardPrismaticBridgeFinale: BardSongData
                     break;
             }
         }
-        
+
         target.AddCondition(bardBuff);
         target.PlayEffect("boost");
     }

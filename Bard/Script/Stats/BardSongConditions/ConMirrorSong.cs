@@ -1,6 +1,4 @@
 using BardMod.Common;
-using BardMod.Common.HelperFunctions;
-
 namespace BardMod.Stats.BardSongConditions;
 
 public class ConMirrorSong : ConBardSong

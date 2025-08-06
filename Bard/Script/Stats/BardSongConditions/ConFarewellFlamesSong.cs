@@ -3,24 +3,16 @@ using System.Collections.Generic;
 using System.Globalization;
 using BardMod.Common;
 using BardMod.Common.HelperFunctions;
-
 namespace BardMod.Stats.BardSongConditions;
 
-/*
- * Gains Advanced Fire Conversion.
- * Gains neck hunt. Gains full armor penetration.
- * Cannot die if this song is active.
- * When the song expires, if character remains below 20% HP they will probably die (5x MaxHP as damage)
- * Blessing of Yevan?
- */
 public class ConFarewellFlamesSong : ConBardSong
 {
+
+    public bool BorrowedTime;
     public override Constants.BardSongType SongType => Constants.BardSongType.Finale;
     public override ConditionType Type => ConditionType.Buff;
-    
-    public bool BorrowedTime = false;
 
-    public int AdditionalDamage => Math.Min(5, (int)(5 * Math.Pow(2, RhythmStacks / 10 - 1)));
+    public int AdditionalDamage => Math.Max(5, (int)(5 * Math.Pow(2, RhythmStacks / 10 - 1))) * (GodBlessed ? 2 : 1);
 
     public override void Tick()
     {
@@ -29,7 +21,7 @@ public class ConFarewellFlamesSong : ConBardSong
         {
             Kill();
         }
-        
+
         base.Tick();
     }
 
@@ -55,10 +47,10 @@ public class ConFarewellFlamesSong : ConBardSong
         }
         else
         {
-            base.OnRemoved();   
+            base.OnRemoved();
         }
     }
-    
+
     public override void OnWriteNote(List<string> list)
     {
         list.Add("hintFarewellFlamesBuff1".lang());

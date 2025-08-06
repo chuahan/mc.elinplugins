@@ -8,7 +8,7 @@ public class FeatMysticMusician : Feat
     {
         return SpriteSheet.Get(source.alias);
     }
-    
+
     internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
         if (owner.Chara?.id is not Constants.NiyonCharaId)

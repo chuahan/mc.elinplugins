@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using BardMod.Common;
 using BardMod.Common.HelperFunctions;
-
 namespace BardMod.Stats.BardSongConditions;
 
 /*
@@ -16,17 +15,17 @@ public class ConLonelyTearsSong : ConBardSong
 {
     public override Constants.BardSongType SongType => Constants.BardSongType.Finale;
     public override ConditionType Type => ConditionType.Buff;
-    
+
     public int GetHealingPercent()
     {
         int maxHp = owner.MaxHP;
-        float powerPercent = HelperFunctions.SigmoidScaling(base.power, Constants.MaxBardPowerBuff, 15, (5 + P2 * 10), Constants.BardPowerSlope);
+        float powerPercent = HelperFunctions.SigmoidScaling(power, Constants.MaxBardPowerBuff, 15, 5 + P2 * 10, Constants.BardPowerSlope);
         return (int)(maxHp * (powerPercent / 100));
     }
-    
+
     public override void Tick()
     {
-        owner.HealHP(this.GetHealingPercent(), HealSource.HOT);
+        owner.HealHP(GetHealingPercent(), HealSource.HOT);
         Mod(-1);
     }
 

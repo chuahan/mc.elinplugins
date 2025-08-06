@@ -1,21 +1,14 @@
 using System.Collections.Generic;
 using BardMod.Common;
-
 namespace BardMod.Stats.BardSongConditions;
 
-/*
- * Allies gain damage, spell enhance, accuracy, PDR, EDR.
- * If allies take lethal damage, activates Undying.
- * For the next 5 turns, allies will instead heal from damage instead.
- * What do I want to do with Yevan?
- */
 public class ConHeavensFallSong : ConBardSong
 {
-    public override Constants.BardSongType SongType => Constants.BardSongType.Finale;
-    public override ConditionType Type => ConditionType.Buff;
-    
+
     public bool ActivatedUndying;
     public int UndyingTurns;
+    public override Constants.BardSongType SongType => Constants.BardSongType.Finale;
+    public override ConditionType Type => ConditionType.Buff;
 
     public void ActivateUndying()
     {
@@ -23,7 +16,7 @@ public class ConHeavensFallSong : ConBardSong
         // TODO: Add FX
         ActivatedUndying = true;
         UndyingTurns = 3 + P2;
-        
+
         // Purge all debuffs.
         foreach (Condition item5 in owner.conditions.Copy())
         {
@@ -37,7 +30,7 @@ public class ConHeavensFallSong : ConBardSong
             }
         }
     }
-    
+
     public override void OnStartOrStack()
     {
         ActivatedUndying = false;
@@ -55,7 +48,7 @@ public class ConHeavensFallSong : ConBardSong
         }
         base.Tick();
     }
-    
+
     public override void OnWriteNote(List<string> list)
     {
         if (!ActivatedUndying) list.Add("hintHeavensFall1".lang());

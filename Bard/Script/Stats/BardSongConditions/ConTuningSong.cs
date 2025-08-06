@@ -1,7 +1,4 @@
-using System.Collections.Generic;
 using BardMod.Common;
-using BardMod.Common.HelperFunctions;
-
 namespace BardMod.Stats.BardSongConditions;
 
 // Stat debuff

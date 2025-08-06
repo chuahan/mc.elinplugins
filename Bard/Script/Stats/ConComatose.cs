@@ -6,8 +6,8 @@ public class ConComatose : BaseDebuff
     public override void Tick()
     {
         owner.AddCondition<ConSleep>(force: true);
-        this.Mod(-1);
-        if (this.value <= 0)
+        Mod(-1);
+        if (value <= 0)
         {
             Kill();
         }

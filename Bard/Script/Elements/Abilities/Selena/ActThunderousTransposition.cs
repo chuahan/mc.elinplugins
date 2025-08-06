@@ -2,16 +2,15 @@ using System.Collections.Generic;
 using System.Linq;
 using BardMod.Common;
 using BardMod.Stats;
-
 namespace BardMod.Elements.Abilities.Selena;
 
-public class ActThunderousTransposition : BardAbility
+public class ActThunderousTransposition : Ability
 {
     public override int PerformDistance => 3;
 
     public override bool CanPerform()
     {
-        if (Act.CC == Act.TC || Act.TC == null || Act.CC.Dist(Act.TC) > PerformDistance)
+        if (CC == TC || TC == null || CC.Dist(TC) > PerformDistance)
         {
             return false;
         }
@@ -21,7 +20,7 @@ public class ActThunderousTransposition : BardAbility
     public override bool Perform()
     {
         // Modified Effect if Selena has enough Rhythm - Inflicts Freeze on all targets.
-        bool playerRhythm = CC.Evalue(Constants.FeatTimelessSong) > 0 && CC.IsPCParty && EClass.pc.HasCondition<ConRhythm>();
+        bool playerRhythm = CC.Evalue(Constants.FeatTimelessSong) > 0 && CC.IsPCParty && pc.HasCondition<ConRhythm>();
         ConRhythm? rhythm = CC.GetCondition<ConRhythm>();
         bool specialEffect = false;
         if (playerRhythm)
@@ -36,22 +35,22 @@ public class ActThunderousTransposition : BardAbility
                 specialEffect = true;
             }
         }
-        
+
         float num = 0f;
-        Card tC = Act.TC;
+        Card tC = TC;
         HashSet<int> hashSet = new HashSet<int>();
-        foreach (Card item in EClass._map.Cards.ToList())
+        foreach (Card item in _map.Cards.ToList())
         {
-            if (!Act.CC.IsAliveInCurrentZone)
+            if (!CC.IsAliveInCurrentZone)
             {
                 break;
             }
             if (!item.IsAliveInCurrentZone ||
-                item == Act.CC ||
-                (item.isChara && item != tC && !item.Chara.IsHostile(Act.CC)) ||
-                (!item.isChara && !item.trait.CanBeAttacked) ||
-                item.Dist(Act.CC) > PerformDistance ||
-                !Act.CC.CanSeeLos(item))
+                item == CC ||
+                item.isChara && item != tC && !item.Chara.IsHostile(CC) ||
+                !item.isChara && !item.trait.CanBeAttacked ||
+                item.Dist(CC) > PerformDistance ||
+                !CC.CanSeeLos(item))
             {
                 continue;
             }
@@ -68,17 +67,21 @@ public class ActThunderousTransposition : BardAbility
                 {
                     num += 0.07f;
                 }
-                new ActThunderousTranspositionMelee(){SpecialActive = specialEffect}.Perform(Act.CC, item);
+                new ActThunderousTranspositionMelee
+                {
+                    SpecialActive = specialEffect
+                }.Perform(CC, item);
             }
         }
-        
+
         // If it's not the PC, add Rhythm.
         if (!CC.IsPC)
         {
             rhythm ??= CC.AddCondition<ConRhythm>() as ConRhythm;
-            rhythm?.ModStacks(3);   
-        };
-        
+            rhythm?.ModStacks(3);
+        }
+        ;
+
         return true;
     }
 }

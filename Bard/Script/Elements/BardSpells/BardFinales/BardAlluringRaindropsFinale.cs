@@ -1,10 +1,15 @@
 using BardMod.Common;
 using BardMod.Source;
 using BardMod.Stats.BardSongConditions;
-
 namespace BardMod.Elements.BardSpells.BardFinales;
 
-public class BardAlluringRaindropsFinale: BardSongData
+/*
+ * Every turn you will create Water Clones to attack your enemies.
+ * You will generate one clone every tick.
+ *
+ * Kizuami Blessing: Generate three clones instead of one every turn.
+ */
+public class BardAlluringRaindropsFinale : BardSongData
 {
     public override string SongName => Constants.BardFinaleAlluringDanceName;
     public override int SongId => Constants.BardFinaleSongId;
@@ -15,15 +20,14 @@ public class BardAlluringRaindropsFinale: BardSongData
 
     public override string? AffiliatedReligion => "trickery";
 
-    // Every turn you will create Water Clones to attack your enemies.
     public override void ApplyFriendlyEffect(Chara bard, Chara target, int power, int rhythmStacks, bool godBlessed)
     {
         ConAlluringRaindropsSong bardBuff = ConBardSong.Create(nameof(ConAlluringRaindropsSong), power, rhythmStacks, godBlessed, bard) as ConAlluringRaindropsSong;
         target.AddCondition(bardBuff);
-        
+
         // Summon Clones to start
         int rhythmPower = rhythmStacks / 10;
-        Point summonPoint = bard.pos.GetNearestPoint(allowBlock: false, allowChara: false);
+        Point summonPoint = bard.pos.GetNearestPoint(false, false);
         for (int i = 0; i < rhythmPower; i++)
         {
             Chara phantom = CharaGen.Create(Constants.WaterDancerCharaId);

@@ -4,10 +4,10 @@ namespace BardMod.Stats;
 public class ConSereneFantasia : BaseBuff
 {
     public override bool WillOverride => true;
-    
+
     public override void Tick()
     {
-        if (this.value <= 0)
+        if (value <= 0)
         {
             Kill();
         }

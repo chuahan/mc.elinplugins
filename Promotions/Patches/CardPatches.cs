@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using PromotionMod.Common;
+using PromotionMod.Stats.Headhunter;
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(Card))]
@@ -39,12 +40,26 @@ public class CardPatches
     [HarmonyPrefix]
     internal static bool OnDieOverloads(Card __instance, Element e, Card origin, AttackSource attackSource)
     {
-        // Berserker Heal on Kill
+        // Berserker - Heal on Kill
         if (__instance.isChara && origin.isChara && origin.Chara.Evalue(Constants.FeatBerserker) > 0)
         {
             int healAmount = (int)(origin.Chara.MaxHP * .25F);
             origin.Say("berserker_revel".langGame(origin.Chara.NameSimple));
             origin.Chara.HealHP(healAmount);
+        }
+        
+        // Headhunter - Gain Headhunter stacks on Kill.
+        if (__instance.isChara && origin.isChara && origin.Chara.Evalue(Constants.FeatHeadhunter) > 0)
+        {
+            if (!origin.Chara.HasCondition<ConHeadhunter>())
+            {
+                origin.Chara.AddCondition<ConHeadhunter>(1);
+            }
+            else
+            {
+                int newStacks = origin.Chara.GetCondition<ConHeadhunter>().power + 1;
+                origin.Chara.AddCondition<ConHeadhunter>(newStacks);
+            }
         }
 
         return true;

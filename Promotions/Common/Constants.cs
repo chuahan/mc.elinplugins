@@ -288,13 +288,19 @@ public class Constants
     public const int ActAccursedTouchId = 1;
 
     // Headhunter
-    public const int ActCullingBlowId = 1;
+    public const int ActExecuteId = 1;
+    public const int ActReapId = 1;
 
     // Hermit
     public const int ActMarkForDeathId = 1;
     public const int ActShadowShroudId = 1;
     public const int ActAssassinateId = 1;
 
+    // Hexer
+    public const int ActTraumatizeId = 1;
+    public const string TraumatizeAlias = "hexer_traumatize";
+    public const int ActBloodCurseId = 1;
+    
     // Jenei
     public const int ActSpiritSummonId = 1;
 

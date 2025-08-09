@@ -49,6 +49,9 @@
           <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\2135150\3370512305\CustomWhateverLoader.dll</HintPath>
             <Private>False</Private>
         </Reference>
+        <Reference Include="DOTween">
+          <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Elin\Elin_Data\Managed\DOTween.dll</HintPath>
+        </Reference>
         <Reference Include="Elin">
             <HintPath>$(ElinGamePath)\Elin_Data\Managed\Elin.dll</HintPath>
             <Private>False</Private>
@@ -72,6 +75,9 @@
         <Reference Include="Plugins.Sound">
             <HintPath>$(ElinGamePath)\Elin_Data\Managed\Plugins.Sound.dll</HintPath>
             <Private>False</Private>
+        </Reference>
+        <Reference Include="Plugins.Tween">
+          <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Elin\Elin_Data\Managed\Plugins.Tween.dll</HintPath>
         </Reference>
         <Reference Include="Plugins.UI">
             <HintPath>$(ElinGamePath)\Elin_Data\Managed\Plugins.UI.dll</HintPath>
@@ -115,10 +121,14 @@
         <Compile Include="Elements\PromotionAbilities\Elementalist\ActFlare.cs" />
         <Compile Include="Elements\PromotionAbilities\Harbinger\ActAccursedTouch.cs" />
         <Compile Include="Elements\PromotionAbilities\Harbinger\ActEndlessMists.cs" />
-        <Compile Include="Elements\PromotionAbilities\Headhunter\ActCullingBlow.cs" />
+        <Compile Include="Elements\PromotionAbilities\Headhunter\ActExecute.cs" />
+        <Compile Include="Elements\PromotionAbilities\Headhunter\ActMeleeReap.cs" />
+        <Compile Include="Elements\PromotionAbilities\Headhunter\ActReap.cs" />
         <Compile Include="Elements\PromotionAbilities\Hermit\ActAssassinate.cs" />
         <Compile Include="Elements\PromotionAbilities\Hermit\ActMarkForDeath.cs" />
         <Compile Include="Elements\PromotionAbilities\Hermit\ActShadowShroud.cs" />
+        <Compile Include="Elements\PromotionAbilities\Hexer\ActBloodCurse.cs" />
+        <Compile Include="Elements\PromotionAbilities\Hexer\ActTraumatize.cs" />
         <Compile Include="Elements\PromotionAbilities\Knightcaller\ActSpiritRage.cs" />
         <Compile Include="Elements\PromotionAbilities\Knightcaller\ActSpiritRally.cs" />
         <Compile Include="Elements\PromotionAbilities\Knightcaller\ActSummonKnight.cs" />
@@ -157,7 +167,6 @@
         <Compile Include="Elements\PromotionFeats\FeatWitchHunter.cs" />
         <Compile Include="Elements\PromotionFeats\PromotionFeat.cs" />
         <Compile Include="Patches\ActEffectPatches.cs" />
-        <Compile Include="Patches\ActMeleePatches.cs" />
         <Compile Include="Patches\AttackProcessPatches.cs" />
         <Compile Include="Patches\CardDamageHPPatches.cs" />
         <Compile Include="Patches\CardPatches.cs" />
@@ -172,6 +181,7 @@
         <Compile Include="Stats\Berserker\ConBerserkAnger.cs" />
         <Compile Include="Stats\Berserker\ConUnrelenting.cs" />
         <Compile Include="Stats\ClassCondition.cs" />
+        <Compile Include="Stats\ConArmorBreak.cs" />
         <Compile Include="Stats\ConJenei.cs" />
         <Compile Include="Stats\ConSenseDanger.cs" />
         <Compile Include="Stats\ConTaunted.cs" />
@@ -198,9 +208,14 @@
         <Compile Include="Stats\Harbinger\ConHarbingerMiasma.cs" />
         <Compile Include="Stats\Harbinger\ConRendingMiasma.cs" />
         <Compile Include="Stats\Harbinger\ConSmotheringMiasma.cs" />
+        <Compile Include="Stats\Headhunter\ConHeadhunter.cs" />
         <Compile Include="Stats\Hermit\ConDeathbringer.cs" />
         <Compile Include="Stats\Hermit\ConMarkedForDeath.cs" />
         <Compile Include="Stats\Hermit\ConShadowShroud.cs" />
+        <Compile Include="Stats\Hexer\ConCorruption.cs" />
+        <Compile Include="Stats\Hexer\ConMalaise.cs" />
+        <Compile Include="Stats\Hexer\ConParanoia.cs" />
+        <Compile Include="Stats\Hexer\ConReapersCall.cs" />
         <Compile Include="Stats\Knightcaller\ConKnightcaller.cs" />
         <Compile Include="Stats\Knightcaller\ConSpiritRage.cs" />
         <Compile Include="Stats\Knightcaller\ConSpiritRally.cs" />

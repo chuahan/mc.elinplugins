@@ -2,11 +2,21 @@ using System.Collections.Generic;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionFeats;
 
-/*
- * A champion of technological revolution. The Machinist uses technology and firearms to face the oncoming threats with overwhelming firepower.
- * Machinists focus on the creative use of firearms with modifications and automation.
- * They specialize in active modifications to their weapons to improve their performance for the situation at hand.
- */
+/// <summary>
+/// A champion of technological revolution. The Machinist uses technology and firearms to face the oncoming threats with overwhelming firepower.
+/// Machinists focus on the creative use of firearms with modifications and automation.
+/// They specialize in active modifications to their weapons to improve their performance for the situation at hand.
+/// Skill - Load Up - Reloads the currently equipped gun with custom ammunition. Reload will also apply to all nearby turret allies.
+///     AP Rounds - Vorpal
+///     Salamander Rounds - Fire damage conversion, Inflicts Burn
+///     Tracer Rounds - Increased Accuracy.
+/// Skill - Overlock - Machinist and all Machine-Type allies + summons will gain boost.
+/// Spell - Summon Turret - Deploys one of four different gun turrets. They come with a gun. They have Duration.
+///     Nightfall : Stationary Rifle Turret.
+///     Echo : Stationary Railgun Turret.
+///     Liger Tail : Stationary Rocket Launcher
+/// Passive - Book Conversion - Converts Summon Spellbooks into Summon Auto Turret
+/// </summary>
 public class FeatMachinist : PromotionFeat
 {
     public override string PromotionClassId => Constants.MachinistId;
@@ -23,9 +33,9 @@ public class FeatMachinist : PromotionFeat
 
     protected override void ApplyInternal()
     {
-        // Farming - 286
+        // Gunning
         owner.Chara.elements.ModPotential(286, 30);
-        // Casting - 304
-        owner.Chara.elements.ModPotential(304, 30);
+        // Blacksmithing
+        // Marksmanship
     }
 }

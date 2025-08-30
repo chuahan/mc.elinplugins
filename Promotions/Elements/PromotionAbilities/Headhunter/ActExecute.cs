@@ -42,6 +42,10 @@ public class ActExecute : Ability
             CC.Say("finish");
             CC.Say("finish2", CC, TC);
             TC.DamageHP(TC.MaxHP, AttackSource.Finish, CC);
+            
+            // If the cull was successful, do not add a cooldown and refund stamina cost.
+            CC.stamina.Mod(this.GetCost(CC).cost);
+            return true;
         }
         
         CC.AddCooldown(Constants.ActExecuteId, 10);

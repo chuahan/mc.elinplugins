@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Trait;
 using PromotionMod.Trait.ArtificerTools;
+using PromotionMod.Trait.Machinist;
 namespace PromotionMod.Elements.PromotionAbilities.Artificer;
 
 /// <summary>
@@ -67,9 +69,16 @@ public class ActSimpleSynthesis : Ability
                     ammo = ThingGen.Create("bullet", "ether");
                     ammo.SetNum(30-currentAmmoCount);
                     break;
+                case TraitToolRocketLauncher:
+                    ammo = ThingGen.Create("rocket", "ether");
+                    ammo.SetNum(30-currentAmmoCount);
+                    break;
                 default:
                     continue; // Doesn't use ammo.
             }
+
+            // Ammo level is based off of your power.
+            ammo.SetEncLv(Math.Min(CC.LV, this.GetPower(CC) / 100));
             ammo.ChangeMaterial("ether");
             ammo.isNPCProperty = true;
             ammo.isGifted = true;

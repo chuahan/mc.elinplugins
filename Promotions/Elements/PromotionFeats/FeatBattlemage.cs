@@ -8,7 +8,7 @@ namespace PromotionMod.Elements.PromotionFeats;
 /// They specialize in heavy area damage, knocking enemies into disarray.
 /// Passive - Magic Armor - Increases PV based on Max Mana.
 /// Passive - Conspectus of Frontline - Bits you summmon are replaced with Shield bits.
-/// Passive - Book Conversion - Converts Elemental Spellbooks into Cannon or Hammer spells.
+/// Passive - Conspectus of War - Converts Elemental Spellbooks into Cannon or Hammer spells.
 /// </summary>
 public class FeatBattlemage : PromotionFeat
 {

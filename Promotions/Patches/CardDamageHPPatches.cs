@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -5,9 +6,13 @@ using System.Reflection.Emit;
 using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Elements.PromotionAbilities.Hexer;
+using PromotionMod.Elements.PromotionAbilities.Luminary;
 using PromotionMod.Elements.PromotionFeats;
+using PromotionMod.Stats;
 using PromotionMod.Stats.Berserker;
 using PromotionMod.Stats.Harbinger;
+using PromotionMod.Stats.Luminary;
+using StVanguardStance = PromotionMod.Stats.Luminary.StVanguardStance;
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(Card))]
@@ -39,6 +44,8 @@ public class CardDamageHPPatches
         if (__instance.isChara)
         {
             Chara target = __instance.Chara;
+            List<Chara> targetAllies = HelperFunctions.GetCharasWithinRadius(target.pos, 5f, target, true, false);
+            
             // Berserker - Berserkers under the effect of bloodlust will automatically try to retaliate against Melee Attacks
             if (target.GetCondition<ConBloodlust>() != null && attackSource == AttackSource.Melee || attackSource == AttackSource.MagicSword && origin is { isChara: true })
             {
@@ -49,7 +56,7 @@ public class CardDamageHPPatches
             if (target.GetCondition<ConHarbingerMiasma>() != null && origin.isChara && origin.Evalue(Constants.FeatHarbinger) > 0)
             {
                 int miasmaCount = target.conditions.Count(con => con is ConHarbingerMiasma);
-                dmg *= (100 + miasmaCount * 5) / 100;
+                dmg = HelperFunctions.SafeMultiplier(dmg, (100 + miasmaCount * 5) / 100F);
             }
 
             // Headhunter - Damage is increased against higher quality enemies.
@@ -76,6 +83,50 @@ public class CardDamageHPPatches
                     origin.SayRaw("hexer_revenge");
                     FeatHexer.ApplyCondition(origin.Chara, __instance.Chara, 100, true);
                 }
+            }
+            
+            // Luminary - Vanguard Stance: Redirect damage from allies to the Luminary in Vanguard Stance.
+            if (!target.HasCondition<StVanguardStance>() && targetAllies.Count(c => c.HasCondition<StVanguardStance>()) > 0)
+            {
+                Chara luminaryAlly = targetAllies.First(c => c.HasCondition<StVanguardStance>());
+                luminaryAlly.DamageHP(dmg, ele, eleP, attackSource, origin, showEffect, weapon);
+                return false;
+            }
+            
+            // Luminary - When taking damage, if currently Parrying, reduce damage to zero.
+            if (target.HasCondition<ConParry>())
+            {
+                dmg = 0;
+                target.AddCooldown(Constants.ActParryId, -5);
+            }
+            
+            // Luminary - Reduces damage based on Class Condition Stacks (1% per stack, caps at 30)
+            if (target.HasCondition<ConLuminary>())
+            {
+                ConLuminary luminary = target.GetCondition<ConLuminary>();
+                dmg = (int)(dmg * ((100 - luminary.GetStacks() * 1F) / 100));
+            }
+            
+            // Necromancer - Bone Armor. Reduces damage based on how many Skeleton Minions you have.
+            // Caps at 75% damage reduction
+            if (target.Evalue(Constants.FeatNecromancer) > 0)
+            {
+                int boneArmyCount = __instance.Chara.currentZone.ListMinions(__instance.Chara).Count(c => c.HasTag(CTAG.undead));
+                dmg = (int)(dmg * ((100 - Math.Max(75, boneArmyCount * 2.5F)) / 100));
+            }
+            
+            // Protection - Protects flat amount of damage.
+            if (target.HasCondition<ConProtection>())
+            {
+                ConProtection protection = target.GetCondition<ConProtection>();
+                if (protection.value >= dmg)
+                {
+                    protection.Mod(-1 * dmg);
+                    return false;
+                }
+
+                dmg -= protection.value;
+                protection.Kill();
             }
         }
         return true;

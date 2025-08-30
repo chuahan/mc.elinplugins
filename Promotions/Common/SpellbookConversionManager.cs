@@ -4,7 +4,7 @@ namespace PromotionMod.Common;
 
 /// <summary>
 ///     Some Promotion classes can convert spellbooks into spells specific for their class.
-///     Druids can convert any summoning book into Summon TreeEnt.
+///     Druids can convert any summoning book into Summon Tree Ent.
 ///     Luminaries can convert any intonation spell into Intonation of Void.
 ///     Battlemage can convert any elemental books into Hammer or Cannon spells of the same element
 ///     Necromancers can convert any summoning books into Summon Skeleton.
@@ -31,7 +31,7 @@ public static class SpellbookConversionManager
             Constants.FeatJenei, new JeneiSpellbookConversion()
         },
         {
-            Constants.FeatSeer, new SeerSpellbookConversion()
+            Constants.FeatSaint, new SeerSpellbookConversion()
         }
     };
 
@@ -572,7 +572,7 @@ public class JeneiSpellbookConversion : SpellbookConversion
 
 public class SeerSpellbookConversion : SpellbookConversion
 {
-    public override int PromotionFeatId => Constants.FeatSeer;
+    public override int PromotionFeatId => Constants.FeatSaint;
 
     public override HashSet<int> ConvertableBooks => new HashSet<int>
     {

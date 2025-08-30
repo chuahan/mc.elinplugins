@@ -8,6 +8,7 @@ using PromotionMod.Common;
 using PromotionMod.Stats;
 using PromotionMod.Stats.Harbinger;
 using PromotionMod.Stats.Hermit;
+using PromotionMod.Stats.Ranger;
 using PromotionMod.Trait;
 namespace PromotionMod.Patches;
 
@@ -152,7 +153,7 @@ internal class CharaPatches : EClass
 
     [HarmonyPatch(nameof(Chara.Die))]
     [HarmonyTranspiler]
-    static IEnumerable<CodeInstruction> SpawnDoubleLoot(IEnumerable<CodeInstruction> instructions)
+    internal static IEnumerable<CodeInstruction> SpawnDoubleLoot(IEnumerable<CodeInstruction> instructions)
     {
         var codes = new List<CodeInstruction>(instructions);
         var targetMethod = AccessTools.Method(typeof(Card), "SpawnLoot");
@@ -167,6 +168,47 @@ internal class CharaPatches : EClass
                 // Also yield a second call with the same argument
                 yield return codes[i - 1]; // assuming the previous instruction loads the argument
                 yield return new CodeInstruction(OpCodes.Call, targetMethod);
+            }
+        }
+    }
+
+    [HarmonyPatch(nameof(Chara._Move))]
+    [HarmonyPostfix]
+    internal static void MovePostfix(Chara __instance, Point newPoint, Card.MoveType type, ref Card.MoveResult __result)
+    {
+        // Ranger - If the PC is mounted with Ranger's Canto on, and there is an available target they will make a free shot at the target. Will not work if the weapon needs to be reloaded.
+        // Parasites instead use Map.MoveCard or SyncRide.
+        if (__instance.IsPC && __instance.HasCondition<StRangerCanto>() && __instance.GetBestRangedWeapon() != null && type == Card.MoveType.Walk && __result == Card.MoveResult.Success && __instance.ride != null)
+        {
+            Thing rangedWeapon = __instance.GetBestRangedWeapon();
+            TraitToolRange traitToolRange = rangedWeapon.trait as TraitToolRange;
+            if (!(rangedWeapon.c_ammo <= 0 && traitToolRange.NeedReload))
+            {
+                foreach (Chara target in HelperFunctions.GetCharasWithinRadius(__instance.pos, (float)rangedWeapon.range, __instance, false, true))
+                {
+                    ACT.Ranged.Perform(__instance, target);
+                    break;
+                }
+            }
+        }
+    }
+
+    [HarmonyPatch(nameof(Chara.SyncRide))]
+    [HarmonyPostfix]
+    internal static void SyncRidePostfix(Chara __instance, Chara c)
+    {
+        // Ranger - If the character is currently a symbiote with Ranger's Canto on, and there is an available target they will make a free shot at the target. Will not work if the weapon needs to be reloaded.
+        if (c.host == __instance && c.HasCondition<StRangerCanto>() && c.GetBestRangedWeapon() != null)
+        {
+            Thing rangedWeapon = c.GetBestRangedWeapon();
+            TraitToolRange traitToolRange = rangedWeapon.trait as TraitToolRange;
+            if (!(rangedWeapon.c_ammo <= 0 && traitToolRange.NeedReload))
+            {
+                foreach (Chara target in HelperFunctions.GetCharasWithinRadius(c.pos, (float)rangedWeapon.range, c, false, true))
+                {
+                    ACT.Ranged.Perform(c, target);
+                    break;
+                }   
             }
         }
     }

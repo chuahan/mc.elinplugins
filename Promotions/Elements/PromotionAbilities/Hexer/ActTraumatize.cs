@@ -32,12 +32,12 @@ public class ActTraumatize : Ability
         }
         else
         {
-            int damage = HelperFunctions.SafeDice("TraumatizeAlias", this.GetPower(CC));
+            int damage = HelperFunctions.SafeDice(Constants.TraumatizeAlias, this.GetPower(CC));
             damage = HelperFunctions.SafeMultiplier(damage, negativeConditions.Count);
             foreach (Condition con in negativeConditions) con.Kill();
             TC.DamageHP(damage, Constants.EleMind, 100, AttackSource.None, CC);
         }
-        CC.AddCooldown(Constants.ActTraumatizeId, 10);
+        CC.AddCooldown(Constants.ActTraumatizeId, 5);
         return true;
     }
 }

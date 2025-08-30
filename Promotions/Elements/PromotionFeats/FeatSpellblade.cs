@@ -2,11 +2,17 @@ using System.Collections.Generic;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionFeats;
 
-/*
- * The blade with magical flair. The Spellblade strikes swiftly with magical infused weapons
- * Spellblades focus on exploiting enemy weaknesses and crippling the enemy with magic.
- * They specialize in intonations and inflicting various other statuses.
- */
+/// <summary>
+/// The blade with magical flair. The Spellblade strikes swiftly with magical infused weapons
+/// Spellblades focus on exploiting enemy weaknesses and crippling the enemy with magic.
+/// They specialize in intonations and inflicting various other statuses.
+/// Skill - Crushing Strike - Executes a melee attack targeting a body part of the enemy. On hit, will apply a debuff.
+///     Head/Neck - Blind
+///     Torso/Back - PV Break.
+///     Waist - Dim
+///     Arm/Hand/Finger - Attack Break.
+///     Feet/Legs - Speed Break.
+/// </summary>
 public class FeatSpellblade : PromotionFeat
 {
     public override string PromotionClassId => Constants.SpellbladeId;

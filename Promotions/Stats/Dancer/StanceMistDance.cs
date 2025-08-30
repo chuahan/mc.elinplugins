@@ -3,7 +3,7 @@ namespace PromotionMod.Elements.Abilities.Dancer;
 
 public class StanceMistDance : StanceDance
 {
-    public override void ActInternal(Chara target, int power, bool isPartner)
+    public override void ActInternal(Chara target, int dancePower, bool isPartner)
     {
         Condition? danceBuff = target.GetCondition<ConMistDance>() ?? target.AddCondition<ConMistDance>();
         if (danceBuff is { value: >= 3 }) return;

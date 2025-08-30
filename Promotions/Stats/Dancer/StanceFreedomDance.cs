@@ -3,7 +3,7 @@ namespace PromotionMod.Elements.Abilities.Dancer;
 
 public class StanceFreedomDance : StanceDance
 {
-    public override void ActInternal(Chara target, int power, bool isPartner)
+    public override void ActInternal(Chara target, int dancePower, bool isPartner)
     {
         // Remove up to 2 buffs a turn for partner, 1 buff a turn for non partners.
         // If Partner,
@@ -12,7 +12,7 @@ public class StanceFreedomDance : StanceDance
         {
             if (item5.Type == ConditionType.Debuff &&
                 !item5.IsKilled &&
-                EClass.rnd(power * 2) > EClass.rnd(item5.power) &&
+                EClass.rnd(dancePower * 2) > EClass.rnd(item5.power) &&
                 item5 is not ConWrath && // Don't purge Wrath of God.
                 item5 is not ConDeathSentense) // Don't purge Death Sentence.
             {

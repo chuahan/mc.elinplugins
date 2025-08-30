@@ -11,7 +11,6 @@ public class ActAssassinate : ActMelee
             Msg.Say("classlocked_ability".lang(Constants.HermitId.lang()));
             return false;
         }
-        if (CC.HasCooldown(Constants.ActAssassinateId)) return false;
         // Target must be marked for death and must have 10 Stalk.
         ConMarkedForDeath deathMark = TC.Chara.GetCondition<ConMarkedForDeath>();
         if (deathMark == null || deathMark.Stalk < 10) return false;

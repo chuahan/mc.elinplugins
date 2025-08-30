@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -5,6 +6,7 @@ using System.Reflection.Emit;
 using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Stats.Headhunter;
+using PromotionMod.Stats.Necromancer;
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(Card))]
@@ -29,6 +31,7 @@ public class CardPatches
     [HarmonyPostfix]
     static void BattlemagePVBoostPatch(Card __instance, ref int __result)
     {
+        // Battlemage - Mana Armor
         if (__instance.isChara && __instance.Chara.Evalue(Constants.FeatBattlemage) > 0)
         {
             int manaValue = __instance.Chara.mana.max / 5;
@@ -60,6 +63,28 @@ public class CardPatches
                 int newStacks = origin.Chara.GetCondition<ConHeadhunter>().power + 1;
                 origin.Chara.AddCondition<ConHeadhunter>(newStacks);
             }
+        }
+        
+        // Necromancer - If target is afflicted with ConDeadBeckon, on death will summon a Death Knight
+        if (__instance.isChara && __instance.HasCondition<ConDeadBeckon>())
+        {
+            ConDeadBeckon deadBeckon = __instance.Chara.GetCondition<ConDeadBeckon>();
+            Chara necromancer = EClass._map.zone.FindChara(deadBeckon.NecromancerUID);
+            
+            Chara summon = CharaGen.Create(Constants.NecromancerDeathKnightCharaId);
+            summon.isSummon = true;
+            summon.SetLv(__instance.Chara.LV);
+            summon.interest = 0;
+            necromancer.currentZone.AddCard(summon, __instance.pos);
+            summon.PlayEffect("mutation");
+            summon.MakeMinion(necromancer);
+        
+            // Equip the Death Knight with full heavy armor + a sword.
+            summon.AddThing(ThingGen.Create("sword", idMat: 40, lv: summon.LV));
+            summon.AddThing(ThingGen.Create("shield_knight", idMat: 40, lv: summon.LV));
+            summon.AddThing(ThingGen.Create("helm_knight", idMat: 40, lv: summon.LV));
+            summon.AddThing(ThingGen.Create("armor_breast", idMat: 40, lv: summon.LV));
+            summon.AddThing(ThingGen.Create("boots_heavy", idMat: 40, lv: summon.LV));
         }
 
         return true;

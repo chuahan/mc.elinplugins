@@ -21,7 +21,7 @@ public class StanceDance : BaseStance
         base.OnStart();
     }
 
-    public virtual void ActInternal(Chara target, int power, bool isPartner)
+    public virtual void ActInternal(Chara target, int dancePower, bool isPartner)
     {
 
     }

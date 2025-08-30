@@ -25,7 +25,7 @@ public class ActEndlessMists : Ability
     {
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, false, true))
         {
-            List<Condition> conditions = target.conditions.Where(x => x is ConHarbingerMiasma).ToList();
+            List<Condition> conditions = target.conditions.Where(x => x is ConHarbingerMiasma or ConMiasma).ToList();
             foreach (Condition condition in conditions)
             {
                 condition.Mod(1);

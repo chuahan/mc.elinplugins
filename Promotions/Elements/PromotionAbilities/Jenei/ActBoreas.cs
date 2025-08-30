@@ -1,0 +1,27 @@
+using System.Collections.Generic;
+using PromotionMod.Common;
+using PromotionMod.Patches;
+namespace PromotionMod.Elements.PromotionAbilities.Jenei;
+
+/// <summary>
+/// Cold Damage.
+/// </summary>
+public class ActBoreas : ActJeneiSummonSequence
+{
+    public override float SummonMultiplier => 0.12F;
+    
+    public override bool Perform()
+    {
+        List<Chara> targets = HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, false, true);
+        for (int i = 0; i < targets.Count; i++)
+        {
+            Effect spellEffect = Effect.Get("Element/ball_Cold");
+            spellEffect.Play(CC.pos, 0f, targets[i].pos);
+            
+            int damage = this.CalculateDamage(this.GetPower(CC), targets[i].pos.Distance(CC.pos), targets[i]);
+            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, element: Constants.EleCold);
+        }
+
+        return true;
+    }
+}

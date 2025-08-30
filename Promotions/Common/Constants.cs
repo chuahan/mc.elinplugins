@@ -5,11 +5,18 @@ namespace PromotionMod.Common;
 public class Constants
 {
 
+    internal const int SigmoidScalingMax = 3000;
+    internal const float SigmoidScalingPowerSlope = 1.2f;
+    
     public const int FeatMaiaEnlightened = 1;
     public const int FeatMaiaCorrupted = 1;
 
     public const int PromotionLevelRequirement = 20;
     public const string PromotionFeatFlag = "promoted";
+    
+    #region CWL Flags
+    public const string IsPlayerFactionTrapFlag = "isPlayerFactionTrap";
+    #endregion
 
     public const string DruidWarmSowTag = "druid_sow_warm";
     public const string DruidWrathSowTag = "druid_sow_wrath";
@@ -104,11 +111,11 @@ public class Constants
     public const int FeatSniper = 891008;
     public const int FeatRanger = 891009;
     public const int FeatBattlemage = 891010;
-    public const int FeatRuneknight = 891011;
+    public const int FeatSpellblade = 891011;
     public const int FeatAdventurer = 891012;
     public const int FeatDancer = 891013;
     public const int FeatKnightcaller = 891014;
-    public const int FeatSeer = 891015;
+    public const int FeatSaint = 891015;
     public const int FeatWarCleric = 891016;
     public const int FeatSharpshooter = 891017;
     public const int FeatMachinist = 891018;
@@ -118,8 +125,8 @@ public class Constants
     public const int FeatLuminary = 891022;
     public const int FeatHeadhunter = 891023;
     public const int FeatHarbinger = 891024;
-    public const int FeatSpellblade = 891025;
-    public const int FeatPhantom = 891026;
+    public const int FeatPhantom = 891025;
+    public const int FeatRuneknight = 891026;
     public const int FeatHexer = 891027;
     public const int FeatArtificer = 891028;
 
@@ -134,11 +141,11 @@ public class Constants
     public const string SniperId = "sniper";
     public const string RangerId = "ranger";
     public const string BattlemageId = "battlemage";
-    public const string RuneknightId = "runeknight";
+    public const string SpellbladeId = "spellblade";
     public const string AdventurerId = "adventurer";
     public const string DancerId = "dancer";
     public const string KnightcallerId = "knightcaller";
-    public const string SeerId = "seer";
+    public const string SaintId = "saint";
     public const string WarClericId = "warcleric";
     public const string SharpshooterId = "sharpshooter";
     public const string MachinistId = "machinist";
@@ -148,8 +155,8 @@ public class Constants
     public const string LuminaryId = "luminary";
     public const string HeadhunterId = "headhunter";
     public const string HarbingerId = "harbinger";
-    public const string SpellbladeId = "spellblade";
     public const string PhantomId = "phantom";
+    public const string RuneknightId = "runeknight";
     public const string HexerId = "hexer";
     public const string ArtificerId = "artificer";
 
@@ -191,7 +198,7 @@ public class Constants
     // Jenei Summons
     public const string JeneiCybeleCharaId = "jenei_cybele";
     public const string JeneiTiamatCharaId = "jenei_tiamat";
-    public const string JeneiAtlantaCharaId = "jenei_atlanta";
+    public const string JeneiAtlantaCharaId = "jenei_atalanta";
     public const string JeneiBoreasCharaId = "jenei_boreas";
     public const string JeneiZaganCharaId = "jenei_zagan";
     public const string JeneiHauresCharaId = "jenei_haures";
@@ -206,6 +213,16 @@ public class Constants
     public const string JeneiMolochCharaId = "jenei_moloch";
     public const string JeneiCoatlicueCharaId = "jenei_coatlicue";
     public const string JeneiAzulCharaId = "jenei_azul";
+    
+    // Machinist Turrets
+    public const string MachinistRifleTurretCharaId = "machinist_rifle_turret";
+    public const string MachinistRailgunTurretCharaId = "machinist_railgun_turret";
+    public const string MachinistRocketTurretCharaId = "machinist_rocket_turret";
+    
+    // Necromancer Skeletons
+    public const string NecromancerSkeletonWarriorCharaId = "necromancer_skeleton_warrior";
+    public const string NecromancerSkeletonMageCharaId = "necromancer_skeleton_mage";
+    public const string NecromancerDeathKnightCharaId = "necromancer_deathknight";
 
     #endregion
 
@@ -214,9 +231,7 @@ public class Constants
     // Adventurer
     public const int ActThisWayId = 1;
     public const int ActSenseDangerId = 1;
-
-    // TODO : SECOND WITCH PROMOTION
-
+    
     // Artificer
     public const int ActImprovisedBrewId = 1;
     public const int ActSimpleSynthesisId = 1;
@@ -226,8 +241,6 @@ public class Constants
     public const int ActSunderId = 1;
 
     // Battlemage
-    public const string CannonSpellName = "battlemage_cannon";
-    public const string HammerSpellName = "battlemage_hammer";
     public const int SpFireCannon = 1;
     public const int SpFireHammer = 1;
     public const int SpColdCannon = 1;
@@ -306,6 +319,9 @@ public class Constants
 
     // Justicar
     public const int ActIntimidateId = 1;
+    public const int ActSubdueId = 1;
+    public const int ActCondemnId = 1;
+    public const string CondemnAlias = "justicar_condemn";
 
     // Knightcaller
     public const int ActSpiritRageId = 1;
@@ -314,7 +330,9 @@ public class Constants
 
     // Luminary
     public const int VanguardStanceId = 1;
-    public const int ActDeflectId = 1;
+    public const int ActLightWaveId = 1;
+    public const string LightwaveAlias = "luminary_lightwave";
+    public const int ActParryId = 1;
 
     // Machinist
     public const int ActLoadUpId = 1;
@@ -322,25 +340,38 @@ public class Constants
 
     // Necromancer
     public const int ActBeckonOfTheDeadId = 1;
-    public const int ActDieForMeId = 1;
+    public const int ActBlessingOfTheDeadId = 1;
     public const int ActCorpseExplosionId = 1;
     public const int SpSummonSkeleton = 1;
 
     // Phantom
-    public const int ActPhantomFinisherId = 1;
     public const int ActWolkenkratzerId = 1;
-    public const int ActRosenschwertId = 1;
-    public const int ActFolterzeitId = 1;
-    public const int ActSchmetterlingId = 1;
+    public const int ActSchwarzeKatze = 1;
+    public const int ActVerbrechenId = 1;
 
     // Ranger
-    public const int StanceFireAtWillId = 1;
-    public const int StanceFireOntheMoveId = 1;
-    public const int ActHammerheadArrowsId = 1;
-    public const int ActVenomArrowsId = 1;
+    public const int StanceRangersCantoId = 1;
+    public const int ActGimmickCoatingId = 1;
+    public const int ActSetTrapId = 1;
+    public const string RangerBlastTrapAlias = "ranger_blast_trap";
+    public const string RangerParalyzeTrapAlias = "ranger_paralyze_trap";
+    public const string RangerPoisonTrapAlias = "ranger_poison_trap";
+    public const string RangerPunjiTrapAlias = "ranger_punji_trap";
+    public const string RangerSnareTrapAlias = "ranger_snare_trap";
+
+    public enum RangerCoatings
+    {
+        ShatterCoating,
+        HammerCoating,
+        BladedCoating,
+        PoisonCoating,
+        ParalyticCoating
+    }
 
     // Rune Knight
     public const int ActRunicGuardId = 1;
+    public const int ActSpinningSlashId = 1;
+    public const int ActRuneEtchingId = 1;
 
     // Seer
     public const int ActBestowLightId = 1;

@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionFeats;
 
-/*
- * The story of ancient valor. The Knightcaller performs in otherworldly songs that calls forth aid from a ghostly knight order.
- * Knightcallers focus on summoning a force of knights from the past through song to go to war once again.
- * They specialize in summoning special minions and have minion specific support spells.
- */
+/// <summary>
+/// The story of ancient valor. The Knightcaller performs in otherworldly songs that calls forth aid from a ghostly knight order.
+/// Knightcallers focus on summoning a force of knights from the past through song to go to war once again.
+/// They specialize in summoning special minions and have minion specific support spells.
+/// Skill - Enrage Spirits - Enrages all your summons, boosting their offensive capabilities.
+/// Skill - Rally Spirits - Recalls all your summons to your side, healing them, and boosting their defensive capabilities.
+/// Skill - Summon Knight - Summons a Spirit Knight to aid you in battle. If you do not have an active captain, has a 25% chance of summoning a Knight Captain instead.
+/// </summary>
 public class FeatKnightcaller : PromotionFeat
 {
     public override string PromotionClassId => Constants.KnightcallerId;
@@ -14,7 +17,8 @@ public class FeatKnightcaller : PromotionFeat
     public override List<int> PromotionAbilities => new List<int>
     {
         Constants.ActSpiritRageId,
-        Constants.ActSpiritRallyId
+        Constants.ActSpiritRallyId,
+        Constants.ActSummonKnightId,
     };
     protected override bool Requirement()
     {
@@ -23,9 +27,7 @@ public class FeatKnightcaller : PromotionFeat
 
     protected override void ApplyInternal()
     {
-        // Farming - 286
-        owner.Chara.elements.ModPotential(286, 30);
-        // Casting - 304
-        owner.Chara.elements.ModPotential(304, 30);
+        // Instrument - 286
+        //owner.Chara.elements.ModPotential(286, 30);
     }
 }

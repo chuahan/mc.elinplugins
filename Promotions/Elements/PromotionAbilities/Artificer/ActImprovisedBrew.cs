@@ -74,7 +74,7 @@ public class ActImprovisedBrew : Ability
             else
             {
                 Thing positivePotion;
-                if (EClass.rnd(10) == 0)
+                if (EClass.rnd(50) == 0)
                 {
                     positivePotion = ThingGen.CreatePotion(SpecialPositivePotions.RandomItem());
                 }

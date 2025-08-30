@@ -58,15 +58,15 @@ public class ActEffectPatches
                 break;
             // Battlemages Summon Shield Bits
             case Constants.FeatBattlemage:
-                SummonBitInternal("shieldbit", caster, power, tp, element);
+                SummonBitInternal("shield_bit", caster, power, tp, element);
                 break;
             // Luminaries Summon Sword Bits
             case Constants.FeatLuminary:
-                SummonBitInternal("swordbit", caster, power, tp, element);
+                SummonBitInternal("sword_bit", caster, power, tp, element);
                 break;
-            // Phantoms Summon Gun Bits
+            // Phantoms Summon Phantom Bits
             case Constants.FeatPhantom:
-                SummonBitInternal("gunbit", caster, power, tp, element);
+                SummonBitInternal("phantom_bit", caster, power, tp, element);
                 break;
             default:
                 return;

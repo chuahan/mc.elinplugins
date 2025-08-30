@@ -2,18 +2,23 @@ using System.Collections.Generic;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionFeats;
 
-/*
- * The iron fist of judgement. To see a Justicar is to see fear, and to pity the one who broke it.
- * Justicars focus on shifting momentum through intimidation and execution.
- * They specialize in singling out targets and bringing them down, and breaking enemy morale in the process.
- */
+/// <summary>
+/// The iron fist of judgement. To see a Justicar is to see fear, and to pity the one who broke it.
+/// Justicars focus on shifting momentum through intimidation and execution.
+/// They specialize in singling out targets and bringing them down, and breaking enemy morale in the process.
+/// Ability - Intimidate - Inflicts Armor break on the target. Also inflicts excommunicate. Inflicts fear on other enemies near the target.
+/// Ability - Subdue - Inflicts Suppress, and Attack Break on the target. Also inflicts excommunicate.
+/// Ability - Condemn - Inflicts Entangle on nearby enemies. For every enemy impacted, Justicar grants their team Overshield.
+/// </summary>
 public class FeatJusticar : PromotionFeat
 {
     public override string PromotionClassId => Constants.JusticarId;
     public override int PromotionClassFeatId => Constants.FeatJusticar;
     public override List<int> PromotionAbilities => new List<int>
     {
-        Constants.ActIntimidateId
+        Constants.ActIntimidateId,
+        Constants.ActSubdueId,
+        Constants.ActCondemnId,
     };
     protected override bool Requirement()
     {

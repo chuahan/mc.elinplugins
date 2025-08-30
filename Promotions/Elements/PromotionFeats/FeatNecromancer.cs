@@ -2,11 +2,18 @@ using System.Collections.Generic;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionFeats;
 
-/*
- * The speaker of the dead. Necromancers are wizards who have forsaken the elements, and wield death itself.
- * Necromancers focus on the summoning and utilization of a mass army of the dead.
- * They specialize in calling forth armies of minions, using them to turn the tides of battle through undeath or death.
- */
+/// <summary>
+/// The speaker of the dead. Necromancers are wizards who have forsaken the elements, and wield death itself.
+/// Necromancers focus on the summoning and utilization of a mass army of the dead.
+/// They specialize in calling forth armies of minions, using them to turn the tides of battle through undeath or death.
+/// Skill - Beckon of the Dead - Marks an enemy for re-animation. On death, they will produce a skeleton based on their level.
+/// Skill - Blessing of the dead - Kills an undead minion. Whatever their HP was remaining is used to heal the Necromancer's nearby allies.
+///     If the healed target was at full HP, the healing is applied as Protection.
+/// Skill - Corpse Explosion - Kills an undead minion. Whatever their HP was remaining is used to damage nearby enemies with Nether damage.
+/// Passive - Book Conversion - Converts Summon Spellbooks into summon Skeleton Soldier
+///     Archers / Warriors / Mages
+/// Passive - Bone Armor - For every active undead summon, Necromancer gains damage reduction.
+/// </summary>
 public class FeatNecromancer : PromotionFeat
 {
     public override string PromotionClassId => Constants.NecromancerId;
@@ -15,7 +22,7 @@ public class FeatNecromancer : PromotionFeat
     public override List<int> PromotionAbilities => new List<int>
     {
         Constants.ActBeckonOfTheDeadId,
-        Constants.ActDieForMeId,
+        Constants.ActBlessingOfTheDeadId,
         Constants.ActCorpseExplosionId
     };
 
@@ -26,9 +33,9 @@ public class FeatNecromancer : PromotionFeat
 
     protected override void ApplyInternal()
     {
-        // Farming - 286
-        owner.Chara.elements.ModPotential(286, 30);
+        // Anatomy - 286
+        //owner.Chara.elements.ModPotential(286, 30);
         // Casting - 304
-        owner.Chara.elements.ModPotential(304, 30);
+        //owner.Chara.elements.ModPotential(304, 30);
     }
 }

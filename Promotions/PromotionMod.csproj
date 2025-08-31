@@ -184,7 +184,10 @@
         <Compile Include="Elements\PromotionAbilities\Runeknight\ActRuneEtching.cs" />
         <Compile Include="Elements\PromotionAbilities\Runeknight\ActRunicGuard.cs" />
         <Compile Include="Elements\PromotionAbilities\Runeknight\ActSpinningSlash.cs" />
+        <Compile Include="Elements\PromotionAbilities\Saint\ActBlessing.cs" />
+        <Compile Include="Elements\PromotionAbilities\Saint\ActHandOfGod.cs" />
         <Compile Include="Elements\PromotionAbilities\Sentinel\ActShout.cs" />
+        <Compile Include="Elements\PromotionAbilities\Sentinel\ActSmite.cs" />
         <Compile Include="Elements\PromotionFeats\FeatAdventurer.cs" />
         <Compile Include="Elements\PromotionFeats\FeatHexer.cs" />
         <Compile Include="Elements\PromotionFeats\FeatArtificer.cs" />

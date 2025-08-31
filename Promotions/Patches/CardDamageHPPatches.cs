@@ -12,6 +12,7 @@ using PromotionMod.Stats;
 using PromotionMod.Stats.Berserker;
 using PromotionMod.Stats.Harbinger;
 using PromotionMod.Stats.Luminary;
+using PromotionMod.Stats.Runeknight;
 using StVanguardStance = PromotionMod.Stats.Luminary.StVanguardStance;
 namespace PromotionMod.Patches;
 
@@ -113,6 +114,27 @@ public class CardDamageHPPatches
             {
                 int boneArmyCount = __instance.Chara.currentZone.ListMinions(__instance.Chara).Count(c => c.HasTag(CTAG.undead));
                 dmg = (int)(dmg * ((100 - Math.Max(75, boneArmyCount * 2.5F)) / 100));
+            }
+            
+            // Rune Knight - Elemental Attunement. If damage received matches your attuned element, all damage is absorbed and added as stockpiled damage.
+            if (target.HasCondition<ConElementalAttunement>())
+            {
+                ConElementalAttunement attunement = target.GetCondition<ConElementalAttunement>();
+                attunement.StoredDamage += dmg;
+                dmg = 0;
+            }
+            
+            // Rune Knight - Runic Guard is removed and Elemental Attunement is added. All damage is absorbed.
+            if (target.HasCondition<ConRunicGuard>() && ele != Constants.EleVoid)
+            {
+                target.RemoveCondition<ConRunicGuard>();
+                ConElementalAttunement attunement = (target.AddCondition<ConElementalAttunement>() as ConElementalAttunement;
+                if (attunement != null)
+                {
+                    attunement.AttunedElement = ele;
+                }
+
+                dmg = 0;
             }
             
             // Protection - Protects flat amount of damage.

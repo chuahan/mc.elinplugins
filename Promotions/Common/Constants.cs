@@ -373,9 +373,10 @@ public class Constants
     public const int ActSpinningSlashId = 1;
     public const int ActRuneEtchingId = 1;
 
-    // Seer
-    public const int ActBestowLightId = 1;
-
+    // Saint
+    public const int ActHandOfGodId = 1;
+    public const int ActBlessingId = 1;
+    
     // Sentinel
     public const int ActShoutId = 1;
     public const int ActShieldSmiteId = 1;

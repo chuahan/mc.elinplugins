@@ -15,7 +15,7 @@ public class ActSubdue : Ability
             Msg.Say("classlocked_ability".lang(Constants.JusticarId.lang()));
             return false;
         }
-        return base.CanPerform();
+        return ACT.Melee.CanPerform();
     }
 
     public override bool Perform()

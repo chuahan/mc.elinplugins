@@ -187,7 +187,9 @@
         <Compile Include="Elements\PromotionAbilities\Saint\ActBlessing.cs" />
         <Compile Include="Elements\PromotionAbilities\Saint\ActHandOfGod.cs" />
         <Compile Include="Elements\PromotionAbilities\Sentinel\ActShout.cs" />
-        <Compile Include="Elements\PromotionAbilities\Sentinel\ActSmite.cs" />
+        <Compile Include="Elements\PromotionAbilities\Sentinel\ActShieldSmite.cs" />
+        <Compile Include="Elements\PromotionAbilities\Sentinel\ActStanceRage.cs" />
+        <Compile Include="Elements\PromotionAbilities\Sentinel\ActStanceRestraint.cs" />
         <Compile Include="Elements\PromotionFeats\FeatAdventurer.cs" />
         <Compile Include="Elements\PromotionFeats\FeatHexer.cs" />
         <Compile Include="Elements\PromotionFeats\FeatArtificer.cs" />
@@ -219,6 +221,7 @@
         <Compile Include="Elements\PromotionFeats\FeatWitchHunter.cs" />
         <Compile Include="Elements\PromotionFeats\PromotionFeat.cs" />
         <Compile Include="Patches\ActEffectPatches.cs" />
+        <Compile Include="Patches\ActMeleePatches.cs" />
         <Compile Include="Patches\AttackProcessPatches.cs" />
         <Compile Include="Patches\CardDamageHPPatches.cs" />
         <Compile Include="Patches\CardPatches.cs" />
@@ -236,6 +239,7 @@
         <Compile Include="Stats\ConArmorBreak.cs" />
         <Compile Include="Stats\ConAttackBoost.cs" />
         <Compile Include="Stats\ConAttackBreak.cs" />
+        <Compile Include="Stats\ConGreaterRegen.cs" />
         <Compile Include="Stats\ConJenei.cs" />
         <Compile Include="Stats\ConProtection.cs" />
         <Compile Include="Stats\ConSenseDanger.cs" />
@@ -286,8 +290,10 @@
         <Compile Include="Stats\Runeknight\ConElementalAttunement.cs" />
         <Compile Include="Stats\Runeknight\ConRunicGuard.cs" />
         <Compile Include="Stats\Runeknight\ConWardingRune.cs" />
+        <Compile Include="Stats\Saint\ConBlessing.cs" />
         <Compile Include="Stats\Sentinel\ConTaunted.cs" />
-        <Compile Include="Stats\Sentinel\ConTaunting.cs" />
+        <Compile Include="Stats\Sentinel\StanceRage.cs" />
+        <Compile Include="Stats\Sentinel\StanceRestraint.cs" />
         <Compile Include="Stats\SubPoweredCondition.cs" />
         <Compile Include="Trait\ArtificerTools\TraitArtificerGolem.cs" />
         <Compile Include="Trait\ArtificerTools\TraitArtificerTool.cs" />

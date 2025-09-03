@@ -1,4 +1,5 @@
 using PromotionMod.Common;
+using PromotionMod.Elements.PromotionFeats;
 using PromotionMod.Stats;
 using PromotionMod.Stats.Sentinel;
 using UnityEngine;
@@ -23,7 +24,7 @@ public class ActShieldSmite : ActMelee
     {
         if (Attack(1f))
         {
-            int shieldPower = GetShieldDamage(CC);
+            int shieldPower = FeatSentinel.GetShieldPower(CC);
             shieldPower += this.GetPower(CC);
             // TODO: Do I want a multiplier here?
             shieldPower += (int)(TC.MaxHP * .125F);
@@ -31,17 +32,4 @@ public class ActShieldSmite : ActMelee
         }
         return true;
     }
-
-    public static int GetShieldDamage(Chara cc)
-    {
-        int totalShieldPV = 0;
-        foreach (BodySlot slot in cc.body.slots)
-        {
-            if (slot.elementId == 35 && slot.thing != null && !slot.thing.IsMeleeWeapon)
-            {
-                totalShieldPV += slot.thing.PV;
-            }
-        }
-
-        return totalShieldPV;
 }

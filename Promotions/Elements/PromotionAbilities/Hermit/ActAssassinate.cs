@@ -4,6 +4,9 @@ namespace PromotionMod.Elements.PromotionAbilities.Hermit;
 
 public class ActAssassinate : ActMelee
 {
+    public override bool AllowCounter => false;
+    public override bool AllowParry => false;
+    public override bool ShouldRollMax => true;
     public override bool CanPerform()
     {
         if (CC.Evalue(Constants.FeatHermit) == 0)
@@ -27,17 +30,17 @@ public class ActAssassinate : ActMelee
         if (stalkAmount >= 50)
         {
             // 50 Stalk does 2x the Damage, Guaranteed Crit
-            Attack(2f, true);
+            Attack(2f);
         }
         else if (stalkAmount >= 20)
         {
             // 20 Stalk does 1.25x the Damage. 
-            Attack(1.25f, true);
+            Attack(1.25f);
         }
         else
         {
             // Normal hit.
-            Attack(1F, true);
+            Attack(1F);
         }
         CC.RemoveCondition<ConDeathbringer>();
         return true;

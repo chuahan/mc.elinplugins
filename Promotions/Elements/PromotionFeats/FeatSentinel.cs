@@ -39,4 +39,18 @@ public class FeatSentinel : PromotionFeat
         // Heavy Armor - 304
         owner.Chara.elements.ModPotential(304, 30);
     }
+    
+    public static int GetShieldPower(Chara cc)
+    {
+        int totalShield = 0;
+        foreach (BodySlot slot in cc.body.slots)
+        {
+            if (slot.elementId == 35 && slot.thing != null && !slot.thing.IsMeleeWeapon)
+            {
+                totalShield += slot.thing.PV;
+            }
+        }
+
+        return totalShield;
+    }
 }

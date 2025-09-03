@@ -128,11 +128,16 @@ public class CardDamageHPPatches
             if (target.HasCondition<ConRunicGuard>() && ele != Constants.EleVoid)
             {
                 target.RemoveCondition<ConRunicGuard>();
-                ConElementalAttunement attunement = (target.AddCondition<ConElementalAttunement>() as ConElementalAttunement;
+                ConElementalAttunement attunement = (target.AddCondition<ConElementalAttunement>() as ConElementalAttunement);
                 if (attunement != null)
                 {
                     attunement.AttunedElement = ele;
                 }
+                
+                // Absorbing up to 20% of the damage as mana and stamina.
+                int restorationAmount = Math.Min(dmg / 5, 20);
+                target.mana.Mod(restorationAmount);
+                target.stamina.Mod(restorationAmount);
 
                 dmg = 0;
             }

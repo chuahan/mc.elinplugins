@@ -37,6 +37,12 @@ public class CardPatches
             int manaValue = __instance.Chara.mana.max / 5;
             __result += manaValue;
         }
+
+        // Sentinel - Double PV if Heavy Armor + Shield.
+        if (__instance.isChara && __instance.Chara.Evalue(Constants.FeatSentinel) > 0 && __instance.Chara.GetArmorSkill() == 122 && __instance.Chara.body.GetAttackStyle() == AttackStyle.Shield)
+        {
+            __result = HelperFunctions.SafeMultiplier(__result, 2);
+        }
     }
 
     [HarmonyPatch(nameof(Card.Die))]

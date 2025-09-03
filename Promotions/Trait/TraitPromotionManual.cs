@@ -53,7 +53,7 @@ public class TraitPromotionManual : TraitScroll
             Constants.KnightcallerId, Constants.FeatKnightcaller
         },
         {
-            Constants.SeerId, Constants.FeatSeer
+            Constants.SaintId, Constants.FeatSaint
         },
         {
             Constants.WarClericId, Constants.FeatWarCleric
@@ -201,7 +201,7 @@ public class TraitPromotionManual : TraitScroll
             case "priest":
                 promotionIds = new List<string>
                 {
-                    Constants.SeerId,
+                    Constants.SaintId,
                     Constants.WarClericId
                 };
                 break;
@@ -265,7 +265,7 @@ public class TraitPromotionManual : TraitScroll
                     Constants.RuneknightId,
                     Constants.DancerId,
                     Constants.KnightcallerId,
-                    Constants.SeerId,
+                    Constants.SaintId,
                     Constants.WarClericId,
                     Constants.SharpshooterId,
                     Constants.MachinistId,

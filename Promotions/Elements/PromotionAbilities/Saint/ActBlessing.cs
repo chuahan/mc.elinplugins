@@ -1,4 +1,5 @@
 using PromotionMod.Common;
+using PromotionMod.Stats.Saint;
 
 namespace PromotionMod.Elements.PromotionAbilities.Saint;
 

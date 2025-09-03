@@ -1,4 +1,5 @@
 using PromotionMod.Common;
+using PromotionMod.Stats;
 
 namespace PromotionMod.Elements.PromotionAbilities.Saint;
 
@@ -30,7 +31,7 @@ public class ActHandOfGod : Ability
             int power = (int)(HelperFunctions.SigmoidScaling(CC.Evalue(306 /* Faith */), .25F, 5F));
             power += this.GetPower(CC);
             TC.HealHP(power, HealSource.Magic);
-            TC.Chara.AddCondition<ConHandOfGod>(CC.Evalue(306 /* Faith */));
+            TC.Chara.AddCondition<ConGreaterRegen>(CC.Evalue(306 /* Faith */));
         }
         
         CC.AddCooldown(Constants.ActHandOfGodId, 30);

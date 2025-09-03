@@ -3,11 +3,6 @@ using PromotionMod.Stats;
 using PromotionMod.Stats.Sentinel;
 namespace PromotionMod.Elements.PromotionAbilities.Sentinel;
 
-/// <summary>
-/// Sentinel Ability
-/// Apply Taunt to nearby enemies.
-/// TODO: Remove Taunting. Store UID of taunter in the taunt con. Apply it there.
-/// </summary>
 public class ActShout : Ability
 {
     public override bool CanPerform()
@@ -25,10 +20,10 @@ public class ActShout : Ability
     {
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, false, true))
         {
-            target.AddCondition<ConTaunted>(force: true);
+            ConTaunted taunted = target.AddCondition<ConTaunted>(force: true) as ConTaunted;
+            taunted.TaunterUID = CC.uid;
         }
-
-        CC.AddCondition<ConTaunting>();
+        
         CC.AddCooldown(Constants.ActShoutId, 5);
         CC.TalkRaw("sentinelTaunt".langList().RandomItem());
         return true;

@@ -72,7 +72,7 @@ public class ActVerbrechen : Ability
             
             // Reload the gun completely before each shot.
             if (traitToolRange.NeedAmmo) rangedWeapon.c_ammo = traitToolRange.MaxAmmo;
-            new ActRanged().Perform(CC, target);
+            ACT.Ranged.Perform(CC, target);
             
             FeatPhantom.AddPhantomMarks(target, 1);
 

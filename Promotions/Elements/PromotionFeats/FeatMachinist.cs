@@ -15,7 +15,7 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Nightfall : Stationary Rifle Turret.
 ///     Echo : Stationary Railgun Turret.
 ///     Liger Tail : Stationary Rocket Launcher
-/// Passive - Book Conversion - Converts Summon Spellbooks into Summon Auto Turret
+/// Passive - Conspectus of Machinery - Converts Summon Spellbooks into Summon Auto Turret
 /// </summary>
 public class FeatMachinist : PromotionFeat
 {

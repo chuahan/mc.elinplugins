@@ -7,6 +7,8 @@ namespace PromotionMod.Elements.PromotionFeats;
 /// Shapers of the natural energies. Jenei are those who call upon the natural forces of Earth, Fire, Air, and Water.
 /// Jenei focus on combining the four natural elements to summon great representatives of the natural forces to aid them in combat.
 /// They specialize in invoking mighty spells with a variety of effects through building up amounts of each of the elements.
+///
+/// TODO
 /// Upon promotion, you must choose an element to align to, which will grant you a field skill and a combat skill. (Mercury instead adopts two combat skills)
 /// Venus - Move, Gaia (Mother Gaia, Grand Gaia)
 /// Mars - Blaze, Volcano (Eruption, Pyroclasm)
@@ -15,6 +17,7 @@ namespace PromotionMod.Elements.PromotionFeats;
 /// Class Adoption - Skill - Checks your Jenei condition and uses your charges to transform your class, adjusting your stats.
 ///     Depending on how many charges are consumed, your class combat skills will be upgraded to T2 or T3.
 ///     When using Spirit Summon, you will lose your class adoption.
+/// 
 /// Spirit Summon - Skill - Checks your Jenei Condition and uses your charges to summon an incredibly powerful spirit to aid you in battle temporarily.
 /// Passive - Natural Balances - Can convert spellbooks into Impact/Fire/Lightning/Ice.
 /// Passive - 

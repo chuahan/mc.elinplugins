@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime;
 using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Elements.PromotionFeats;
+using PromotionMod.Stats;
 using PromotionMod.Stats.Sentinel;
+using PromotionMod.Stats.Sovereign;
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(ActMelee))]
@@ -11,7 +14,7 @@ public class ActMeleePatches
 {
     [HarmonyPatch(nameof(ActMelee.Attack), typeof(Card), typeof(Point), typeof(float), typeof(bool))]
     [HarmonyPrefix]
-    public static bool AttackPatch(ActMelee __instance, Card _tc, Point _tp, ref float mtp, bool subAttack)
+    public static bool AttackPrefixPatch(ActMelee __instance, Card _tc, Point _tp, ref float mtp, bool subAttack)
     {
         // Sentinel - If the target is a Sentinel with a Shield, they have a chance to block the blow, reducing the damage.
         if (_tc.Chara.Evalue(Constants.FeatSentinel) > 0 && _tc.Chara.body.GetAttackStyle() == AttackStyle.Shield && !Act.TC.IsDisabled && !Act.TC.IsRestrainedResident)
@@ -34,6 +37,18 @@ public class ActMeleePatches
             mtp += stance.power / 5F;
         }
 
+        return true;
+    }
+
+    [HarmonyPatch(nameof(ActMelee.CanPerform))]
+    [HarmonyPrefix]
+    public static bool CanPerformPatch(ref bool __result)
+    {
+        if (Act.CC.HasCondition<ConDisable>())
+        {
+            __result = false;
+            return false;
+        }
         return true;
     }
 }

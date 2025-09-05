@@ -13,6 +13,7 @@ using PromotionMod.Stats.Berserker;
 using PromotionMod.Stats.Harbinger;
 using PromotionMod.Stats.Luminary;
 using PromotionMod.Stats.Runeknight;
+using PromotionMod.Stats.Sovereign;
 using StVanguardStance = PromotionMod.Stats.Luminary.StVanguardStance;
 namespace PromotionMod.Patches;
 
@@ -42,7 +43,7 @@ public class CardDamageHPPatches
     [HarmonyPrefix]
     internal static bool OnDamageHP(Card __instance, ref int dmg, ref int ele, ref int eleP, AttackSource attackSource, Card origin, bool showEffect, Thing weapon)
     {
-        if (__instance.isChara)
+        if (__instance.isChara && ActiveAttackSources.Contains(attackSource))
         {
             Chara target = __instance.Chara;
             List<Chara> targetAllies = HelperFunctions.GetCharasWithinRadius(target.pos, 5f, target, true, false);
@@ -140,6 +141,54 @@ public class CardDamageHPPatches
                 target.stamina.Mod(restorationAmount);
 
                 dmg = 0;
+            }
+            
+            // Saint - If the Saint and the target share the same religion, the Saint can attempt to convert the opponent.
+            if (origin.Chara.Evalue(Constants.FeatSaint) > 0 && origin.Chara.faith.id == target.faith.id)
+            {
+                if (Math.Max(origin.Evalue(85), origin.Evalue(306)) > target.Evalue(306) &&
+                    (!target.IsMinion && target.CanBeTempAlly(origin.Chara)))
+                {
+                    target.Say("dominate_machine", target, origin);
+                    target.PlayEffect("boost");
+                    target.PlaySound("boost");
+                    target.ShowEmo(Emo.love);
+                    target.lastEmo = Emo.angry;
+                    target.Chara.MakeMinion(origin.Chara.IsPCParty ? EClass.pc : origin.Chara);
+                }
+            }
+            
+            // Sovereign - Law Stance Reduces damage by 10%.
+            if (target.HasCondition<ConSovereignLaw>())
+            {
+                dmg = (int)(dmg * 0.9F);
+            }
+            // Sovereign - Chaos Stance Increases damage by 10%.
+            if (origin.HasCondition<ConSovereignLaw>())
+            {
+                dmg = (int)(dmg * 1.1F);
+            }
+            
+            // Sovereign - Barricade Order : Reduces damage based on # of allies neighboring you with OrderBarricade
+            if (target.HasCondition<ConOrderBarricade>())
+            {
+                float barricadeCoherence = target.pos.ListCharasInNeighbor(delegate(Chara c)
+                {
+                    if (c == Act.CC || c.IsHostile(Act.CC) || !c.HasCondition<ConOrderBarricade>())
+                    {
+                        return true;
+                    }
+                    return false;
+                }).Count * 5;
+
+                dmg = (int)(dmg * ((100 - barricadeCoherence) / 100F));
+
+            }
+            
+            // Spellblade - Spellblades excel at applying status effects. eleP doubled.
+            if (origin.Chara.Evalue(Constants.FeatSpellblade) > 0)
+            {
+                eleP = HelperFunctions.SafeMultiplier(eleP, 2);
             }
             
             // Protection - Protects flat amount of damage.

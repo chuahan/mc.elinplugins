@@ -6,6 +6,8 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Berserker;
 using PromotionMod.Stats.Hermit;
 using PromotionMod.Stats.Ranger;
+using PromotionMod.Stats.Sharpshooter;
+using PromotionMod.Stats.Sovereign;
 using PromotionMod.Trait;
 using PromotionMod.Trait.Machinist;
 namespace PromotionMod.Patches;
@@ -47,6 +49,15 @@ public class AttackProcessPatches
                 dmgMulti += .25F;
             }
         }
+        
+        // Sharpshooter - Charged Chamber applies the mana consumed (power) as a damage multiplier. Caps at 5x damage.
+        // TODO: This might... be a little too strong later?
+        if (__instance.CC.Chara.Evalue(Constants.FeatSharpshooter) > 0 && __instance.CC.HasCondition<ConChargedChamber>() && __instance.IsRanged)
+        {
+            ConChargedChamber charge = __instance.CC.GetCondition<ConChargedChamber>();
+            dmgMulti += Math.Max((charge.power / 100F), 5F);
+        }
+        
         return true;
     }
     
@@ -117,6 +128,51 @@ public class AttackProcessPatches
                 Msg.Say("Invalid Ranger Coating.");
                 coating.Kill();
             }
+        }
+
+        // Sharpshooter - Charged Chamber is consumed on shot.
+        if (__instance.CC.Chara.Evalue(Constants.FeatSharpshooter) > 0 && __instance.CC.HasCondition<ConChargedChamber>() && __instance.IsRanged)
+        {
+            __instance.TC.Chara.RemoveCondition<ConChargedChamber>();
+        }
+        
+        // Sovereign - Order Sword allows follow up attacks from allies in Coherency.
+        ConOrderSword orderSword = Act.CC.GetCondition<ConOrderSword>();
+        if (orderSword is { FollowUpAvailable: true } && !subAttack)
+        {
+            // Neighboring allies with OrderSword will also try to followup attack.
+            bool followUpPerformed = false;
+            Act.CC.pos.ListCharasInNeighbor(delegate(Chara c)
+            {
+                if (c == Act.CC || c.IsHostile(Act.CC) || !c.HasCondition<ConOrderSword>())
+                {
+                    return false;
+                }
+            
+                // Melee / Ranged / Throw attack.
+                if (ACT.Melee.CanPerform(c, __instance.TC, __instance.TC.pos))
+                {
+                    new ActMelee().Perform(c, __instance.TC, __instance.TC.pos);
+                    followUpPerformed = true;
+                    return true;
+                }
+                if (ACT.Ranged.CanPerform(c, __instance.TC, __instance.TC.pos))
+                {
+                    new ActRanged().Perform(c, __instance.TC, __instance.TC.pos);
+                    followUpPerformed = true;
+                    return true;
+                }
+                if (ACT.Throw.CanPerform(c, __instance.TC, __instance.TC.pos))
+                {
+                    new ActThrow().Perform(c, __instance.TC, __instance.TC.pos);
+                    followUpPerformed = true;
+                    return true;
+                }
+            
+                return false;
+            });
+
+            orderSword.FollowUpAvailable = !followUpPerformed;
         }
     }
 }

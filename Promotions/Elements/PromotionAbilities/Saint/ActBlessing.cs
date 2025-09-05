@@ -26,7 +26,8 @@ public class ActBlessing : Ability
 
     public override bool Perform()
     {
-        TC.Chara.AddCondition<ConBlessing>(CC.Evalue(306 /* Faith */));    
+        // Apply Blessing based off of Faith.
+        TC.Chara.AddCondition<ConBlessing>(CC.Evalue(306));    
         return true;
     }
 }

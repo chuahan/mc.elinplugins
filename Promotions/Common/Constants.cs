@@ -41,7 +41,7 @@ public class Constants
     public const int EleImpact = 925;
     public const int EleVoid = 926;
 
-    public static Dictionary<int, string> ElementAliasLookup = new Dictionary<int, string>
+    public static readonly Dictionary<int, string> ElementAliasLookup = new Dictionary<int, string>
     {
         {
             EleFire, "eleFire"
@@ -380,41 +380,47 @@ public class Constants
     // Sentinel
     public const int ActShoutId = 1;
     public const int ActShieldSmiteId = 1;
-    public const int StanceRageId = 1;
-    public const int StanceRestraintId = 1;
+    public const int StRageId = 1;
+    public const int StRestraintId = 1;
 
     // Sharpshooter
-    public const int StanceGoProneId = 1;
-    public const int StanceOverwatchId = 1;
+    public const int StOverwatchId = 1;
+    public const int ActChargedShotId = 1;
+    public const int ActMarkHostilesId = 1;
 
     // Sniper
     public const int ActTargetHeadId = 1;
     public const int ActTargetHandId = 1;
-    public const int ActTargetLegId = 1;
-    public const int ActTargetVitalsId = 1;
+    public const int ActTargetLegsId = 1;
+    public const int ActSpreadShotId = 1;
 
     // Sovereign
-    public const int StanceLawFlag = 1;
-    public const int StanceChaosFlag = 1;
-    public const int ActBattleOrderId = 1;
-    public const int ActFormationOrderId = 1;
+    public const int StLawModeId = 1;
+    public const int StChaosModeId = 1;
+    public const int ActMoraleOrderId = 1;
     public const int ActStrategyOrderId = 1;
+    public const int ActFormationOrderId = 1;
 
     // Spellblade
     public const int ActCrushingStrikeId = 1;
     public const int ActMyriadFlecheId = 1;
+    public const int ActSiphoningBladeId = 1;
 
     // Trickster
-    public const int ActDiversionId = 1;
     public const int ActArcaneTrapId = 1;
-    public const int ActManifestNightmareId = 1;
+    public const int ActDetonateTrapId = 1;
+    public const int ActDiversionId = 1;
+    public const int ActReversalId = 1;
 
     // War Cleric
-    public const int ActRescueId = 1;
-    public const int ActSolId = 1;
+    public const int ActDivineDescentId = 1;
+    public const int ActDeploySanctuaryId = 1;
+    public const int ActFistOfTheHeavensId = 1;
 
     // Witch Hunter
     public const int ActManaBreakId = 1;
+    public const int ActMagicReflectId = 1;
+    public const int ActNullZoneId = 1;
 
     #endregion
 

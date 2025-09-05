@@ -15,6 +15,9 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Summons a Holy Sword Bit.
 /// Passive - Wake of the Trailblazer - Every time Vanguard redirects damage, Light wave hits an enemy, or an attack is parried, gain stacks of Class condition
 ///     Luminary takes reduced damage per stack.
+///
+/// TODO: Rename Parry cause it was actually added to the damn game...
+/// 
 /// </summary>
 public class FeatLuminary : PromotionFeat
 {

@@ -62,7 +62,8 @@ public class ActReap : Ability
                 }
             }
             new ActMeleeReap().Perform(Act.CC, target);
-            target.AddCondition<ConArmorBreak>(GetPower(CC));
+            int breakAmount = (int)HelperFunctions.SigmoidScaling(this.GetPower(CC), 10, 25);
+            target.AddCondition(SubPoweredCondition.Create(nameof(ConArmorBreak), this.GetPower(CC), breakAmount));
         }
         CC.AddCooldown(Constants.ActReapId, 10);
         return true;

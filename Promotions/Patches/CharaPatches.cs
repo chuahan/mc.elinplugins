@@ -9,6 +9,7 @@ using PromotionMod.Stats;
 using PromotionMod.Stats.Harbinger;
 using PromotionMod.Stats.Hermit;
 using PromotionMod.Stats.Ranger;
+using PromotionMod.Stats.Sharpshooter;
 using PromotionMod.Trait;
 namespace PromotionMod.Patches;
 
@@ -189,6 +190,15 @@ internal class CharaPatches : EClass
                     ACT.Ranged.Perform(__instance, target);
                     break;
                 }
+            }
+        }
+        
+        // Sharpshooter - If there is an enemy Sharpshooter in Overwatch Stance within range, they will make a shot at the moving character.
+        if (type == Card.MoveType.Walk && __result == Card.MoveResult.Success && __instance.HasCondition<ConUnderFire>())
+        {
+            foreach (Chara sharpshooter in HelperFunctions.GetCharasWithinRadius(newPoint, 6F, __instance, false, true).Where(sharpshooter => sharpshooter.Evalue(Constants.FeatSharpshooter) > 0 && sharpshooter.HasCondition<StanceOverwatch>()))
+            {
+                ACT.Ranged.Perform(sharpshooter, __instance);
             }
         }
     }

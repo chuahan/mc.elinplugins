@@ -2,7 +2,7 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Sentinel;
 namespace PromotionMod.Elements.PromotionAbilities.Sentinel;
 
-public class ActStanceRestraint : Ability
+public class StRestraint : Ability
 {
     public override bool CanPerform()
     {

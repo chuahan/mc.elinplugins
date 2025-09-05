@@ -7,6 +7,7 @@ using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Stats.Headhunter;
 using PromotionMod.Stats.Necromancer;
+using PromotionMod.Stats.Sovereign;
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(Card))]
@@ -49,50 +50,59 @@ public class CardPatches
     [HarmonyPrefix]
     internal static bool OnDieOverloads(Card __instance, Element e, Card origin, AttackSource attackSource)
     {
-        // Berserker - Heal on Kill
-        if (__instance.isChara && origin.isChara && origin.Chara.Evalue(Constants.FeatBerserker) > 0)
+        if (__instance.isChara)
         {
-            int healAmount = (int)(origin.Chara.MaxHP * .25F);
-            origin.Say("berserker_revel".langGame(origin.Chara.NameSimple));
-            origin.Chara.HealHP(healAmount);
-        }
-        
-        // Headhunter - Gain Headhunter stacks on Kill.
-        if (__instance.isChara && origin.isChara && origin.Chara.Evalue(Constants.FeatHeadhunter) > 0)
-        {
-            if (!origin.Chara.HasCondition<ConHeadhunter>())
+            // Berserker - Heal on Kill
+            if (origin.isChara && origin.Chara.Evalue(Constants.FeatBerserker) > 0)
             {
-                origin.Chara.AddCondition<ConHeadhunter>(1);
+                int healAmount = (int)(origin.Chara.MaxHP * .25F);
+                origin.Say("berserker_revel".langGame(origin.Chara.NameSimple));
+                origin.Chara.HealHP(healAmount);
             }
-            else
-            {
-                int newStacks = origin.Chara.GetCondition<ConHeadhunter>().power + 1;
-                origin.Chara.AddCondition<ConHeadhunter>(newStacks);
-            }
-        }
-        
-        // Necromancer - If target is afflicted with ConDeadBeckon, on death will summon a Death Knight
-        if (__instance.isChara && __instance.HasCondition<ConDeadBeckon>())
-        {
-            ConDeadBeckon deadBeckon = __instance.Chara.GetCondition<ConDeadBeckon>();
-            Chara necromancer = EClass._map.zone.FindChara(deadBeckon.NecromancerUID);
             
-            Chara summon = CharaGen.Create(Constants.NecromancerDeathKnightCharaId);
-            summon.isSummon = true;
-            summon.SetLv(__instance.Chara.LV);
-            summon.interest = 0;
-            necromancer.currentZone.AddCard(summon, __instance.pos);
-            summon.PlayEffect("mutation");
-            summon.MakeMinion(necromancer);
-        
-            // Equip the Death Knight with full heavy armor + a sword.
-            summon.AddThing(ThingGen.Create("sword", idMat: 40, lv: summon.LV));
-            summon.AddThing(ThingGen.Create("shield_knight", idMat: 40, lv: summon.LV));
-            summon.AddThing(ThingGen.Create("helm_knight", idMat: 40, lv: summon.LV));
-            summon.AddThing(ThingGen.Create("armor_breast", idMat: 40, lv: summon.LV));
-            summon.AddThing(ThingGen.Create("boots_heavy", idMat: 40, lv: summon.LV));
-        }
+            // Headhunter - Gain Headhunter stacks on Kill.
+            if (origin.isChara && origin.Chara.Evalue(Constants.FeatHeadhunter) > 0)
+            {
+                if (!origin.Chara.HasCondition<ConHeadhunter>())
+                {
+                    origin.Chara.AddCondition<ConHeadhunter>(1);
+                }
+                else
+                {
+                    int newStacks = origin.Chara.GetCondition<ConHeadhunter>().power + 1;
+                    origin.Chara.AddCondition<ConHeadhunter>(newStacks);
+                }
+            }
+            
+            // Necromancer - If target is afflicted with ConDeadBeckon, on death will summon a Death Knight
+            if (__instance.HasCondition<ConDeadBeckon>())
+            {
+                ConDeadBeckon deadBeckon = __instance.Chara.GetCondition<ConDeadBeckon>();
+                Chara necromancer = EClass._map.zone.FindChara(deadBeckon.NecromancerUID);
+                
+                Chara summon = CharaGen.Create(Constants.NecromancerDeathKnightCharaId);
+                summon.isSummon = true;
+                summon.SetLv(__instance.Chara.LV);
+                summon.interest = 0;
+                necromancer.currentZone.AddCard(summon, __instance.pos);
+                summon.PlayEffect("mutation");
+                summon.MakeMinion(necromancer);
+            
+                // Equip the Death Knight with full heavy armor + a sword.
+                summon.AddThing(ThingGen.Create("sword", idMat: 40, lv: summon.LV));
+                summon.AddThing(ThingGen.Create("shield_knight", idMat: 40, lv: summon.LV));
+                summon.AddThing(ThingGen.Create("helm_knight", idMat: 40, lv: summon.LV));
+                summon.AddThing(ThingGen.Create("armor_breast", idMat: 40, lv: summon.LV));
+                summon.AddThing(ThingGen.Create("boots_heavy", idMat: 40, lv: summon.LV));
+            }
 
+            // Sovereign - Rout Order will replenish value on kill. Any active Intonation will also replenish value.
+            if (origin.isChara)
+            {
+                origin.Chara.GetCondition<ConOrderRout>()?.Mod(1);
+                origin.Chara.GetCondition<ConWeapon>()?.Mod(1);
+            }
+        }
         return true;
     }
 }

@@ -20,8 +20,8 @@ public class ActSubdue : Ability
 
     public override bool Perform()
     {
-        int attackBreakAmount = (int)HelperFunctions.SigmoidScaling(this.GetPower(CC), 10, 25);
-        TC.Chara.AddCondition<ConAttackBreak>(attackBreakAmount);
+        int breakAmount = (int)HelperFunctions.SigmoidScaling(this.GetPower(CC), 10, 25);
+        TC.Chara.AddCondition(SubPoweredCondition.Create(nameof(ConAttackBreak), this.GetPower(CC), breakAmount));
         TC.Chara.AddCondition<ConSupress>(this.GetPower(CC));
         TC.Chara.AddCondition<ConExcommunication>(this.GetPower(CC));
         

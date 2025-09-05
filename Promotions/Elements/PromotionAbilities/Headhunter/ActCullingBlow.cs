@@ -19,7 +19,7 @@ public class ActCullingBlow : ActMelee
 
     public override bool Perform()
     {
-        base.Perform();
+        Attack(1f);
         if (TC.isChara)
         {
             if (EClass.rnd(3) == 0)

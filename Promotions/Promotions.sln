@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PromotionMod", "PromotionMod.csproj", "{653F641C-7298-0B6C-2FBD-017E4F201D63}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{653F641C-7298-0B6C-2FBD-017E4F201D63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{653F641C-7298-0B6C-2FBD-017E4F201D63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{653F641C-7298-0B6C-2FBD-017E4F201D63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{653F641C-7298-0B6C-2FBD-017E4F201D63}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BAB4C6D8-63C8-42C2-A87E-12997B9B5FAD}
+	EndGlobalSection
+EndGlobal

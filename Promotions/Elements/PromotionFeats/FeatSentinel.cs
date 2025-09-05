@@ -25,8 +25,8 @@ public class FeatSentinel : PromotionFeat
     {
         Constants.ActShoutId,
         Constants.ActShieldSmiteId,
-        Constants.StanceRageId,
-        Constants.StanceRestraintId,
+        Constants.StRageId,
+        Constants.StRestraintId,
     };
     protected override bool Requirement()
     {

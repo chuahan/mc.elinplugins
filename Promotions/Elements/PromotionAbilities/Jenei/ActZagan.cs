@@ -25,7 +25,7 @@ public class ActZagan : ActJeneiSummonSequence
 
             if (targets[i].IsAliveInCurrentZone) 
             {
-                targets[i].AddCondition<ConArmorBreak>(50, force: true);
+                targets[i].AddCondition(SubPoweredCondition.Create(nameof(ConArmorBreak), this.GetPower(CC), 50));
             }
         }
 

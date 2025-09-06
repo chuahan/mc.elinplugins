@@ -19,7 +19,7 @@ public class ActBoreas : ActJeneiSummonSequence
             spellEffect.Play(CC.pos, 0f, targets[i].pos);
             
             int damage = this.CalculateDamage(this.GetPower(CC), targets[i].pos.Distance(CC.pos), targets[i]);
-            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, element: Constants.EleCold);
+            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleCold);
         }
 
         return true;

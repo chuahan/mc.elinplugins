@@ -26,6 +26,15 @@ public class FeatSniper : PromotionFeat
         Constants.ActTargetLegsId,
         Constants.ActSpreadShotId,
     };
+    
+    protected override void ApplyInternalNPC(Chara c)
+    {
+        c.ability.Add(Constants.ActChargedShotId, 85, false);
+        c.ability.Add(Constants.ActTargetHandId, 85, false);
+        c.ability.Add(Constants.ActTargetLegsId, 85, false);
+        c.ability.Add(Constants.ActSpreadShotId, 70, false);
+    }
+    
     protected override bool Requirement()
     {
         return owner.Chara?.c_idJob == "archer";

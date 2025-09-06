@@ -28,10 +28,10 @@ public class ActHandOfGod : Ability
     {
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, true, false))
         {
-            int power = (int)(HelperFunctions.SigmoidScaling(CC.Evalue(306 /* Faith */), .25F, 5F));
+            int power = (int)(HelperFunctions.SigmoidScaling(CC.Evalue(Constants.FaithId), .25F, 5F));
             power += this.GetPower(CC);
             TC.HealHP(power, HealSource.Magic);
-            TC.Chara.AddCondition<ConGreaterRegen>(CC.Evalue(306 /* Faith */));
+            TC.Chara.AddCondition<ConGreaterRegen>(CC.Evalue(Constants.FaithId));
         }
         
         CC.AddCooldown(Constants.ActHandOfGodId, 30);

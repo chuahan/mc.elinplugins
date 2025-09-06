@@ -28,7 +28,7 @@ public class ActShieldSmite : ActMelee
             shieldPower += this.GetPower(CC);
             // TODO: Do I want a multiplier here?
             shieldPower += (int)(TC.MaxHP * .125F);
-            HelperFunctions.ProcSpellDamage(this.GetPower(CC), shieldPower, CC, TC.Chara, AttackSource.Melee, element: Constants.EleVoid);
+            HelperFunctions.ProcSpellDamage(this.GetPower(CC), shieldPower, CC, TC.Chara, AttackSource.Melee, ele: Constants.EleVoid);
         }
         return true;
     }

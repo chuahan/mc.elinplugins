@@ -23,7 +23,7 @@ public class ActMoloch : ActJeneiSummonSequence
             {
                 // Damage Target
                 int damage = this.CalculateDamage(this.GetPower(CC), distance, target);
-                HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, element: Constants.EleCold);
+                HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleCold);
                 targetsHit.Add(target);
             }
             

@@ -31,7 +31,7 @@ public class ActDaedalus : ActJeneiSummonSequence
             CC.PlayEffect("laser").GetComponent<SpriteBasedLaser>().Play(targets[i].pos.PositionCenter());
             // Do Damage.
             int damage = this.CalculateDamage(this.GetPower(CC), 0, targets[i]);
-            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, element: Constants.EleFire);
+            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleFire);
         }
         
         return true;

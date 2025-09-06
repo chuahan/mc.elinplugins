@@ -27,7 +27,7 @@ public class ActAtalanta : ActJeneiSummonSequence
             arrowEffect.Play(CC.pos, 0f, targets[i].pos);
 
             int damage = this.CalculateDamage(this.GetPower(CC), 0, targets[i]);
-            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, element: Constants.EleLightning);
+            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleLightning);
         }
         
         return true;

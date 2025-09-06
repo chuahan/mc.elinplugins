@@ -8,10 +8,13 @@ public class TraitFactionTrap : TraitTrap
     
     public virtual bool IsPCFactionTrap => (this.owner.GetFlagValue(Constants.IsPlayerFactionTrapFlag) > 0);
     
+    public override bool CanDisarmTrap => false;
+    public override bool IsJammed => false;
+
     public override void OnInstall(bool byPlayer)
     {
         this.owner.SetFlagValue(Constants.IsPlayerFactionTrapFlag, byPlayer ? 1 : 0);
-        owner.SetHidden();
+        owner.SetHidden(false); // Faction Traps are always visible.
     }
     
     public override void OnStepped(Chara c)

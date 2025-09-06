@@ -6,12 +6,12 @@ namespace PromotionMod.Elements.PromotionFeats;
 /// The one to show the way, whether you like it or not. The War Cleric has taken up violence as an alternative to compassion.
 /// War Clerics focus on being durable enough to move to the front lines to rescue beleaguered allies or bring down the hammer on enemies.
 /// They specialize in being able to provide curative support or frontline strength as needed, no matter the situation.
-/// TODO: Change name? Also maybe make it more of a martial class.
+/// TODO (P3) Change name? Also maybe make it more of a martial class.
 /// 
-/// SKill - Divine Descent - Embodies yourself as the avatar of your god, massively boosting your physical attributes based on your strength.
-///     When Descended, all allies within 3F are granted Greater Regeneration, as well as Holy Intonation.
-///     All enemies within 3F are afflicted with Fear.
-///     Only usable once a day.
+/// SKill - Divine Descent - Embodies yourself as the avatar of your god, massively boosting your physical attributes based on your Faith.
+///     When descending, causes a massive holy 3F explosion.
+///     Allies in the explosion are burst healed to full, debuffs purged.
+///     Enemies in the explosion are damaged with holy damage and inflicted with Fear.
 /// Skill - Sanctuary Stance - Deploys an area that reduces damage done to all it's inhabitants by 75%, both ally and hostile.
 /// Skill - Divine Fist - Single target holy damage attack. On impact, shoots out 4 holy bolts at nearby characters.
 ///     If the character is hostile. It will act as a holy arrow.
@@ -29,8 +29,16 @@ public class FeatWarCleric : PromotionFeat
     {
         Constants.ActDivineDescentId,
         Constants.ActDeploySanctuaryId,
-        Constants.ActFistOfTheHeavensId
+        Constants.ActDivineFistId
     };
+    
+    protected override void ApplyInternalNPC(Chara c)
+    {
+        c.ability.Add(Constants.ActDivineDescentId, 50, false);
+        c.ability.Add(Constants.ActDeploySanctuaryId, 50, false);
+        c.ability.Add(Constants.ActDivineFistId, 100, false);
+    }
+    
     protected override bool Requirement()
     {
         return owner.Chara?.c_idJob == "priest";
@@ -43,7 +51,6 @@ public class FeatWarCleric : PromotionFeat
         // Maces
         // Faith
         // Will
-        // Farming - 286
         owner.Chara.elements.ModPotential(286, 30);
         // Casting - 304
         owner.Chara.elements.ModPotential(304, 30);

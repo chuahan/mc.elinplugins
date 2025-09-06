@@ -41,6 +41,8 @@ public class Constants
     public const int EleImpact = 925;
     public const int EleVoid = 926;
 
+    public const int FaithId = 306;
+
     public static readonly Dictionary<int, string> ElementAliasLookup = new Dictionary<int, string>
     {
         {
@@ -224,6 +226,8 @@ public class Constants
     public const string NecromancerSkeletonMageCharaId = "necromancer_skeleton_mage";
     public const string NecromancerDeathKnightCharaId = "necromancer_deathknight";
 
+    // Trickster Summon
+    public const string PhantomTricksterCharaId = "phantom_trickster";
     #endregion
 
     #region Promoted Class Spells/Abilities
@@ -239,6 +243,7 @@ public class Constants
     // Berserker
     public const int ActBloodlustId = 1;
     public const int ActSunderId = 1;
+    public const int ActLifebreakId = 1;
 
     // Battlemage
     public const int SpFireCannon = 1;
@@ -337,6 +342,7 @@ public class Constants
     // Machinist
     public const int ActLoadUpId = 1;
     public const int ActOverclockId = 1;
+    public const int SpSummonTurretId = 1;
 
     // Necromancer
     public const int ActBeckonOfTheDeadId = 1;
@@ -408,14 +414,17 @@ public class Constants
 
     // Trickster
     public const int ActArcaneTrapId = 1;
+    public const string TricksterArcaneTrapAlias = "trickster_arcane_trap";
     public const int ActDetonateTrapId = 1;
     public const int ActDiversionId = 1;
     public const int ActReversalId = 1;
+    public const string TricksterReversalAlias = "trickster_reversal";
 
     // War Cleric
     public const int ActDivineDescentId = 1;
+    public const string WarClericDivineDescentAlias = "warcleric_divine_descent";
     public const int ActDeploySanctuaryId = 1;
-    public const int ActFistOfTheHeavensId = 1;
+    public const int ActDivineFistId = 1;
 
     // Witch Hunter
     public const int ActManaBreakId = 1;

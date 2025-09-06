@@ -20,7 +20,7 @@ public class ActFlora : ActJeneiSummonSequence
 
             // Do Damage.
             int damage = this.CalculateDamage(this.GetPower(CC), targets[i].pos.Distance(CC.pos), targets[i]);
-            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, element: Constants.EleLightning);
+            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleLightning);
 
             if (EClass.rnd(2) == 0 && targets[i].IsAliveInCurrentZone) 
             {

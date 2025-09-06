@@ -109,6 +109,7 @@
         <Compile Include="Elements\PromotionAbilities\Battlemage\SpElementalCannon.cs" />
         <Compile Include="Elements\PromotionAbilities\Battlemage\SpElementalHammer.cs" />
         <Compile Include="Elements\PromotionAbilities\Berserker\ActBloodlust.cs" />
+        <Compile Include="Elements\PromotionAbilities\Berserker\ActLifebreak.cs" />
         <Compile Include="Elements\PromotionAbilities\Berserker\ActSunder.cs" />
         <Compile Include="Elements\PromotionAbilities\Dancer\ActDaggerIllusion.cs" />
         <Compile Include="Elements\PromotionAbilities\Dancer\ActDancePartner.cs" />
@@ -284,7 +285,6 @@
         <Compile Include="Stats\Dancer\StanceHealingDance.cs" />
         <Compile Include="Stats\Dancer\StanceMistDance.cs" />
         <Compile Include="Stats\Dancer\StanceSwiftDance.cs" />
-        <Compile Include="Stats\Dancer\ConDancePartner.cs" />
         <Compile Include="Stats\Dancer\StanceEnergyDance.cs" />
         <Compile Include="Stats\Dancer\StancePartnerStyle.cs" />
         <Compile Include="Stats\Elementalist\ConElementalFury.cs" />
@@ -357,6 +357,14 @@
         <Compile Include="Stats\Spellblade\ConSiphoningBlade.cs" />
         <Compile Include="Stats\Spellblade\ConSoundBreak.cs" />
         <Compile Include="Stats\SubPoweredCondition.cs" />
+        <Compile Include="Stats\Trickster\ConDespair.cs" />
+        <Compile Include="Stats\WarCleric\ConDivineDescent.cs" />
+        <Compile Include="Stats\WarCleric\ConDivineSanctuary.cs" />
+        <Compile Include="Stats\WarCleric\ConSolBlade.cs" />
+        <Compile Include="Stats\WarCleric\ConSanctuary.cs" />
+        <Compile Include="Stats\WitchHunter\ConMagicReflect.cs" />
+        <Compile Include="Stats\WitchHunter\ConNullPresence.cs" />
+        <Compile Include="Stats\WitchHunter\ConNullZone.cs" />
         <Compile Include="Trait\ArtificerTools\TraitArtificerGolem.cs" />
         <Compile Include="Trait\ArtificerTools\TraitArtificerTool.cs" />
         <Compile Include="Trait\ArtificerTools\TraitArtificerToolCurse.cs" />
@@ -381,9 +389,7 @@
         <Compile Include="Trait\TraitSpiritKnight.cs" />
         <Compile Include="Trait\TraitSpiritKnightCaptain.cs" />
         <Compile Include="Trait\TraitUniqueSummon.cs" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Trait\Trickster\" />
+        <Compile Include="Trait\Trickster\TraitTricksterArcaneTrap.cs" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

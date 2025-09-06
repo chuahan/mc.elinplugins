@@ -9,10 +9,9 @@ namespace PromotionMod.Elements.PromotionFeats;
 /// masterpiece: The Golem.
 /// PC PROMOTION ONLY
 /// They learn the recipe for the Artificer Altar, which allows them to craft items.
-/// Skill - Simple Synthesis - Sub ability of the Artificer. Reloads magical devices/guns.
+/// Skill - Simple Synthesis - Reloads magical devices/guns for you and your party.
 /// Skill - Improvised Brew - Throw a random potion at enemy or ally.
 /// Passive - Material Hunter - When Sun/Earth/Mana Crystals are mined out of walls, drops two instead.
-/// Passive - Auto Medicate - If an ally gains a debuff that is curable with a potion, Artificers will automatically use the potion on them. 50% chance to save the potion.
 /// </summary>
 public class FeatArtificer : PromotionFeat
 {
@@ -24,6 +23,11 @@ public class FeatArtificer : PromotionFeat
         Constants.ActSimpleSynthesisId,
         Constants.ActImprovisedBrewId
     };
+
+    protected override void ApplyInternalNPC(Chara c)
+    {
+        // This shouldn't have anything. NPCs can't pick this class.
+    }
 
     protected override bool Requirement()
     {

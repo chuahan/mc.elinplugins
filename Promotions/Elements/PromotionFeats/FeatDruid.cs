@@ -8,11 +8,9 @@ namespace PromotionMod.Elements.PromotionFeats;
 /// They specialize in supporting their teams through casting various control spells.
 /// Skill - Sow Wrath Seeds - Summon Offensive flowers
 /// Skill - Sow Warm Seeds - Summon Defensive or Support flowers
-/// Skill - Grow Tree - Summons a random tree at the targeted location. Tree level is automatically scaled to your farming level.
-///     When casted on a location that already has a tree, the tree is animated instead into a Greater Tree Ent Warrior.
-/// TODO: Weaken the normal Tree Ent, or make Greater Tree Ent Warrior armed.
+/// TODO (P3) Give them another skill Maybe?
 /// 
-/// /// Passive - Conspectus of Nature - Convert Summon books to Summon Tree Ent Warrior
+/// Passive - Conspectus of Nature - Convert Summon books to Summon Tree Ent Warrior
 /// </summary>
 public class FeatDruid : PromotionFeat
 {
@@ -24,6 +22,13 @@ public class FeatDruid : PromotionFeat
         Constants.ActSowWarmSeedsId,
         Constants.ActSowWrathSeedsId
     };
+    
+    protected override void ApplyInternalNPC(Chara c)
+    {
+        c.ability.Add(Constants.ActSowWarmSeedsId, 60, false);
+        c.ability.Add(Constants.ActSowWrathSeedsId, 60, false);
+        c.ability.Add(Constants.SpSummonTreeEntId, 80, false);
+    }
 
     protected override bool Requirement()
     {

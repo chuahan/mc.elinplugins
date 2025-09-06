@@ -9,6 +9,7 @@ namespace PromotionMod.Elements.PromotionFeats;
 /// Ability - Intimidate - Inflicts Armor break on the target. Also inflicts excommunicate. Inflicts fear on other enemies near the target.
 /// Ability - Subdue - Inflicts Suppress, and Attack Break on the target. Also inflicts excommunicate.
 /// Ability - Condemn - Inflicts Entangle on nearby enemies. For every enemy impacted, Justicar grants their team Overshield.
+/// TODO (P2) Add a passive maybe?
 /// </summary>
 public class FeatJusticar : PromotionFeat
 {
@@ -20,6 +21,14 @@ public class FeatJusticar : PromotionFeat
         Constants.ActSubdueId,
         Constants.ActCondemnId,
     };
+    
+    protected override void ApplyInternalNPC(Chara c)
+    {
+        c.ability.Add(Constants.ActIntimidateId, 60, false);
+        c.ability.Add(Constants.ActSubdueId, 60, false);
+        c.ability.Add(Constants.ActCondemnId, 60, false);
+    }
+    
     protected override bool Requirement()
     {
         return owner.Chara?.c_idJob == "inquisitor";

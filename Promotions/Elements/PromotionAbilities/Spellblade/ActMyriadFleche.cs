@@ -120,7 +120,7 @@ public class ActMyriadFleche : ActMelee
             foreach (Chara chara in p.Charas.Where(chara => chara.IsHostile(CC)))
             {
                 // All enemies in the cone will take damage and be inflicted with elemental break of that element.
-                HelperFunctions.ProcSpellDamage(power, damage, CC, chara, element:intonationElement);
+                HelperFunctions.ProcSpellDamage(power, damage, CC, chara, ele:intonationElement);
                 ApplyElementalBreak(intonationElement, chara, power);
             }
         }

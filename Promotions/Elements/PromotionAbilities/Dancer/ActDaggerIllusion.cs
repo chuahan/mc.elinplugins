@@ -2,10 +2,6 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Dancer;
 namespace PromotionMod.Elements.PromotionAbilities.Dancer;
 
-/// <summary>
-///     Dancer Ability
-///     5 Radius attack. Throw 5 knives at nearby enemies,and randomly one of the three: bleed, paralysis, and poison.
-/// </summary>
 public class ActDaggerIllusion : Ability
 {
     public override bool CanPerform()
@@ -30,11 +26,8 @@ public class ActDaggerIllusion : Ability
         if (CC.HasCondition<StancePartnerStyle>())
         {
             StancePartnerStyle partnerStyle = CC.GetCondition<StancePartnerStyle>();
-            if (partnerStyle.DancePartner != null)
-            {
-                partner = partnerStyle.DancePartner;
-                hasPartner = true;
-            }
+            partner = EClass._map.FindChara(partnerStyle.PartnerUID);
+            hasPartner = true;
         }
 
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, false, true))

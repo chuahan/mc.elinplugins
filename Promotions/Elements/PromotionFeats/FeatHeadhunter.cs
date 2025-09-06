@@ -23,6 +23,13 @@ public class FeatHeadhunter : PromotionFeat
         Constants.ActExecuteId,
         Constants.ActReapId,
     };
+
+    protected override void ApplyInternalNPC(Chara c)
+    {
+        c.ability.Add(Constants.ActExecuteId, 75, false);
+        c.ability.Add(Constants.ActReapId, 75, false);
+    }
+    
     protected override bool Requirement()
     {
         return owner.Chara?.c_idJob == "executioner";

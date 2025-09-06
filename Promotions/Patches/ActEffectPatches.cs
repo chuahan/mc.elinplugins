@@ -29,14 +29,14 @@ public class ActEffectPatches
         return true;
     }
 
-    public static bool HasAltSummonBits(Chara caster)
+    private static bool HasAltSummonBits(Chara caster)
     {
         caster.Say("DEBUG::HasAltSummonBits");
         if (PromotionMod.Debug) return true;
         return caster.GetFlagValue(Constants.PromotionFeatFlag) is Constants.FeatElementalist or Constants.FeatBattlemage or Constants.FeatLuminary or Constants.FeatPhantom;
     }
 
-    public static void SummonAltBits(Chara caster, int power, Point tp, ActRef actRef = default(ActRef))
+    private static void SummonAltBits(Chara caster, int power, Point tp, ActRef actRef = default(ActRef))
     {
         if (PromotionMod.Debug) caster.Say("DEBUG::SummonBits");
         Element element = Element.Create(actRef.aliasEle.IsEmpty("eleFire"), power / 10);

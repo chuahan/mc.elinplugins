@@ -10,6 +10,7 @@ using PromotionMod.Stats.Harbinger;
 using PromotionMod.Stats.Hermit;
 using PromotionMod.Stats.Ranger;
 using PromotionMod.Stats.Sharpshooter;
+using PromotionMod.Stats.WitchHunter;
 using PromotionMod.Trait;
 namespace PromotionMod.Patches;
 
@@ -55,7 +56,7 @@ internal class CharaPatches : EClass
             }
         }
 
-        // Stealth
+        // Hermit - Shadow Shroud
         if (c.isChara && c.Chara.HasCondition<ConShadowShroud>())
         {
             int distance = __instance.Dist(c);
@@ -79,7 +80,7 @@ internal class CharaPatches : EClass
 
     [HarmonyPatch(nameof(Chara.AddCondition), typeof(Condition), typeof(bool))]
     [HarmonyPostfix]
-    internal static void ArtificerAutoMedicateAddConditions(Chara __instance, ref Condition __result, Condition c, bool force)
+    internal static void AddConditionPatches(Chara __instance, ref Condition __result, Condition c, bool force)
     {
         // Harbinger - Gain damage reduction when nearby enemy afflicted with Harbinger Miasmas.
         if (__result != null && __result is ConHarbingerMiasma)
@@ -101,51 +102,41 @@ internal class CharaPatches : EClass
             }
         }
 
-        // Artificer - Auto Medicate.
-        if (__result != null && __result.Type == ConditionType.Bad)
+        // Adventurer - Auto Medicate.
+        if (__result != null && __result.Type == ConditionType.Bad && __instance.IsPCParty && EClass.pc.Evalue(Constants.FeatAdventurer) > 0)
         {
-            foreach (Chara ally in HelperFunctions.GetCharasWithinRadius(__instance.pos, 5F, __instance, true, false))
+            // Adventurer will automatically try to medicate, 1/4 chance of free medication.
+            if (EClass.rnd(4) == 0)
             {
-                if (ally.GetFlagValue(Constants.PromotionFeatFlag) == Constants.FeatHexer)
+                Msg.Say("adventurer_automedicate".lang(EClass.pc.NameSimple, __instance.NameSimple));
+                __result.Kill();
+                return;
+            }
+
+            // If auto medicate fails, try looking in PC inventory for the cure.
+            // Look in main storage.
+            foreach (Thing medicine in EClass.pc.things)
+            {
+                if (medicine.trait.GetHealAction(__instance) != null)
                 {
-                    // Allied artificers will automatically try to medicate, 1/4 chance of free medication.
-                    if (EClass.rnd(4) == 0)
+                    Msg.Say("adventurer_automedicate".langGame(EClass.pc.NameSimple, __instance.NameSimple));
+                    if (EClass.rnd(2) == 0) medicine.ModNum(-1);
+                    __result.Kill();
+                    return;
+                }
+            }
+
+            // Look in substorage
+            foreach (Thing container in EClass.pc.things.Where(x => x.trait is TraitContainer))
+            {
+                foreach (Thing medicine in EClass.pc.things)
+                {
+                    if (medicine.trait.GetHealAction(__instance) != null)
                     {
-                        Msg.Say("artificer_automedicate".lang(ally.NameSimple, __instance.NameSimple));
+                        Msg.Say("adventurer_automedicate".langGame(EClass.pc.NameSimple, __instance.NameSimple));
+                        if (EClass.rnd(2) == 0) medicine.ModNum(-1);
                         __result.Kill();
                         return;
-                    }
-
-                    // If auto medicate fails against PC Artificer, try looking in inventory for the cure.
-                    // This technically should happen all the time since Artificer is PC locked.
-                    if (ally.IsPC)
-                    {
-                        // Look in main storage.
-                        foreach (Thing medicine in ally.things)
-                        {
-                            if (medicine.trait.GetHealAction(__instance) != null)
-                            {
-                                Msg.Say("artificer_automedicate".langGame(ally.NameSimple, __instance.NameSimple));
-                                if (EClass.rnd(2) == 0) medicine.ModNum(-1);
-                                __result.Kill();
-                                return;
-                            }
-                        }
-
-                        // Look in substorage
-                        foreach (Thing container in ally.things.Where(x => x.trait is TraitContainer))
-                        {
-                            foreach (Thing medicine in ally.things)
-                            {
-                                if (medicine.trait.GetHealAction(__instance) != null)
-                                {
-                                    Msg.Say("artificer_automedicate".lang(ally.NameSimple, __instance.NameSimple));
-                                    if (EClass.rnd(2) == 0) medicine.ModNum(-1);
-                                    __result.Kill();
-                                    return;
-                                }
-                            }
-                        }
                     }
                 }
             }
@@ -220,6 +211,17 @@ internal class CharaPatches : EClass
                     break;
                 }   
             }
+        }
+    }
+    
+    [HarmonyPatch(nameof(Chara.CalcCastingChance))]
+    [HarmonyPostfix]
+    internal static void CalcCastingChance(Chara __instance, Element e, int num, ref int __result)
+    {
+        // WitchHunter - Null Presence prevents casting.
+        if (__instance.Chara.HasCondition<ConNullPresence>())
+        {
+            __result = 0;
         }
     }
 }

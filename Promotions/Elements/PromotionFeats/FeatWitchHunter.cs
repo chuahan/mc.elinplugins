@@ -8,7 +8,7 @@ namespace PromotionMod.Elements.PromotionFeats;
 /// They specialize in being the absolute nightmare of any mage on the field through massive spell resistances and anti-casting abilities.
 /// Skill - Mana Break - Causes a Magic Damage Explosion that deals damage based on how much mana the target is missing.
 /// Skill - Magic Reflect - Activates reflective magical shield that redirects an incoming magical spell at the caster.
-/// Skill - Null Zone - The caster gains Null Zone for 10 turns.
+/// Skill - Null Zone - The caster gains Null Zone for 10 turns, 10 turn cooldown.
 ///     All characters within 5F of the Null Zone are afflicted with Spell Null, which will set cast chance to 0% for any spell.
 ///     30 Turn Cooldown
 /// Passive - Bane of Magickind
@@ -26,6 +26,13 @@ public class FeatWitchHunter : PromotionFeat
         Constants.ActMagicReflectId,
         Constants.ActNullZoneId,
     };
+    
+    protected override void ApplyInternalNPC(Chara c)
+    {
+        c.ability.Add(Constants.ActManaBreakId, 20, false);
+        c.ability.Add(Constants.ActMagicReflectId, 85, false);
+        c.ability.Add(Constants.ActNullZoneId, 50, false);
+    }
 
     protected override bool Requirement()
     {

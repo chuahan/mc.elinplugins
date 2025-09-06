@@ -26,6 +26,14 @@ public class FeatMachinist : PromotionFeat
         Constants.ActLoadUpId,
         Constants.ActOverclockId
     };
+    
+    protected override void ApplyInternalNPC(Chara c)
+    {
+        c.ability.Add(Constants.ActLoadUpId, 75, false);
+        c.ability.Add(Constants.ActOverclockId, 50, false);
+        c.ability.Add(Constants.SpSummonTurretId, 50, false);
+    }
+    
     protected override bool Requirement()
     {
         return owner.Chara?.c_idJob == "gunner";

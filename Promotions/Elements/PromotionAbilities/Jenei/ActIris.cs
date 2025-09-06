@@ -36,7 +36,7 @@ public class ActIris : ActJeneiSummonSequence
                     {
                         // Damage Target
                         int damage = this.CalculateDamage(this.GetPower(CC), distance, target);
-                        HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, element: Constants.EleFire);
+                        HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleFire);
                     }
                     else
                     {

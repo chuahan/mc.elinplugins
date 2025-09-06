@@ -3,13 +3,14 @@ using Cwl.Helper.Extensions;
 namespace PromotionMod.Common;
 
 /// <summary>
-///     Some Promotion classes can convert spellbooks into spells specific for their class.
-///     Druids can convert any summoning book into Summon Tree Ent.
-///     Luminaries can convert any intonation spell into Holy Intonation.
-///     Battlemage can convert any elemental books into Hammer or Cannon spells of the same element
-///     Necromancers can convert any summoning books into Summon Skeleton.
-///     Jenei can convert summon any basic elemental books into Fire/Cold/Lightning/Impact.
-///     Saints can convert any basic elemental books into Holy Element.
+/// Some Promotion classes can convert spellbooks into spells specific for their class.
+/// Druids can convert any summoning book into Summon Tree Ent.
+/// Luminaries can convert any intonation spell into Holy Intonation.
+/// Battlemage can convert any elemental books into Hammer or Cannon spells of the same element
+/// Necromancers can convert any summoning books into Summon Skeleton.
+/// Jenei can convert summon any basic elemental books into Fire/Cold/Lightning/Impact.
+/// Saints can convert any basic elemental books into Holy Element.
+/// Machinists can convert any summoning book into Summon Turret.
 /// </summary>
 public static class SpellbookConversionManager
 {
@@ -35,7 +36,10 @@ public static class SpellbookConversionManager
         },
         {
             Constants.FeatSpellblade, new SpellbladeSpellbookConversion()
-        }
+        },
+        {
+            Constants.FeatMachinist, new MachinistSpellbookConversion()
+        },
     };
 
     public static bool CanConvertSpellbook(Chara chara, TraitSpellbook spellbook)
@@ -887,5 +891,25 @@ public class SpellbladeSpellbookConversion : SpellbookConversion
         if (spellbook.owner.refVal is < 50100 or > 50999) return; // Sanity Check
         int newSpell = 51000 + elementId; // Construct Sword Element.
         spellbook.owner.refVal = newSpell;
+    }
+}
+
+public class MachinistSpellbookConversion : SpellbookConversion
+{
+    public override int PromotionFeatId => Constants.FeatMachinist;
+
+    public override HashSet<int> ConvertableBooks => new HashSet<int>
+    {
+        9000, // Summon Animal
+        9001, // Summon UYS
+        9004, // Summon Monster
+        9005, // Summon Pawn 
+        9050 // Summon Shadow
+    };
+
+    public override void ConvertSpellbook(ref TraitSpellbook spellbook)
+    {
+        spellbook.owner.refVal = Constants.SpSummonTurretId;
+        spellbook.owner.elements.SetBase(759, 10);
     }
 }

@@ -3,11 +3,6 @@ using System.Linq;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Berserker;
 
-/// <summary>
-///     Berserker Ability
-///     Target an enemy. Steal some of their HP.
-///     Transfer all your debuffs to them. Transfer all their debuffs to you.
-/// </summary>
 public class ActSunder : Ability
 {
     public float HealthCost = 0.25F;

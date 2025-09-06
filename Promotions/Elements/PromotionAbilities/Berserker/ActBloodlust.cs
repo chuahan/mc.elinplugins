@@ -2,14 +2,6 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Berserker;
 namespace PromotionMod.Elements.PromotionAbilities.Berserker;
 
-/// <summary>
-///     Berserker Ability
-///     Similar to Berserk
-///     Silences yourself
-///     COSTS 25% of current HP to activate.
-///     Regenerates 10% HP a turn.
-///     Every time you are attacked with melee, counterattack immediately with ActMelee.
-/// </summary>
 public class ActBloodlust : Ability
 {
     public float HealthCost = 0.25F;

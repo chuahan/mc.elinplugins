@@ -36,6 +36,16 @@ public class FeatSovereign : PromotionFeat
         Constants.ActStrategyOrderId,
         Constants.ActFormationOrderId,
     };
+    
+    protected override void ApplyInternalNPC(Chara c)
+    {
+        c.ability.Add(Constants.StLawModeId, 75, false);
+        c.ability.Add(Constants.StChaosModeId, 75, false);
+        c.ability.Add(Constants.ActMoraleOrderId, 85, false);
+        c.ability.Add(Constants.ActStrategyOrderId, 85, false);
+        c.ability.Add(Constants.ActFormationOrderId, 85, false);
+    }
+    
     protected override bool Requirement()
     {
         return owner.Chara?.c_idJob == "paladin";

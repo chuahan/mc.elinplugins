@@ -1,14 +1,12 @@
+using Newtonsoft.Json;
 namespace PromotionMod.Stats.Dancer;
 
 public class StancePartnerStyle : BaseStance
 {
-    public Chara DancePartner;
-
+    [JsonProperty(PropertyName = "N")] public int PartnerUID;
+    
     public override void Tick()
     {
-        if (DancePartner == null)
-        {
-            Kill();
-        }
+        if (EClass._map.FindChara(PartnerUID) == null) Kill();
     }
 }

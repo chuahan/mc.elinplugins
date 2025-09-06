@@ -8,6 +8,8 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Headhunter;
 using PromotionMod.Stats.Necromancer;
 using PromotionMod.Stats.Sovereign;
+using PromotionMod.Stats.Trickster;
+using PromotionMod.Trait.Trickster;
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(Card))]
@@ -52,6 +54,7 @@ public class CardPatches
     {
         if (__instance.isChara)
         {
+            Chara target = __instance.Chara;
             // Berserker - Heal on Kill
             if (origin.isChara && origin.Chara.Evalue(Constants.FeatBerserker) > 0)
             {
@@ -75,14 +78,14 @@ public class CardPatches
             }
             
             // Necromancer - If target is afflicted with ConDeadBeckon, on death will summon a Death Knight
-            if (__instance.HasCondition<ConDeadBeckon>())
+            if (target.HasCondition<ConDeadBeckon>())
             {
-                ConDeadBeckon deadBeckon = __instance.Chara.GetCondition<ConDeadBeckon>();
+                ConDeadBeckon deadBeckon = target.GetCondition<ConDeadBeckon>();
                 Chara necromancer = EClass._map.zone.FindChara(deadBeckon.NecromancerUID);
                 
                 Chara summon = CharaGen.Create(Constants.NecromancerDeathKnightCharaId);
                 summon.isSummon = true;
-                summon.SetLv(__instance.Chara.LV);
+                summon.SetLv(target.LV);
                 summon.interest = 0;
                 necromancer.currentZone.AddCard(summon, __instance.pos);
                 summon.PlayEffect("mutation");
@@ -102,7 +105,47 @@ public class CardPatches
                 origin.Chara.GetCondition<ConOrderRout>()?.Mod(1);
                 origin.Chara.GetCondition<ConWeapon>()?.Mod(1);
             }
+            
+            // Trickster - Phantom Trickster Ids will inflict one of the random Trickster debuffs on their killer.
+            if (origin.isChara && origin.Chara.IsHostile(target) && target.id == Constants.PhantomTricksterCharaId)
+            {
+                string randomCondition = TraitTricksterArcaneTrap.TricksterDebuffs.RandomItem();
+                Condition tricksterCondition = Condition.Create(randomCondition, target.LV);
+                origin.Chara.AddCondition(tricksterCondition, true);
+            }
         }
+        return true;
+    }
+    
+    [HarmonyPatch(nameof(Card.HealHP))]
+    [HarmonyPrefix]
+    internal static bool OnHealHP(Card __instance, int a, HealSource origin)
+    {
+        // Trickster - Despair Debuff prevents healing.
+        if (__instance.isChara)
+        {
+            Chara chara = __instance.Chara;
+            // Build condition dictionaries for fast lookup
+            Dictionary<Type, Condition> targetConditions = chara.conditions.GroupBy(c => c.GetType()).ToDictionary(g => g.Key, g => g.First());
+
+            if (targetConditions.ContainsKey(typeof(ConDespair)))
+            {
+                chara.Say("trickster_despair_nullheal".lang());
+                return false;
+            }
+            
+            // War Cleric - Healing is copied to nearby allies with 50% efficacy.
+            // Does not trigger on HealSource.None, which is Regen, or duplicated healing, or mods who don't actually add a HealSource.
+            if (__instance.Chara.Evalue(Constants.FeatWarCleric) > 0 && origin != HealSource.None)
+            {
+                chara.Say("warcleric_healshare".lang());
+                foreach (Chara ally in HelperFunctions.GetCharasWithinRadius(__instance.pos, 3F, __instance.Chara, true, false))
+                {
+                    ally.HealHP(a/2, HealSource.None);
+                }
+            }
+        }
+        
         return true;
     }
 }

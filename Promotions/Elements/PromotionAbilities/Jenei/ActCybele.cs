@@ -36,7 +36,7 @@ public class ActCybele : ActJeneiSummonSequence
         {
             // Do Damage.
             int damage = this.CalculateDamage(this.GetPower(CC), targets[i].pos.Distance(CC.pos), targets[i]);
-            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, element: Constants.EleImpact);
+            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleImpact);
         }
         
         return true;

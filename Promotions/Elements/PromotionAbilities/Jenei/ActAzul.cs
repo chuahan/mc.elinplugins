@@ -27,7 +27,7 @@ public class ActAzul : ActJeneiSummonSequence
             componentInChildren.startColor = startColor;
             spellEffect.Play(CC.pos, 0f, targets[i].pos);
             
-            HelperFunctions.ProcSpellDamage(this.GetPower(CC), this.CalculateDamage(this.GetPower(CC), targets[i].pos.Distance(CC.pos), targets[i]), CC, TC.Chara, element: Constants.EleCold);
+            HelperFunctions.ProcSpellDamage(this.GetPower(CC), this.CalculateDamage(this.GetPower(CC), targets[i].pos.Distance(CC.pos), targets[i]), CC, TC.Chara, ele: Constants.EleCold);
 
             // Inflict Stun. 1/5 chance to guarantee.
             if (EClass.rnd(5) == 0 && targets[i].IsAliveInCurrentZone)

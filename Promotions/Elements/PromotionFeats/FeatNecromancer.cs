@@ -25,6 +25,14 @@ public class FeatNecromancer : PromotionFeat
         Constants.ActBlessingOfTheDeadId,
         Constants.ActCorpseExplosionId
     };
+    
+    protected override void ApplyInternalNPC(Chara c)
+    {
+        c.ability.Add(Constants.ActBeckonOfTheDeadId, 75, false);
+        c.ability.Add(Constants.ActBlessingOfTheDeadId, 50, false);
+        c.ability.Add(Constants.ActCorpseExplosionId, 50, false);
+        c.ability.Add(Constants.SpSummonSkeleton, 90, false);
+    }
 
     protected override bool Requirement()
     {

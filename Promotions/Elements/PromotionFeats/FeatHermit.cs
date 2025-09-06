@@ -21,6 +21,14 @@ public class FeatHermit : PromotionFeat
         Constants.ActShadowShroudId,
         Constants.ActAssassinateId
     };
+    
+    protected override void ApplyInternalNPC(Chara c)
+    {
+        c.ability.Add(Constants.ActMarkForDeathId, 100, false);
+        c.ability.Add(Constants.ActShadowShroudId, 75, false);
+        c.ability.Add(Constants.ActAssassinateId, 25, false);
+    }
+    
     protected override bool Requirement()
     {
         return owner.Chara?.c_idJob == "thief";

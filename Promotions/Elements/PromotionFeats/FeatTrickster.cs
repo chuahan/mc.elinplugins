@@ -16,7 +16,6 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     On Death, if their killer is hostile, they will inflict one of the Trickster Debuffs.
 ///
 /// Trickster Debuffs available:
-///     ConHallucination
 ///     ConDim
 ///     ConInsane
 ///     ConConfusion
@@ -24,9 +23,9 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     ConWeakness
 ///     ConWeakResEle
 ///     ConNightmare
-///     ConDespair
-///     ConVulnerability
-///     ConMadness
+///     ConParanoia - Hexer Debuff. Causes them to prioritize attacking allies.
+///     ConDespair - Prevents Healing.
+///     ConVulnerability - 
 /// </summary>
 public class FeatTrickster : PromotionFeat
 {
@@ -39,6 +38,15 @@ public class FeatTrickster : PromotionFeat
         Constants.ActDiversionId,
         Constants.ActReversalId,
     };
+    
+    protected override void ApplyInternalNPC(Chara c)
+    {
+        c.ability.Add(Constants.ActArcaneTrapId, 80, false);
+        c.ability.Add(Constants.ActDiversionId, 75, false);
+        c.ability.Add(Constants.ActReversalId, 50, false);
+    }
+    
+    
     protected override bool Requirement()
     {
         return owner.Chara?.c_idJob == "thief";

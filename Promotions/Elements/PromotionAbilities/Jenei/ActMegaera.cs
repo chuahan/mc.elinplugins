@@ -21,7 +21,7 @@ public class ActMegaera : ActJeneiSummonSequence
 
             // Do Damage.
             int damage = this.CalculateDamage(this.GetPower(CC), enemies[i].pos.Distance(CC.pos), enemies[i]);
-            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, element: Constants.EleFire);
+            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleFire);
         }
 
         foreach (Chara ally in friendlies)

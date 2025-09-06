@@ -33,11 +33,8 @@ public class StanceDance : BaseStance
         if (CC.HasCondition<StancePartnerStyle>())
         {
             StancePartnerStyle partnerStyle = CC.GetCondition<StancePartnerStyle>();
-            if (partnerStyle.DancePartner != null)
-            {
-                partner = partnerStyle.DancePartner;
-                hasPartner = true;
-            }
+            partner = EClass._map.FindChara(partnerStyle.PartnerUID);
+            hasPartner = true;
         }
 
         if (hasPartner)

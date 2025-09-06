@@ -28,6 +28,13 @@ public class FeatRanger : PromotionFeat
         Constants.ActSetTrapId,
     };
 
+    protected override void ApplyInternalNPC(Chara c)
+    {
+        c.ability.Add(Constants.StanceRangersCantoId, 100, false);
+        c.ability.Add(Constants.ActGimmickCoatingId, 75, false);
+        c.ability.Add(Constants.ActSetTrapId, 75, false);
+    }
+    
     protected override bool Requirement()
     {
         return owner.Chara?.c_idJob == "archer";

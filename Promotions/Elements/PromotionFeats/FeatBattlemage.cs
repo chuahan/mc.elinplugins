@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionFeats;
 
@@ -8,10 +9,10 @@ namespace PromotionMod.Elements.PromotionFeats;
 /// They specialize in heavy area damage, knocking enemies into disarray.
 /// Spell - Cannon and Hammer Spells - Converted spells that operate with heavy AOE influence.
 /// Spell - Shield Bits - Shield Bits 75% physical damage reduction, taunt, and loyal.
-/// Skill - TODO: Give Battlemages a skill.
+/// TODO (P3) Give Battlemages a skill?
 /// 
 /// Passive - Magic Armor - Increases PV based on Max Mana.
-/// Passive - Conspectus of Frontline - Bits you summmon are replaced with Shield bits.
+/// Passive - Shield Bit Conversion - Bits summoned are replaced with Shield bits.
 /// Passive - Conspectus of War - Converts Elemental Spellbooks into Cannon or Hammer spells.
 /// </summary>
 public class FeatBattlemage : PromotionFeat
@@ -21,6 +22,14 @@ public class FeatBattlemage : PromotionFeat
     public override List<int> PromotionAbilities => new List<int>
     {
     };
+
+    protected override void ApplyInternalNPC(Chara c)
+    {
+        c.ability.Add(Constants.SpMagicHammer, 50, false);
+        c.ability.Add(Constants.SpMagicCannon, 50, false);
+        c.ability.Add(50611, 50, false); // Magic Bits
+    }
+
     protected override bool Requirement()
     {
         return owner.Chara?.c_idJob == "warmage";

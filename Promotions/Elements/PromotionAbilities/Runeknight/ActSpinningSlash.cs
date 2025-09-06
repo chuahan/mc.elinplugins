@@ -42,7 +42,7 @@ public class ActSpinningSlash : Ability
         // Target all enemies nearby with Magic Sword of that element doing the stored damage.
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, 3F, CC, false, true))
         {
-            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, target, AttackSource.MagicSword, element: element);
+            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, target, AttackSource.MagicSword, ele: element);
             target.PlayEffect("hit_slash");
             target.PlaySound("ab_magicsword");
         }

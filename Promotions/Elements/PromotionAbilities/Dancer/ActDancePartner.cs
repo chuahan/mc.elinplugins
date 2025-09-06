@@ -1,14 +1,9 @@
+using System.Collections.Generic;
+using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Stats.Dancer;
 namespace PromotionMod.Elements.PromotionAbilities.Dancer;
 
-/// <summary>
-///     Dancer Ability
-///     PC ONLY
-///     Designate an ally as your Dance Partner.
-///     You gain the Partner Style Stance.
-///     Your buffs no longer affect the rest of your team, only you and your partner with enhanced effects.
-/// </summary>
 public class ActDancePartner : Ability
 {
     public override bool CanPerform()
@@ -19,26 +14,40 @@ public class ActDancePartner : Ability
             Msg.Say("classlocked_ability".lang(Constants.DancerId.lang()));
             return false;
         }
-        if (TC == null) return false;
-        if (TC.Chara != null && !TC.IsPCParty) return false;
+        
+        List<Chara> characters = Act.TP.ListCharas();
+        if (characters.Count(c => c.IsPCParty || c.IsPC) == 0) return false;
         return base.CanPerform();
     }
 
     public override bool Perform()
     {
-        // Remove existing partner.
-        if (CC.HasCondition<StancePartnerStyle>())
+        StancePartnerStyle partnerStance = CC.GetCondition<StancePartnerStyle>();
+        List<Chara> potentialPartners = Act.TP.ListCharas();
+        potentialPartners.Reverse();
+        
+        foreach (Chara chara in potentialPartners)
         {
-            StancePartnerStyle existingPartner = CC.GetCondition<StancePartnerStyle>();
-            existingPartner.DancePartner.RemoveCondition<ConDancePartner>();
+            // If targeting self while already partner style, switches off Partner Style.
+            if (partnerStance != null && chara == Act.CC)
+            {
+                partnerStance.Kill();
+                Msg.Say("dancer_swap_solo".lang(CC.NameSimple));
+                return true;
+            }
+
+            if (partnerStance == null && chara.IsPCParty && !chara.IsPC)
+            {
+                StancePartnerStyle partnerStyle = CC.AddCondition<StancePartnerStyle>() as StancePartnerStyle;
+                partnerStyle.PartnerUID = TC.Chara.uid;
+                CC.ShowEmo(Emo.happy);
+                chara.ShowEmo(Emo.happy);
+                Msg.Say("dancer_swap_partner".lang(CC.NameSimple, chara.NameSimple));
+                return true;
+            }
         }
 
-        // Add new partner.
-        StancePartnerStyle partnerStance = CC.AddCondition<StancePartnerStyle>() as StancePartnerStyle;
-        partnerStance.DancePartner = TC.Chara;
-        TC.Chara.AddCondition<ConDancePartner>();
-        CC.ShowEmo(Emo.happy);
-        TC.ShowEmo(Emo.happy);
-        return true;
+        Msg.Say("dancer_partnerstyle_hint".lang());
+        return false;
     }
 }

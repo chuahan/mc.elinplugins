@@ -2,14 +2,6 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Dancer;
 namespace PromotionMod.Elements.PromotionAbilities.Dancer;
 
-/// <summary>
-///     Dancer Ability
-///     Wild Pirouette
-///     Tries to inflict all three statuses against enemies nearby.
-///     Charm/Sleep/Jealousy
-///     Charm from Bard Mod.
-///     If there is more than one target afflicted with jealousy, they have a chance of targeting each other instead.
-/// </summary>
 public class ActWildPirouette : Ability
 {
     public override bool CanPerform()
@@ -29,11 +21,8 @@ public class ActWildPirouette : Ability
         if (CC.HasCondition<StancePartnerStyle>())
         {
             StancePartnerStyle partnerStyle = CC.GetCondition<StancePartnerStyle>();
-            if (partnerStyle.DancePartner != null)
-            {
-                partner = partnerStyle.DancePartner;
-                hasPartner = true;
-            }
+            partner = EClass._map.FindChara(partnerStyle.PartnerUID);
+            hasPartner = true;
         }
 
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, false, true))

@@ -40,7 +40,7 @@ public class ActThrowTrap : Ability
         Thing trap = ThingGen.Create(PossibleTraps.RandomItem());
         Zone.ignoreSpawnAnime = true;
         EClass._zone.AddCard(trap, TP);
-        (trap.trait as TraitFactionTrap)?.OnInstall(CC.IsPCPartyMinion);
+        (trap.trait as TraitFactionTrap)?.OnInstall(CC.IsPCFactionOrMinion);
         return true;
     }
 }

@@ -17,6 +17,7 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///         - Every time the owner takes damage, it will lose a charge and reduce the damage taken.
 ///         - Every time a debuff is aimed at the owner, it will lose a charge and negate the debuff.
 ///         - Every time the owner takes a melee attack, it will knock back and apply ConParalyze to the aggressor.
+/// TODO (P1) Implement patches for Rune Etching.
 /// </summary>
 public class FeatRuneknight : PromotionFeat
 {
@@ -28,6 +29,14 @@ public class FeatRuneknight : PromotionFeat
         Constants.ActSpinningSlashId,
         Constants.ActRuneEtchingId
     };
+    
+    protected override void ApplyInternalNPC(Chara c)
+    {
+        c.ability.Add(Constants.ActRunicGuardId, 75, false);
+        c.ability.Add(Constants.ActSpinningSlashId, 75, false);
+        c.ability.Add(Constants.ActRuneEtchingId, 100, true);
+    }
+    
     protected override bool Requirement()
     {
         return owner.Chara?.c_idJob == "swordsage";

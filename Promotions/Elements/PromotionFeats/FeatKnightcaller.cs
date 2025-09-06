@@ -20,6 +20,14 @@ public class FeatKnightcaller : PromotionFeat
         Constants.ActSpiritRallyId,
         Constants.ActSummonKnightId,
     };
+    
+    protected override void ApplyInternalNPC(Chara c)
+    {
+        c.ability.Add(Constants.ActSpiritRageId, 75, false);
+        c.ability.Add(Constants.ActSpiritRallyId, 75, false);
+        c.ability.Add(Constants.ActSummonKnightId, 80, false);
+    }
+    
     protected override bool Requirement()
     {
         return owner.Chara?.c_idJob == "pianist";

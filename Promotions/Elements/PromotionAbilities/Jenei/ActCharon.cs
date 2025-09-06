@@ -21,13 +21,12 @@ public class ActCharon : ActJeneiSummonSequence
 
             // Do Damage.
             int damage = this.CalculateDamage(this.GetPower(CC), targets[i].pos.Distance(CC.pos), targets[i]);
-            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, element: Constants.EleImpact);
+            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleImpact);
             
             // 1/20 chance of Instakill
             if (EClass.rnd(20) == 0 && targets[i].IsAliveInCurrentZone)
             {
-                CardDamageHPPatches.CachedInvoker.Invoke(
-                    targets[i], targets[i].MaxHP, Constants.EleNether, 100, AttackSource.Finish, CC);
+                targets[i].DamageHP(targets[i].MaxHP, AttackSource.Finish, CC);
             }
         }
         

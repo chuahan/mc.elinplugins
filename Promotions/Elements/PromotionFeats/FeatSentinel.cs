@@ -28,6 +28,14 @@ public class FeatSentinel : PromotionFeat
         Constants.StRageId,
         Constants.StRestraintId,
     };
+    
+    protected override void ApplyInternalNPC(Chara c)
+    {
+        c.ability.Add(Constants.ActShoutId, 100, false);
+        c.ability.Add(Constants.ActShieldSmiteId, 75, false);
+        c.ability.Add(Constants.StRestraintId, 100, false);
+    }
+    
     protected override bool Requirement()
     {
         return owner.Chara?.c_idJob == "warrior";

@@ -77,7 +77,7 @@ public class ActLightWave : Ability
         foreach (Chara target in from affected in affectedPoints from target in affected.ListCharas() where target.IsHostile(CC) && !impacted.Contains(target) select target)
         {
             SpawnHolySwordBit(power, CC, target.pos);
-            HelperFunctions.ProcSpellDamage(power, damage, CC, target, AttackSource.MagicSword, element:Constants.EleHoly);
+            HelperFunctions.ProcSpellDamage(power, damage, CC, target, AttackSource.MagicSword, ele:Constants.EleHoly);
             impacted.Add(target);
         }
         

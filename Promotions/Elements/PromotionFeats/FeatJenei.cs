@@ -8,7 +8,9 @@ namespace PromotionMod.Elements.PromotionFeats;
 /// Jenei focus on combining the four natural elements to summon great representatives of the natural forces to aid them in combat.
 /// They specialize in invoking mighty spells with a variety of effects through building up amounts of each of the elements.
 ///
-/// TODO
+/// TODO (P1): Add Random Summon ability to NPC.
+/// TODO (P1): Use hook after casting spell to add charges to Jenei Condition.
+/// TODO (P1): Implement Class Selection. If NPCs have one of the elements, it should pick that one, else random.
 /// Upon promotion, you must choose an element to align to, which will grant you a field skill and a combat skill. (Mercury instead adopts two combat skills)
 /// Venus - Move, Gaia (Mother Gaia, Grand Gaia)
 /// Mars - Blaze, Volcano (Eruption, Pyroclasm)
@@ -30,6 +32,14 @@ public class FeatJenei : PromotionFeat
     {
         Constants.ActSpiritSummonId
     };
+    
+    protected override void ApplyInternalNPC(Chara c)
+    {
+        // TODO (P1) Add Random Summon Ability for NPCs
+        // TODO (P1) Add Jenei Attunement Flag
+    }
+    
+    
     protected override bool Requirement()
     {
         return owner.Chara?.c_idJob == "farmer";

@@ -11,6 +11,8 @@ namespace PromotionMod.Elements.PromotionFeats;
 /// They specialize in applying debuffs, then exploiting those debuffs to deal damage.
 /// Skill - Traumatize - Does Mind Damage equivalent to how many negative conditions are on the enemy. 10 turn cooldown. 20% Mana cost.
 /// Skill - Blood Curse - Force applies one of the curses randomly at the cost of 10% life. Will prioritize curses you have not applied of the same tier that you roll.
+/// TODO (P2) Add another skill?
+/// 
 /// Passive - Hexmaster - When applying spell damage or taking damage, there is a chance to apply a hex out of a pool.
 /// Passive - Do not cite the deep magic to me - If you have active Debuffs on you, your curses apply at double power and consumes one of the debuffs.
 /// </summary>
@@ -23,6 +25,13 @@ public class FeatHexer : PromotionFeat
         Constants.ActTraumatizeId,
         Constants.ActBloodCurseId,
     };
+
+    protected override void ApplyInternalNPC(Chara c)
+    {
+        c.ability.Add(Constants.ActTraumatizeId, 50, false);
+        c.ability.Add(Constants.ActBloodCurseId, 100, false);
+    }
+    
     protected override bool Requirement()
     {
         return owner.Chara?.c_idJob == "witch";

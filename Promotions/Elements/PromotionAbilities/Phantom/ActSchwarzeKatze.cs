@@ -63,7 +63,7 @@ public class ActSchwarzeKatze : Ability
                 laser.sr.color = colorRef.colorSprite;
                 laser.Play(CC.pos);
                 int damage = HelperFunctions.SafeDice("phantom_schwarzekatze", this.GetPower(CC));
-                HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, element: Constants.EleMagic);
+                HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleMagic);
 
                 // Proc Stamina and Mana Recovery of Phantom
             }

@@ -21,7 +21,7 @@ public class ActUlysses : ActJeneiSummonSequence
 
             // Do Damage.
             int damage = this.CalculateDamage(this.GetPower(CC), targets[i].pos.Distance(CC.pos), targets[i]);
-            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, element: Constants.EleFire);
+            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleFire);
             
             if (targets[i].IsAliveInCurrentZone) targets[i].AddCondition<ConFaint>(force: true);
         }

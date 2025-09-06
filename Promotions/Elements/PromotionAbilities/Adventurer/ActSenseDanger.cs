@@ -2,17 +2,19 @@ using PromotionMod.Common;
 using PromotionMod.Stats;
 namespace PromotionMod.Elements.PromotionAbilities.Adventurer;
 
-/// <summary>
-/// Adventurer Ability
-/// Activate modified Telepathy: Reveals all traps and any hostile enemies on the map.
-/// </summary>
 public class ActSenseDanger : Ability
 {
     public override bool CanPerform()
     {
+        if (CC.Evalue(Constants.FeatAdventurer) == 0)
+        {
+            Msg.Say("classlocked_ability".lang(Constants.AdventurerId.lang()));
+            return false;
+        }
         // Unusable by NPCs.
-        if (CC == null || !CC.IsPC) return false;
-        return CC?.HasCooldown(Constants.ActSenseDangerId) ?? false;
+        if (!CC.IsPC) return false;
+        if (CC.HasCooldown(Constants.ActSenseDangerId)) return false;
+        return base.CanPerform();
     }
 
     public override bool Perform()

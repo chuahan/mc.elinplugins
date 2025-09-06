@@ -101,7 +101,7 @@ public class ActVerbrechen : Ability
                 foreach (Chara beamTarg in from pos in phantomBeam from beamTarg in pos.Charas where !finisherTargets.Contains(beamTarg) select beamTarg)
                 {
                     finisherTargets.Add(beamTarg);
-                    HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, beamTarg, AttackSource.MagicSword, element: Constants.EleMagic);
+                    HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, beamTarg, AttackSource.MagicSword, ele: Constants.EleMagic);
                 }
                 
                 // Spawn 2 Phantom Bits

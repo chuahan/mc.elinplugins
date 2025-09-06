@@ -48,7 +48,7 @@ public class ActCorpseExplosion : Ability
                     {
                         // Damage Target
                         // Explode dealing the damage to all nearby enemies as Nether damage.
-                        HelperFunctions.ProcSpellDamage(this.GetPower(CC), healthValue, CC, target, element: Constants.EleNether);
+                        HelperFunctions.ProcSpellDamage(this.GetPower(CC), healthValue, CC, target, ele: Constants.EleNether);
                     }
                 }
                 targetsHit.Add(target);

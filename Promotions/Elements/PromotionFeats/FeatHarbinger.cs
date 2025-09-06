@@ -21,6 +21,13 @@ public class FeatHarbinger : PromotionFeat
         Constants.ActEndlessMistsId,
         Constants.ActAccursedTouchId
     };
+    
+    protected override void ApplyInternalNPC(Chara c)
+    {
+        c.ability.Add(Constants.ActEndlessMistsId, 75, false);
+        c.ability.Add(Constants.ActAccursedTouchId, 90, false);
+    }
+    
     protected override bool Requirement()
     {
         return owner.Chara?.c_idJob == "executioner";

@@ -3,7 +3,10 @@ using System.Linq;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Hexer;
 
-// Does Mind Damage equivalent to how many negative conditions are on the enemy. 10 turn cooldown. 20% Mana cost.
+/// <summary>
+/// Does Mind Damage scaling on many negative conditions are on the enemy. 5 turn cooldown. 20% Mana cost.
+/// Does not consume the negative conditions like Trickster or Shatter Hex. 
+/// </summary>
 public class ActTraumatize : Ability
 {
     public override bool CanPerform()
@@ -15,12 +18,13 @@ public class ActTraumatize : Ability
         return true;
     }
     
-    // Ability that costs mana.
     public override Cost GetCost(Chara c)
     {
-        Cost cost = base.GetCost(c);
-        cost.type = CostType.MP;
-        return cost;
+        return new Cost()
+        {
+            type = CostType.MP,
+            cost = (int)(c.mana.max * 0.2F),
+        };
     }
 
     public override bool Perform()
@@ -34,7 +38,6 @@ public class ActTraumatize : Ability
         {
             int damage = HelperFunctions.SafeDice(Constants.TraumatizeAlias, this.GetPower(CC));
             damage = HelperFunctions.SafeMultiplier(damage, negativeConditions.Count);
-            foreach (Condition con in negativeConditions) con.Kill();
             TC.DamageHP(damage, Constants.EleMind, 100, AttackSource.None, CC);
         }
         CC.AddCooldown(Constants.ActTraumatizeId, 5);

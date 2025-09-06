@@ -25,11 +25,8 @@ public class ActSwordFouette : Ability
         if (CC.HasCondition<StancePartnerStyle>())
         {
             StancePartnerStyle partnerStyle = CC.GetCondition<StancePartnerStyle>();
-            if (partnerStyle.DancePartner != null)
-            {
-                partner = partnerStyle.DancePartner;
-                hasPartner = true;
-            }
+            partner = EClass._map.FindChara(partnerStyle.PartnerUID);
+            hasPartner = true;
         }
 
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, 2F, CC, false, true))

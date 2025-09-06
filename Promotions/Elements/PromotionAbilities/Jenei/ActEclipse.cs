@@ -53,7 +53,7 @@ public class ActEclipse : ActJeneiSummonSequence
             
             // Do Damage.
             int damage = this.CalculateDamage(this.GetPower(CC), targets[i].pos.Distance(CC.pos), targets[i]);
-            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, element: Constants.EleLightning);
+            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleLightning);
 
             // Apply Attack Down.
             if (targets[i].IsAliveInCurrentZone) targets[i].AddCondition<ConAttackBreak>(50, force: true);

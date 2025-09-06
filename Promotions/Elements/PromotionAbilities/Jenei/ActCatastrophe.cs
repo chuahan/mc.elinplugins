@@ -46,7 +46,7 @@ public class ActCatastrophe : ActJeneiSummonSequence
             {
                 // Damage Target
                 int damage = this.CalculateDamage(this.GetPower(CC), distance, target);
-                HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, element: Constants.EleLightning);
+                HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleLightning);
                     
                 // Do Mana and Stamina Damage.
                 if (!target.IsAliveInCurrentZone) continue;

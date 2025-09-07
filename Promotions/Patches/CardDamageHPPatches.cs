@@ -40,19 +40,20 @@ public class CardDamageHPPatches
             Dictionary<Type, Condition> targetConditions = target.conditions.GroupBy(c => c.GetType()).ToDictionary(g => g.Key, g => g.First());
             Dictionary<Type, Condition>? originConditions = originChara?.conditions?.GroupBy(c => c.GetType()).ToDictionary(g => g.Key, g => g.First());
 
+            float damageMultiplier = 1F;
             List<Chara> targetAllies = HelperFunctions.GetCharasWithinRadius(target.pos, 5f, target, true, false);
 
             // Harbinger - Every active Miasma on the target boosts damage from Harbingers by 5%.
             if (targetConditions.ContainsKey(typeof(ConHarbingerMiasma)) && origin.isChara && origin.Evalue(Constants.FeatHarbinger) > 0)
             {
                 int miasmaCount = target.conditions.Count(con => con is ConHarbingerMiasma);
-                dmg = HelperFunctions.SafeMultiplier(dmg, (100 + miasmaCount * 5) / 100F);
+                damageMultiplier += miasmaCount * 0.05F;
             }
 
-            // Headhunter - Damage is increased against higher quality enemies.
+            // Headhunter - Damage is increased by 25% against higher quality enemies.
             if (target.source.quality >= 3 && origin.isChara && origin.Evalue(Constants.FeatHeadhunter) > 0)
             {
-                dmg = HelperFunctions.SafeMultiplier(dmg, 1.25F);
+                damageMultiplier += 0.25F;
             }
 
             // Hexer - When applying spell damage there is a 10% chance to force apply a hex out of a pool.
@@ -95,7 +96,7 @@ public class CardDamageHPPatches
             if (targetConditions.ContainsKey(typeof(ConLuminary)))
             {
                 ConLuminary luminary = targetConditions.GetValueOrDefault(typeof(ConLuminary)) as ConLuminary;
-                if (luminary != null) dmg = (int)(dmg * (1 - luminary.GetStacks() * 0.01F));
+                damageMultiplier -= luminary.GetStacks() * 0.01F;
 
             }
 
@@ -104,7 +105,7 @@ public class CardDamageHPPatches
             if (target.Evalue(Constants.FeatNecromancer) > 0)
             {
                 int boneArmyCount = __instance.Chara.currentZone.ListMinions(__instance.Chara).Count(c => c.HasTag(CTAG.undead));
-                dmg = (int)(dmg * (1 - Math.Min(0.75, boneArmyCount * 0.025F)));
+                damageMultiplier -= Math.Min(0.75F, boneArmyCount * 0.025F);
             }
 
             // Rune Knight - Elemental Attunement. If damage received matches your attuned element, all damage is absorbed and added as stockpiled damage.
@@ -136,6 +137,13 @@ public class CardDamageHPPatches
                 return false;
             }
 
+            // Rune Knight - Warding runes will reduce incoming damage by 20% in exchange for a charge.
+            if (targetConditions.ContainsKey(typeof(ConWardingRune)))
+            {
+                targetConditions[typeof(ConWardingRune)].Mod(-1);
+                damageMultiplier -= 0.2F;
+            }
+
             // Saint - If the Saint and the target share the same religion, the Saint can attempt to convert the opponent.
             if (origin.Chara.Evalue(Constants.FeatSaint) > 0 && origin.Chara.faith.id == target.faith.id)
             {
@@ -156,12 +164,12 @@ public class CardDamageHPPatches
             // Sovereign - Law Stance Reduces damage by 10%.
             if (targetConditions.ContainsKey(typeof(ConSovereignLaw)))
             {
-                dmg = (int)(dmg * 0.9F);
+                damageMultiplier -= 0.1F;
             }
             // Sovereign - Chaos Stance Increases damage by 10%.
             if (originConditions != null && originConditions.ContainsKey(typeof(ConSovereignLaw)))
             {
-                dmg = (int)(dmg * 1.1F);
+                damageMultiplier += 0.1F;
             }
 
             // Sovereign - Barricade Order : Reduces damage based on # of allies neighboring you with OrderBarricade
@@ -169,17 +177,16 @@ public class CardDamageHPPatches
             if (targetConditions.ContainsKey(typeof(ConOrderBarricade)))
             {
                 float barricadeCoherence = target.pos.ListCharasInNeighbor(delegate(Chara c)
-                                           {
-                                               if (c == Act.CC || c.IsHostile(Act.CC) || !c.conditions.Any(cond => cond.GetType() == typeof(ConOrderBarricade)))
-                                               {
-                                                   return true;
-                                               }
-                                               return false;
-                                           }).Count *
-                                           0.05F;
+                                         {
+                                             if (c == Act.CC || c.IsHostile(Act.CC) || !c.conditions.Any(cond => cond.GetType() == typeof(ConOrderBarricade)))
+                                             {
+                                                 return true;
+                                             }
+                                             return false;
+                                         }).Count *
+                                         0.05F;
 
-                dmg = (int)(dmg * (1 - barricadeCoherence));
-
+                damageMultiplier -= barricadeCoherence;
             }
 
             // Spellblade - If the Spellblade is using Siphoning Blade. do no damage and instead deal the 50% damage as MP instead, absorbing it.
@@ -211,7 +218,7 @@ public class CardDamageHPPatches
             // War Cleric - Sanctuary reduces all damage dealt by 75%.
             if (targetConditions.ContainsKey(typeof(ConSanctuary)))
             {
-                dmg = (int)(dmg * 0.25F);
+                damageMultiplier -= 0.75F;
             }
 
             // Protection - Protects flat amount of damage.

@@ -1,4 +1,5 @@
 using PromotionMod.Common;
+using PromotionMod.Stats.Runeknight;
 namespace PromotionMod.Elements.PromotionAbilities.Runeknight;
 
 public class ActRuneEtching : Ability
@@ -29,7 +30,7 @@ public class ActRuneEtching : Ability
 
     public override bool Perform()
     {
-        // Apply ConWardingRune.
+        TC.Chara.AddCondition<ConWardingRune>(this.GetPower(CC));
         return true;
     }
 }

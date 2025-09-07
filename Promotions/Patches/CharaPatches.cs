@@ -8,6 +8,7 @@ using PromotionMod.Stats;
 using PromotionMod.Stats.Harbinger;
 using PromotionMod.Stats.Hermit;
 using PromotionMod.Stats.Ranger;
+using PromotionMod.Stats.Runeknight;
 using PromotionMod.Stats.Sharpshooter;
 using PromotionMod.Stats.WitchHunter;
 using PromotionMod.Trait;
@@ -78,8 +79,25 @@ internal class CharaPatches : EClass
     }
 
     [HarmonyPatch(nameof(Chara.AddCondition), typeof(Condition), typeof(bool))]
+    [HarmonyPrefix]
+    internal static bool AddConditionPrefixPatches(Chara __instance, ref Condition __result, Condition c, bool force)
+    {
+        // Rune Knight - Warding runes will negate incoming Debuffs.
+        ConWardingRune ward = __instance.GetCondition<ConWardingRune>();
+        if (ward != null && c.Type == ConditionType.Debuff)
+        {
+            ward.Mod(-1);
+            __result = null;
+            return false;
+        }
+
+        return true;
+    }
+
+
+    [HarmonyPatch(nameof(Chara.AddCondition), typeof(Condition), typeof(bool))]
     [HarmonyPostfix]
-    internal static void AddConditionPatches(Chara __instance, ref Condition __result, Condition c, bool force)
+    internal static void AddConditionPostfixPatches(Chara __instance, ref Condition __result, Condition c, bool force)
     {
         // Harbinger - Gain damage reduction when nearby enemy afflicted with Harbinger Miasmas.
         if (__result != null && __result is ConHarbingerMiasma)

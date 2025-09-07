@@ -1,6 +1,5 @@
 using PromotionMod.Common;
 using PromotionMod.Stats;
-
 namespace PromotionMod.Elements.PromotionAbilities.Sniper;
 
 public class ActTargetHand : Ability
@@ -12,10 +11,10 @@ public class ActTargetHand : Ability
             Msg.Say("classlocked_ability".lang(Constants.SniperId.lang()));
             return false;
         }
-        
+
         return base.CanPerform() && ACT.Ranged.CanPerform();
     }
-    
+
     public override Cost GetCost(Chara c)
     {
         Cost convertToMp = base.GetCost(c);
@@ -33,7 +32,7 @@ public class ActTargetHand : Ability
         // If the HP changed after the attack, we'll consider it a hit.
         if (TC.hp < currentHP)
         {
-            TC.Chara.AddCondition<ConDisable>(this.GetPower(CC));
+            TC.Chara.AddCondition<ConDisable>(GetPower(CC));
         }
         return true;
     }

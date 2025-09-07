@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Trait;
 namespace PromotionMod.Elements.PromotionAbilities.Ranger;
@@ -12,7 +11,7 @@ public class ActThrowTrap : Ability
         Constants.RangerParalyzeTrapAlias,
         Constants.RangerPoisonTrapAlias,
         Constants.RangerPunjiTrapAlias,
-        Constants.RangerSnareTrapAlias,
+        Constants.RangerSnareTrapAlias
     };
 
     public override Cost GetCost(Chara c)
@@ -21,7 +20,7 @@ public class ActThrowTrap : Ability
         convertToMp.type = CostType.MP;
         return convertToMp;
     }
-    
+
     public override bool CanPerform()
     {
         if (CC.Evalue(Constants.FeatRanger) == 0)
@@ -31,7 +30,7 @@ public class ActThrowTrap : Ability
         }
 
         // Cannot stack traps. or place in pc faction
-        if (TP.Installed != null || EClass._zone.IsPCFaction) return false;
+        if (TP.Installed != null || _zone.IsPCFaction) return false;
         return base.CanPerform();
     }
 
@@ -39,7 +38,7 @@ public class ActThrowTrap : Ability
     {
         Thing trap = ThingGen.Create(PossibleTraps.RandomItem());
         Zone.ignoreSpawnAnime = true;
-        EClass._zone.AddCard(trap, TP);
+        _zone.AddCard(trap, TP);
         (trap.trait as TraitFactionTrap)?.OnInstall(CC.IsPCFactionOrMinion);
         return true;
     }

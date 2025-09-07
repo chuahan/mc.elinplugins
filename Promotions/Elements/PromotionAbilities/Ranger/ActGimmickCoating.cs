@@ -10,7 +10,7 @@ public class ActGimmickShot : Ability
         convertToMp.type = CostType.MP;
         return convertToMp;
     }
-    
+
     public override bool CanPerform()
     {
         if (CC.Evalue(Constants.FeatRanger) == 0)
@@ -21,10 +21,10 @@ public class ActGimmickShot : Ability
         if (CC.HasCooldown(Constants.ActGimmickCoatingId)) return false;
         return base.CanPerform();
     }
-    
+
     public override bool Perform()
     {
-        CC.AddCondition<ConGimmickCoating>(this.GetPower(CC));
+        CC.AddCondition<ConGimmickCoating>(GetPower(CC));
         CC.AddCooldown(Constants.ActGimmickCoatingId, 5);
         return true;
     }

@@ -1,7 +1,6 @@
 using PromotionMod.Common;
 using PromotionMod.Stats;
 using PromotionMod.Stats.Sovereign;
-
 namespace PromotionMod.Elements.PromotionAbilities.Sovereign;
 
 public class ActStrategyOrder : ActSovereignOrder
@@ -11,7 +10,7 @@ public class ActStrategyOrder : ActSovereignOrder
     public override void AddLawCondition(Chara chara, int stacks)
     {
         // Burst Heal Allies and provide protection and regen.
-        int healingAmount = HelperFunctions.SafeDice("sovereign_rally", this.GetPower(CC));
+        int healingAmount = HelperFunctions.SafeDice("sovereign_rally", GetPower(CC));
         healingAmount *= stacks;
         chara.HealHP(healingAmount, HealSource.Magic);
         chara.AddCondition<ConProtection>(ConProtection.CalcProtectionAmount(healingAmount));
@@ -21,7 +20,7 @@ public class ActStrategyOrder : ActSovereignOrder
     {
         ConWeapon holyIntonation = new ConWeapon();
         holyIntonation.SetElement(Constants.EleHoly);
-        holyIntonation.power = this.GetPower(CC);
+        holyIntonation.power = GetPower(CC);
         chara.AddCondition(holyIntonation);
         chara.AddCondition<ConOrderRout>(stacks);
     }

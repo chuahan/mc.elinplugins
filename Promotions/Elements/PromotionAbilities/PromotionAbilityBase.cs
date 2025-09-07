@@ -1,5 +1,4 @@
 using PromotionMod.Common;
-
 namespace PromotionMod.Elements.PromotionAbilities;
 
 public class PromotionAbilityBase : Ability

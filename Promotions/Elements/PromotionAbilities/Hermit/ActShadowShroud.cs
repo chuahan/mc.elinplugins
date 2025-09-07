@@ -3,9 +3,9 @@ using PromotionMod.Stats.Hermit;
 namespace PromotionMod.Elements.PromotionAbilities.Hermit;
 
 /// <summary>
-/// Hermit Ability
-/// Provides advanced stealth.
-/// Lifted on Attack.
+///     Hermit Ability
+///     Provides advanced stealth.
+///     Lifted on Attack.
 /// </summary>
 public class ActShadowShroud : Ability
 {

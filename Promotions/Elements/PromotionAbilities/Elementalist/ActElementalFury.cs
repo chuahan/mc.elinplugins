@@ -5,8 +5,8 @@ using PromotionMod.Stats;
 namespace PromotionMod.Elements.PromotionAbilities.Elementalist;
 
 /// <summary>
-/// Elementalist Ability
-/// Consumes all orbs and apply Elemental Storm to yourself based on how many elements you had.
+///     Elementalist Ability
+///     Consumes all orbs and apply Elemental Storm to yourself based on how many elements you had.
 /// </summary>
 public class ActElementalFury : Ability
 {

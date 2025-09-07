@@ -2,11 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Stats;
-
 namespace PromotionMod.Elements.PromotionAbilities.Trickster;
 
 /// <summary>
-/// Consumes debuffs, provides self and allies Protection scaled to the amount of debuffs on the target.
+///     Consumes debuffs, provides self and allies Protection scaled to the amount of debuffs on the target.
 /// </summary>
 public class ActReversal : Ability
 {
@@ -20,7 +19,7 @@ public class ActReversal : Ability
 
         return base.CanPerform();
     }
-    
+
     public override Cost GetCost(Chara c)
     {
         Cost convertToMp = base.GetCost(c);
@@ -37,9 +36,12 @@ public class ActReversal : Ability
         }
         else
         {
-            int protection = HelperFunctions.SafeDice(Constants.TricksterReversalAlias, this.GetPower(CC));
+            int protection = HelperFunctions.SafeDice(Constants.TricksterReversalAlias, GetPower(CC));
             protection = ConProtection.CalcProtectionAmount(HelperFunctions.SafeMultiplier(protection, negativeConditions.Count));
-            foreach (Condition con in negativeConditions) con.Kill();
+            foreach (Condition con in negativeConditions)
+            {
+                con.Kill();
+            }
             foreach (Chara ally in HelperFunctions.GetCharasWithinRadius(CC.pos, 5f, CC, true, false))
             {
                 if (ally.HasCondition<ConProtection>())

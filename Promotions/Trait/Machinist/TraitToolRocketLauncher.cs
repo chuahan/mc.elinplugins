@@ -1,4 +1,3 @@
-using PromotionMod.Trait.Machinist;
 namespace PromotionMod.Trait.Machinist;
 
 public class TraitToolRocketLauncher : TraitToolRange

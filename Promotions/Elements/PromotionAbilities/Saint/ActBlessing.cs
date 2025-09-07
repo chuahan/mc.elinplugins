@@ -1,6 +1,5 @@
 using PromotionMod.Common;
 using PromotionMod.Stats.Saint;
-
 namespace PromotionMod.Elements.PromotionAbilities.Saint;
 
 public class ActBlessing : Ability
@@ -15,10 +14,10 @@ public class ActBlessing : Ability
 
         return base.CanPerform();
     }
-    
+
     public override Cost GetCost(Chara c)
     {
-        // TODO: Change to cost % of mana.
+        // TODO (P3) Change to cost % of mana.
         Cost convertToMp = base.GetCost(c);
         convertToMp.type = CostType.MP;
         return convertToMp;
@@ -27,7 +26,7 @@ public class ActBlessing : Ability
     public override bool Perform()
     {
         // Apply Blessing based off of Faith.
-        TC.Chara.AddCondition<ConBlessing>(CC.Evalue(Constants.FaithId));    
+        TC.Chara.AddCondition<ConBlessing>(CC.Evalue(Constants.FaithId));
         return true;
     }
 }

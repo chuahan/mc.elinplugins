@@ -1,6 +1,5 @@
 using PromotionMod.Common;
 using PromotionMod.Stats.WarCleric;
-
 namespace PromotionMod.Elements.PromotionAbilities.WarCleric;
 
 public class ActDeploySanctuary : Ability
@@ -15,7 +14,7 @@ public class ActDeploySanctuary : Ability
         if (CC.HasCooldown(Constants.ActDeploySanctuaryId)) return false;
         return base.CanPerform();
     }
-    
+
     public override Cost GetCost(Chara c)
     {
         Cost convertToMp = base.GetCost(c);
@@ -24,7 +23,7 @@ public class ActDeploySanctuary : Ability
         convertToMp.type = CostType.MP;
         return convertToMp;
     }
-    
+
     public override bool Perform()
     {
         CC.AddCondition<ConSanctuary>();

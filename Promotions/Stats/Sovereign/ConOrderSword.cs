@@ -7,10 +7,10 @@ public class ConOrderSword : BaseBuff
     [JsonProperty(PropertyName = "F")] public bool FollowUpAvailable = true;
 
     public override bool TimeBased => true;
-    
+
     public override void Tick()
     {
-        this.FollowUpAvailable = true;
+        FollowUpAvailable = true;
         base.Tick();
     }
 }

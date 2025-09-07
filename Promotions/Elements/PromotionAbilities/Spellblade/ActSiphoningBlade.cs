@@ -1,6 +1,5 @@
 using PromotionMod.Common;
 using PromotionMod.Stats.Spellblade;
-
 namespace PromotionMod.Elements.PromotionAbilities.Spellblade;
 
 public class ActSiphoningBlade : ActMelee
@@ -15,7 +14,7 @@ public class ActSiphoningBlade : ActMelee
         if (CC.HasCooldown(Constants.ActSiphoningBladeId)) return false;
         return base.CanPerform();
     }
-    
+
     public override Cost GetCost(Chara c)
     {
         Cost convertToMp = base.GetCost(c);

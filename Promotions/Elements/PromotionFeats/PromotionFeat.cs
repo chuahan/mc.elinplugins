@@ -9,7 +9,7 @@ public abstract class PromotionFeat : Feat
     public abstract int PromotionClassFeatId { get; }
 
     public abstract List<int> PromotionAbilities { get; }
-    
+
     // Tourists are able to Promote into any of these classes.
     private bool IsTourist => owner.Chara?.c_idJob == "tourist";
     public override Sprite GetIcon(string suffix = "")

@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
 using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Stats.Headhunter;
 using PromotionMod.Stats.Necromancer;
+using PromotionMod.Stats.Sentinel;
 using PromotionMod.Stats.Sovereign;
 using PromotionMod.Stats.Trickster;
 using PromotionMod.Trait.Trickster;
@@ -25,26 +24,40 @@ public class CardPatches
             {
                 // Adventurers increase the exp gain by 50%
                 a = (int)(a * 1.5F);
-            } 
+            }
         }
         return true;
     }
-    
+
     [HarmonyPatch(typeof(Card), "get_PV")]
     [HarmonyPostfix]
-    static void BattlemagePVBoostPatch(Card __instance, ref int __result)
+    internal static void PvPatches(Card __instance, ref int __result)
     {
         // Battlemage - Mana Armor
-        if (__instance.isChara && __instance.Chara.Evalue(Constants.FeatBattlemage) > 0)
+        if (__instance.isChara)
         {
-            int manaValue = __instance.Chara.mana.max / 5;
-            __result += manaValue;
-        }
+            Chara chara = __instance.Chara;
+            if (chara.Evalue(Constants.FeatBattlemage) > 0)
+            {
+                int manaValue = chara.mana.max / 5;
+                __result += manaValue;
+            }
 
-        // Sentinel - Double PV if Heavy Armor + Shield.
-        if (__instance.isChara && __instance.Chara.Evalue(Constants.FeatSentinel) > 0 && __instance.Chara.GetArmorSkill() == 122 && __instance.Chara.body.GetAttackStyle() == AttackStyle.Shield)
-        {
-            __result = HelperFunctions.SafeMultiplier(__result, 2);
+            // Sentinel
+            if (chara.Evalue(Constants.FeatSentinel) > 0)
+            {
+                // Double PV if Heavy Armor + Shield.
+                if (chara.GetArmorSkill() == 122 && chara.body.GetAttackStyle() == AttackStyle.Shield)
+                {
+                    __result = HelperFunctions.SafeMultiplier(__result, 2);
+                }
+
+                // PV is set to 0 when in Rage Stance.
+                if (chara.HasCondition<StanceRage>())
+                {
+                    __result = 0;
+                }
+            }
         }
     }
 
@@ -62,7 +75,7 @@ public class CardPatches
                 origin.Say("berserker_revel".langGame(origin.Chara.NameSimple));
                 origin.Chara.HealHP(healAmount);
             }
-            
+
             // Headhunter - Gain Headhunter stacks on Kill.
             if (origin.isChara && origin.Chara.Evalue(Constants.FeatHeadhunter) > 0)
             {
@@ -76,13 +89,13 @@ public class CardPatches
                     origin.Chara.AddCondition<ConHeadhunter>(newStacks);
                 }
             }
-            
+
             // Necromancer - If target is afflicted with ConDeadBeckon, on death will summon a Death Knight
             if (target.HasCondition<ConDeadBeckon>())
             {
                 ConDeadBeckon deadBeckon = target.GetCondition<ConDeadBeckon>();
                 Chara necromancer = EClass._map.zone.FindChara(deadBeckon.NecromancerUID);
-                
+
                 Chara summon = CharaGen.Create(Constants.NecromancerDeathKnightCharaId);
                 summon.isSummon = true;
                 summon.SetLv(target.LV);
@@ -90,13 +103,13 @@ public class CardPatches
                 necromancer.currentZone.AddCard(summon, __instance.pos);
                 summon.PlayEffect("mutation");
                 summon.MakeMinion(necromancer);
-            
+
                 // Equip the Death Knight with full heavy armor + a sword.
-                summon.AddThing(ThingGen.Create("sword", idMat: 40, lv: summon.LV));
-                summon.AddThing(ThingGen.Create("shield_knight", idMat: 40, lv: summon.LV));
-                summon.AddThing(ThingGen.Create("helm_knight", idMat: 40, lv: summon.LV));
-                summon.AddThing(ThingGen.Create("armor_breast", idMat: 40, lv: summon.LV));
-                summon.AddThing(ThingGen.Create("boots_heavy", idMat: 40, lv: summon.LV));
+                summon.AddThing(ThingGen.Create("sword", 40, summon.LV));
+                summon.AddThing(ThingGen.Create("shield_knight", 40, summon.LV));
+                summon.AddThing(ThingGen.Create("helm_knight", 40, summon.LV));
+                summon.AddThing(ThingGen.Create("armor_breast", 40, summon.LV));
+                summon.AddThing(ThingGen.Create("boots_heavy", 40, summon.LV));
             }
 
             // Sovereign - Rout Order will replenish value on kill. Any active Intonation will also replenish value.
@@ -105,7 +118,7 @@ public class CardPatches
                 origin.Chara.GetCondition<ConOrderRout>()?.Mod(1);
                 origin.Chara.GetCondition<ConWeapon>()?.Mod(1);
             }
-            
+
             // Trickster - Phantom Trickster Ids will inflict one of the random Trickster debuffs on their killer.
             if (origin.isChara && origin.Chara.IsHostile(target) && target.id == Constants.PhantomTricksterCharaId)
             {
@@ -116,7 +129,7 @@ public class CardPatches
         }
         return true;
     }
-    
+
     [HarmonyPatch(nameof(Card.HealHP))]
     [HarmonyPrefix]
     internal static bool OnHealHP(Card __instance, int a, HealSource origin)
@@ -133,7 +146,7 @@ public class CardPatches
                 chara.Say("trickster_despair_nullheal".lang());
                 return false;
             }
-            
+
             // War Cleric - Healing is copied to nearby allies with 50% efficacy.
             // Does not trigger on HealSource.None, which is Regen, or duplicated healing, or mods who don't actually add a HealSource.
             if (__instance.Chara.Evalue(Constants.FeatWarCleric) > 0 && origin != HealSource.None)
@@ -141,12 +154,11 @@ public class CardPatches
                 chara.Say("warcleric_healshare".lang());
                 foreach (Chara ally in HelperFunctions.GetCharasWithinRadius(__instance.pos, 3F, __instance.Chara, true, false))
                 {
-                    ally.HealHP(a/2, HealSource.None);
+                    ally.HealHP(a / 2);
                 }
             }
         }
-        
+
         return true;
     }
 }
-

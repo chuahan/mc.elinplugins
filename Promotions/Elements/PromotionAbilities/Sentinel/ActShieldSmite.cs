@@ -1,9 +1,5 @@
 using PromotionMod.Common;
 using PromotionMod.Elements.PromotionFeats;
-using PromotionMod.Stats;
-using PromotionMod.Stats.Sentinel;
-using UnityEngine;
-
 namespace PromotionMod.Elements.PromotionAbilities.Sentinel;
 
 public class ActShieldSmite : ActMelee
@@ -22,13 +18,13 @@ public class ActShieldSmite : ActMelee
 
     public override bool Perform()
     {
-        if (Attack(1f))
+        if (Attack())
         {
+            int power = GetPower(CC);
             int shieldPower = FeatSentinel.GetShieldPower(CC);
-            shieldPower += this.GetPower(CC);
-            // TODO: Do I want a multiplier here?
+            shieldPower += power;
             shieldPower += (int)(TC.MaxHP * .125F);
-            HelperFunctions.ProcSpellDamage(this.GetPower(CC), shieldPower, CC, TC.Chara, AttackSource.Melee, ele: Constants.EleVoid);
+            HelperFunctions.ProcSpellDamage(power, shieldPower, CC, TC.Chara, AttackSource.Melee);
         }
         return true;
     }

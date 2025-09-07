@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
-
 namespace PromotionMod.Elements.PromotionAbilities.Sniper;
 
 public class ActSpreadShot : Ability
@@ -13,10 +12,10 @@ public class ActSpreadShot : Ability
             Msg.Say("classlocked_ability".lang(Constants.SniperId.lang()));
             return false;
         }
-        
+
         return base.CanPerform() && ACT.Ranged.CanPerform();
     }
-    
+
     public override Cost GetCost(Chara c)
     {
         Cost convertToMp = base.GetCost(c);
@@ -26,7 +25,7 @@ public class ActSpreadShot : Ability
 
     public override bool Perform()
     {
-        List<Point> coneRange = EClass._map.ListPointsInArc(CC.pos, TP, 10, 35f);
+        List<Point> coneRange = _map.ListPointsInArc(CC.pos, TP, 10, 35f);
         List<Chara> targets = new List<Chara>();
         foreach (Point p in coneRange)
         {
@@ -51,4 +50,3 @@ public class ActSpreadShot : Ability
         return true;
     }
 }
-

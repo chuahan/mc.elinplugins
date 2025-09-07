@@ -4,7 +4,7 @@ namespace PromotionMod.Stats.Phantom;
 
 public class ConPhantomMark : BaseDebuff
 {
-    [JsonProperty(PropertyName = "S")] public int Stacks = 0;
+    [JsonProperty(PropertyName = "S")] public int Stacks;
 
     public void AddStacks(int stacks)
     {

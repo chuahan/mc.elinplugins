@@ -1,4 +1,3 @@
-using PromotionMod.Common;
 namespace PromotionMod.Stats.Hexer;
 
 // Reduces strength/will

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace PromotionMod.Stats.Harbinger;
 
 /// <summary>
-/// Overloaded Miasma Clone so that I can have Harbingers apply multiple miasmas.
+///     Overloaded Miasma Clone so that I can have Harbingers apply multiple miasmas.
 /// </summary>
 public class ConHarbingerMiasma : TimeDebuff
 {

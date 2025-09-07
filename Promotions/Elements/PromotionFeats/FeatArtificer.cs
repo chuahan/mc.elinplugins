@@ -3,15 +3,15 @@ using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionFeats;
 
 /// <summary>
-/// A wonderous amalgamation of magic and technology. The Artificer focuses on the production of magical tools.
-/// Artificers focus on the development and creation of magical tools of varied sizes and use.
-/// They specialize in the creation, use, and recharging of magical devices. They also are able to produce their own
-/// masterpiece: The Golem.
-/// PC PROMOTION ONLY
-/// They learn the recipe for the Artificer Altar, which allows them to craft items.
-/// Skill - Simple Synthesis - Reloads magical devices/guns for you and your party.
-/// Skill - Improvised Brew - Throw a random potion at enemy or ally.
-/// Passive - Material Hunter - When Sun/Earth/Mana Crystals are mined out of walls, drops two instead.
+///     A wonderous amalgamation of magic and technology. The Artificer focuses on the production of magical tools.
+///     Artificers focus on the development and creation of magical tools of varied sizes and use.
+///     They specialize in the creation, use, and recharging of magical devices. They also are able to produce their own
+///     masterpiece: The Golem.
+///     PC PROMOTION ONLY
+///     They learn the recipe for the Artificer Altar, which allows them to craft items.
+///     Skill - Simple Synthesis - Reloads magical devices/guns for you and your party.
+///     Skill - Improvised Brew - Throw a random potion at enemy or ally.
+///     Passive - Material Hunter - When Sun/Earth/Mana Crystals are mined out of walls, drops two instead.
 /// </summary>
 public class FeatArtificer : PromotionFeat
 {

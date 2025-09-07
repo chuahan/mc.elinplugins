@@ -1,6 +1,5 @@
 using PromotionMod.Common;
 using PromotionMod.Stats.Runeknight;
-
 namespace PromotionMod.Elements.PromotionAbilities.Runeknight;
 
 public class ActRunicGuard : Ability

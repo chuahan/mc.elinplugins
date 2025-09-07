@@ -1,6 +1,5 @@
 using PromotionMod.Common;
 using PromotionMod.Stats.Sovereign;
-
 namespace PromotionMod.Elements.PromotionAbilities.Sovereign;
 
 public class ActFormationOrder : ActSovereignOrder

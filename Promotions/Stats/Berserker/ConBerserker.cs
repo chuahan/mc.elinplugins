@@ -2,12 +2,12 @@ using System.Linq;
 namespace PromotionMod.Stats.Berserker;
 
 /// <summary>
-/// Berserker Class Condition
-/// Berserkers gain stats based on # of debuffs on themselves + the damage missing.
-/// Tier 1: Missing 25% HP - Gain 20% Damage Reduction - Berserk Defiance
-/// Tier 2: Missing 50% HP - Increased Phys Damage and Hit Chance - Berserk Anger
-/// Tier 3: Missing 75% HP - Increased Speed. - Berserk Fury
-/// </summary> 
+///     Berserker Class Condition
+///     Berserkers gain stats based on # of debuffs on themselves + the damage missing.
+///     Tier 1: Missing 25% HP - Gain 20% Damage Reduction - Berserk Defiance
+///     Tier 2: Missing 50% HP - Increased Phys Damage and Hit Chance - Berserk Anger
+///     Tier 3: Missing 75% HP - Increased Speed. - Berserk Fury
+/// </summary>
 public class ConBerserker : ClassCondition
 {
     // Every Debuff grants 1.
@@ -39,7 +39,7 @@ public class ConBerserker : ClassCondition
             fury?.Refresh();
         }
 
-        int unrelentingPower = this.GetBerserkPower();
+        int unrelentingPower = GetBerserkPower();
         if (unrelentingPower != 0)
         {
             if (!owner.HasCondition<ConUnrelenting>())

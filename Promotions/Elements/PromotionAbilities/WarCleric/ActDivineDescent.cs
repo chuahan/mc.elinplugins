@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Stats.WarCleric;
-
 namespace PromotionMod.Elements.PromotionAbilities.WarCleric;
 
 public class ActDivineDescent : Ability
@@ -17,13 +16,13 @@ public class ActDivineDescent : Ability
         if (CC.HasCooldown(Constants.ActDivineDescentId)) return false;
         return base.CanPerform();
     }
-    
+
     public override Cost GetCost(Chara c)
     {
-        return new Cost()
+        return new Cost
         {
             cost = 0,
-            type = CostType.None,
+            type = CostType.None
         };
     }
 
@@ -33,17 +32,17 @@ public class ActDivineDescent : Ability
         basePower += c.Evalue(Constants.FaithId) * 4 + 30;
         return basePower;
     }
-    
+
     public override bool Perform()
     {
-        int power = this.GetPower(CC);
+        int power = GetPower(CC);
         int damage = HelperFunctions.SafeDice(Constants.WarClericDivineDescentAlias, power);
-        CC.AddCondition<ConDivineDescent>(this.GetPower(CC));
-        
+        CC.AddCondition<ConDivineDescent>(GetPower(CC));
+
         // Cause a massive holy explosion that heals yourself and allies, damages enemies.
         List<Chara> targetsHit = new List<Chara>();
         Effect spellEffect = Effect.Get("Element/ball_Holy");
-        foreach (Point tile in EClass._map.ListPointsInCircle(CC.pos, 3f, mustBeWalkable: false, los:false))
+        foreach (Point tile in _map.ListPointsInCircle(CC.pos, 3f, false, false))
         {
             int distance = tile.Distance(CC.pos);
             foreach (Chara target in tile.ListCharas().Where(target => !targetsHit.Contains(target)))
@@ -66,11 +65,11 @@ public class ActDivineDescent : Ability
                         debuff.Kill();
                     }
                 }
-                    
+
                 // Mark Target as hit.
                 targetsHit.Add(target);
             }
-            
+
             // Get distance from the origin. Use that to add delay to the explosion,
             float delay = distance * 0.7F;
             TweenUtil.Delay(delay, delegate

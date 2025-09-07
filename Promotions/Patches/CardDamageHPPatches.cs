@@ -1,15 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
 using HarmonyLib;
 using PromotionMod.Common;
-using PromotionMod.Elements.PromotionAbilities.Hexer;
-using PromotionMod.Elements.PromotionAbilities.Luminary;
 using PromotionMod.Elements.PromotionFeats;
 using PromotionMod.Stats;
-using PromotionMod.Stats.Berserker;
 using PromotionMod.Stats.Harbinger;
 using PromotionMod.Stats.Luminary;
 using PromotionMod.Stats.Runeknight;
@@ -31,10 +26,9 @@ public class CardDamageHPPatches
         AttackSource.Shockwave,
         AttackSource.None
     };
-    
+
     [HarmonyPatch(nameof(Card.DamageHP), typeof(int), typeof(int), typeof(int), typeof(AttackSource), typeof(Card), typeof(bool), typeof(Thing), typeof(Chara))]
     [HarmonyPrefix]
-    // TODO: Re-arrange all of these to adjust interactions.
     internal static bool OnDamageHP(Card __instance, ref int dmg, ref int ele, ref int eleP, AttackSource attackSource, Card origin, bool showEffect, Thing weapon)
     {
         if (__instance.isChara && ActiveAttackSources.Contains(attackSource))
@@ -43,16 +37,10 @@ public class CardDamageHPPatches
             Chara originChara = origin.Chara;
 
             // Build condition dictionaries for fast lookup
-            var targetConditions = target.conditions.GroupBy(c => c.GetType()).ToDictionary(g => g.Key, g => g.First());
-            var originConditions = originChara?.conditions?.GroupBy(c => c.GetType()).ToDictionary(g => g.Key, g => g.First());
+            Dictionary<Type, Condition> targetConditions = target.conditions.GroupBy(c => c.GetType()).ToDictionary(g => g.Key, g => g.First());
+            Dictionary<Type, Condition>? originConditions = originChara?.conditions?.GroupBy(c => c.GetType()).ToDictionary(g => g.Key, g => g.First());
 
             List<Chara> targetAllies = HelperFunctions.GetCharasWithinRadius(target.pos, 5f, target, true, false);
-            
-            // Berserker - Berserkers under the effect of bloodlust will automatically try to retaliate against Melee Attacks
-            if (targetConditions.ContainsKey(typeof(ConBloodlust)) && attackSource == AttackSource.Melee || attackSource == AttackSource.MagicSword && origin is { isChara: true })
-            {
-                new ActMelee().Perform(target, origin, origin.pos);
-            }
 
             // Harbinger - Every active Miasma on the target boosts damage from Harbingers by 5%.
             if (targetConditions.ContainsKey(typeof(ConHarbingerMiasma)) && origin.isChara && origin.Evalue(Constants.FeatHarbinger) > 0)
@@ -66,7 +54,7 @@ public class CardDamageHPPatches
             {
                 dmg = HelperFunctions.SafeMultiplier(dmg, 1.25F);
             }
-            
+
             // Hexer - When applying spell damage there is a 10% chance to force apply a hex out of a pool.
             if (origin.Evalue(Constants.FeatHexer) > 0 && attackSource == AttackSource.None)
             {
@@ -95,29 +83,30 @@ public class CardDamageHPPatches
                 luminaryAlly.DamageHP(dmg, ele, eleP, attackSource, origin, showEffect, weapon);
                 return false;
             }
-            
+
             // Luminary - When taking damage, if currently Parrying, reduce damage to zero.
             if (targetConditions.ContainsKey(typeof(ConParry)))
             {
                 dmg = 0;
                 target.AddCooldown(Constants.ActParryId, -5);
             }
-            
+
             // Luminary - Reduces damage based on Class Condition Stacks (1% per stack, caps at 30)
             if (targetConditions.ContainsKey(typeof(ConLuminary)))
             {
                 ConLuminary luminary = targetConditions.GetValueOrDefault(typeof(ConLuminary)) as ConLuminary;
-                if (luminary != null) dmg = (int)(dmg * ((100 - luminary.GetStacks() * 1F) / 100));
+                if (luminary != null) dmg = (int)(dmg * (1 - luminary.GetStacks() * 0.01F));
+
             }
-            
+
             // Necromancer - Bone Armor. Reduces damage based on how many Skeleton Minions you have.
             // Caps at 75% damage reduction
             if (target.Evalue(Constants.FeatNecromancer) > 0)
             {
                 int boneArmyCount = __instance.Chara.currentZone.ListMinions(__instance.Chara).Count(c => c.HasTag(CTAG.undead));
-                dmg = (int)(dmg * ((100 - Math.Max(75, boneArmyCount * 2.5F)) / 100));
+                dmg = (int)(dmg * (1 - Math.Min(0.75, boneArmyCount * 0.025F)));
             }
-            
+
             // Rune Knight - Elemental Attunement. If damage received matches your attuned element, all damage is absorbed and added as stockpiled damage.
             if (targetConditions.ContainsKey(typeof(ConElementalAttunement)))
             {
@@ -126,32 +115,33 @@ public class CardDamageHPPatches
                 {
                     attunement.StoredDamage += dmg;
                     dmg = 0;
+                    return false;
                 }
             }
-            
+
             // Rune Knight - Runic Guard is removed and Elemental Attunement is added. All damage is absorbed.
             if (targetConditions.ContainsKey(typeof(ConRunicGuard)) && ele != Constants.EleVoid)
             {
                 target.RemoveCondition<ConRunicGuard>();
-                ConElementalAttunement attunement = (target.AddCondition<ConElementalAttunement>() as ConElementalAttunement);
+                ConElementalAttunement attunement = target.AddCondition<ConElementalAttunement>() as ConElementalAttunement;
                 if (attunement != null)
                 {
                     attunement.AttunedElement = ele;
                 }
-                
+
                 // Absorbing up to 20% of the damage as mana and stamina.
                 int restorationAmount = Math.Min(dmg / 5, 20);
                 target.mana.Mod(restorationAmount);
                 target.stamina.Mod(restorationAmount);
-
-                dmg = 0;
+                return false;
             }
-            
+
             // Saint - If the Saint and the target share the same religion, the Saint can attempt to convert the opponent.
             if (origin.Chara.Evalue(Constants.FeatSaint) > 0 && origin.Chara.faith.id == target.faith.id)
             {
                 if (Math.Max(origin.Evalue(85), origin.Evalue(Constants.FaithId)) > target.Evalue(Constants.FaithId) &&
-                    (!target.IsMinion && target.CanBeTempAlly(origin.Chara)))
+                    !target.IsMinion &&
+                    target.CanBeTempAlly(origin.Chara))
                 {
                     target.Say("dominate_machine", target, origin);
                     target.PlayEffect("boost");
@@ -159,9 +149,10 @@ public class CardDamageHPPatches
                     target.ShowEmo(Emo.love);
                     target.lastEmo = Emo.angry;
                     target.Chara.MakeMinion(origin.Chara.IsPCParty ? EClass.pc : origin.Chara);
+                    return false;
                 }
             }
-             
+
             // Sovereign - Law Stance Reduces damage by 10%.
             if (targetConditions.ContainsKey(typeof(ConSovereignLaw)))
             {
@@ -172,55 +163,57 @@ public class CardDamageHPPatches
             {
                 dmg = (int)(dmg * 1.1F);
             }
-            
+
             // Sovereign - Barricade Order : Reduces damage based on # of allies neighboring you with OrderBarricade
+            // 5% damage reduced per ally in coherence.
             if (targetConditions.ContainsKey(typeof(ConOrderBarricade)))
             {
                 float barricadeCoherence = target.pos.ListCharasInNeighbor(delegate(Chara c)
-                {
-                    if (c == Act.CC || c.IsHostile(Act.CC) || !(c.conditions.Any(cond => cond.GetType() == typeof(ConOrderBarricade))))
-                    {
-                        return true;
-                    }
-                    return false;
-                }).Count * 5;
+                                           {
+                                               if (c == Act.CC || c.IsHostile(Act.CC) || !c.conditions.Any(cond => cond.GetType() == typeof(ConOrderBarricade)))
+                                               {
+                                                   return true;
+                                               }
+                                               return false;
+                                           }).Count *
+                                           0.05F;
 
-                dmg = (int)(dmg * ((100 - barricadeCoherence) / 100F));
+                dmg = (int)(dmg * (1 - barricadeCoherence));
 
             }
-            
+
             // Spellblade - If the Spellblade is using Siphoning Blade. do no damage and instead deal the 50% damage as MP instead, absorbing it.
             if (origin.Chara.Evalue(Constants.FeatSpellblade) > 0)
             {
                 if (originConditions != null && originConditions.ContainsKey(typeof(ConSiphoningBlade)))
                 {
                     dmg = (int)(dmg * 0.5F);
-                    target.mana.Mod(0-dmg);
+                    target.mana.Mod(0 - dmg);
                     origin.Chara.mana.Mod(dmg);
                     return false;
                 }
             }
-            
+
             // Spellblade and Elementalist - Excel at applying status effects. eleP doubled.
             if (origin.Chara.Evalue(Constants.FeatSpellblade) > 0 || origin.Chara.Evalue(Constants.FeatElementalist) > 0)
             {
-                eleP = HelperFunctions.SafeMultiplier(eleP, 2);   
+                eleP = HelperFunctions.SafeMultiplier(eleP, 2);
             }
-            
-            
+
+
             // War Cleric - Sol Blade causes the healer to absorb 30% of the damage dealt.
             if (originChara != null && originChara.Evalue(Constants.FeatWarCleric) > 0 && originConditions != null && originConditions.ContainsKey(typeof(ConSolBlade)))
             {
                 int heal = (int)(dmg * 0.3F);
                 originChara.HealHP(heal, HealSource.Magic);
             }
-            
+
             // War Cleric - Sanctuary reduces all damage dealt by 75%.
             if (targetConditions.ContainsKey(typeof(ConSanctuary)))
             {
                 dmg = (int)(dmg * 0.25F);
             }
-            
+
             // Protection - Protects flat amount of damage.
             if (targetConditions.ContainsKey(typeof(ConProtection)))
             {
@@ -238,4 +231,3 @@ public class CardDamageHPPatches
         return true;
     }
 }
-

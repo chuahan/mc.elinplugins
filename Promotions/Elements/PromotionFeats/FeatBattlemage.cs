@@ -1,27 +1,25 @@
 using System.Collections.Generic;
-using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionFeats;
 
 /// <summary>
-/// Pen in one hand, sword in the other. The Battlemages are frontline mages tempered by the fires of war.
-/// Battlemages focus on not merely being on the frontline, but becoming the frontline itself.
-/// They specialize in heavy area damage, knocking enemies into disarray.
-/// Spell - Cannon and Hammer Spells - Converted spells that operate with heavy AOE influence.
-/// Spell - Shield Bits - Shield Bits 75% physical damage reduction, taunt, and loyal.
-/// TODO (P3) Give Battlemages a skill?
-/// 
-/// Passive - Magic Armor - Increases PV based on Max Mana.
-/// Passive - Shield Bit Conversion - Bits summoned are replaced with Shield bits.
-/// Passive - Conspectus of War - Converts Elemental Spellbooks into Cannon or Hammer spells.
+///     Pen in one hand, sword in the other. The Battlemages are frontline mages tempered by the fires of war.
+///     Battlemages focus on not merely being on the frontline, but becoming the frontline itself.
+///     They specialize in heavy area damage, knocking enemies into disarray.
+///     Spell - Cannon and Hammer Spells - Converted spells that operate with heavy AOE influence.
+///     Spell - Shield Bits - Shield Bits 75% physical damage reduction, taunt, and loyal.
+///     TODO (P3) Give Battlemages a skill?
+///     TODO (P2) Consider making Cannon and Hammer spells simply patches of Arrow/Sword or Hand. Probably Less work.
+///     Passive - Magic Armor - Increases PV based on Max Mana.
+///     Passive - Shield Bit Conversion - Bits summoned are replaced with Shield bits.
+///     Passive - Conspectus of War - Converts Elemental Spellbooks into Cannon or Hammer spells.
 /// </summary>
 public class FeatBattlemage : PromotionFeat
 {
     public override string PromotionClassId => Constants.BattlemageId;
     public override int PromotionClassFeatId => Constants.FeatBattlemage;
-    public override List<int> PromotionAbilities => new List<int>
-    {
-    };
+
+    public override List<int> PromotionAbilities => new List<int>();
 
     protected override void ApplyInternalNPC(Chara c)
     {

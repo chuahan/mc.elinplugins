@@ -13,7 +13,7 @@ public class StRage : Ability
         }
         return base.CanPerform();
     }
-    
+
     public override bool Perform()
     {
         // Snapshots PV, including StanceRestraint

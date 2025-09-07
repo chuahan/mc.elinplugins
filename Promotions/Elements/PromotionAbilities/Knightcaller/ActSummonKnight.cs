@@ -39,9 +39,7 @@ public class ActSummonKnight : Ability
         if (CC.currentZone.ListMinions(CC).FirstOrDefault(x => x.trait is TraitSpiritKnightCaptain) != null)
         {
             // There can only be one of each active knight captain in the zone.
-            List<string> knightCaptains = new List<string>
-            {
-            };
+            List<string> knightCaptains = new List<string>();
             if (CC.currentZone.FindChara(Constants.ValeroCharaId) == null) knightCaptains.Add(Constants.ValeroCharaId);
             if (CC.currentZone.FindChara(Constants.DinatogCharaId) == null) knightCaptains.Add(Constants.DinatogCharaId);
             if (CC.currentZone.FindChara(Constants.ArkunCharaId) == null) knightCaptains.Add(Constants.ArkunCharaId);

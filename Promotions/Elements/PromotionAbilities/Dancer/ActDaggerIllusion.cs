@@ -26,7 +26,7 @@ public class ActDaggerIllusion : Ability
         if (CC.HasCondition<StancePartnerStyle>())
         {
             StancePartnerStyle partnerStyle = CC.GetCondition<StancePartnerStyle>();
-            partner = EClass._map.FindChara(partnerStyle.PartnerUID);
+            partner = _map.FindChara(partnerStyle.PartnerUID);
             hasPartner = true;
         }
 

@@ -16,37 +16,37 @@ public class SpElementalHammer : Spell
 
     public override bool Perform()
     {
-        ActEffect.ProcAt(EffectId.Sword, this.GetPower(CC), BlessedState.Normal, CC, TC, TP, true,  new ActRef
+        ActEffect.ProcAt(EffectId.Sword, GetPower(CC), BlessedState.Normal, CC, TC, TP, true, new ActRef
         {
             act = this,
-            aliasEle = this._source.aliasRef,
-            origin = CC,
+            aliasEle = _source.aliasRef,
+            origin = CC
         });
         List<Point> cleaveTiles = new List<Point>();
-        Act.TP.ForeachNeighbor(delegate(Point p)
+        TP.ForeachNeighbor(delegate(Point p)
         {
-            if (!p.Equals(Act.TP))
+            if (!p.Equals(TP))
             {
                 cleaveTiles.Add(p.Copy());
             }
         });
-        
+
         foreach (Point item2 in cleaveTiles)
         {
             foreach (Card item3 in item2.ListCards().Copy())
             {
-                if (!Act.CC.IsAliveInCurrentZone)
+                if (!CC.IsAliveInCurrentZone)
                 {
                     break;
                 }
-                
-                if (item3.trait.CanBeAttacked || (item3.isChara && item3.Chara.IsHostile(Act.CC)))
+
+                if (item3.trait.CanBeAttacked || item3.isChara && item3.Chara.IsHostile(CC))
                 {
-                    ActEffect.ProcAt(EffectId.Sword, this.GetPower(CC), BlessedState.Normal, CC, TC, TP, true,  new ActRef
+                    ActEffect.ProcAt(EffectId.Sword, GetPower(CC), BlessedState.Normal, CC, TC, TP, true, new ActRef
                     {
                         act = this,
-                        aliasEle = this._source.aliasRef,
-                        origin = CC,
+                        aliasEle = _source.aliasRef,
+                        origin = CC
                     });
                 }
             }

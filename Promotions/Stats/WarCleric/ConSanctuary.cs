@@ -1,4 +1,3 @@
-using PromotionMod.Common;
 namespace PromotionMod.Stats.WarCleric;
 
 public class ConSanctuary : BaseBuff

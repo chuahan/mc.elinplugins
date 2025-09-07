@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using HarmonyLib;
 using PromotionMod.Common;
-using PromotionMod.Stats.Berserker;
 using PromotionMod.Stats.Hermit;
 using PromotionMod.Stats.Ranger;
 using PromotionMod.Stats.Sharpshooter;
 using PromotionMod.Stats.Sovereign;
-using PromotionMod.Trait;
 using PromotionMod.Trait.Machinist;
 namespace PromotionMod.Patches;
 
@@ -40,7 +37,7 @@ public class AttackProcessPatches
                 maxRoll = true;
                 dmgMulti += 0.1F;
             }
-            
+
             // Hermits - If you have Shadow Shroud on, your attack has a 25% chance of revealing you, but your attacks will also do additional damage.
             ConShadowShroud shrouded = __instance.CC.GetCondition<ConShadowShroud>();
             if (shrouded != null)
@@ -49,18 +46,18 @@ public class AttackProcessPatches
                 dmgMulti += .25F;
             }
         }
-        
+
         // Sharpshooter - Charged Chamber applies the mana consumed (power) as a damage multiplier. Caps at 5x damage.
-        // TODO: This might... be a little too strong later?
+        // TODO (P3) This might... be a little too strong later?
         if (__instance.CC.Chara.Evalue(Constants.FeatSharpshooter) > 0 && __instance.CC.HasCondition<ConChargedChamber>() && __instance.IsRanged)
         {
             ConChargedChamber charge = __instance.CC.GetCondition<ConChargedChamber>();
-            dmgMulti += Math.Max((charge.power / 100F), 5F);
+            dmgMulti += Math.Max(charge.power / 100F, 5F);
         }
-        
+
         return true;
     }
-    
+
     [HarmonyPatch(nameof(AttackProcess.Perform))]
     [HarmonyPostfix]
     internal static void PerformPostfixPatch(AttackProcess __instance, int count, bool hasHit, ref float dmgMulti, ref bool maxRoll, bool subAttack)
@@ -70,24 +67,25 @@ public class AttackProcessPatches
         {
             // Calculate the explosive power from the Rocket Power
             int power = EClass.curve((100 + __instance.weapon.ammoData._material.hardness * 10) * (100 + __instance.weapon.ammoData.encLV) / 100, 400, 100);
-            
+
             // Proc an explosion at the location.
-            ActEffect.ProcAt(EffectId.Explosive, power, BlessedState.Normal, __instance.CC, __instance.TC, __instance.TC.pos, isNeg: true, new ActRef
+            ActEffect.ProcAt(EffectId.Explosive, power, BlessedState.Normal, __instance.CC, __instance.TC, __instance.TC.pos, true, new ActRef
             {
                 refThing = __instance.weapon.ammoData,
                 aliasEle = "eleImpact"
             });
         }
-        
+
         // Ranger - Gimmick Coatings. Does not work on Canes or Rocket Launchers.
         if (__instance.CC.HasCondition<ConGimmickCoating>() &&
             !subAttack &&
             __instance.TC.isChara &&
             __instance is { hit: true, IsRanged: true, toolRange: not null } &&
-            __instance.weapon.trait is not TraitToolRangeCane && __instance.weapon.trait is not TraitToolRocketLauncher)
+            __instance.weapon.trait is not TraitToolRangeCane &&
+            __instance.weapon.trait is not TraitToolRocketLauncher)
         {
             ConGimmickCoating coating = __instance.CC.GetCondition<ConGimmickCoating>();
-            if (Enum.TryParse<Constants.RangerCoatings>(coating.GimmickType, out Constants.RangerCoatings coatingType))
+            if (Enum.TryParse(coating.GimmickType, out Constants.RangerCoatings coatingType))
             {
                 switch (coatingType)
                 {
@@ -135,7 +133,7 @@ public class AttackProcessPatches
         {
             __instance.TC.Chara.RemoveCondition<ConChargedChamber>();
         }
-        
+
         // Sovereign - Order Sword allows follow up attacks from allies in Coherency.
         ConOrderSword orderSword = Act.CC.GetCondition<ConOrderSword>();
         if (orderSword is { FollowUpAvailable: true } && !subAttack)
@@ -148,7 +146,7 @@ public class AttackProcessPatches
                 {
                     return false;
                 }
-            
+
                 // Melee / Ranged / Throw attack.
                 if (ACT.Melee.CanPerform(c, __instance.TC, __instance.TC.pos))
                 {
@@ -168,7 +166,7 @@ public class AttackProcessPatches
                     followUpPerformed = true;
                     return true;
                 }
-            
+
                 return false;
             });
 

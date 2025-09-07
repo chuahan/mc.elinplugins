@@ -1,4 +1,3 @@
-using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Phantom;
 
 public class ActSchwarzeKatzeMelee : ActMelee

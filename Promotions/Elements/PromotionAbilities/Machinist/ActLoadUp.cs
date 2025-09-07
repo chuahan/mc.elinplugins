@@ -9,9 +9,9 @@ public class ActLoadUp : Ability
     {
         91, // Armor Piercing - Vorpal
         850, // Incendiary - ConvertFire
-        66, // Tracer Rounds - Increased Accuracy
+        66 // Tracer Rounds - Increased Accuracy
     };
-    
+
     public override bool CanPerform()
     {
         if (CC.Evalue(Constants.FeatMachinist) == 0)
@@ -21,7 +21,7 @@ public class ActLoadUp : Ability
         }
         return base.CanPerform();
     }
-    
+
     public override bool Perform()
     {
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, true, true))
@@ -49,12 +49,12 @@ public class ActLoadUp : Ability
 
                 int randomEffect = BulletMods.RandomItem();
                 ammo.elements.ModBase(randomEffect, 50);
-                
-                ammo.SetEncLv(Math.Min(CC.LV, this.GetPower(CC) / 100));
+
+                ammo.SetEncLv(Math.Min(CC.LV, GetPower(CC) / 100));
                 rangedWeapon.ammoData = ammo;
             }
         }
-        
+
         return true;
     }
 }

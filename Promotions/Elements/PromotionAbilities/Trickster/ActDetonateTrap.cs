@@ -1,6 +1,5 @@
 using PromotionMod.Common;
 using PromotionMod.Trait.Trickster;
-
 namespace PromotionMod.Elements.PromotionAbilities.Trickster;
 
 public class ActDetonateTrap : Ability
@@ -15,13 +14,13 @@ public class ActDetonateTrap : Ability
         if (TP.Installed == null || TP.GetInstalled<TraitTricksterArcaneTrap>() == null) return false;
         return base.CanPerform();
     }
-    
+
     public override Cost GetCost(Chara c)
     {
-        return new Cost()
+        return new Cost
         {
             type = CostType.None,
-            cost = 0,
+            cost = 0
         };
     }
 

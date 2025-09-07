@@ -3,8 +3,8 @@ using PromotionMod.Stats.Dancer;
 namespace PromotionMod.Elements.PromotionAbilities.Dancer;
 
 /// <summary>
-/// Dancer Ability
-/// 2 Radius Swarm. For each enemy hit it applies a damage reduction to your next blow.
+///     Dancer Ability
+///     2 Radius Swarm. For each enemy hit it applies a damage reduction to your next blow.
 /// </summary>
 public class ActSwordFouette : Ability
 {
@@ -25,7 +25,7 @@ public class ActSwordFouette : Ability
         if (CC.HasCondition<StancePartnerStyle>())
         {
             StancePartnerStyle partnerStyle = CC.GetCondition<StancePartnerStyle>();
-            partner = EClass._map.FindChara(partnerStyle.PartnerUID);
+            partner = _map.FindChara(partnerStyle.PartnerUID);
             hasPartner = true;
         }
 

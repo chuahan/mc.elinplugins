@@ -1,4 +1,3 @@
-using PromotionMod.Elements.Abilities.Dancer;
 namespace PromotionMod.Stats.Dancer;
 
 public class StanceEnergyDance : StanceDance

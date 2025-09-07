@@ -1,7 +1,5 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.WarCleric;
 using PromotionMod.Stats.WitchHunter;
-
 namespace PromotionMod.Elements.PromotionAbilities.WitchHunter;
 
 public class ActNullZone : Ability
@@ -16,16 +14,16 @@ public class ActNullZone : Ability
         if (CC.HasCooldown(Constants.ActNullZoneId)) return false;
         return base.CanPerform();
     }
-    
+
     public override Cost GetCost(Chara c)
     {
-        return new Cost()
+        return new Cost
         {
             type = CostType.None,
-            cost = 0,
+            cost = 0
         };
     }
-    
+
     public override bool Perform()
     {
         CC.AddCondition<ConNullZone>();

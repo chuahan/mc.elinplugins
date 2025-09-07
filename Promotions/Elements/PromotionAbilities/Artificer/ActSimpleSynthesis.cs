@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
-using PromotionMod.Trait;
 using PromotionMod.Trait.ArtificerTools;
 using PromotionMod.Trait.Machinist;
 namespace PromotionMod.Elements.PromotionAbilities.Artificer;
@@ -54,31 +53,31 @@ public class ActSimpleSynthesis : Ability
             switch (rangedWeapon.trait)
             {
                 case TraitToolRangeCrossbow:
-                     ammo = ThingGen.Create("quarrel", "ether");
-                     ammo.SetNum(30-currentAmmoCount);
+                    ammo = ThingGen.Create("quarrel", "ether");
+                    ammo.SetNum(30 - currentAmmoCount);
                     break;
                 case TraitToolRangeBow:
                     ammo = ThingGen.Create("arrow", "ether");
-                    ammo.SetNum(30-currentAmmoCount);
+                    ammo.SetNum(30 - currentAmmoCount);
                     break;
                 case TraitToolRangeGunEnergy:
                     ammo = ThingGen.Create("bullet_energy", "ether");
-                    ammo.SetNum(30-currentAmmoCount);
+                    ammo.SetNum(30 - currentAmmoCount);
                     break;
                 case TraitToolRangeGun:
                     ammo = ThingGen.Create("bullet", "ether");
-                    ammo.SetNum(30-currentAmmoCount);
+                    ammo.SetNum(30 - currentAmmoCount);
                     break;
                 case TraitToolRocketLauncher:
                     ammo = ThingGen.Create("rocket", "ether");
-                    ammo.SetNum(30-currentAmmoCount);
+                    ammo.SetNum(30 - currentAmmoCount);
                     break;
                 default:
                     continue; // Doesn't use ammo.
             }
 
             // Ammo level is based off of your power.
-            ammo.SetEncLv(Math.Min(CC.LV, this.GetPower(CC) / 100));
+            ammo.SetEncLv(Math.Min(CC.LV, GetPower(CC) / 100));
             ammo.ChangeMaterial("ether");
             ammo.isNPCProperty = true;
             ammo.isGifted = true;

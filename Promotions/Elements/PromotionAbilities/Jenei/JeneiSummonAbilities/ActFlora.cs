@@ -1,15 +1,14 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
-using PromotionMod.Patches;
-namespace PromotionMod.Elements.PromotionAbilities.Jenei;
+namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
 
 /// <summary>
-/// Lightning. Inflicts Sleep. Petal Rain.
+///     Lightning. Inflicts Sleep. Petal Rain.
 /// </summary>
 public class ActFlora : ActJeneiSummonSequence
 {
     public override float SummonMultiplier => 0.09F;
-    
+
     public override bool Perform()
     {
         List<Chara> targets = HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, false, true);
@@ -19,12 +18,12 @@ public class ActFlora : ActJeneiSummonSequence
             TC.PlayEffect("hit_slash").SetScale(1f);
 
             // Do Damage.
-            int damage = this.CalculateDamage(this.GetPower(CC), targets[i].pos.Distance(CC.pos), targets[i]);
-            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleLightning);
+            int damage = CalculateDamage(GetPower(CC), targets[i].pos.Distance(CC.pos), targets[i]);
+            HelperFunctions.ProcSpellDamage(GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleLightning);
 
-            if (EClass.rnd(2) == 0 && targets[i].IsAliveInCurrentZone) 
+            if (EClass.rnd(2) == 0 && targets[i].IsAliveInCurrentZone)
             {
-                targets[i].AddCondition<ConSleep>(100, force: true);
+                targets[i].AddCondition<ConSleep>(100, true);
             }
         }
 

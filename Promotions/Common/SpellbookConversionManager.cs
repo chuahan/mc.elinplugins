@@ -3,14 +3,14 @@ using Cwl.Helper.Extensions;
 namespace PromotionMod.Common;
 
 /// <summary>
-/// Some Promotion classes can convert spellbooks into spells specific for their class.
-/// Druids can convert any summoning book into Summon Tree Ent.
-/// Luminaries can convert any intonation spell into Holy Intonation.
-/// Battlemage can convert any elemental books into Hammer or Cannon spells of the same element
-/// Necromancers can convert any summoning books into Summon Skeleton.
-/// Jenei can convert summon any basic elemental books into Fire/Cold/Lightning/Impact.
-/// Saints can convert any basic elemental books into Holy Element.
-/// Machinists can convert any summoning book into Summon Turret.
+///     Some Promotion classes can convert spellbooks into spells specific for their class.
+///     Druids can convert any summoning book into Summon Tree Ent.
+///     Luminaries can convert any intonation spell into Holy Intonation.
+///     Battlemage can convert any elemental books into Hammer or Cannon spells of the same element
+///     Necromancers can convert any summoning books into Summon Skeleton.
+///     Jenei can convert summon any basic elemental books into Fire/Cold/Lightning/Impact.
+///     Saints can convert any basic elemental books into Holy Element.
+///     Machinists can convert any summoning book into Summon Turret.
 /// </summary>
 public static class SpellbookConversionManager
 {
@@ -39,7 +39,7 @@ public static class SpellbookConversionManager
         },
         {
             Constants.FeatMachinist, new MachinistSpellbookConversion()
-        },
+        }
     };
 
     public static bool CanConvertSpellbook(Chara chara, TraitSpellbook spellbook)
@@ -204,6 +204,7 @@ public class BattlemageSpellbookConversion : SpellbookConversion
         506,
         507
     };
+
     public override int PromotionFeatId => Constants.FeatBattlemage;
 
     public override HashSet<int> ConvertableBooks => new HashSet<int>
@@ -431,6 +432,7 @@ public class JeneiSpellbookConversion : SpellbookConversion
         2,
         15
     };
+
     public override int PromotionFeatId => Constants.FeatJenei;
 
     public override HashSet<int> ConvertableBooks => new HashSet<int>
@@ -882,7 +884,7 @@ public class SpellbladeSpellbookConversion : SpellbookConversion
         50615, //funnel_Impact
         50715, //miasma_Impact
         50815, //weapon_Impact
-        50915, //puddle_Impact
+        50915 //puddle_Impact
     };
 
     public override void ConvertSpellbook(ref TraitSpellbook spellbook)

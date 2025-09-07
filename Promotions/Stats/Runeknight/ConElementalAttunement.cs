@@ -4,17 +4,17 @@ namespace PromotionMod.Stats.Runeknight;
 
 public class ConElementalAttunement : BaseBuff
 {
-    [JsonProperty(PropertyName = "D")]
-    public int StoredDamage;
 
     [JsonProperty(PropertyName = "E")] public int AttunedElement;
+
+    [JsonProperty(PropertyName = "D")] public int StoredDamage;
 
     public override bool TimeBased => true;
 
     public override void OnStart()
     {
-        this.StoredDamage = 0;
-        this.AttunedElement = Constants.EleFire;
+        StoredDamage = 0;
+        AttunedElement = Constants.EleFire;
         base.OnStart();
     }
 

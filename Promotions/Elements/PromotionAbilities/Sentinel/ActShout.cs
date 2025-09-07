@@ -1,5 +1,4 @@
 using PromotionMod.Common;
-using PromotionMod.Stats;
 using PromotionMod.Stats.Sentinel;
 namespace PromotionMod.Elements.PromotionAbilities.Sentinel;
 
@@ -23,7 +22,7 @@ public class ActShout : Ability
             ConTaunted taunted = target.AddCondition<ConTaunted>(force: true) as ConTaunted;
             taunted.TaunterUID = CC.uid;
         }
-        
+
         CC.AddCooldown(Constants.ActShoutId, 5);
         CC.TalkRaw("sentinelTaunt".langList().RandomItem());
         return true;

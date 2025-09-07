@@ -4,7 +4,7 @@ namespace PromotionMod.Trait.Ranger;
 public class TraitRangerPunjiTrap : TraitFactionTrap
 {
     public override string TrapName => Constants.RangerPunjiTrapAlias;
-    
+
     public override void OnActivateTrap(Chara c)
     {
         c.PlaySound("trap");

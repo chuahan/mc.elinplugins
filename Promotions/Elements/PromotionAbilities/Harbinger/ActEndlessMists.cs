@@ -5,8 +5,8 @@ using PromotionMod.Stats.Harbinger;
 namespace PromotionMod.Elements.PromotionAbilities.Harbinger;
 
 /// <summary>
-/// Harbinger Ability
-/// Extends the duration of all the Miasma debuffs on nearby enemies.
+///     Harbinger Ability
+///     Extends the duration of all the Miasma debuffs on nearby enemies.
 /// </summary>
 public class ActEndlessMists : Ability
 {

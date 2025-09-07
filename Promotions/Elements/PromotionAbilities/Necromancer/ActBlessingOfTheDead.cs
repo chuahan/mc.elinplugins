@@ -1,6 +1,5 @@
 using PromotionMod.Common;
 using PromotionMod.Stats;
-
 namespace PromotionMod.Elements.PromotionAbilities;
 
 public class ActBlessingOfTheDead : Ability
@@ -16,14 +15,14 @@ public class ActBlessingOfTheDead : Ability
         if (!TC.isChara || !TC.IsMinion || TC.Chara.master != CC || !TC.Chara.HasTag(CTAG.undead)) return false;
         return base.CanPerform();
     }
-    
+
     public override Cost GetCost(Chara c)
     {
         Cost convertToMp = base.GetCost(c);
         convertToMp.type = CostType.MP;
         return convertToMp;
     }
-    
+
     public override bool Perform()
     {
         CC.TalkRaw("necromancerHeal".langList().RandomItem());
@@ -31,10 +30,10 @@ public class ActBlessingOfTheDead : Ability
         if (TC.Chara.id == "sister_undead")
         {
             Msg.Say("jureAngy".langGame());
-            EClass.player.ModKarma(-1);
+            player.ModKarma(-1);
         }
         // Target's Remaining HP is scaled down.
-        int healthPercent = (int)HelperFunctions.SigmoidScaling(this.GetPower(CC), 40, 75);
+        int healthPercent = (int)HelperFunctions.SigmoidScaling(GetPower(CC), 40, 75);
         int healthValue = TC.Chara.hp * (healthPercent / 100);
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, true, true))
         {

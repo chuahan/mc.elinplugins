@@ -1,6 +1,5 @@
 using PromotionMod.Common;
 using PromotionMod.Stats;
-
 namespace PromotionMod.Elements.PromotionAbilities.Spellblade;
 
 public class ActCrushingStrike : ActMelee
@@ -14,8 +13,8 @@ public class ActCrushingStrike : ActMelee
         }
         return base.CanPerform();
     }
-    
-    // TODO: I kind of want this one to be SP.
+
+    // TODO (P3) I kind of want this one to be SP.
     public override Cost GetCost(Chara c)
     {
         Cost convertToMp = base.GetCost(c);
@@ -27,17 +26,17 @@ public class ActCrushingStrike : ActMelee
     {
         // Snapshot the HP Before and After.
         int currentHP = TC.hp;
-        
+
         // Get the body parts of the target.
         BodySlot partTarget = TC.Chara.body.slots.RandomItem();
-        int breakAmount = (int)HelperFunctions.SigmoidScaling(this.GetPower(CC), 10, 25);
+        int breakAmount = (int)HelperFunctions.SigmoidScaling(GetPower(CC), 10, 25);
         Attack();
-        
+
         // If the HP changed after the attack, we'll consider it a hit.
         if (TC.hp < currentHP)
         {
-            int power = this.GetPower(CC);
-        
+            int power = GetPower(CC);
+
             // Depending on the Body Part, attempt to inflict different condition(s).
             CC.Say("spellblade_crushing_strike".lang(CC.NameSimple, TC.NameSimple, partTarget.name));
             switch (partTarget.elementId)

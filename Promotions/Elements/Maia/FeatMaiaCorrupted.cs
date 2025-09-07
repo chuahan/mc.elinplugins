@@ -8,7 +8,7 @@ public class FeatMaiaCorrupted : Feat
     {
         return SpriteSheet.Get(source.alias);
     }
-    
+
     internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
         if (owner.Chara?.race.id != "maia" || owner.Chara?.Evalue(Constants.FeatMaiaEnlightened) > 0)
@@ -16,19 +16,16 @@ public class FeatMaiaCorrupted : Feat
             // Can only be applied to a Maia Race. Cannot be added if the Maia is already Enlightened.
             owner.Remove(id);
         }
-        else
-        {
-            // When the Maia submits to Corruption
-            // Reduce Holy Resistance
-            // Immune to Curses
-            // Add Fire / Dark / Poison Resistances (20)
-            // Bonus damage to Holy
-            // If NPC: Dark Arrow / Ball / Bolt
-            // Vengeance
-            // Empowerment
-            // Silent Force
-            // Sphere of Destruction
-            // Gateway
-        }
+        // When the Maia submits to Corruption
+        // Reduce Holy Resistance
+        // Immune to Curses
+        // Add Fire / Dark / Poison Resistances (20)
+        // Bonus damage to Holy
+        // If NPC: Dark Arrow / Ball / Bolt
+        // Vengeance
+        // Empowerment
+        // Silent Force
+        // Sphere of Destruction
+        // Gateway
     }
 }

@@ -4,11 +4,11 @@ public class ConBerserkDefiance : Timebuff
 {
     public override void Tick()
     {
-        if (owner.hp > (int)(owner.MaxHP * .75F)) this.Mod(-1);
+        if (owner.hp > (int)(owner.MaxHP * .75F)) Mod(-1);
     }
 
     public void Refresh()
     {
-        this.value = 5;
+        value = 5;
     }
 }

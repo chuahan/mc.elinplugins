@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using PromotionMod.Patches;
 using UnityEngine;
 namespace PromotionMod.Common;
 
@@ -63,7 +61,7 @@ public static class HelperFunctions
             return 2000000000; // Clamp to 2b
         }
     }
-    
+
     public static List<Chara> GetCharasWithinRadius(Point origin, float radius, Chara caster, bool friendly, bool losRequired)
     {
         List<Chara> targets = new List<Chara>();
@@ -80,7 +78,7 @@ public static class HelperFunctions
 
         return targets;
     }
-    
+
     public static List<Chara> GetCharasWithinRadius(Point origin, float radius, bool friendlyToPC, bool losRequired)
     {
         List<Chara> targets = new List<Chara>();
@@ -97,12 +95,12 @@ public static class HelperFunctions
 
         return targets;
     }
-    
+
     public static (List<Chara>, List<Chara>) GetOrganizedCharasWithinRadius(Point origin, float radius, Chara caster, bool losRequired)
     {
         List<Chara> friendlies = new List<Chara>();
         List<Chara> enemies = new List<Chara>();
-        
+
         foreach (Chara target in EClass.pc.currentZone.map.ListCharasInCircle(origin, radius, losRequired))
         {
             if (target.IsHostile(caster))
@@ -119,13 +117,13 @@ public static class HelperFunctions
     }
 
     // Helper function to do all the extra effects when calculating spell stuff.
-    public static void ProcSpellDamage(int power, int damage, Chara cc, Chara tc,  AttackSource attackSource = AttackSource.None, int ele = Constants.EleVoid, int eleP = 100)
+    public static void ProcSpellDamage(int power, int damage, Chara cc, Chara tc, AttackSource attackSource = AttackSource.None, int ele = Constants.EleVoid, int eleP = 100)
     {
         // Shatter Reproduction
-        bool canShatter = (ele != 910 && ele != 911);
+        bool canShatter = ele != 910 && ele != 911;
         if (cc.IsPCFactionOrMinion && (cc.HasElement(1651) || EClass.pc.Evalue(1651) >= 2)) canShatter = false;
         if (canShatter) EClass._map.TryShatter(tc.pos, ele, power);
-        
+
         // Defense Reproduction - All of these should be redirectable.
         if (tc.isChara && cc.isChara)
         {
@@ -134,11 +132,11 @@ public static class HelperFunctions
                 tc = a;
             });
         }
-        
+
         // Actually inflict the damage.
         tc.DamageHP(damage, ele, eleP, attackSource, cc);
     }
-    
+
     public static Condition Create(string alias, int power, int power2, Chara caster, Action<Condition>? onCreate = null)
     {
         SourceStat.Row row = EClass.sources.stats.alias[alias];
@@ -155,5 +153,4 @@ public static class HelperFunctions
         string[] names = Enum.GetNames(typeof(T));
         return names.RandomItem();
     }
-
 }

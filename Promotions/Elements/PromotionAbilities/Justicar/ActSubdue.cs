@@ -3,8 +3,8 @@ using PromotionMod.Stats;
 namespace PromotionMod.Elements.PromotionAbilities.Justicar;
 
 /// <summary>
-/// Justicar Ability
-/// The Justicar inflicts Attack Break, Suppress, and Excommunication on the target.
+///     Justicar Ability
+///     The Justicar inflicts Attack Break, Suppress, and Excommunication on the target.
 /// </summary>
 public class ActSubdue : Ability
 {
@@ -20,11 +20,11 @@ public class ActSubdue : Ability
 
     public override bool Perform()
     {
-        int breakAmount = (int)HelperFunctions.SigmoidScaling(this.GetPower(CC), 10, 25);
-        TC.Chara.AddCondition(SubPoweredCondition.Create(nameof(ConAttackBreak), this.GetPower(CC), breakAmount));
-        TC.Chara.AddCondition<ConSupress>(this.GetPower(CC));
-        TC.Chara.AddCondition<ConExcommunication>(this.GetPower(CC));
-        
+        int breakAmount = (int)HelperFunctions.SigmoidScaling(GetPower(CC), 10, 25);
+        TC.Chara.AddCondition(SubPoweredCondition.Create(nameof(ConAttackBreak), GetPower(CC), breakAmount));
+        TC.Chara.AddCondition<ConSupress>(GetPower(CC));
+        TC.Chara.AddCondition<ConExcommunication>(GetPower(CC));
+
         CC.TalkRaw("justicarIntimidate".langList().RandomItem());
         return true;
     }

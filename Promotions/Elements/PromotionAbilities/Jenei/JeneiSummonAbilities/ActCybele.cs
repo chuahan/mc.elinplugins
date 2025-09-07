@@ -1,15 +1,14 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
-using PromotionMod.Patches;
-namespace PromotionMod.Elements.PromotionAbilities.Jenei;
+namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
 
 /// <summary>
-/// Impact damage.
+///     Impact damage.
 /// </summary>
 public class ActCybele : ActJeneiSummonSequence
 {
     public override float SummonMultiplier => 0.12F;
-    
+
     public override bool Perform()
     {
         // Play Earthquake effect:
@@ -30,15 +29,15 @@ public class ActCybele : ActJeneiSummonSequence
         effect?.SetStartDelay(num3);
         CC.PlaySound("spell_earthquake");
         Shaker.ShakeCam("ball");
-        
+
         List<Chara> targets = HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, false, true);
         for (int i = 0; i < targets.Count; i++)
         {
             // Do Damage.
-            int damage = this.CalculateDamage(this.GetPower(CC), targets[i].pos.Distance(CC.pos), targets[i]);
-            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleImpact);
+            int damage = CalculateDamage(GetPower(CC), targets[i].pos.Distance(CC.pos), targets[i]);
+            HelperFunctions.ProcSpellDamage(GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleImpact);
         }
-        
+
         return true;
     }
 }

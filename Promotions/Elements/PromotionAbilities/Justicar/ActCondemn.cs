@@ -1,12 +1,11 @@
 using PromotionMod.Common;
 using PromotionMod.Stats;
-using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.Justicar;
 
 /// <summary>
-/// Justicar Ability
-/// Condemn targets a point and attempts to entangle all enemies around that area, dealing damage.
-/// For each target in the area, add Protection to the Justicar and all allies around them.
+///     Justicar Ability
+///     Condemn targets a point and attempts to entangle all enemies around that area, dealing damage.
+///     For each target in the area, add Protection to the Justicar and all allies around them.
 /// </summary>
 public class ActCondemn : Ability
 {
@@ -27,18 +26,18 @@ public class ActCondemn : Ability
         int condemnedTargets = 0;
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(TP, 3F, CC, false, true))
         {
-            target.AddCondition<ConEntangle>(this.GetPower(CC));
-            int damage = HelperFunctions.SafeDice(Constants.CondemnAlias, this.GetPower(CC));
+            target.AddCondition<ConEntangle>(GetPower(CC));
+            int damage = HelperFunctions.SafeDice(Constants.CondemnAlias, GetPower(CC));
             target.DamageHP(damage, AttackSource.Melee, CC);
             condemnedTargets++;
         }
 
-        int protectionAmount = condemnedTargets * ConProtection.CalcProtectionAmount(this.GetPower(CC));
+        int protectionAmount = condemnedTargets * ConProtection.CalcProtectionAmount(GetPower(CC));
         foreach (Chara ally in HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, true, true))
         {
             ally.AddCondition<ConProtection>(protectionAmount);
         }
-        
+
         return true;
     }
 }

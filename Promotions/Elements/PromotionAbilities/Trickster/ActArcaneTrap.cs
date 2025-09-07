@@ -1,6 +1,5 @@
 using PromotionMod.Common;
 using PromotionMod.Trait;
-
 namespace PromotionMod.Elements.PromotionAbilities.Trickster;
 
 public class ActArcaneTrap : Ability
@@ -14,7 +13,7 @@ public class ActArcaneTrap : Ability
         }
         return base.CanPerform();
     }
-    
+
     public override Cost GetCost(Chara c)
     {
         Cost convertToMp = base.GetCost(c);
@@ -26,7 +25,7 @@ public class ActArcaneTrap : Ability
     {
         Thing trap = ThingGen.Create(Constants.TricksterArcaneTrapAlias);
         Zone.ignoreSpawnAnime = true;
-        EClass._zone.AddCard(trap, TP);
+        _zone.AddCard(trap, TP);
         (trap.trait as TraitFactionTrap)?.OnInstall(CC.IsPCPartyMinion);
         return true;
     }

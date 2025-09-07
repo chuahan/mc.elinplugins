@@ -4,7 +4,7 @@ namespace PromotionMod.Trait.Ranger;
 public class TraitRangerBlastMine : TraitFactionTrap
 {
     public override string TrapName => Constants.RangerBlastTrapAlias;
-    
+
     public override void OnActivateTrap(Chara c)
     {
         c.PlaySound("trap");

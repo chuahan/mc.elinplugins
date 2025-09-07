@@ -1,5 +1,4 @@
 using PromotionMod.Common;
-
 namespace PromotionMod.Elements.PromotionAbilities.Sniper;
 
 public class ActTargetHead : Ability
@@ -11,7 +10,7 @@ public class ActTargetHead : Ability
             Msg.Say("classlocked_ability".lang(Constants.SniperId.lang()));
             return false;
         }
-        
+
         return base.CanPerform() && ACT.Ranged.CanPerform();
     }
 
@@ -37,8 +36,8 @@ public class ActTargetHead : Ability
             {
                 TC.Chara.DamageHP(TC.MaxHP, AttackSource.Finish, CC);
             }
-            TC.Chara.AddCondition<ConDim>(this.GetPower(CC));
-            TC.Chara.AddCondition<ConSilence>(this.GetPower(CC));
+            TC.Chara.AddCondition<ConDim>(GetPower(CC));
+            TC.Chara.AddCondition<ConSilence>(GetPower(CC));
         }
         return true;
     }

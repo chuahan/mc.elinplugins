@@ -1,4 +1,3 @@
-using PromotionMod.Common;
 namespace PromotionMod.Stats.WarCleric;
 
 public class ConDivineSanctuary : BaseBuff
@@ -9,9 +8,11 @@ public class ConDivineSanctuary : BaseBuff
     public override void Tick()
     {
         // Apply Sanctuary to everyone within 3F.
-        foreach (Chara chara in EClass.pc.currentZone.map.ListCharasInCircle(owner.pos, 3F, true)) {
-            var sanctuary  = chara.GetCondition<ConSanctuary>() ?? chara.AddCondition<ConSanctuary>();
-            if (sanctuary is { value: > 1 }) {
+        foreach (Chara chara in pc.currentZone.map.ListCharasInCircle(owner.pos, 3F))
+        {
+            Condition? sanctuary = chara.GetCondition<ConSanctuary>() ?? chara.AddCondition<ConSanctuary>();
+            if (sanctuary is { value: > 1 })
+            {
                 continue;
             }
 

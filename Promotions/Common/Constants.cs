@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 namespace PromotionMod.Common;
 
 public class Constants
@@ -7,19 +7,19 @@ public class Constants
 
     internal const int SigmoidScalingMax = 3000;
     internal const float SigmoidScalingPowerSlope = 1.2f;
-    
+
     public const int FeatMaiaEnlightened = 1;
     public const int FeatMaiaCorrupted = 1;
 
     public const int PromotionLevelRequirement = 20;
-    public const string PromotionFeatFlag = "promoted";
-    
-    #region CWL Flags
-    public const string IsPlayerFactionTrapFlag = "isPlayerFactionTrap";
-    #endregion
 
-    public const string DruidWarmSowTag = "druid_sow_warm";
-    public const string DruidWrathSowTag = "druid_sow_wrath";
+    #region CWL Flags
+
+    public const string PromotionFeatFlag = "promoted";
+    public const string IsPlayerFactionTrapFlag = "isPlayerFactionTrap";
+    public const string JeneiAttunementFlag = "jeneiAttunement";
+
+    #endregion
 
     #region Element Ids
 
@@ -97,6 +97,9 @@ public class Constants
             EleVoid, "eleVoid"
         }
     };
+
+    public static readonly Dictionary<string, int> ElementIdLookup =
+            ElementAliasLookup.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
 
     #endregion
 
@@ -215,12 +218,12 @@ public class Constants
     public const string JeneiMolochCharaId = "jenei_moloch";
     public const string JeneiCoatlicueCharaId = "jenei_coatlicue";
     public const string JeneiAzulCharaId = "jenei_azul";
-    
+
     // Machinist Turrets
     public const string MachinistRifleTurretCharaId = "machinist_rifle_turret";
     public const string MachinistRailgunTurretCharaId = "machinist_railgun_turret";
     public const string MachinistRocketTurretCharaId = "machinist_rocket_turret";
-    
+
     // Necromancer Skeletons
     public const string NecromancerSkeletonWarriorCharaId = "necromancer_skeleton_warrior";
     public const string NecromancerSkeletonMageCharaId = "necromancer_skeleton_mage";
@@ -228,6 +231,7 @@ public class Constants
 
     // Trickster Summon
     public const string PhantomTricksterCharaId = "phantom_trickster";
+
     #endregion
 
     #region Promoted Class Spells/Abilities
@@ -235,7 +239,7 @@ public class Constants
     // Adventurer
     public const int ActThisWayId = 1;
     public const int ActSenseDangerId = 1;
-    
+
     // Artificer
     public const int ActImprovisedBrewId = 1;
     public const int ActSimpleSynthesisId = 1;
@@ -318,9 +322,17 @@ public class Constants
     public const int ActTraumatizeId = 1;
     public const string TraumatizeAlias = "hexer_traumatize";
     public const int ActBloodCurseId = 1;
-    
+
     // Jenei
     public const int ActSpiritSummonId = 1;
+    public const int ActJeneiMoveId = 1;
+    public const int ActJeneiMotherGaiaId = 1;
+    public const int ActJeneiBlazeId = 1;
+    public const int ActJeneiDragonPlumeId = 1;
+    public const int ActJeneiRevealId = 1;
+    public const int ActJeneiShinePlasmaId = 1;
+    public const int ActJeneiDelugeId = 1;
+    public const int ActJeneiPlyId = 1;
 
     // Justicar
     public const int ActIntimidateId = 1;
@@ -382,7 +394,7 @@ public class Constants
     // Saint
     public const int ActHandOfGodId = 1;
     public const int ActBlessingId = 1;
-    
+
     // Sentinel
     public const int ActShoutId = 1;
     public const int ActShieldSmiteId = 1;

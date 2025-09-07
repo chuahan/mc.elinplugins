@@ -14,6 +14,6 @@ public class ConMiasmaArmor : Timebuff
 
     public int GetStacks()
     {
-        return Math.Min(Stacks,19);
+        return Math.Min(Stacks, 19);
     }
 }

@@ -1,15 +1,14 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
-using PromotionMod.Patches;
-namespace PromotionMod.Elements.PromotionAbilities.Jenei;
+namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
 
 /// <summary>
-/// Impact. Inflicts heavy poison.
+///     Impact. Inflicts heavy poison.
 /// </summary>
 public class ActHaures : ActJeneiSummonSequence
 {
     public override float SummonMultiplier => 0.15F;
-    
+
     public override bool Perform()
     {
         List<Chara> targets = HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, false, true);
@@ -19,13 +18,13 @@ public class ActHaures : ActJeneiSummonSequence
             TC.PlayEffect("hit_slash").SetScale(1f);
 
             // Do Damage.
-            int damage = this.CalculateDamage(this.GetPower(CC), targets[i].pos.Distance(CC.pos), targets[i]);
-            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleImpact);
+            int damage = CalculateDamage(GetPower(CC), targets[i].pos.Distance(CC.pos), targets[i]);
+            HelperFunctions.ProcSpellDamage(GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleImpact);
 
             // Apply 20 Turns of Poison.
-            if (targets[i].IsAliveInCurrentZone) 
+            if (targets[i].IsAliveInCurrentZone)
             {
-                targets[i].AddCondition<ConPoison>(80, force: true);
+                targets[i].AddCondition<ConPoison>(80, true);
             }
         }
 

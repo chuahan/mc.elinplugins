@@ -6,9 +6,9 @@ using PromotionMod.Stats.Harbinger;
 namespace PromotionMod.Elements.PromotionAbilities.Harbinger;
 
 /// <summary>
-/// Harbinger Ability
-/// Applies one of the Harbinger Miasmas to the target.
-///  Will not apply a miasma that the target already has.
+///     Harbinger Ability
+///     Applies one of the Harbinger Miasmas to the target.
+///     Will not apply a miasma that the target already has.
 /// </summary>
 public class ActAccursedTouch : Ability
 {

@@ -1,6 +1,5 @@
 using PromotionMod.Common;
 using PromotionMod.Stats.Necromancer;
-
 namespace PromotionMod.Elements.PromotionAbilities;
 
 public class ActBeckonOfTheDead : Ability
@@ -12,10 +11,10 @@ public class ActBeckonOfTheDead : Ability
             Msg.Say("classlocked_ability".lang(Constants.NecromancerId.lang()));
             return false;
         }
-        if (!TC.isChara || !TC.Chara.IsHostile(CC)) return false; 
+        if (!TC.isChara || !TC.Chara.IsHostile(CC)) return false;
         return base.CanPerform();
     }
-    
+
     public override Cost GetCost(Chara c)
     {
         Cost convertToMp = base.GetCost(c);

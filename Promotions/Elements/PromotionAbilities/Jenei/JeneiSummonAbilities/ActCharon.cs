@@ -1,15 +1,14 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
-using PromotionMod.Patches;
-namespace PromotionMod.Elements.PromotionAbilities.Jenei;
+namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
 
 /// <summary>
-/// Impact. 5% chance of instantly killing target.
+///     Impact. 5% chance of instantly killing target.
 /// </summary>
 public class ActCharon : ActJeneiSummonSequence
 {
     public override float SummonMultiplier => 0.3F;
-    
+
     public override bool Perform()
     {
         List<Chara> targets = HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, false, true);
@@ -20,16 +19,16 @@ public class ActCharon : ActJeneiSummonSequence
             spellEffect.Play(CC.pos, 0f, targets[i].pos);
 
             // Do Damage.
-            int damage = this.CalculateDamage(this.GetPower(CC), targets[i].pos.Distance(CC.pos), targets[i]);
-            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleImpact);
-            
+            int damage = CalculateDamage(GetPower(CC), targets[i].pos.Distance(CC.pos), targets[i]);
+            HelperFunctions.ProcSpellDamage(GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleImpact);
+
             // 1/20 chance of Instakill
             if (EClass.rnd(20) == 0 && targets[i].IsAliveInCurrentZone)
             {
                 targets[i].DamageHP(targets[i].MaxHP, AttackSource.Finish, CC);
             }
         }
-        
+
         return true;
     }
 }

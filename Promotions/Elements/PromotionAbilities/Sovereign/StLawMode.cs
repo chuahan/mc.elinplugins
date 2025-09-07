@@ -1,6 +1,5 @@
 using PromotionMod.Common;
 using PromotionMod.Stats.Sovereign;
-
 namespace PromotionMod.Elements.PromotionAbilities.Sovereign;
 
 public class StLawMode : Ability
@@ -17,23 +16,23 @@ public class StLawMode : Ability
         return base.CanPerform();
         return base.CanPerform();
     }
-    
+
     public override Cost GetCost(Chara c)
     {
-        return new Cost()
+        return new Cost
         {
             type = CostType.None,
-            cost = 0,
+            cost = 0
         };
     }
-    
+
     public override bool Perform()
     {
-        CC.SayRaw("sovereign_law".langList().RandomItem());
+        CC.Talk("sovereign_law".langList().RandomItem());
         CC.RemoveCondition<StanceChaosSovereign>();
         CC.AddCondition<StanceLawSovereign>();
         CC.AddCooldown(Constants.StLawModeId, 5);
-        
+
         return true;
     }
 }

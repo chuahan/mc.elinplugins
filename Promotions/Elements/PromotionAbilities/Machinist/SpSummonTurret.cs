@@ -9,9 +9,9 @@ public class SpSummonTurret : Spell
     {
         Constants.MachinistRifleTurretCharaId,
         Constants.MachinistRailgunTurretCharaId,
-        Constants.MachinistRocketTurretCharaId,
+        Constants.MachinistRocketTurretCharaId
     };
-            
+
     public override bool CanPerform()
     {
         if (CC.Evalue(Constants.FeatMachinist) == 0)
@@ -37,7 +37,7 @@ public class SpSummonTurret : Spell
         CC.currentZone.AddCard(summon, TP);
         summon.PlayEffect("curse");
         summon.MakeMinion(CC);
-        
+
         // Grant the summon a weapon based on the type of summon
         switch (summonedGunType)
         {

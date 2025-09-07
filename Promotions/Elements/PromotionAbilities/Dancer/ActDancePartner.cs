@@ -14,8 +14,8 @@ public class ActDancePartner : Ability
             Msg.Say("classlocked_ability".lang(Constants.DancerId.lang()));
             return false;
         }
-        
-        List<Chara> characters = Act.TP.ListCharas();
+
+        List<Chara> characters = TP.ListCharas();
         if (characters.Count(c => c.IsPCParty || c.IsPC) == 0) return false;
         return base.CanPerform();
     }
@@ -23,13 +23,13 @@ public class ActDancePartner : Ability
     public override bool Perform()
     {
         StancePartnerStyle partnerStance = CC.GetCondition<StancePartnerStyle>();
-        List<Chara> potentialPartners = Act.TP.ListCharas();
+        List<Chara> potentialPartners = TP.ListCharas();
         potentialPartners.Reverse();
-        
+
         foreach (Chara chara in potentialPartners)
         {
             // If targeting self while already partner style, switches off Partner Style.
-            if (partnerStance != null && chara == Act.CC)
+            if (partnerStance != null && chara == CC)
             {
                 partnerStance.Kill();
                 Msg.Say("dancer_swap_solo".lang(CC.NameSimple));

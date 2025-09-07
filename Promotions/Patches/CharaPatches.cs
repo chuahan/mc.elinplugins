@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using Cwl.Helper.Extensions;
 using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Stats;
@@ -85,7 +84,7 @@ internal class CharaPatches : EClass
         // Harbinger - Gain damage reduction when nearby enemy afflicted with Harbinger Miasmas.
         if (__result != null && __result is ConHarbingerMiasma)
         {
-            foreach (Chara target in EClass.pc.currentZone.map.ListCharasInCircle(__instance.pos, 5f, los:true))
+            foreach (Chara target in pc.currentZone.map.ListCharasInCircle(__instance.pos, 5f, true))
             {
                 if (target.Evalue(Constants.FeatHarbinger) > 0)
                 {
@@ -103,23 +102,23 @@ internal class CharaPatches : EClass
         }
 
         // Adventurer - Auto Medicate.
-        if (__result != null && __result.Type == ConditionType.Bad && __instance.IsPCParty && EClass.pc.Evalue(Constants.FeatAdventurer) > 0)
+        if (__result != null && __result.Type == ConditionType.Bad && __instance.IsPCParty && pc.Evalue(Constants.FeatAdventurer) > 0)
         {
             // Adventurer will automatically try to medicate, 1/4 chance of free medication.
             if (EClass.rnd(4) == 0)
             {
-                Msg.Say("adventurer_automedicate".lang(EClass.pc.NameSimple, __instance.NameSimple));
+                Msg.Say("adventurer_automedicate".lang(pc.NameSimple, __instance.NameSimple));
                 __result.Kill();
                 return;
             }
 
             // If auto medicate fails, try looking in PC inventory for the cure.
             // Look in main storage.
-            foreach (Thing medicine in EClass.pc.things)
+            foreach (Thing medicine in pc.things)
             {
                 if (medicine.trait.GetHealAction(__instance) != null)
                 {
-                    Msg.Say("adventurer_automedicate".langGame(EClass.pc.NameSimple, __instance.NameSimple));
+                    Msg.Say("adventurer_automedicate".langGame(pc.NameSimple, __instance.NameSimple));
                     if (EClass.rnd(2) == 0) medicine.ModNum(-1);
                     __result.Kill();
                     return;
@@ -127,13 +126,13 @@ internal class CharaPatches : EClass
             }
 
             // Look in substorage
-            foreach (Thing container in EClass.pc.things.Where(x => x.trait is TraitContainer))
+            foreach (Thing container in pc.things.Where(x => x.trait is TraitContainer))
             {
-                foreach (Thing medicine in EClass.pc.things)
+                foreach (Thing medicine in pc.things)
                 {
                     if (medicine.trait.GetHealAction(__instance) != null)
                     {
-                        Msg.Say("adventurer_automedicate".langGame(EClass.pc.NameSimple, __instance.NameSimple));
+                        Msg.Say("adventurer_automedicate".langGame(pc.NameSimple, __instance.NameSimple));
                         if (EClass.rnd(2) == 0) medicine.ModNum(-1);
                         __result.Kill();
                         return;
@@ -147,8 +146,8 @@ internal class CharaPatches : EClass
     [HarmonyTranspiler]
     internal static IEnumerable<CodeInstruction> SpawnDoubleLoot(IEnumerable<CodeInstruction> instructions)
     {
-        var codes = new List<CodeInstruction>(instructions);
-        var targetMethod = AccessTools.Method(typeof(Card), "SpawnLoot");
+        List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
+        MethodInfo? targetMethod = AccessTools.Method(typeof(Card), "SpawnLoot");
 
         for (int i = 0; i < codes.Count; i++)
         {
@@ -170,24 +169,30 @@ internal class CharaPatches : EClass
     {
         // Ranger - If the PC is mounted with Ranger's Canto on, and there is an available target they will make a free shot at the target. Will not work if the weapon needs to be reloaded.
         // Parasites instead use Map.MoveCard or SyncRide.
-        if (__instance.IsPC && __instance.HasCondition<StRangerCanto>() && __instance.GetBestRangedWeapon() != null && type == Card.MoveType.Walk && __result == Card.MoveResult.Success && __instance.ride != null)
+        if (__instance.IsPC &&
+            __instance.HasCondition<StRangerCanto>() &&
+            __instance.GetBestRangedWeapon() != null &&
+            type == Card.MoveType.Walk &&
+            __result == Card.MoveResult.Success &&
+            __instance.ride != null)
         {
             Thing rangedWeapon = __instance.GetBestRangedWeapon();
             TraitToolRange traitToolRange = rangedWeapon.trait as TraitToolRange;
             if (!(rangedWeapon.c_ammo <= 0 && traitToolRange.NeedReload))
             {
-                foreach (Chara target in HelperFunctions.GetCharasWithinRadius(__instance.pos, (float)rangedWeapon.range, __instance, false, true))
+                foreach (Chara target in HelperFunctions.GetCharasWithinRadius(__instance.pos, rangedWeapon.range, __instance, false, true))
                 {
                     ACT.Ranged.Perform(__instance, target);
                     break;
                 }
             }
         }
-        
+
         // Sharpshooter - If there is an enemy Sharpshooter in Overwatch Stance within range, they will make a shot at the moving character.
         if (type == Card.MoveType.Walk && __result == Card.MoveResult.Success && __instance.HasCondition<ConUnderFire>())
         {
-            foreach (Chara sharpshooter in HelperFunctions.GetCharasWithinRadius(newPoint, 6F, __instance, false, true).Where(sharpshooter => sharpshooter.Evalue(Constants.FeatSharpshooter) > 0 && sharpshooter.HasCondition<StanceOverwatch>()))
+            foreach (Chara sharpshooter in HelperFunctions.GetCharasWithinRadius(newPoint, 6F, __instance, false, true)
+                             .Where(sharpshooter => sharpshooter.Evalue(Constants.FeatSharpshooter) > 0 && sharpshooter.HasCondition<StanceOverwatch>()))
             {
                 ACT.Ranged.Perform(sharpshooter, __instance);
             }
@@ -205,15 +210,15 @@ internal class CharaPatches : EClass
             TraitToolRange traitToolRange = rangedWeapon.trait as TraitToolRange;
             if (!(rangedWeapon.c_ammo <= 0 && traitToolRange.NeedReload))
             {
-                foreach (Chara target in HelperFunctions.GetCharasWithinRadius(c.pos, (float)rangedWeapon.range, c, false, true))
+                foreach (Chara target in HelperFunctions.GetCharasWithinRadius(c.pos, rangedWeapon.range, c, false, true))
                 {
                     ACT.Ranged.Perform(c, target);
                     break;
-                }   
+                }
             }
         }
     }
-    
+
     [HarmonyPatch(nameof(Chara.CalcCastingChance))]
     [HarmonyPostfix]
     internal static void CalcCastingChance(Chara __instance, Element e, int num, ref int __result)

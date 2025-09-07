@@ -1,15 +1,14 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
-using PromotionMod.Patches;
-namespace PromotionMod.Elements.PromotionAbilities.Jenei;
+namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
 
 /// <summary>
-/// Fire. Fires missiles at all targets. Count as min distance always.
+///     Fire. Fires missiles at all targets. Count as min distance always.
 /// </summary>
 public class ActDaedalus : ActJeneiSummonSequence
 {
     public override float SummonMultiplier => 0.15F;
-    
+
     public override bool Perform()
     {
         List<Chara> targets = HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, false, true);
@@ -27,13 +26,13 @@ public class ActDaedalus : ActJeneiSummonSequence
             {
                 delay += 0.07f;
             }
-            
+
             CC.PlayEffect("laser").GetComponent<SpriteBasedLaser>().Play(targets[i].pos.PositionCenter());
             // Do Damage.
-            int damage = this.CalculateDamage(this.GetPower(CC), 0, targets[i]);
-            HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleFire);
+            int damage = CalculateDamage(GetPower(CC), 0, targets[i]);
+            HelperFunctions.ProcSpellDamage(GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleFire);
         }
-        
+
         return true;
     }
 }

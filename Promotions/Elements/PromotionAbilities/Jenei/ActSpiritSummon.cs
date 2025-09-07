@@ -1,8 +1,8 @@
 using System;
-using System.Net.Configuration;
+using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Elements.PromotionFeats;
-using PromotionMod.Stats;
+using PromotionMod.Stats.Jenei;
 namespace PromotionMod.Elements.PromotionAbilities.Jenei;
 
 public class ActSpiritSummon : Ability
@@ -11,29 +11,34 @@ public class ActSpiritSummon : Ability
     {
         if (CC.Evalue(Constants.FeatJenei) == 0) return false;
         if (CC.HasCooldown(Constants.ActSpiritSummonId)) return false;
-        if (!CC.HasCondition<ConJenei>()) return false;
+
+        // NPCs can summon a random summon every 30 turns.
+        if (CC.IsPC && !CC.HasCondition<ConJenei>()) return false;
         if (CC.currentZone.CountMinions(CC) >= CC.MaxSummon) return false;
         return base.CanPerform();
     }
-    
+
     // Spirit Summon Costs nothing.
     public override Cost GetCost(Chara c)
     {
-        return new Cost()
+        return new Cost
         {
             cost = 0,
-            type = CostType.None,
+            type = CostType.None
         };
     }
-    
+
     public override bool Perform()
     {
+        // NPCs can summon a random summon with higher cooldown.
         ConJenei djinnStockpile = CC.GetCondition<ConJenei>();
-        string? summon = FeatJenei.JeneiSummons.GetSummon(djinnStockpile.ElementalStockpile);
-        // If the zone alraedy has this summon active, fizzle.
+        string? summon = FeatJenei.JeneiSummons.GetSummon(djinnStockpile.GetElementalStockpile());
+        if (!CC.IsPC) summon = FeatJenei.JeneiSummons.AllSummons.Select(x => x.SummonId).ToList().RandomItem();
+
+        // If the zone already has this summon active, fizzle.
         if (CC.currentZone.FindChara(summon) != null) return false;
         if (summon == null) return false;
-        
+
         // Summon - For PCs summons can scale to your deepest achieved depth instead.
         Chara jeneiSummon = CharaGen.Create(summon);
         jeneiSummon.isSummon = true;
@@ -45,15 +50,23 @@ public class ActSpiritSummon : Ability
         CC.currentZone.AddCard(jeneiSummon, TP);
         jeneiSummon.PlayEffect("aura_heaven");
         jeneiSummon.MakeMinion(CC);
-        
+
         // Get Text
         string summonName = summon + "_formalname";
         CC.TalkRaw("jenei_summonphrase".langGame(summonName.langGame()));
         Msg.Say("jenei_summon".langGame(CC.NameSimple, summonName.langGame()));
-        
+
         // Empty stockpile.
-        djinnStockpile.EmptyStockpile();
-        CC.AddCooldown(Constants.ActSpiritSummonId, 1);
+        if (CC.IsPC)
+        {
+            djinnStockpile.EmptyStockpile();
+            CC.AddCooldown(Constants.ActSpiritSummonId, 1);
+        }
+        else
+        {
+            CC.AddCooldown(Constants.ActSpiritSummonId, 30);
+        }
+
         return true;
     }
 }

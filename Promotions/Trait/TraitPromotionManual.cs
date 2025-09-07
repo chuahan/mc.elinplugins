@@ -122,20 +122,49 @@ public class TraitPromotionManual : TraitScroll
         string promotionInformationLookup = promotionId + "_info";
         Dialog.YesNo(promotionInformationLookup.lang() + "\n\r\n\r" + "promotion_confirmation".lang(c.NameSimple), delegate
         {
+            if (promotionId == Constants.JeneiId)
+            {
+                JeneiPromotionAttunement(c);
+            }
             Promote(promotionId, c);
         });
+    }
+
+    public void JeneiPromotionAttunement(Chara c)
+    {
+        // Promoting a Farmer into a Jenei requires you to select one of the four elements.
+        // These will add two Psynergy abilities, and for NPCs they will also add Arrow/Ball/Sword of that Element.
+        // 0 - Venus/Earth/Impact
+        // 1 - Mars/Fire
+        // 2 - Jupiter/Lightning
+        // 3 - Mercury/Water/Cold
+        List<string> jeneiAttunements = new List<string>
+        {
+            "jenei_venus",
+            "jenei_mars",
+            "jenei_jupiter",
+            "jenei_mercury",
+            "promotion_cancel"
+        };
+        Dialog.List("jenei_promotions".lang(), jeneiAttunements, j => j, delegate(int idx, string option)
+        {
+            if (option == "promotion_cancel")
+            {
+                return true;
+            }
+
+            // Add the Attunement Flag
+            c.SetFlagValue(Constants.JeneiAttunementFlag, idx);
+            Promote(Constants.JeneiId, c);
+            return true;
+        }, true);
     }
 
     public void Promote(string promotionId, Chara c)
     {
         c.SetFeat(PromotionIdMap[promotionId]);
         c.SetFlagValue(Constants.PromotionFeatFlag, PromotionIdMap[promotionId]);
-        // Some abilities are PC only.
-        if (c.IsPC)
-        {
-            // Get appropriate extra skills to add on.
-        }
-        // Get appropriate extra skills to add on.
+        // The Promotion Feat should handle the abilities for both PC and NPCs once it gets added with OnApply.
         c.PlaySound("godbless");
         c.PlayEffect("aura_heaven");
         c.Say("spellbookCrumble", owner.Duplicate(1));

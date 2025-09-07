@@ -3,10 +3,10 @@ using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Artificer;
 
 /// <summary>
-/// Artificer Ability
-/// Cook up a random potion and throw it at the target.
-/// If target is an ally, will be beneficial. 1/10 Chance of being an extremely beneficial brew.
-/// If target is an enemy, will be harmful. 1/4 Chance of being a... special brew.
+///     Artificer Ability
+///     Cook up a random potion and throw it at the target.
+///     If target is an ally, will be beneficial. 1/10 Chance of being an extremely beneficial brew.
+///     If target is an enemy, will be harmful. 1/4 Chance of being a... special brew.
 /// </summary>
 public class ActImprovisedBrew : Ability
 {

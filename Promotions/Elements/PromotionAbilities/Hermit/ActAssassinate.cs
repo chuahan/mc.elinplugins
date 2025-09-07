@@ -40,7 +40,7 @@ public class ActAssassinate : ActMelee
         else
         {
             // Normal hit.
-            Attack(1F);
+            Attack();
         }
         CC.RemoveCondition<ConDeathbringer>();
         return true;

@@ -3,14 +3,13 @@ using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionFeats;
 
 /// <summary>
-/// The speaker for nature. Druids are able to call forth vitality even in the most barren places.
-/// Druids focus on magics related to nature, summoning plantlife to aid their cause.
-/// They specialize in supporting their teams through casting various control spells.
-/// Skill - Sow Wrath Seeds - Summon Offensive flowers
-/// Skill - Sow Warm Seeds - Summon Defensive or Support flowers
-/// TODO (P3) Give them another skill Maybe?
-/// 
-/// Passive - Conspectus of Nature - Convert Summon books to Summon Tree Ent Warrior
+///     The speaker for nature. Druids are able to call forth vitality even in the most barren places.
+///     Druids focus on magics related to nature, summoning plantlife to aid their cause.
+///     They specialize in supporting their teams through casting various control spells.
+///     Skill - Sow Wrath Seeds - Summon Offensive flowers
+///     Skill - Sow Warm Seeds - Summon Defensive or Support flowers
+///     TODO (P3) Give them another skill Maybe?
+///     Passive - Conspectus of Nature - Convert Summon books to Summon Tree Ent Warrior
 /// </summary>
 public class FeatDruid : PromotionFeat
 {
@@ -22,7 +21,7 @@ public class FeatDruid : PromotionFeat
         Constants.ActSowWarmSeedsId,
         Constants.ActSowWrathSeedsId
     };
-    
+
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActSowWarmSeedsId, 60, false);

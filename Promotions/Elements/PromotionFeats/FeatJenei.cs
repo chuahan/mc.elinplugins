@@ -1,45 +1,80 @@
 using System.Collections.Generic;
 using System.Linq;
+using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionFeats;
 
 /// <summary>
-/// Shapers of the natural energies. Jenei are those who call upon the natural forces of Earth, Fire, Air, and Water.
-/// Jenei focus on combining the four natural elements to summon great representatives of the natural forces to aid them in combat.
-/// They specialize in invoking mighty spells with a variety of effects through building up amounts of each of the elements.
-///
-/// TODO (P1): Add Random Summon ability to NPC.
-/// TODO (P1): Use hook after casting spell to add charges to Jenei Condition.
-/// TODO (P1): Implement Class Selection. If NPCs have one of the elements, it should pick that one, else random.
-/// Upon promotion, you must choose an element to align to, which will grant you a field skill and a combat skill. (Mercury instead adopts two combat skills)
-/// Venus - Move, Gaia (Mother Gaia, Grand Gaia)
-/// Mars - Blaze, Volcano (Eruption, Pyroclasm)
-/// Jupiter - Reveal, Plasma (Shine Plasma, Spark Plasma)
-/// Mercury - Douse (Drench, Deluge), Ply (Ply Well, Pure Ply)
-/// Class Adoption - Skill - Checks your Jenei condition and uses your charges to transform your class, adjusting your stats.
-///     Depending on how many charges are consumed, your class combat skills will be upgraded to T2 or T3.
-///     When using Spirit Summon, you will lose your class adoption.
-/// 
-/// Spirit Summon - Skill - Checks your Jenei Condition and uses your charges to summon an incredibly powerful spirit to aid you in battle temporarily.
-/// Passive - Natural Balances - Can convert spellbooks into Impact/Fire/Lightning/Ice.
-/// Passive - 
+///     Shapers of the natural energies. Jenei are those who call upon the natural forces of Earth, Fire, Air, and Water.
+///     Jenei focus on combining the four natural elements to summon great representatives of the natural forces to aid
+///     them in combat.
+///     They specialize in invoking mighty spells with a variety of effects through building up amounts of each of the
+///     elements.
+///     Upon promotion, you must choose an element to align to, which will grant you two abilities based on that element.
+///     Venus: The Element of Substance, Venus Jenei manipulate earth.
+///     Skill - Move - Moves the target card away from you. If PC uses it, it can be used on
+///     Skill - Mother Gaia - Causes an Earth Spire to erupt out of the ground, inflicting Impact damage, does half damage
+///     to neighboring tiles.
+///     Basically small scale Earthquake with 2F radius instead.
+///     Mars: The Element of Power, Mars Jenei manipulate fire.
+///     Skill - Blaze - Does Fire Hand, but also sets a fire pillar on the target location.
+///     Skill - Dragon Plume - Basically Fire Breath with guaranteed chance to inflict Burning.
+///     Jupiter: The Element of Mind and Spirit, Jupiter Jenei manipulate wind and lightning
+///     Skill - Reveal -
+///     When used by the Player, it acts like a Stethoscope as a spell.
+///     When used by NPCs, the NPC inflicts ConMagicBreak.
+///     Skill - Shine Plasma - Strikes a single target with a large lightning bolt, dealing heavy lightning damage.
+///     Mercury: The Element of Healing and Life, Mercury Jenei manipulate water and ice.
+///     Skill - Deluge - Drops a deluge of water on the target. Guaranteed to inflict Wet and leave a puddle.
+///     Skill - Ply - Heals a single ally. Power equivalent to Heal.
+///     Spirit Summon - Skill - Checks your Jenei Condition and uses your charges to summon an incredibly powerful spirit
+///     to aid you in battle temporarily.
+///     Passive - Conspectus of the Adept - Can convert spellbooks into Impact/Fire/Lightning/Ice.
 /// </summary>
 public class FeatJenei : PromotionFeat
 {
     public override string PromotionClassId => Constants.JeneiId;
     public override int PromotionClassFeatId => Constants.FeatJenei;
+
     public override List<int> PromotionAbilities => new List<int>
     {
         Constants.ActSpiritSummonId
     };
-    
+
     protected override void ApplyInternalNPC(Chara c)
     {
-        // TODO (P1) Add Random Summon Ability for NPCs
-        // TODO (P1) Add Jenei Attunement Flag
+        c.ability.Add(Constants.ActSpiritSummonId, 30, false);
+        switch (c.GetFlagValue(Constants.JeneiAttunementFlag))
+        {
+            // All elements get two spells of that element.
+            case 0: // Venus
+                c.ability.Add(Constants.ActJeneiMoveId, 50, false);
+                c.ability.Add(Constants.ActJeneiMotherGaiaId, 75, false);
+                c.ability.Add(50115, 75, false); // Impact Ball
+                c.ability.Add(50415, 75, false); // Impact Hand
+                break;
+            case 1: // Mars
+                c.ability.Add(Constants.ActJeneiBlazeId, 50, false);
+                c.ability.Add(Constants.ActJeneiDragonPlumeId, 75, false);
+                c.ability.Add(50215, 75, false); // Fire Breathe
+                c.ability.Add(51000, 75, false); // Fire Sword
+                break;
+            case 2: // Jupiter
+                c.ability.Add(Constants.ActJeneiRevealId, 50, false);
+                c.ability.Add(Constants.ActJeneiShinePlasmaId, 75, false);
+                c.ability.Add(50302, 75, false); // Lightning Bolt
+                c.ability.Add(50502, 75, false); // Lightning Arrow
+                break;
+            case 3: // Mercury
+                c.ability.Add(Constants.ActJeneiDelugeId, 50, false);
+                c.ability.Add(Constants.ActJeneiPlyId, 75, true);
+                c.ability.Add(50201, 75, false); // Cold Breathe
+                c.ability.Add(51001, 75, false); // Cold Sword
+                break;
+        }
     }
-    
-    
+
+
     protected override bool Requirement()
     {
         return owner.Chara?.c_idJob == "farmer";
@@ -51,8 +86,33 @@ public class FeatJenei : PromotionFeat
         owner.Chara.elements.ModPotential(286, 30);
         // Casting - 304
         owner.Chara.elements.ModPotential(304, 30);
+
+        // For PCs, depending on which element they attuned to, add their two abilities.
+        if (owner.Chara.IsPC)
+        {
+            switch (owner.Chara.GetFlagValue(Constants.JeneiAttunementFlag))
+            {
+                // All elements get two spells of that element.
+                case 0: // Venus
+                    owner.Chara.AddElement(Constants.ActJeneiMoveId, 0);
+                    owner.Chara.AddElement(Constants.ActJeneiMotherGaiaId, 0);
+                    break;
+                case 1: // Mars
+                    owner.Chara.AddElement(Constants.ActJeneiBlazeId, 0);
+                    owner.Chara.AddElement(Constants.ActJeneiDragonPlumeId, 0);
+                    break;
+                case 2: // Jupiter
+                    owner.Chara.AddElement(Constants.ActJeneiRevealId, 0);
+                    owner.Chara.AddElement(Constants.ActJeneiShinePlasmaId, 0);
+                    break;
+                case 3: // Mercury
+                    owner.Chara.AddElement(Constants.ActJeneiDelugeId, 0);
+                    owner.Chara.AddElement(Constants.ActJeneiPlyId, 0);
+                    break;
+            }
+        }
     }
-    
+
     public class JeneiSummonCost
     {
         public JeneiSummonCost(Dictionary<int, int> cost, string summonId)

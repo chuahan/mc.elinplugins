@@ -5,12 +5,12 @@ namespace PromotionMod.Elements.PromotionAbilities;
 
 public class SpSummonSkeleton : Spell
 {
-    static List<string> SkeletonOptions = new List<string>
+    private static List<string> SkeletonOptions = new List<string>
     {
         Constants.NecromancerSkeletonWarriorCharaId,
-        Constants.NecromancerSkeletonMageCharaId,
+        Constants.NecromancerSkeletonMageCharaId
     };
-    
+
     public override bool CanPerform()
     {
         if (CC.Evalue(Constants.FeatNecromancer) == 0)
@@ -37,16 +37,16 @@ public class SpSummonSkeleton : Spell
         CC.currentZone.AddCard(summon, TP);
         summon.PlayEffect("mutation");
         summon.MakeMinion(CC);
-        
+
         // Equip the Skeleton.
         switch (summonName)
         {
             case Constants.NecromancerSkeletonMageCharaId:
-                summon.AddThing(ThingGen.Create("staff", idMat: 40, lv: summon.LV));
+                summon.AddThing(ThingGen.Create("staff", 40, summon.LV));
                 break;
             default:
-                summon.AddThing(ThingGen.Create("sword", idMat: 40, lv: summon.LV));
-                summon.AddThing(ThingGen.Create("shield_knight", idMat: 40, lv: summon.LV));
+                summon.AddThing(ThingGen.Create("sword", 40, summon.LV));
+                summon.AddThing(ThingGen.Create("shield_knight", 40, summon.LV));
                 break;
         }
 

@@ -1,4 +1,3 @@
-using System.Collections;
 using HarmonyLib;
 using PromotionMod.Common;
 namespace PromotionMod.Patches;

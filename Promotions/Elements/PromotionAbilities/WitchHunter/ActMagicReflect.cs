@@ -1,6 +1,5 @@
 using PromotionMod.Common;
 using PromotionMod.Stats.WitchHunter;
-
 namespace PromotionMod.Elements.PromotionAbilities.WitchHunter;
 
 public class ActMagicReflect : Ability
@@ -15,7 +14,7 @@ public class ActMagicReflect : Ability
         if (CC.HasCooldown(Constants.ActMagicReflectId)) return false;
         return base.CanPerform();
     }
-    
+
     public override Cost GetCost(Chara c)
     {
         Cost convertToMp = base.GetCost(c);

@@ -10,7 +10,7 @@ public class ActRuneEtching : Ability
             Msg.Say("classlocked_ability".lang(Constants.RuneknightId.lang()));
             return false;
         }
-        
+
         if (CC.IsPC && CC.things.Find("tool_talisman") == null)
         {
             CC.Say("hintRuneknight_need_calligraphy");

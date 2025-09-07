@@ -1,6 +1,5 @@
 using PromotionMod.Common;
 using PromotionMod.Stats.Sovereign;
-
 namespace PromotionMod.Elements.PromotionAbilities.Sovereign;
 
 public class StChaosMode : Ability
@@ -19,16 +18,16 @@ public class StChaosMode : Ability
 
     public override Cost GetCost(Chara c)
     {
-        return new Cost()
+        return new Cost
         {
             type = CostType.None,
-            cost = 0,
+            cost = 0
         };
     }
-    
+
     public override bool Perform()
     {
-        CC.SayRaw("sovereign_chaos".langList().RandomItem());
+        CC.Talk("sovereign_chaos".langList().RandomItem());
         CC.RemoveCondition<StanceLawSovereign>();
         CC.AddCondition<StanceChaosSovereign>();
         CC.AddCooldown(Constants.StLawModeId, 5);

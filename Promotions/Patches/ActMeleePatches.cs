@@ -1,12 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Runtime;
 using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Elements.PromotionFeats;
 using PromotionMod.Stats;
 using PromotionMod.Stats.Sentinel;
-using PromotionMod.Stats.Sovereign;
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(ActMelee))]
@@ -28,7 +25,7 @@ public class ActMeleePatches
                 mtp = blockPercent;
             }
         }
-        
+
         // Sentinel - If the attacker is a Sentinel in Rage Stance, add a multiplier of damage based off of their PV difference.
         if (Act.CC.Evalue(Constants.FeatSentinel) > 0 && Act.CC.HasCondition<StanceRage>())
         {

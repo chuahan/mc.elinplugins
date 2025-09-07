@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
-
 namespace PromotionMod.Elements.PromotionAbilities.WitchHunter;
 
 public class ActManaBreak : Ability
@@ -16,13 +15,13 @@ public class ActManaBreak : Ability
         if (CC.HasCooldown(Constants.ActManaBreakId)) return false;
         return base.CanPerform();
     }
-    
+
     public override Cost GetCost(Chara c)
     {
-        return new Cost()
+        return new Cost
         {
             type = CostType.SP,
-            cost = 10,
+            cost = 10
         };
     }
 
@@ -33,16 +32,16 @@ public class ActManaBreak : Ability
         // Cause a magic explosion that also damages other enemies in range.
         List<Chara> targetsHit = new List<Chara>();
         Effect spellEffect = Effect.Get("Element/ball_Magic");
-        foreach (Point tile in EClass._map.ListPointsInCircle(TC.pos, 3f, mustBeWalkable: false, los:false))
+        foreach (Point tile in _map.ListPointsInCircle(TC.pos, 3f, false, false))
         {
             int distance = tile.Distance(CC.pos);
             foreach (Chara target in tile.ListCharas().Where(target => !targetsHit.Contains(target) && target.IsHostile(CC)))
             {
-                HelperFunctions.ProcSpellDamage(this.GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleMagic);
+                HelperFunctions.ProcSpellDamage(GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleMagic);
                 // Mark Target as hit.
                 targetsHit.Add(target);
             }
-            
+
             // Get distance from the origin. Use that to add delay to the explosion,
             float delay = distance * 0.7F;
             TweenUtil.Delay(delay, delegate
@@ -50,7 +49,7 @@ public class ActManaBreak : Ability
                 spellEffect.Play(tile, 0f, tile);
             });
         }
-        
+
         CC.AddCooldown(Constants.ActManaBreakId, 10);
         return true;
     }

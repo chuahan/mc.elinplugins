@@ -5,6 +5,6 @@ public class StVanguardStance : BaseStance
     public override void Tick()
     {
         // If the users HP falls below 25%, automatically exit Vanguard Stance.
-        if (Owner.hp <= (int)(Owner.MaxHP * 0.25F)) this.Kill();
+        if (Owner.hp <= (int)(Owner.MaxHP * 0.25F)) Kill();
     }
 }

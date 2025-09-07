@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 namespace PromotionMod.Stats;
 
 public class ConArmorBreak : SubPoweredCondition

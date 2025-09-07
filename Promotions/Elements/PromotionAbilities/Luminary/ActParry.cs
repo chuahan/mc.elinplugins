@@ -5,6 +5,8 @@ namespace PromotionMod.Elements.PromotionAbilities.Luminary;
 
 public class ActParry : AIAct
 {
+
+    public override bool CancelWhenDamaged => false;
     public override bool CanPerform()
     {
         if (CC.Evalue(Constants.FeatLuminary) == 0)
@@ -21,16 +23,14 @@ public class ActParry : AIAct
         return new Cost
         {
             type = CostType.None,
-            cost = 0,
+            cost = 0
         };
     }
-    
+
     public override bool CanManualCancel()
     {
         return true;
     }
-    
-    public override bool CancelWhenDamaged => false;
 
     public override IEnumerable<Status> Run()
     {

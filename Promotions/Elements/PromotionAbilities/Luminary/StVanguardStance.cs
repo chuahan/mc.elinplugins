@@ -13,7 +13,7 @@ public class StVanguardStance : Ability
         }
         return base.CanPerform();
     }
-    
+
     public override Sprite GetSprite()
     {
         return SpriteSheet.Get(source.alias);

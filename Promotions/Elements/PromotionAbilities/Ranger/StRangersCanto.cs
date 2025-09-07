@@ -12,10 +12,10 @@ public class StRangersCanto : Ability
             return false;
         }
         // CC must be riding or be a parasite.
-        if (CC.ride == null) return false; 
+        if (CC.ride == null) return false;
         return base.CanPerform();
     }
-    
+
     public override Sprite GetSprite()
     {
         return SpriteSheet.Get(source.alias);

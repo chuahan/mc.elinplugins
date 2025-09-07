@@ -2,9 +2,9 @@ using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Adventurer;
 
 /// <summary>
-/// Adventurer Ability
-/// Escape Ability: Teleports the player to the staircase up on the floor, or as close as they can to it.
-/// 30 Turn cooldown.
+///     Adventurer Ability
+///     Escape Ability: Teleports the player to the staircase up on the floor, or as close as they can to it.
+///     30 Turn cooldown.
 /// </summary>
 public class ActThisWay : Ability
 {

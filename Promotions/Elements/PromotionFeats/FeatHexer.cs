@@ -6,24 +6,55 @@ using PromotionMod.Stats.Hexer;
 namespace PromotionMod.Elements.PromotionFeats;
 
 /// <summary>
-/// Practitioners of the forbidden arts. Hexers have learned creative new ways to cause pain and suffering.
-/// Hexers focus on weakening the enemies with curses and damage over time effects.
-/// They specialize in applying debuffs, then exploiting those debuffs to deal damage.
-/// Skill - Traumatize - Does Mind Damage equivalent to how many negative conditions are on the enemy. 10 turn cooldown. 20% Mana cost.
-/// Skill - Blood Curse - Force applies one of the curses randomly at the cost of 10% life. Will prioritize curses you have not applied of the same tier that you roll.
-/// TODO (P2) Add another skill?
-/// 
-/// Passive - Hexmaster - When applying spell damage or taking damage, there is a chance to apply a hex out of a pool.
-/// Passive - Do not cite the deep magic to me - If you have active Debuffs on you, your curses apply at double power and consumes one of the debuffs.
+///     Practitioners of the forbidden arts. Hexers have learned creative new ways to cause pain and suffering.
+///     Hexers focus on weakening the enemies with curses and damage over time effects.
+///     They specialize in applying debuffs, then exploiting those debuffs to deal damage.
+///     Skill - Traumatize - Does Mind Damage equivalent to how many negative conditions are on the enemy. 10 turn
+///     cooldown. 20% Mana cost.
+///     Skill - Blood Curse - Force applies one of the curses randomly at the cost of 10% life. Will prioritize curses you
+///     have not applied of the same tier that you roll.
+///     TODO (P2) Add another skill?
+///     Passive - Hexmaster - When applying spell damage or taking damage, there is a chance to apply a hex out of a pool.
+///     Passive - Do not cite the deep magic to me - If you have active Debuffs on you, your curses apply at double power
+///     and consumes one of the debuffs.
 /// </summary>
 public class FeatHexer : PromotionFeat
 {
+
+    internal static List<string> CommonConditions = new List<string>
+    {
+        nameof(ConPoison),
+        nameof(ConWeakness),
+        nameof(ConFear),
+        nameof(ConWeakResEle),
+        nameof(ConNightmare)
+    };
+
+    internal static List<string> UncommonConditions = new List<string>
+    {
+        nameof(ConBurning),
+        nameof(ConFreeze),
+        nameof(ConParalyze),
+        nameof(ConBlind),
+        nameof(ConMalaise),
+        nameof(ConBleed)
+    };
+
+    internal static List<string> RareConditions = new List<string>
+    {
+        nameof(ConParanoia),
+        nameof(ConReapersCall),
+        nameof(ConMalaise),
+        nameof(ConCorruption)
+    };
+
     public override string PromotionClassId => Constants.HexerId;
     public override int PromotionClassFeatId => Constants.FeatHexer;
+
     public override List<int> PromotionAbilities => new List<int>
     {
         Constants.ActTraumatizeId,
-        Constants.ActBloodCurseId,
+        Constants.ActBloodCurseId
     };
 
     protected override void ApplyInternalNPC(Chara c)
@@ -31,7 +62,7 @@ public class FeatHexer : PromotionFeat
         c.ability.Add(Constants.ActTraumatizeId, 50, false);
         c.ability.Add(Constants.ActBloodCurseId, 100, false);
     }
-    
+
     protected override bool Requirement()
     {
         return owner.Chara?.c_idJob == "witch";
@@ -45,33 +76,6 @@ public class FeatHexer : PromotionFeat
         //owner.Chara.elements.ModPotential(257, 30);
     }
 
-    internal static List<string> CommonConditions = new List<string>
-    {
-        nameof(ConPoison),
-        nameof(ConWeakness),
-        nameof(ConFear),
-        nameof(ConWeakResEle),
-        nameof(ConNightmare),
-    };
-
-    internal static List<string> UncommonConditions = new List<string>
-    {
-        nameof(ConBurning),
-        nameof(ConFreeze),
-        nameof(ConParalyze),
-        nameof(ConBlind),
-        nameof(ConMalaise),
-        nameof(ConBleed),
-    };
-
-    internal static List<string> RareConditions = new List<string>
-    {
-        nameof(ConParanoia),
-        nameof(ConReapersCall),
-        nameof(ConMalaise),
-        nameof(ConCorruption),
-    };
-    
     public static Condition? ApplyCondition(Chara target, Chara caster, int power, bool force)
     {
         Random rng = new Random();
@@ -84,12 +88,14 @@ public class FeatHexer : PromotionFeat
             gachaString = "hexer_common_gacha";
             inactiveConditions = CommonConditions.Except(activeConditions).ToList();
             if (inactiveConditions.Count == 0) inactiveConditions = CommonConditions;
-        } else if (EClass.rnd(10) != 0)
+        }
+        else if (EClass.rnd(10) != 0)
         {
             gachaString = "hexer_uncommon_gacha";
             inactiveConditions = UncommonConditions.Except(activeConditions).ToList();
             if (inactiveConditions.Count == 0) inactiveConditions = UncommonConditions;
-        } else if (EClass.rnd(10) != 0)
+        }
+        else if (EClass.rnd(10) != 0)
         {
             gachaString = "hexer_rare_gacha";
             inactiveConditions = RareConditions.Except(activeConditions).ToList();
@@ -97,26 +103,23 @@ public class FeatHexer : PromotionFeat
         }
         else
         {
-            caster.SayRaw("hexer_legendary_gacha".langGame());
-            return target.AddCondition<ConDeathSentense>(100, force: true);
+            caster.Talk("hexer_legendary_gacha".langGame());
+            return target.AddCondition<ConDeathSentense>(100, true);
         }
 
         if (inactiveConditions.Count == 0)
         {
-            caster.SayRaw("hexer_failed_gacha".langGame());
+            caster.Talk("hexer_failed_gacha".langGame());
             return null;
         }
-        else
+        bool doublePower = false;
+        if (casterDebuff != null)
         {
-            bool doublePower = false;
-            if (casterDebuff != null)
-            {
-                casterDebuff.Kill();
-                doublePower = true;
-            }
-            caster.SayRaw(gachaString.langGame());
-            Condition hex = Condition.Create(inactiveConditions[rng.Next(inactiveConditions.Count)], doublePower ? power * 2 : power);
-            return target.AddCondition(hex, force);
+            casterDebuff.Kill();
+            doublePower = true;
         }
-    } 
+        caster.Talk(gachaString.langGame());
+        Condition hex = Condition.Create(inactiveConditions[rng.Next(inactiveConditions.Count)], doublePower ? power * 2 : power);
+        return target.AddCondition(hex, force);
+    }
 }

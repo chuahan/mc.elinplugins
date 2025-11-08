@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using PromotionMod.Common;
 using PromotionMod.Stats.WarCleric;
 using UnityEngine;
@@ -45,18 +46,21 @@ public class ActDivineFist : ActMelee
         componentInChildren.startColor = startColor;
 
         int power = GetPower(CC);
-        int boltDamage = HelperFunctions.SafeDice("warcleric_divine_fist", power);
+        int healAmount = HelperFunctions.SafeDice("warcleric_divine_fist", power);
         foreach (Chara target in pc.currentZone.map.ListCharasInCircle(TC.pos, 3F))
         {
             // Doesn't proc on user or original target.
             if (target == TC || target == CC) continue;
             if (target.IsHostile(CC))
             {
-                HelperFunctions.ProcSpellDamage(power, boltDamage, CC, target, ele: Constants.EleHoly, eleP: 50);
+                ActEffect.DamageEle(CC, EffectId.Arrow, power, Element.Create(Constants.EleHoly, power / 10), new List<Point>{target.pos}, new ActRef()
+                {
+                    act = this,
+                });
             }
             else
             {
-                target.HealHP(boltDamage, HealSource.Magic);
+                target.HealHP(healAmount, HealSource.Magic);
             }
             arrowEffect.Play(CC.pos, 0f, target.pos);
         }

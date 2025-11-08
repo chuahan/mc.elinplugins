@@ -26,6 +26,13 @@ public class ActChargedShot : Ability
     public override bool Perform()
     {
         int chargeAmount = (int)(CC.mana.max * 0.25F);
+        ConChargedChamber currentCharge = CC.GetCondition<ConChargedChamber>();
+        if (currentCharge != null)
+        {
+            chargeAmount += currentCharge.power;
+            currentCharge.Kill();
+        }
+
         CC.AddCondition<ConChargedChamber>(chargeAmount);
         return true;
     }

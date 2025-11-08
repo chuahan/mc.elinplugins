@@ -5,11 +5,23 @@ namespace PromotionMod.Elements.PromotionAbilities.Machinist;
 
 public class ActLoadUp : Ability
 {
-    private static List<int> BulletMods = new List<int>
+    private static List<List<int>> BulletMods = new List<List<int>>
     {
-        91, // Armor Piercing - Vorpal
-        850, // Incendiary - ConvertFire
-        66 // Tracer Rounds - Increased Accuracy
+        new List<int>
+        {
+            91,
+            606
+        }, // Armor Piercing - Vorpal and Drill
+        new List<int>
+        {
+            850,
+            607
+        }, // Incendiary - ConvertFire and Scatter
+        new List<int>
+        {
+            66,
+            620
+        } // Tracer Rounds - Accuracy and Chaser
     };
 
     public override bool CanPerform()
@@ -35,6 +47,7 @@ public class ActLoadUp : Ability
                 rangedWeapon.c_ammo = rangedTrait.MaxAmmo;
                 switch (rangedWeapon.trait)
                 {
+                    // TODO: Add one for Rocket launchers
                     case TraitToolRangeGunEnergy:
                         ammo = ThingGen.Create("bullet_energy", "ether");
                         ammo.SetNum(rangedTrait.MaxAmmo);
@@ -47,8 +60,9 @@ public class ActLoadUp : Ability
                         continue; // Doesn't use ammo.
                 }
 
-                int randomEffect = BulletMods.RandomItem();
-                ammo.elements.ModBase(randomEffect, 50);
+                List<int> ammoType = BulletMods.RandomItem();
+                ammo.elements.ModBase(ammoType[0], Math.Max(GetPower(CC) / 100, 25));
+                ammo.elements.ModBase(ammoType[1], 50);
 
                 ammo.SetEncLv(Math.Min(CC.LV, GetPower(CC) / 100));
                 rangedWeapon.ammoData = ammo;

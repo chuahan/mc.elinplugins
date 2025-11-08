@@ -10,8 +10,8 @@ public class TraitRangerBlastMine : TraitFactionTrap
         c.PlaySound("trap");
         Msg.Say(TrapName.langGame(), c);
 
-        c.DamageHP(owner.LV, AttackSource.Trap);
-        c.AddCondition<ConDim>(owner.LV);
+        c.DamageHP(GetPower(), AttackSource.Trap);
+        c.AddCondition<ConDim>(GetPower(), true);
         c.pos.PlayEffect("explosion");
         c.TryMoveFrom(owner.pos);
     }

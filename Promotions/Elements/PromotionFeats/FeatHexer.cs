@@ -14,6 +14,7 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Skill - Blood Curse - Force applies one of the curses randomly at the cost of 10% life. Will prioritize curses you
 ///     have not applied of the same tier that you roll.
 ///     TODO (P2) Add another skill?
+/// 
 ///     Passive - Hexmaster - When applying spell damage or taking damage, there is a chance to apply a hex out of a pool.
 ///     Passive - Do not cite the deep magic to me - If you have active Debuffs on you, your curses apply at double power
 ///     and consumes one of the debuffs.
@@ -76,7 +77,7 @@ public class FeatHexer : PromotionFeat
         //owner.Chara.elements.ModPotential(257, 30);
     }
 
-    public static Condition? ApplyCondition(Chara target, Chara caster, int power, bool force)
+    public static void ApplyCondition(Chara target, Chara caster, int power, bool force)
     {
         Random rng = new Random();
         Condition? casterDebuff = caster.conditions.FirstOrDefault(x => x.Type == ConditionType.Bad || x.Type == ConditionType.Debuff);
@@ -104,13 +105,14 @@ public class FeatHexer : PromotionFeat
         else
         {
             caster.Talk("hexer_legendary_gacha".langGame());
-            return target.AddCondition<ConDeathSentense>(100, true);
+            target.AddCondition<ConDeathSentense>(100, true);
+            return;
         }
 
         if (inactiveConditions.Count == 0)
         {
             caster.Talk("hexer_failed_gacha".langGame());
-            return null;
+            return;
         }
         bool doublePower = false;
         if (casterDebuff != null)
@@ -120,6 +122,18 @@ public class FeatHexer : PromotionFeat
         }
         caster.Talk(gachaString.langGame());
         Condition hex = Condition.Create(inactiveConditions[rng.Next(inactiveConditions.Count)], doublePower ? power * 2 : power);
-        return target.AddCondition(hex, force);
+
+        if (!force)
+        {
+            ActEffect.ProcAt(EffectId.Debuff, doublePower ? power * 2 : power, BlessedState.Normal, Act.CC, target, target.pos, isNeg: true, new ActRef
+            {
+                origin = Act.CC.Chara,
+                n1 = inactiveConditions[rng.Next(inactiveConditions.Count)],
+            });   
+        }
+        else
+        {
+            target.AddCondition(hex, force);   
+        }
     }
 }

@@ -72,6 +72,7 @@ public class ActWolkenkratzer : Ability
                 // Force Stun the target
                 target.AddCondition<ConParalyze>(force: true);
                 // Proc Stamina and Mana Recovery of Phantom
+                FeatPhantom.PhantomFinisherRestoration(CC);
             }
         }
         return true;

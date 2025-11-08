@@ -7,10 +7,7 @@ public class Constants
 
     internal const int SigmoidScalingMax = 3000;
     internal const float SigmoidScalingPowerSlope = 1.2f;
-
-    public const int FeatMaiaEnlightened = 1;
-    public const int FeatMaiaCorrupted = 1;
-
+    
     public const int PromotionLevelRequirement = 20;
 
     #region CWL Flags
@@ -178,6 +175,7 @@ public class Constants
     public const string AlestieCharaId = "knight_alestie";
     public const string EctoleCharaId = "knight_ectole";
     public const string RolingerCharaId = "knight_rolinger";
+    public const string DiasCharaId = "knight_dias";
 
     // Knightcaller Knights
     public const string KnightArcherCharaId = "knight_archer";
@@ -232,6 +230,12 @@ public class Constants
     // Trickster Summon
     public const string PhantomTricksterCharaId = "phantom_trickster";
 
+    // Alternate Bits
+    public const string NormalBitCharaId = "bit";
+    public const string ShieldBitCharaId = "shield_funnel";
+    public const string SwordBitCharaId = "sword_funnel";
+    public const string PhantomBitCharaId = "phantom_funnel";
+
     #endregion
 
     #region Promoted Class Spells/Abilities
@@ -250,49 +254,19 @@ public class Constants
     public const int ActLifebreakId = 1;
 
     // Battlemage
-    public const int SpFireCannon = 1;
-    public const int SpFireHammer = 1;
-    public const int SpColdCannon = 1;
-    public const int SpColdHammer = 1;
-    public const int SpLightningCannon = 1;
-    public const int SpLightningHammer = 1;
-    public const int SpDarknessCannon = 1;
-    public const int SpDarknessHammer = 1;
-    public const int SpMindCannon = 1;
-    public const int SpMindHammer = 1;
-    public const int SpPoisonCannon = 1;
-    public const int SpPoisonHammer = 1;
-    public const int SpNetherCannon = 1;
-    public const int SpNetherHammer = 1;
-    public const int SpSoundCannon = 1;
-    public const int SpSoundHammer = 1;
-    public const int SpNerveCannon = 1;
-    public const int SpNerveHammer = 1;
-    public const int SpHolyCannon = 1;
-    public const int SpHolyHammer = 1;
-    public const int SpChaosCannon = 1;
-    public const int SpChaosHammer = 1;
-    public const int SpMagicCannon = 1;
-    public const int SpMagicHammer = 1;
-    public const int SpEtherCannon = 1;
-    public const int SpEtherHammer = 1;
-    public const int SpAcidCannon = 1;
-    public const int SpAcidHammer = 1;
-    public const int SpCutCannon = 1;
-    public const int SpCutHammer = 1;
-    public const int SpImpactCannon = 1;
-    public const int SpImpactHammer = 1;
+    public const int StManaShieldId = 1;
+    public const int StManaFocusId = 1;
 
     // Dancer
     public const int ActDancePartnerId = 1;
     public const int ActDaggerIllusionId = 1;
     public const int ActSwordFouetteId = 1;
     public const int ActWildPirouetteId = 1;
-    public const int StanceEnergyDanceId = 1;
-    public const int StanceFreedomDanceId = 1;
-    public const int StanceHealingDanceId = 1;
-    public const int StanceMistDanceId = 1;
-    public const int StanceSwiftDanceId = 1;
+    public const int StEnergyDanceId = 1;
+    public const int StFreedomDanceId = 1;
+    public const int StHealingDanceId = 1;
+    public const int StMistDanceId = 1;
+    public const int StSwiftDanceId = 1;
 
     // Druid
     public const int ActSowWarmSeedsId = 1;
@@ -346,10 +320,10 @@ public class Constants
     public const int ActSummonKnightId = 1;
 
     // Luminary
-    public const int VanguardStanceId = 1;
+    public const int StVanguardId = 1;
     public const int ActLightWaveId = 1;
     public const string LightwaveAlias = "luminary_lightwave";
-    public const int ActParryId = 1;
+    public const int ActLuminousDeflectionId = 1;
 
     // Machinist
     public const int ActLoadUpId = 1;
@@ -368,7 +342,7 @@ public class Constants
     public const int ActVerbrechenId = 1;
 
     // Ranger
-    public const int StanceRangersCantoId = 1;
+    public const int StRangersCanto = 1;
     public const int ActGimmickCoatingId = 1;
     public const int ActSetTrapId = 1;
     public const string RangerBlastTrapAlias = "ranger_blast_trap";
@@ -445,4 +419,25 @@ public class Constants
 
     #endregion
 
+    #region Maia
+    
+    public const int FeatMaia = 1;
+    public const int FeatMaiaEnlightened = 1;
+    public const int FeatMaiaCorrupted = 1;
+    
+    public const string MaiaLightFateFlag = "MaiaLightFate";
+    public const string MaiaDarkFateFlag = "MaiaDarkFate";
+    
+    public const string CandlebearerCharaId = "candlebearer";
+    public const string DarklingCharaId = "darkling";
+
+    public const int ActEnlightenedVengeanceId = 1;
+    public const int ActEnlightenedEmpowermentId = 1;
+    public const int ActEnlightenedSilentForceId = 1;
+    public const int ActCorruptedVengeanceId = 1;
+    public const int ActCorruptedEmpowermentId = 1;
+    public const int ActCorruptedSilentForceId = 1;
+    public const int ActGatewayId = 1;
+    
+    #endregion
 }

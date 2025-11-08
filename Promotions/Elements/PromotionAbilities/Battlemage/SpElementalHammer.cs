@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Battlemage;
 
+// DEPRECATED
 public class SpElementalHammer : Spell
 {
     public override bool CanPerform()

@@ -10,8 +10,11 @@ public class ActLifebreak : Ability
             Msg.Say("classlocked_ability".lang(Constants.BerserkerId.lang()));
             return false;
         }
-        if (CC.HasCooldown(Constants.ActLifebreakId)) return false;
-        return base.CanPerform();
+        if (Act.TC == null)
+        {
+            return false;
+        }
+        return ACT.Melee.CanPerform();
     }
 
     public override Cost GetCost(Chara c)
@@ -25,9 +28,7 @@ public class ActLifebreak : Ability
 
     public override bool Perform()
     {
-        int damage = CC.Chara.MaxHP - CC.Chara.hp;
-        damage = HelperFunctions.SafeMultiplier(damage, 1.3F);
-        TC.DamageHP(damage, AttackSource.Melee, CC);
+        new ActMeleeLifebreak().Perform(Act.CC, Act.TC);
         CC.AddCooldown(Constants.ActLifebreakId, 10);
         return true;
     }

@@ -5,6 +5,8 @@ using System.Reflection.Emit;
 using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Stats;
+using PromotionMod.Stats.Adventurer;
+using PromotionMod.Stats.Dancer;
 using PromotionMod.Stats.Harbinger;
 using PromotionMod.Stats.Hermit;
 using PromotionMod.Stats.Ranger;
@@ -12,6 +14,7 @@ using PromotionMod.Stats.Runeknight;
 using PromotionMod.Stats.Sharpshooter;
 using PromotionMod.Stats.WitchHunter;
 using PromotionMod.Trait;
+using PromotionMod.Trait.Artificer;
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(Chara))]
@@ -102,7 +105,7 @@ internal class CharaPatches : EClass
         // Harbinger - Gain damage reduction when nearby enemy afflicted with Harbinger Miasmas.
         if (__result != null && __result is ConHarbingerMiasma)
         {
-            foreach (Chara target in pc.currentZone.map.ListCharasInCircle(__instance.pos, 5f, true))
+            foreach (Chara target in pc.currentZone.map.ListCharasInCircle(__instance.pos, 5f))
             {
                 if (target.Evalue(Constants.FeatHarbinger) > 0)
                 {
@@ -161,23 +164,12 @@ internal class CharaPatches : EClass
     }
 
     [HarmonyPatch(nameof(Chara.Die))]
-    [HarmonyTranspiler]
-    internal static IEnumerable<CodeInstruction> SpawnDoubleLoot(IEnumerable<CodeInstruction> instructions)
+    [HarmonyPrefix]
+    internal static void Promotion_CharaPatch_SpawnDoubleLoot(Chara __instance, Card origin)
     {
-        List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
-        MethodInfo? targetMethod = AccessTools.Method(typeof(Card), "SpawnLoot");
-
-        for (int i = 0; i < codes.Count; i++)
+        if (!__instance.IsPC && !__instance.IsPCParty && __instance.IsInActiveZone)
         {
-            yield return codes[i];
-
-            // Look for call to SpawnLoot
-            if (codes[i].opcode == OpCodes.Call && codes[i].operand as MethodInfo == targetMethod)
-            {
-                // Also yield a second call with the same argument
-                yield return codes[i - 1]; // assuming the previous instruction loads the argument
-                yield return new CodeInstruction(OpCodes.Call, targetMethod);
-            }
+            __instance.SpawnLoot(origin);
         }
     }
 
@@ -187,8 +179,9 @@ internal class CharaPatches : EClass
     {
         // Ranger - If the PC is mounted with Ranger's Canto on, and there is an available target they will make a free shot at the target. Will not work if the weapon needs to be reloaded.
         // Parasites instead use Map.MoveCard or SyncRide.
-        if (__instance.IsPC &&
-            __instance.HasCondition<StRangerCanto>() &&
+        if (!_zone.IsRegion &&
+            __instance.IsPC &&
+            __instance.HasCondition<StanceRangerCanto>() &&
             __instance.GetBestRangedWeapon() != null &&
             type == Card.MoveType.Walk &&
             __result == Card.MoveResult.Success &&
@@ -217,12 +210,14 @@ internal class CharaPatches : EClass
         }
     }
 
-    [HarmonyPatch(nameof(Chara.SyncRide))]
+    [HarmonyPatch(nameof(Chara.SyncRide), typeof(Chara))]
     [HarmonyPostfix]
     internal static void SyncRidePostfix(Chara __instance, Chara c)
     {
         // Ranger - If the character is currently a symbiote with Ranger's Canto on, and there is an available target they will make a free shot at the target. Will not work if the weapon needs to be reloaded.
-        if (c.host == __instance && c.HasCondition<StRangerCanto>() && c.GetBestRangedWeapon() != null)
+        if (!_zone.IsRegion &&
+            c.host == __instance &&
+            c.HasCondition<StanceRangerCanto>() && c.GetBestRangedWeapon() != null)
         {
             Thing rangedWeapon = c.GetBestRangedWeapon();
             TraitToolRange traitToolRange = rangedWeapon.trait as TraitToolRange;
@@ -241,10 +236,41 @@ internal class CharaPatches : EClass
     [HarmonyPostfix]
     internal static void CalcCastingChance(Chara __instance, Element e, int num, ref int __result)
     {
+        // Dancer - Infatuation reduces cast chance by 25%.
+        if (__instance.Chara.HasCondition<ConInfatuation>())
+        {
+            __result = (int)(__result * 0.75F);
+        }
+        
         // WitchHunter - Null Presence prevents casting.
         if (__instance.Chara.HasCondition<ConNullPresence>())
         {
             __result = 0;
         }
+    }
+
+    [HarmonyPatch(nameof(Chara.TryNullifyCurse))]
+    [HarmonyPrefix]
+    internal static bool TryNullifyCurse(Chara __instance, ref bool __result)
+    {
+        // Corrupted Maias are immune to curses.
+        if (__instance.Evalue(Constants.FeatMaiaCorrupted) > 0)
+        {
+            __result = true;
+            return false;
+        }
+        return true;
+    }
+    
+    [HarmonyPatch(nameof(Chara.MakeGene))]
+    [HarmonyPrefix]
+    internal static bool MakeGene(Chara __instance)
+    {
+        // The Unique Characters in this mod will not drop their genes.
+        if (__instance.trait is (TraitHarbinger or TraitSpiritKnight or TraitUniqueSummon or TraitLailah or TraitArtificerGolem))
+        {
+            return false;
+        }
+        return true;
     }
 }

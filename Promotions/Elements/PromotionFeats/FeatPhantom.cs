@@ -41,7 +41,7 @@ public class FeatPhantom : PromotionFeat
 
     protected override bool Requirement()
     {
-        return owner.Chara?.c_idJob == "swordsage";
+        return owner.Chara?.c_idJob == "warmage";
     }
 
     protected override void ApplyInternal()
@@ -63,7 +63,7 @@ public class FeatPhantom : PromotionFeat
     {
         int levelOverride = power / 15;
         if (caster.IsPC) levelOverride = Math.Max(player.stats.deepest, levelOverride);
-        Chara summonedBit = CharaGen.Create("swordbit");
+        Chara summonedBit = CharaGen.Create(Constants.PhantomBitCharaId);
         summonedBit.SetMainElement("eleMagic", elemental: true);
         summonedBit.SetSummon(20 + power / 20 + EClass.rnd(10));
         summonedBit.SetLv(levelOverride);
@@ -71,5 +71,11 @@ public class FeatPhantom : PromotionFeat
         _zone.AddCard(summonedBit, pos.GetNearestPoint(false, false));
         summonedBit.PlayEffect("teleport");
         summonedBit.MakeMinion(caster);
+    }
+
+    public static void PhantomFinisherRestoration(Chara cc)
+    {
+        cc.stamina.Mod(50);
+        cc.mana.Mod((int)(cc.mana.max * 0.20F));
     }
 }

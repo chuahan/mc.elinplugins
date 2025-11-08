@@ -29,10 +29,10 @@ public class ActSpinningSlash : Ability
 
         // Defaults to Fire.
         int element = Constants.EleFire;
-        int damage = HelperFunctions.SafeDice("runeknight_spinningslash", GetPower(CC));
+        long damage = HelperFunctions.SafeDice("runeknight_spinningslash", GetPower(CC));
         if (existingAttunement != null)
         {
-            damage = HelperFunctions.SafeAdd(damage, existingAttunement.StoredDamage);
+            damage += existingAttunement.StoredDamage;
             element = existingAttunement.AttunedElement;
             existingAttunement.StoredDamage = 0;
         }

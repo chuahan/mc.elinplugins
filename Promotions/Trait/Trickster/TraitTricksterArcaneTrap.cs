@@ -18,7 +18,7 @@ public class TraitTricksterArcaneTrap : TraitFactionTrap
         nameof(ConWeakResEle),
         nameof(ConNightmare),
         nameof(ConParanoia), // Hexer - Attack Allies
-        nameof(ConDespair),
+        nameof(ConDespair), // Despair - Negative health regen and speed.
         nameof(ConMagicBreak) // Spellblade - Reduces Magic Resistance
     };
 
@@ -36,6 +36,10 @@ public class TraitTricksterArcaneTrap : TraitFactionTrap
         string randomCondition = TricksterDebuffs.RandomItem();
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(owner.pos, 2F, IsPCFactionTrap, true))
         {
+            if (randomCondition == nameof(ConMagicBreak))
+            {
+                HelperFunctions.ApplyElementalBreak(Constants.EleMagic, null, target, this.GetPower());
+            }
             Condition trapCondition = Condition.Create(randomCondition, owner.LV);
             target.AddCondition(trapCondition, true);
             target.PlayEffect("ball_Chaos");

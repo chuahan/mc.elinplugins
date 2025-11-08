@@ -1,5 +1,5 @@
 using PromotionMod.Common;
-using PromotionMod.Stats;
+using PromotionMod.Stats.Adventurer;
 namespace PromotionMod.Elements.PromotionAbilities.Adventurer;
 
 public class ActSenseDanger : Ability

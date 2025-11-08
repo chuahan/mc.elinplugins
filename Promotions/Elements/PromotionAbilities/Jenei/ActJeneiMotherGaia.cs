@@ -21,32 +21,29 @@ public class ActJeneiMotherGaia : Ability
     public override bool Perform()
     {
         int power = GetPower(CC);
-        int damage = HelperFunctions.SafeDice("jenei_mothergaia", power);
-
-        // Damage the target on point. Earthquake that point.
-        HelperFunctions.ProcSpellDamage(power, damage, CC, TC.Chara, ele: Constants.EleImpact);
-        TC.pos.Animate(AnimeID.Quake, true);
-        CC.PlaySound("spell_earthquake");
-        Shaker.ShakeCam("ball");
-
-        List<Chara> hitTarget = new List<Chara>
+        
+        List<Point> targets = new List<Point>
         {
-            TC.Chara
+            TC.pos
         };
 
         _map.ForeachNeighbor(TC.pos, delegate(Point neighbor)
         {
             TweenUtil.Tween(0.8F, null, delegate
             {
-                foreach (Chara target in neighbor.Charas.Where(target => !hitTarget.Contains(target) && target.IsHostile(CC)))
-                {
-                    HelperFunctions.ProcSpellDamage(power, damage / 2, CC, TC.Chara, ele: Constants.EleImpact);
-                    hitTarget.Add(target);
-                }
+                targets.Add(neighbor);
                 neighbor.Animate(AnimeID.Quake, true);
             });
         });
-
+        
+        TC.pos.Animate(AnimeID.Quake, true);
+        CC.PlaySound("spell_earthquake");
+        Shaker.ShakeCam("ball");
+        
+        ActEffect.DamageEle(CC, EffectId.Earthquake, power, Element.Create(Constants.EleImpact, power / 10), targets, new ActRef()
+        {
+            act = this,
+        });
         return true;
     }
 }

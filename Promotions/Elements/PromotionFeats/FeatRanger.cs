@@ -27,14 +27,14 @@ public class FeatRanger : PromotionFeat
 
     public override List<int> PromotionAbilities => new List<int>
     {
-        Constants.StanceRangersCantoId,
+        Constants.StRangersCanto,
         Constants.ActGimmickCoatingId,
         Constants.ActSetTrapId
     };
 
     protected override void ApplyInternalNPC(Chara c)
     {
-        c.ability.Add(Constants.StanceRangersCantoId, 100, false);
+        c.ability.Add(Constants.StRangersCanto, 100, false);
         c.ability.Add(Constants.ActGimmickCoatingId, 75, false);
         c.ability.Add(Constants.ActSetTrapId, 75, false);
     }

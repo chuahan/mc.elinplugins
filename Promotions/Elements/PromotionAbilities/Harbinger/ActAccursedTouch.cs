@@ -14,11 +14,12 @@ public class ActAccursedTouch : Ability
 {
     internal static List<string> PossibleMiasmas = new List<string>
     {
-        nameof(ConBlindingMiasma),
-        nameof(ConChillingMiasma),
-        nameof(ConDebilitatingMiasma),
-        nameof(ConRendingMiasma),
-        nameof(ConSmotheringMiasma)
+        nameof(ConBlindingMiasma), // Blind
+        nameof(ConChillingMiasma), // Chill
+        nameof(ConDebilitatingMiasma), // Weakness
+        nameof(ConRendingMiasma), // Bleed
+        nameof(ConSmotheringMiasma), // Paralyze
+        nameof(ConDisorientingMiasma) // Confuse
     };
 
     public override bool CanPerform()
@@ -33,17 +34,24 @@ public class ActAccursedTouch : Ability
 
     public override bool Perform()
     {
-        if (TC != null && TC.isChara) ActAccursedTouch.AddMiasma(GetPower(CC), CC, TC.Chara);
+        if (TC != null && TC.isChara) AddMiasma(GetPower(CC), CC, TC.Chara);
         return true;
     }
 
-    internal static void AddMiasma(int power, Chara caster, Chara target)
+    internal void AddMiasma(int power, Chara caster, Chara target)
     {
         Random rng = new Random();
         List<string> activeMiasma = target.conditions.Select(t => nameof(t)).ToList();
         List<string> inactiveMiasma = PossibleMiasmas.Except(activeMiasma).ToList();
-        if (inactiveMiasma.Count == 0) return;
-        Condition miasma = Condition.Create(inactiveMiasma[rng.Next(inactiveMiasma.Count)], power);
-        TC.Chara.AddCondition(miasma);
+        if (inactiveMiasma.Count == 0)
+        {
+            target.Say("harbinger_max_affliction".langGame());
+            return;
+        }
+        ActEffect.ProcAt(EffectId.Debuff, GetPower(Act.CC), BlessedState.Normal, Act.CC, target, target.pos, isNeg: true, new ActRef
+        {
+            origin = Act.CC.Chara,
+            n1 = inactiveMiasma.RandomItem(),
+        });
     }
 }

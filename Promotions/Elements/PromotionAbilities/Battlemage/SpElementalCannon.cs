@@ -3,6 +3,7 @@ using PromotionMod.Common;
 using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.Battlemage;
 
+// DEPRECATED
 public class SpElementalCannon : Spell
 {
     public override bool CanAutofire => true;

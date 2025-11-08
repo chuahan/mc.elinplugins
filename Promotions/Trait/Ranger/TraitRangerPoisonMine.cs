@@ -10,7 +10,7 @@ public class TraitRangerPoisonMine : TraitFactionTrap
         c.PlaySound("trap");
         Msg.Say(TrapName.langGame(), c);
 
-        c.AddCondition<ConPoison>(owner.LV);
+        c.AddCondition<ConPoison>(GetPower(), true);
         c.PlayEffect("smoke");
     }
 }

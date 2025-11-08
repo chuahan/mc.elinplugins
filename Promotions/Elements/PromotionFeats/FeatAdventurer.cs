@@ -8,9 +8,11 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     They specialize in non-combat support abilities.
 ///     PC PROMOTION ONLY
 ///     Skill - This Way - Teleports the player to the staircase up on the floor,or as close as they can to it.
-///     30 Turn Cooldown.
+///         30 Turn Cooldown.
+///         Only usable in Nefia.
 ///     Skill - Sense Danger - Adds advanced telepathy, highlights any hostile enemy and all traps.
-///     10 Turn Cooldown.
+///         Increases DV by %.
+///         10 Turn Cooldown.
 ///     Passive - Loot Goblin - Chance of double loot drop.
 ///     Passives - Leadership - Increases EXP gain for you and your allies.
 ///     Passive - Auto Medicate - If a party member gains a debuff that is curable with a potion, Adventurers will

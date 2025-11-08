@@ -14,7 +14,7 @@ public class ActRuneEtching : Ability
 
         if (CC.IsPC && CC.things.Find("tool_talisman") == null)
         {
-            CC.Say("hintRuneknight_need_calligraphy");
+            CC.Say("hint_runeknight_need_calligraphy");
             return false;
         }
 
@@ -30,7 +30,7 @@ public class ActRuneEtching : Ability
 
     public override bool Perform()
     {
-        TC.Chara.AddCondition<ConWardingRune>(this.GetPower(CC));
+        TC.Chara.AddCondition<ConWardingRune>(GetPower(CC));
         return true;
     }
 }

@@ -71,14 +71,22 @@ public class ActLightWave : Ability
 
         // Inflict Holy Damage and Summon a Holy Swordbit
         int power = GetPower(CC);
-        int damage = HelperFunctions.SafeDice(Constants.LightwaveAlias, power);
+        ActEffect.DamageEle(CC, EffectId.Sword, power, Element.Create(Constants.EleHoly, power / 10), affectedPoints, new ActRef()
+        {
+            act = this,
+        });
+        
         List<Chara> impacted = new List<Chara>();
         foreach (Chara target in from affected in affectedPoints from target in affected.ListCharas() where target.IsHostile(CC) && !impacted.Contains(target) select target)
         {
-            SpawnHolySwordBit(power, CC, target.pos);
-            HelperFunctions.ProcSpellDamage(power, damage, CC, target, AttackSource.MagicSword, Constants.EleHoly);
             impacted.Add(target);
+            SpawnHolySwordBit(power, CC, target.pos);
         }
+
+        ActEffect.DamageEle(CC, EffectId.Sword, power, Element.Create(Constants.EleHoly, power / 10), affectedPoints, new ActRef()
+        {
+            act = this,
+        });
 
         ConLuminary? luminary = CC.GetCondition<ConLuminary>() ?? CC.AddCondition<ConLuminary>() as ConLuminary;
         luminary?.AddStacks(impacted.Count);
@@ -90,7 +98,7 @@ public class ActLightWave : Ability
     {
         int levelOverride = power / 15;
         if (caster.IsPC) levelOverride = Math.Max(player.stats.deepest, levelOverride);
-        Chara summonedBit = CharaGen.Create("swordbit");
+        Chara summonedBit = CharaGen.Create(Constants.SwordBitCharaId);
         summonedBit.SetMainElement("eleHoly", elemental: true);
         summonedBit.SetSummon(20 + power / 20 + EClass.rnd(10));
         summonedBit.SetLv(levelOverride);

@@ -9,11 +9,13 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     hammer on enemies.
 ///     They specialize in being able to provide curative support or frontline strength as needed, no matter the situation.
 ///     TODO (P3) Change name? Also maybe make it more of a martial class.
+/// 
 ///     SKill - Divine Descent - Embodies yourself as the avatar of your god, massively boosting your physical attributes
 ///     based on your Faith.
 ///     When descending, causes a massive holy 3F explosion.
 ///     Allies in the explosion are burst healed to full, debuffs purged.
 ///     Enemies in the explosion are damaged with holy damage and inflicted with Fear.
+///     Cooldown of a day.
 ///     Skill - Sanctuary Stance - Deploys an area that reduces damage done to all it's inhabitants by 75%, both ally and
 ///     hostile.
 ///     Skill - Divine Fist - Single target holy damage attack. On impact, shoots out 4 holy bolts at nearby characters.

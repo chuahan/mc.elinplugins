@@ -24,19 +24,33 @@ public class SpSummonSkeleton : Spell
 
     public override bool Perform()
     {
+        SpSummonSkeleton.SummonSkeleton(CC, TP, this.GetPower(CC));
+        return true;
+    }
+
+    public static void SummonSkeleton(Chara caster, Point target, int power, int deathknightChance = 20, int targetLevel = 0)
+    {
+        // Can't go over cap of minions.
+        if (CC.currentZone.CountMinions(CC) >= CC.MaxSummon)
+        {
+            caster.Say("necromancer_limit".langGame());
+            return;
+        }
+        
         string summonName = SkeletonOptions.RandomItem();
+        if (EClass.rnd(deathknightChance) == 0) summonName = Constants.NecromancerDeathKnightCharaId;
+        
         Chara summon = CharaGen.Create(summonName);
         summon.isSummon = true;
         // Normal summon leveling.
         // For PCs Summons can scale to your deepest achieved depth instead.
-        int power = GetPower(CC);
-        int levelOverride = CC.LV * (100 + power / 10) / 100 + power / 30;
-        if (CC.IsPC) levelOverride = Math.Max(player.stats.deepest, levelOverride);
+        int levelOverride = (Math.Max(caster.LV, targetLevel) * (100 + power / 10) / 100 + power / 30);
+        if (caster.IsPC) levelOverride = Math.Max(player.stats.deepest, levelOverride);
         summon.SetLv(levelOverride);
         summon.interest = 0;
-        CC.currentZone.AddCard(summon, TP);
+        caster.currentZone.AddCard(summon, target);
         summon.PlayEffect("mutation");
-        summon.MakeMinion(CC);
+        summon.MakeMinion(caster);
 
         // Equip the Skeleton.
         switch (summonName)
@@ -44,12 +58,17 @@ public class SpSummonSkeleton : Spell
             case Constants.NecromancerSkeletonMageCharaId:
                 summon.AddThing(ThingGen.Create("staff", 40, summon.LV));
                 break;
-            default:
+            case Constants.NecromancerSkeletonWarriorCharaId:
                 summon.AddThing(ThingGen.Create("sword", 40, summon.LV));
                 summon.AddThing(ThingGen.Create("shield_knight", 40, summon.LV));
                 break;
+            case Constants.NecromancerDeathKnightCharaId:
+                summon.AddThing(ThingGen.Create("sword", 40, summon.LV));
+                summon.AddThing(ThingGen.Create("shield_knight", 40, summon.LV));
+                summon.AddThing(ThingGen.Create("helm_knight", 40, summon.LV));
+                summon.AddThing(ThingGen.Create("armor_breast", 40, summon.LV));
+                summon.AddThing(ThingGen.Create("boots_heavy", 40, summon.LV));
+                break;
         }
-
-        return true;
     }
 }

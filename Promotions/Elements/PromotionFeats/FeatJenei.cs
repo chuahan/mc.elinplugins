@@ -18,7 +18,7 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Basically small scale Earthquake with 2F radius instead.
 ///     Mars: The Element of Power, Mars Jenei manipulate fire.
 ///     Skill - Blaze - Does Fire Hand, but also sets a fire pillar on the target location.
-///     Skill - Dragon Plume - Basically Fire Breath with guaranteed chance to inflict Burning.
+///     Skill - Dragon Fume - Basically Fire Breath with guaranteed chance to inflict Burning.
 ///     Jupiter: The Element of Mind and Spirit, Jupiter Jenei manipulate wind and lightning
 ///     Skill - Reveal -
 ///     When used by the Player, it acts like a Stethoscope as a spell.

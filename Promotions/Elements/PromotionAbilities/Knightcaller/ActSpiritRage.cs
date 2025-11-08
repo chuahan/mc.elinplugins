@@ -19,9 +19,9 @@ public class ActSpiritRage : Ability
     {
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, true, true))
         {
-            if (target.IsPCPartyMinion)
+            if (target.IsPCPartyMinion || target == CC)
             {
-                target.AddCondition<ConSpiritRage>();
+                target.AddCondition<ConSpiritRage>(this.GetPower(CC));
             }
         }
 

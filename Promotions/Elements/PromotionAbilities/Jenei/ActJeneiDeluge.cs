@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Jenei;
 
@@ -19,10 +20,10 @@ public class ActJeneiDeluge : Ability
     public override bool Perform()
     {
         int power = GetPower(CC);
-        int damage = HelperFunctions.SafeDice("jenei_deluge", power);
-        HelperFunctions.ProcSpellDamage(power, damage, CC, TC.Chara, ele: Constants.EleCold, eleP: 150);
-        TC.Chara.AddCondition<ConWet>(GetPower(CC), true);
-        TC.pos.PlayEffect("ball_Cold");
+        ActEffect.DamageEle(CC, EffectId.None, power, Element.Create(Constants.EleCold, power / 10), new List<Point>{TP}, new ActRef()
+        {
+            act = this,
+        });
         _map.ModLiquid(TC.pos.x, TC.pos.z, 10);
         return true;
     }

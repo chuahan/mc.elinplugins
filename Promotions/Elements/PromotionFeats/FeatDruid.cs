@@ -7,9 +7,13 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Druids focus on magics related to nature, summoning plantlife to aid their cause.
 ///     They specialize in supporting their teams through casting various control spells.
 ///     Skill - Sow Wrath Seeds - Summon Offensive flowers
-///     Skill - Sow Warm Seeds - Summon Defensive or Support flowers
-///     TODO (P3) Give them another skill Maybe?
+///     Skill - Sow Warm Seeds - Summon Defensive or Support flowers/// 
+///     Spell - Summon Tree Ent Warrior
+/// 
+///     TODO (P3) Give them another skill Maybe? Or is it because Sow Warmth and Wrath have so many options it should count?
+/// 
 ///     Passive - Conspectus of Nature - Convert Summon books to Summon Tree Ent Warrior
+///     Passive - Friends with Nature. Basically Kumiromi effect.
 /// </summary>
 public class FeatDruid : PromotionFeat
 {
@@ -40,5 +44,7 @@ public class FeatDruid : PromotionFeat
         owner.Chara.elements.ModPotential(286, 30);
         // Casting - 304
         owner.Chara.elements.ModPotential(304, 30);
+        // Regeneration
+        //owner.Chara.elements.ModPotential(305, 30);
     }
 }

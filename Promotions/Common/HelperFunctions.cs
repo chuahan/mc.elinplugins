@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using PromotionMod.Stats;
+using PromotionMod.Stats.Spellblade;
 using UnityEngine;
 namespace PromotionMod.Common;
 
@@ -24,11 +26,12 @@ public static class HelperFunctions
         }
     }
 
-    public static int SafeDice(string element, int power)
+    public static int SafeDice(string element, int power, bool rollMax = false)
     {
         Dice dice = Dice.Create(element, power);
         try
         {
+            if (rollMax) dice.RollMax();
             return dice.Roll();
         }
         catch (OverflowException)
@@ -37,11 +40,12 @@ public static class HelperFunctions
         }
     }
 
-    public static int SafeDice(string id, int power, Card c = null, Act act = null)
+    public static int SafeDiceForCard(string id, int power, bool rollMax = false, Card c = null, Act act = null)
     {
         Dice dice = Dice.Create(id, power, c, act);
         try
         {
+            if (rollMax) dice.RollMax();
             return dice.Roll();
         }
         catch (OverflowException)
@@ -115,10 +119,12 @@ public static class HelperFunctions
 
         return (friendlies, enemies);
     }
-
-    // Helper function to do all the extra effects when calculating spell stuff.
-    public static void ProcSpellDamage(int power, int damage, Chara cc, Chara tc, AttackSource attackSource = AttackSource.None, int ele = Constants.EleVoid, int eleP = 100)
+    
+    // Helper function to do direct spell damage while incorporating Shatter, Control Magic, Protection.
+    // This is mostly used for attacks which pass in the damage to deal, or have to go through tools such as artificer tools.
+    public static void ProcSpellDamage(int power, long damage, Chara cc, Chara tc, AttackSource attackSource = AttackSource.None, int ele = Constants.EleVoid, int eleP = 100)
     {
+        long adjustedDamage = damage;
         // Shatter Reproduction
         bool canShatter = ele != 910 && ele != 911;
         if (cc.IsPCFactionOrMinion && (cc.HasElement(1651) || EClass.pc.Evalue(1651) >= 2)) canShatter = false;
@@ -132,9 +138,43 @@ public static class HelperFunctions
                 tc = a;
             });
         }
+        
+        // Try reducing it by Control Magic if it's a friendly.
+        if (tc.IsFriendOrAbove(cc.Chara))
+        {
+            int controlMagic = cc.Evalue(302);
+            if (!cc.IsPC && cc.IsPCFactionOrMinion)
+            {
+                controlMagic += EClass.pc.Evalue(302);
+            }
+            if (cc.HasElement(1214)) // Magic Precision
+            {
+                controlMagic *= 2;
+            }
+            if (controlMagic > 0)
+            {
+                if (controlMagic * 10 > EClass.rnd(damage + 1))
+                {
+                    cc.ModExp(302, cc.IsPC ? 10 : 50);
+                    return;
+                }
+                adjustedDamage = EClass.rnd(damage * 100 / (100 + controlMagic * 10 + 1));
+                cc.ModExp(302, cc.IsPC ? 20 : 100);
 
+                if (damage == 0L)
+                {
+                    return;
+                }
+            }
+            
+            if ((cc.HasElement(1214) || (!cc.IsPC && (cc.IsPCFaction || cc.IsPCFactionMinion) && EClass.pc.HasElement(1214))) && EClass.rnd(5) != 0)
+            {
+                return;
+            }
+        }
+        
         // Actually inflict the damage.
-        tc.DamageHP(damage, ele, eleP, attackSource, cc);
+        tc.DamageHP(adjustedDamage, ele, eleP, attackSource, cc);
     }
 
     public static Condition Create(string alias, int power, int power2, Chara caster, Action<Condition>? onCreate = null)
@@ -152,5 +192,75 @@ public static class HelperFunctions
     {
         string[] names = Enum.GetNames(typeof(T));
         return names.RandomItem();
+    }
+    
+    public static void ApplyElementalBreak(int eleId, Chara? origin, Chara target, int power)
+    {
+        // Copied this section from Proc so I can account for their resistance.
+        int targetWillScore = target.WIL * (target.IsPowerful ? 20 : 5);
+        ConHolyVeil holyVeil = target.GetCondition<ConHolyVeil>();
+        if (holyVeil != null)
+        {
+            targetWillScore += holyVeil.power * 5;
+        }
+
+        if (EClass.rnd(power) < targetWillScore / 10 || EClass.rnd(10) == 0)
+        {
+            target.Say("debuff_resist", target);
+            origin?.DoHostileAction(target);
+            return;
+        }
+        
+        switch (eleId)
+        {
+            case Constants.EleCold:
+                target.AddCondition(SubPoweredCondition.Create(nameof(ConColdBreak), power, 10));
+                return;
+            case Constants.EleLightning:
+                target.AddCondition(SubPoweredCondition.Create(nameof(ConLightningBreak), power, 10));
+                return;
+            case Constants.EleDarkness:
+                target.AddCondition(SubPoweredCondition.Create(nameof(ConDarknessBreak), power, 10));
+                return;
+            case Constants.EleMind:
+                target.AddCondition(SubPoweredCondition.Create(nameof(ConMindBreak), power, 10));
+                return;
+            case Constants.ElePoison:
+                target.AddCondition(SubPoweredCondition.Create(nameof(ConPoisonBreak), power, 10));
+                return;
+            case Constants.EleNether:
+                target.AddCondition(SubPoweredCondition.Create(nameof(ConNetherBreak), power, 10));
+                return;
+            case Constants.EleSound:
+                target.AddCondition(SubPoweredCondition.Create(nameof(ConSoundBreak), power, 10));
+                return;
+            case Constants.EleNerve:
+                target.AddCondition(SubPoweredCondition.Create(nameof(ConNerveBreak), power, 10));
+                return;
+            case Constants.EleHoly:
+                target.AddCondition(SubPoweredCondition.Create(nameof(ConHolyBreak), power, 10));
+                return;
+            case Constants.EleChaos:
+                target.AddCondition(SubPoweredCondition.Create(nameof(ConMagicBreak), power, 10));
+                return;
+            case Constants.EleMagic:
+                target.AddCondition(SubPoweredCondition.Create(nameof(ConColdBreak), power, 10));
+                return;
+            case Constants.EleEther:
+                target.AddCondition(SubPoweredCondition.Create(nameof(ConEtherBreak), power, 10));
+                return;
+            case Constants.EleAcid:
+                target.AddCondition(SubPoweredCondition.Create(nameof(ConAcidBreak), power, 10));
+                return;
+            case Constants.EleCut:
+                target.AddCondition(SubPoweredCondition.Create(nameof(ConCutBreak), power, 10));
+                return;
+            case Constants.EleImpact:
+                target.AddCondition(SubPoweredCondition.Create(nameof(ConImpactBreak), power, 10));
+                return;
+            default: // And Fire
+                target.AddCondition(SubPoweredCondition.Create(nameof(ConFireBreak), power, 10));
+                return;
+        }
     }
 }

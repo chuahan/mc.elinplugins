@@ -31,6 +31,8 @@ public class ActSpiritRally : Ability
                 target.AddCondition<ConSpiritRally>();
             }
         }
+        
+        CC.AddCondition<ConSpiritRally>(this.GetPower(CC));
 
         CC.AddCooldown(Constants.ActSpiritRallyId, 10);
         return true;

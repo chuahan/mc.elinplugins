@@ -1,20 +1,27 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cwl.Helper.Extensions;
 using HarmonyLib;
 using PromotionMod.Common;
+using PromotionMod.Elements;
+using PromotionMod.Elements.Maia;
+using PromotionMod.Elements.PromotionAbilities;
 using PromotionMod.Stats.Headhunter;
+using PromotionMod.Stats.Hexer;
 using PromotionMod.Stats.Necromancer;
 using PromotionMod.Stats.Sentinel;
 using PromotionMod.Stats.Sovereign;
 using PromotionMod.Stats.Trickster;
+using PromotionMod.Trait;
+using PromotionMod.Trait.Artificer;
 using PromotionMod.Trait.Trickster;
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(Card))]
 public class CardPatches
 {
-    [HarmonyPatch(nameof(Card.ModExp))]
+    [HarmonyPatch(nameof(Card.ModExp), typeof(int), typeof(int))]
     [HarmonyPrefix]
     internal static bool AdventurerDoubleExp(Card __instance, int ele, ref int a)
     {
@@ -39,17 +46,23 @@ public class CardPatches
             Chara chara = __instance.Chara;
             if (chara.Evalue(Constants.FeatBattlemage) > 0)
             {
-                int manaValue = chara.mana.max / 5;
+                int manaValue = chara.mana.value / 5;
                 __result += manaValue;
             }
 
-            // Sentinel
+            // Sentinel - Increased PV for Heavy Armor and/or Shield.
             if (chara.Evalue(Constants.FeatSentinel) > 0)
             {
-                // Double PV if Heavy Armor + Shield.
-                if (chara.GetArmorSkill() == 122 && chara.body.GetAttackStyle() == AttackStyle.Shield)
+                // Increase PV by 50% if wearing Heavy Armor
+                if (chara.GetArmorSkill() == 122)
                 {
-                    __result = HelperFunctions.SafeMultiplier(__result, 2);
+                    __result = HelperFunctions.SafeMultiplier(__result, 1.5F);
+                }
+
+                // Increase PV by 50% if using a Shield
+                if (chara.body.GetAttackStyle() == AttackStyle.Shield)
+                {
+                    __result = HelperFunctions.SafeMultiplier(__result, 1.5F);
                 }
 
                 // PV is set to 0 when in Rage Stance.
@@ -68,6 +81,7 @@ public class CardPatches
         if (__instance.isChara)
         {
             Chara target = __instance.Chara;
+            
             // Berserker - Heal on Kill
             if (origin.isChara && origin.Chara.Evalue(Constants.FeatBerserker) > 0)
             {
@@ -90,26 +104,13 @@ public class CardPatches
                 }
             }
 
-            // Necromancer - If target is afflicted with ConDeadBeckon, on death will summon a Death Knight
+            // Necromancer - If target is afflicted with ConDeadBeckon, on death can summon a skeleton of their level.
             if (target.HasCondition<ConDeadBeckon>())
             {
                 ConDeadBeckon deadBeckon = target.GetCondition<ConDeadBeckon>();
                 Chara necromancer = EClass._map.zone.FindChara(deadBeckon.NecromancerUID);
 
-                Chara summon = CharaGen.Create(Constants.NecromancerDeathKnightCharaId);
-                summon.isSummon = true;
-                summon.SetLv(target.LV);
-                summon.interest = 0;
-                necromancer.currentZone.AddCard(summon, __instance.pos);
-                summon.PlayEffect("mutation");
-                summon.MakeMinion(necromancer);
-
-                // Equip the Death Knight with full heavy armor + a sword.
-                summon.AddThing(ThingGen.Create("sword", 40, summon.LV));
-                summon.AddThing(ThingGen.Create("shield_knight", 40, summon.LV));
-                summon.AddThing(ThingGen.Create("helm_knight", 40, summon.LV));
-                summon.AddThing(ThingGen.Create("armor_breast", 40, summon.LV));
-                summon.AddThing(ThingGen.Create("boots_heavy", 40, summon.LV));
+                if (necromancer != null) SpSummonSkeleton.SummonSkeleton(necromancer, target.pos, target.LV, 10, target.LV);
             }
 
             // Sovereign - Rout Order will replenish value on kill. Any active Intonation will also replenish value.
@@ -126,6 +127,45 @@ public class CardPatches
                 Condition tricksterCondition = Condition.Create(randomCondition, target.LV);
                 origin.Chara.AddCondition(tricksterCondition, true);
             }
+
+            // If a Maiar makes the kill on a Harbinger.
+            if (target.trait is TraitHarbinger && origin.Evalue(Constants.FeatMaia) > 0)
+            {
+                // If the Maia hasn't yet ascended.
+                if (origin.Evalue(Constants.FeatMaiaEnlightened) == 0 && origin.Evalue(Constants.FeatMaiaCorrupted) == 0)
+                {
+                    // Check kills on Harbinger.
+                    // If the has already killed a Harbinger, kill the character and skip credit.
+                    switch (target.id)
+                    {
+                        case Constants.CandlebearerCharaId:
+                            if (origin.GetFlagValue(Constants.MaiaDarkFateFlag) > 0)
+                            {
+                                Msg.Say("maiar_forfeit".langGame(origin.NameSimple));
+                                origin.Die(null, null, AttackSource.Wrath);
+                            }
+                            else
+                            {
+                                Msg.Say("maiar_enlightened".langGame(origin.NameSimple));
+                                origin.SetFlagValue(Constants.MaiaLightFateFlag, 1);
+                            }
+                            break;
+
+                        case Constants.DarklingCharaId:
+                            if (origin.GetFlagValue(Constants.MaiaLightFateFlag) > 0)
+                            {
+                                Msg.Say("maiar_forfeit".langGame(origin.NameSimple));
+                                origin.Die(null, null, AttackSource.Wrath);
+                            }
+                            else
+                            {
+                                Msg.Say("maiar_corrupted".langGame(origin.NameSimple));
+                                EClass.pc.SetFlagValue(Constants.MaiaDarkFateFlag, 1);   
+                            }
+                            break;
+                    }
+                }
+            }
         }
         return true;
     }
@@ -141,9 +181,9 @@ public class CardPatches
             // Build condition dictionaries for fast lookup
             Dictionary<Type, Condition> targetConditions = chara.conditions.GroupBy(c => c.GetType()).ToDictionary(g => g.Key, g => g.First());
 
-            if (targetConditions.ContainsKey(typeof(ConDespair)))
+            if (targetConditions.ContainsKey(typeof(ConCorruption)))
             {
-                chara.Say("trickster_despair_nullheal".lang());
+                chara.Say("trickster_corruption_nullheal".lang());
                 return false;
             }
 
@@ -160,5 +200,66 @@ public class CardPatches
         }
 
         return true;
+    }
+    
+    [HarmonyPatch(nameof(Card.MakeEgg))]
+    [HarmonyPrefix]
+    internal static bool PromotionMod_PreventMakeEgg_Patch(Card __instance)
+    {
+        // The Unique Characters in this mod will not drop their genes.
+        if (__instance.isChara && 
+            __instance.Chara.trait is (TraitHarbinger or TraitSpiritKnight or TraitUniqueSummon or TraitLailah or TraitArtificerGolem))
+        {
+            return false;
+        }
+        return true;
+    }
+    
+    [HarmonyPatch(nameof(Card.LevelUp))]
+    [HarmonyPostfix]
+    internal static void PromotionMod_Maia_LevelUp_Patch(Card __instance)
+    {
+        // Unascended Maiars will have a warning at level 13, then every level past level 19.
+        if (__instance.Evalue(Constants.FeatMaia) > 0 && __instance.Evalue(Constants.FeatMaiaEnlightened) == 0 && __instance.Evalue(Constants.FeatMaiaCorrupted) == 0)
+        {
+            // If they have not chosen their fate, throw a warning message.
+            if (__instance.GetFlagValue(Constants.MaiaLightFateFlag) == 0 && __instance.GetFlagValue(Constants.MaiaDarkFateFlag) == 0)
+            {
+                if (__instance.LV == 13)
+                {
+                    Msg.Say("maiar_fate");
+                }
+                else if (__instance.LV >= 19)
+                {
+                    Msg.Say("maiar_warning_critical".langGame(__instance.NameSimple));
+                }
+
+                // If they have not chosen their fate and have reached level 20 or higher, they will die every level.
+                if (__instance.LV >= 20)
+                {
+                    Msg.Say("maiar_forfeit".langGame(__instance.NameSimple));
+                    __instance.Die(null, null, AttackSource.Wrath);
+                }
+            }
+            else
+            {
+                // If their fate has been chosen, and they reach level 20, ascend them.
+                if (__instance.LV >= 20)
+                {
+                    Msg.Say("maiar_ascension".langGame(__instance.NameSimple));
+                    if (__instance.GetFlagValue(Constants.MaiaLightFateFlag) > 0)
+                    {
+                        // Englightened Ascension
+                        __instance.Chara.SetFeat(Constants.FeatMaiaEnlightened, 1, msg: true);
+                    }
+                    
+                    if (__instance.GetFlagValue(Constants.MaiaDarkFateFlag) > 0)
+                    {
+                        // Corrupted Ascension
+                        __instance.Chara.SetFeat(Constants.FeatMaiaCorrupted, 1, msg: true);
+                    }
+                }
+            }
+        }
     }
 }

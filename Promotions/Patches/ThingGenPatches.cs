@@ -2,12 +2,12 @@ using HarmonyLib;
 using PromotionMod.Common;
 namespace PromotionMod.Patches;
 
-[HarmonyPatch(typeof(ConMiasma))]
+[HarmonyPatch(typeof(ThingGen))]
 public class ThingGenPatches
 {
-    [HarmonyPatch(nameof(ThingGen.Create))]
+    [HarmonyPatch(nameof(ThingGen._Create))]
     [HarmonyPostfix]
-    internal static void ArtificerDoubleCrystals(ref Thing __result, string id)
+    internal static void Promotion_ArtificerDoubleCrystalsPatch(ref Thing __result, string id, int idMat, int lv)
     {
         if (EClass.pc.Evalue(Constants.FeatArtificer) > 0 && (__result.id == "crystal_earth" || __result.id == "crystal_sun" || __result.id == "crystal_mana"))
         {

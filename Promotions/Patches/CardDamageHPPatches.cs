@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
 using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Elements.PromotionFeats;
 using PromotionMod.Stats;
+using PromotionMod.Stats.Battlemage;
 using PromotionMod.Stats.Harbinger;
 using PromotionMod.Stats.Luminary;
 using PromotionMod.Stats.Runeknight;
@@ -27,24 +30,35 @@ public class CardDamageHPPatches
         AttackSource.None
     };
 
-    [HarmonyPatch(nameof(Card.DamageHP), typeof(int), typeof(int), typeof(int), typeof(AttackSource), typeof(Card), typeof(bool), typeof(Thing), typeof(Chara))]
+    [HarmonyPatch(nameof(Card.DamageHP), typeof(long), typeof(int), typeof(int), typeof(AttackSource), typeof(Card), typeof(bool), typeof(Thing), typeof(Chara))]
     [HarmonyPrefix]
-    internal static bool OnDamageHP(Card __instance, ref int dmg, ref int ele, ref int eleP, AttackSource attackSource, Card origin, bool showEffect, Thing weapon)
+    internal static bool OnDamageHP_Patches(Card __instance, ref long dmg, ref int ele, ref int eleP, AttackSource attackSource, Card origin, bool showEffect, Thing weapon)
     {
         if (__instance.isChara && ActiveAttackSources.Contains(attackSource))
         {
             Chara target = __instance.Chara;
             Chara originChara = origin.Chara;
 
-            // Build condition dictionaries for fast lookup
-            Dictionary<Type, Condition> targetConditions = target.conditions.GroupBy(c => c.GetType()).ToDictionary(g => g.Key, g => g.First());
-            Dictionary<Type, Condition>? originConditions = originChara?.conditions?.GroupBy(c => c.GetType()).ToDictionary(g => g.Key, g => g.First());
+            // Build condition lookups for perf.
+            ILookup<Type, Condition> targetConditions = target.conditions.ToLookup(c => c.GetType());
+            ILookup<Type, Condition> originConditions = originChara.conditions.ToLookup(c => c.GetType());
 
             float damageMultiplier = 1F;
             List<Chara> targetAllies = HelperFunctions.GetCharasWithinRadius(target.pos, 5f, target, true, false);
 
+            // Maia - Maias deal 50% increased damage against their opposing element(s).
+            if (originChara.Evalue(Constants.FeatMaiaEnlightened) > 0 && target.source.mainElement.Contains(Constants.ElementAliasLookup[Constants.EleDarkness].Remove(0, 3)))
+            {
+                damageMultiplier += 0.5F;
+            }
+            
+            if (originChara.Evalue(Constants.FeatMaiaCorrupted) > 0 && target.source.mainElement.Contains(Constants.ElementAliasLookup[Constants.EleHoly].Remove(0, 3)))
+            {
+                damageMultiplier += 0.5F;
+            }
+            
             // Harbinger - Every active Miasma on the target boosts damage from Harbingers by 5%.
-            if (targetConditions.ContainsKey(typeof(ConHarbingerMiasma)) && origin.isChara && origin.Evalue(Constants.FeatHarbinger) > 0)
+            if (targetConditions.Contains(typeof(ConHarbingerMiasma)) && origin.isChara && origin.Evalue(Constants.FeatHarbinger) > 0)
             {
                 int miasmaCount = target.conditions.Count(con => con is ConHarbingerMiasma);
                 damageMultiplier += miasmaCount * 0.05F;
@@ -66,7 +80,7 @@ public class CardDamageHPPatches
                 }
             }
 
-            // Hexer - When taking damage, there is a 10% chance to force apply a hex out of a pool.
+            // Hexer - When taking damage, there is a 10% chance to force-apply a hex out of a pool.
             if (target.Evalue(Constants.FeatHexer) > 0 && ActiveAttackSources.Contains(attackSource))
             {
                 if (EClass.rnd(10) == 0)
@@ -78,7 +92,7 @@ public class CardDamageHPPatches
 
             // Luminary - Vanguard Stance: Redirect damage from allies to the Luminary in Vanguard Stance.
             // Does not redirect if the target is already the Luminary.
-            if (!targetConditions.ContainsKey(typeof(StVanguardStance)) && targetAllies.Count(c => c.conditions.Any(cond => cond.GetType() == typeof(StVanguardStance))) > 0)
+            if (!targetConditions.Contains(typeof(StVanguardStance)) && targetAllies.Count(c => c.conditions.Any(cond => cond.GetType() == typeof(StVanguardStance))) > 0)
             {
                 Chara luminaryAlly = targetAllies.First(c => c.conditions.Any(cond => cond.GetType() == typeof(StVanguardStance)));
                 luminaryAlly.DamageHP(dmg, ele, eleP, attackSource, origin, showEffect, weapon);
@@ -86,16 +100,16 @@ public class CardDamageHPPatches
             }
 
             // Luminary - When taking damage, if currently Parrying, reduce damage to zero.
-            if (targetConditions.ContainsKey(typeof(ConParry)))
+            if (targetConditions.Contains(typeof(ConLuminousDeflection)))
             {
                 dmg = 0;
-                target.AddCooldown(Constants.ActParryId, -5);
+                target.AddCooldown(Constants.ActLuminousDeflectionId, -5);
             }
 
             // Luminary - Reduces damage based on Class Condition Stacks (1% per stack, caps at 30)
-            if (targetConditions.ContainsKey(typeof(ConLuminary)))
+            if (targetConditions.Contains(typeof(ConLuminary)))
             {
-                ConLuminary luminary = targetConditions.GetValueOrDefault(typeof(ConLuminary)) as ConLuminary;
+                ConLuminary luminary = (ConLuminary)targetConditions[typeof(ConLuminary)].Single();
                 damageMultiplier -= luminary.GetStacks() * 0.01F;
 
             }
@@ -109,9 +123,9 @@ public class CardDamageHPPatches
             }
 
             // Rune Knight - Elemental Attunement. If damage received matches your attuned element, all damage is absorbed and added as stockpiled damage.
-            if (targetConditions.ContainsKey(typeof(ConElementalAttunement)))
+            if (targetConditions.Contains(typeof(ConElementalAttunement)))
             {
-                ConElementalAttunement attunement = targetConditions.GetValueOrDefault(typeof(ConElementalAttunement)) as ConElementalAttunement;
+                ConElementalAttunement attunement = (ConElementalAttunement)targetConditions[typeof(ConElementalAttunement)].Single();
                 if (attunement != null)
                 {
                     attunement.StoredDamage += dmg;
@@ -121,26 +135,26 @@ public class CardDamageHPPatches
             }
 
             // Rune Knight - Runic Guard is removed and Elemental Attunement is added. All damage is absorbed.
-            if (targetConditions.ContainsKey(typeof(ConRunicGuard)) && ele != Constants.EleVoid)
+            if (targetConditions.Contains(typeof(ConRunicGuard)) && ele != Constants.EleVoid)
             {
                 target.RemoveCondition<ConRunicGuard>();
-                ConElementalAttunement attunement = target.AddCondition<ConElementalAttunement>() as ConElementalAttunement;
+                ConElementalAttunement attunement = (ConElementalAttunement)target.AddCondition<ConElementalAttunement>();
                 if (attunement != null)
                 {
                     attunement.AttunedElement = ele;
                 }
 
                 // Absorbing up to 20% of the damage as mana and stamina.
-                int restorationAmount = Math.Min(dmg / 5, 20);
-                target.mana.Mod(restorationAmount);
-                target.stamina.Mod(restorationAmount);
+                long restorationAmount = Math.Min(dmg / 5, 20);
+                target.mana.Mod((int)restorationAmount);
+                target.stamina.Mod((int)restorationAmount);
                 return false;
             }
 
             // Rune Knight - Warding runes will reduce incoming damage by 20% in exchange for a charge.
-            if (targetConditions.ContainsKey(typeof(ConWardingRune)))
+            if (targetConditions.Contains(typeof(ConWardingRune)))
             {
-                targetConditions[typeof(ConWardingRune)].Mod(-1);
+                ((ConWardingRune)targetConditions[typeof(ConWardingRune)].Single()).Mod(-1);
                 damageMultiplier -= 0.2F;
             }
 
@@ -162,41 +176,32 @@ public class CardDamageHPPatches
             }
 
             // Sovereign - Law Stance Reduces damage by 10%.
-            if (targetConditions.ContainsKey(typeof(ConSovereignLaw)))
+            if (targetConditions.Contains(typeof(ConSovereignLaw)))
             {
                 damageMultiplier -= 0.1F;
             }
             // Sovereign - Chaos Stance Increases damage by 10%.
-            if (originConditions != null && originConditions.ContainsKey(typeof(ConSovereignLaw)))
+            if (originConditions.Contains(typeof(ConSovereignChaos)))
             {
                 damageMultiplier += 0.1F;
             }
 
-            // Sovereign - Barricade Order : Reduces damage based on # of allies neighboring you with OrderBarricade
+            // Sovereign - Barricade Order: Reduces damage based on # of allies neighboring you
             // 5% damage reduced per ally in coherence.
-            if (targetConditions.ContainsKey(typeof(ConOrderBarricade)))
+            if (targetConditions.Contains(typeof(ConOrderBarricade)))
             {
-                float barricadeCoherence = target.pos.ListCharasInNeighbor(delegate(Chara c)
-                                         {
-                                             if (c == Act.CC || c.IsHostile(Act.CC) || !c.conditions.Any(cond => cond.GetType() == typeof(ConOrderBarricade)))
-                                             {
-                                                 return true;
-                                             }
-                                             return false;
-                                         }).Count *
-                                         0.05F;
-
+                float barricadeCoherence = target.pos.ListCharasInNeighbor(c => c == Act.CC || c.IsHostile(Act.CC)).Count * 0.05F;
                 damageMultiplier -= barricadeCoherence;
             }
 
             // Spellblade - If the Spellblade is using Siphoning Blade. do no damage and instead deal the 50% damage as MP instead, absorbing it.
             if (origin.Chara.Evalue(Constants.FeatSpellblade) > 0)
             {
-                if (originConditions != null && originConditions.ContainsKey(typeof(ConSiphoningBlade)))
+                if (originConditions.Contains(typeof(ConSiphoningBlade)))
                 {
                     dmg = (int)(dmg * 0.5F);
-                    target.mana.Mod(0 - dmg);
-                    origin.Chara.mana.Mod(dmg);
+                    target.mana.Mod((int)(0 - dmg));
+                    origin.Chara.mana.Mod((int)dmg);
                     return false;
                 }
             }
@@ -209,32 +214,97 @@ public class CardDamageHPPatches
 
 
             // War Cleric - Sol Blade causes the healer to absorb 30% of the damage dealt.
-            if (originChara != null && originChara.Evalue(Constants.FeatWarCleric) > 0 && originConditions != null && originConditions.ContainsKey(typeof(ConSolBlade)))
+            if (originChara.Evalue(Constants.FeatWarCleric) > 0 && originConditions.Contains(typeof(ConSolBlade)))
             {
                 int heal = (int)(dmg * 0.3F);
                 originChara.HealHP(heal, HealSource.Magic);
             }
 
             // War Cleric - Sanctuary reduces all damage dealt by 75%.
-            if (targetConditions.ContainsKey(typeof(ConSanctuary)))
+            if (targetConditions.Contains(typeof(ConSanctuary)))
             {
                 damageMultiplier -= 0.75F;
             }
+            
+            // Floor Damage Multiplier to 0. Don't want any healing on negative multiplier shenanigans
+            damageMultiplier = Math.Max(damageMultiplier, 0);
+            // Apply Damage multiplier.
+            dmg = (long)(dmg * damageMultiplier);
 
-            // Protection - Protects flat amount of damage.
-            if (targetConditions.ContainsKey(typeof(ConProtection)))
+            // Afterimage - Fully negates one instance of damage.
+            if (targetConditions.Contains(typeof(ConAfterimage)) && dmg != 0)
             {
-                ConProtection protection = targetConditions.GetValueOrDefault(typeof(ConProtection)) as ConProtection;
+                ConAfterimage afterimage = (ConAfterimage)targetConditions[typeof(ConAfterimage)].Single();
+                dmg = 0;
+                afterimage.Mod(-1);
+                if (afterimage.value <= 0) afterimage.Kill();
+            }
+            
+            // Protection - Protects flat amount of damage.
+            if (targetConditions.Contains(typeof(ConProtection)))
+            {
+                ConProtection protection = (ConProtection)targetConditions[typeof(ConProtection)].Single();
                 if (protection.value >= dmg)
                 {
-                    protection.Mod(-1 * dmg);
+                    protection.Mod((int)(0 - dmg));
                     return false;
                 }
 
                 dmg -= protection.value;
                 protection.Kill();
             }
+            
+            // Mana Shield - Protects a flat amount of damage with shield gating.
+            // Taking any hit will reset the cooldown delay though.
+            if (targetConditions.Contains(typeof(StanceManaShield)))
+            {
+                StanceManaShield manaShield = (StanceManaShield)targetConditions[typeof(StanceManaShield)].Single();
+                int energyPower = manaShield.Stacks;
+                manaShield.ModShield((int)(0-dmg));
+                if (energyPower > 0)
+                {
+                    dmg = 0;
+                }
+            }
         }
         return true;
+    }
+
+    [HarmonyPatch(nameof(Card.DamageHP), typeof(long), typeof(int), typeof(int), typeof(AttackSource), typeof(Card), typeof(bool), typeof(Thing), typeof(Chara))]
+    [HarmonyTranspiler]
+    internal IEnumerable<CodeInstruction> OnDamageHP_TranspilePatch(IEnumerable<CodeInstruction> instructions)
+    {
+        MethodInfo damagePierceMethod = AccessTools.Method(typeof(CardDamageHPPatches), nameof(CardDamageHPPatches.BattleMageDamagePierce));
+        FieldInfo origin = AccessTools.Field(typeof(Card), "origin");
+
+        CodeMatcher matcher = new CodeMatcher(instructions)
+                .MatchForward(true,
+                    new CodeMatch(OpCodes.Ldloc_S), // power
+                    new CodeMatch(OpCodes.Call, AccessTools.Method(typeof(Element), "GetResistDamage"))
+                )
+                .ThrowIfInvalid("GetResistDamage not found")
+                .Advance(-1)
+                .Insert(
+                    // Pass Origin Card into the Damage Pierce
+                    new CodeInstruction(OpCodes.Ldloc_0),
+                    new CodeInstruction(OpCodes.Ldfld, origin),
+                    // Call DamagePiercePatch(origin)
+                    new CodeInstruction(OpCodes.Call, damagePierceMethod),
+                    // Add to power
+                    new CodeInstruction(OpCodes.Add)
+                ); 
+        
+        return matcher.InstructionEnumeration();
+
+    }
+
+    internal int BattleMageDamagePierce(Chara origin)
+    {
+        // Battlemages in Focus Stance with mana remaining will pierce one tier.
+        if (origin.Evalue(Constants.FeatBattlemage) > 0 && origin.HasCondition<StanceManaFocus>() && origin.mana.value > 0)
+        {
+            return 1;
+        }
+        return 0;
     }
 }

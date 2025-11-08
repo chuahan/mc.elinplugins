@@ -6,7 +6,6 @@ using PromotionMod.Stats.Hermit;
 using PromotionMod.Stats.Ranger;
 using PromotionMod.Stats.Sharpshooter;
 using PromotionMod.Stats.Sovereign;
-using PromotionMod.Trait.Machinist;
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(AttackProcess))]
@@ -62,27 +61,12 @@ public class AttackProcessPatches
     [HarmonyPostfix]
     internal static void PerformPostfixPatch(AttackProcess __instance, int count, bool hasHit, ref float dmgMulti, ref bool maxRoll, bool subAttack)
     {
-        // Machinist / General - Rocket Launcher
-        if (__instance.TC.isChara && __instance.weapon.trait is TraitToolRocketLauncher && __instance.hit)
-        {
-            // Calculate the explosive power from the Rocket Power
-            int power = EClass.curve((100 + __instance.weapon.ammoData._material.hardness * 10) * (100 + __instance.weapon.ammoData.encLV) / 100, 400, 100);
-
-            // Proc an explosion at the location.
-            ActEffect.ProcAt(EffectId.Explosive, power, BlessedState.Normal, __instance.CC, __instance.TC, __instance.TC.pos, true, new ActRef
-            {
-                refThing = __instance.weapon.ammoData,
-                aliasEle = "eleImpact"
-            });
-        }
-
-        // Ranger - Gimmick Coatings. Does not work on Canes or Rocket Launchers.
+        // Ranger - Gimmick Coatings. Does not work on Canes
         if (__instance.CC.HasCondition<ConGimmickCoating>() &&
             !subAttack &&
             __instance.TC.isChara &&
             __instance is { hit: true, IsRanged: true, toolRange: not null } &&
-            __instance.weapon.trait is not TraitToolRangeCane &&
-            __instance.weapon.trait is not TraitToolRocketLauncher)
+            __instance.weapon.trait is not TraitToolRangeCane)
         {
             ConGimmickCoating coating = __instance.CC.GetCondition<ConGimmickCoating>();
             if (Enum.TryParse(coating.GimmickType, out Constants.RangerCoatings coatingType))
@@ -90,16 +74,32 @@ public class AttackProcessPatches
                 switch (coatingType)
                 {
                     case Constants.RangerCoatings.HammerCoating:
-                        __instance.TC.Chara.AddCondition<ConFaint>(coating.power);
+                        ActEffect.ProcAt(EffectId.Debuff, coating.power, BlessedState.Normal, Act.CC, __instance.TC.Chara, __instance.TC.Chara.pos, isNeg: true, new ActRef
+                        {
+                            origin = Act.CC.Chara,
+                            n1 = nameof(ConFaint),
+                        });
                         break;
                     case Constants.RangerCoatings.BladedCoating:
-                        __instance.TC.Chara.AddCondition<ConBleed>(coating.power);
+                        ActEffect.ProcAt(EffectId.Debuff, coating.power, BlessedState.Normal, Act.CC, __instance.TC.Chara, __instance.TC.Chara.pos, isNeg: true, new ActRef
+                        {
+                            origin = Act.CC.Chara,
+                            n1 = nameof(ConBleed),
+                        });
                         break;
                     case Constants.RangerCoatings.ParalyticCoating:
-                        __instance.TC.Chara.AddCondition<ConParalyze>(coating.power);
+                        ActEffect.ProcAt(EffectId.Debuff, coating.power, BlessedState.Normal, Act.CC, __instance.TC.Chara, __instance.TC.Chara.pos, isNeg: true, new ActRef
+                        {
+                            origin = Act.CC.Chara,
+                            n1 = nameof(ConParalyze),
+                        });
                         break;
                     case Constants.RangerCoatings.PoisonCoating:
-                        __instance.TC.Chara.AddCondition<ConPoison>(coating.power);
+                        ActEffect.ProcAt(EffectId.Debuff, coating.power, BlessedState.Normal, Act.CC, __instance.TC.Chara, __instance.TC.Chara.pos, isNeg: true, new ActRef
+                        {
+                            origin = Act.CC.Chara,
+                            n1 = nameof(ConPoison),
+                        });
                         break;
                     case Constants.RangerCoatings.ShatterCoating:
                         // Try to split to two nearby targets

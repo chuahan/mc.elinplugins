@@ -17,6 +17,11 @@ public class TraitFactionTrap : TraitTrap
         owner.SetHidden(false); // Faction Traps are always visible.
     }
 
+    public int GetPower()
+    {
+        return this.owner.LV * 10;
+    }
+
     public override void OnStepped(Chara c)
     {
         if (!IsNegativeEffect || !_zone.IsPCFaction && !_zone.IsUserZone)

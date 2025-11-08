@@ -15,9 +15,4 @@ public class StRangersCanto : Ability
         if (CC.ride == null) return false;
         return base.CanPerform();
     }
-
-    public override Sprite GetSprite()
-    {
-        return SpriteSheet.Get(source.alias);
-    }
 }

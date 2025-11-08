@@ -11,13 +11,6 @@ public class StOverwatch : Ability
             Msg.Say("classlocked_ability".lang(Constants.SharpshooterId.lang()));
             return false;
         }
-
         return base.CanPerform();
-    }
-
-    public override bool Perform()
-    {
-        CC.AddCondition<StanceOverwatch>();
-        return true;
     }
 }

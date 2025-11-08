@@ -3,6 +3,7 @@ namespace PromotionMod.Stats;
 
 public class ConGreaterRegen : Timebuff
 {
+    public override ConditionType Type => ConditionType.Buff;
     public virtual float MinHealing => 0.1F;
     public virtual float MaxHealing => 0.25f;
 

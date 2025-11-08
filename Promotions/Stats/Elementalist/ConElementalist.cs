@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using PromotionMod.Common;
+using UnityEngine;
 namespace PromotionMod.Stats;
 
 public class ConElementalist : ClassCondition
@@ -57,6 +59,19 @@ public class ConElementalist : ClassCondition
         }
     };
 
+    [JsonProperty(PropertyName = "R")] private int _decayDelay = 0;
+    
+    // When you haven't gained elemental orbs in the past 5 turns, you will lose one random stockpiled orb a turn.
+    private const int DecayDelayMax = 5;
+    
+    public int GetPower(Chara cc)
+    {
+        int basePower = (cc.LV * 6) + 100; // Level * 6 + 100
+        basePower += cc.Evalue(76) * 4; // Add MAG stat * 4
+        basePower = EClass.curve(basePower, 400, 100); // Curve
+        return (basePower * Mathf.Max(100 + cc.Evalue(411) - cc.Evalue(93), 1) / 100); // Add Spellpower + AntiMag
+    }
+
     public int GetElementalStrength()
     {
         int totalPower = 0;
@@ -80,10 +95,29 @@ public class ConElementalist : ClassCondition
         return totalTypes;
     }
 
-    // Can accumulate up to 5 of each Element.
-    public void AddElementalOrb(int eleId)
+    /// <summary>
+    /// Can accumulate up to 5 of each Element.
+    /// If gaining the elemental orb for the first time, gain a stack of Spell Tempo (caps at 10.)
+    /// </summary>
+    public void AddElementalOrb(int eleId, Chara tc)
     {
+        if (ElementalStockpile[eleId] == 0)
+        {
+            ElementalStockpile[eleId]++;
+            int tempoStage = 1;
+            ConSpellTempo currentTempo = owner.GetCondition<ConSpellTempo>();
+            if (currentTempo != null)
+            {
+                tempoStage += currentTempo.power;
+                if (tempoStage > 10) tempoStage = 10;
+                currentTempo.Kill();
+            }
+
+            owner.AddCondition<ConSpellTempo>(tempoStage);
+            HelperFunctions.ApplyElementalBreak(eleId, this.owner, tc, this.GetPower(owner));
+        }
         if (ElementalStockpile[eleId] < 5) ElementalStockpile[eleId]++;
+        _decayDelay = 0;
     }
 
     // Upon casting Flare or Elemental Fury, all orbs are consumed.
@@ -92,6 +126,21 @@ public class ConElementalist : ClassCondition
         foreach (int elementId in ElementalStockpile.Keys)
         {
             ElementalStockpile[elementId] = 0;
+        }
+        _decayDelay = 0;
+    }
+
+    public override void Tick()
+    {
+        if (_decayDelay == DecayDelayMax)
+        {
+            // Lose a random orb.
+            List<int> elementsWithOrbs = this.ElementalStockpile.Where(s => s.Value > 0).Select(s => s.Key).ToList();
+            if (elementsWithOrbs.Count == 0) return;
+            ElementalStockpile[elementsWithOrbs.RandomItem()]--;
+        } else if (_decayDelay < DecayDelayMax)
+        {
+            _decayDelay++;
         }
     }
 }

@@ -10,7 +10,7 @@ public class TraitRangerParalyticMine : TraitFactionTrap
         c.PlaySound("trap");
         Msg.Say(TrapName.langGame(), c);
 
-        c.AddCondition<ConParalyze>(owner.LV);
+        c.AddCondition<ConParalyze>(GetPower(), true);
         c.PlayEffect("smoke");
     }
 }

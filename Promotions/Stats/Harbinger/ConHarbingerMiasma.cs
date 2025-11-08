@@ -38,7 +38,7 @@ public class ConHarbingerMiasma : TimeDebuff
                             }
                             else
                             {
-                                Condition condition = chara.AddCondition(Condition.Create(power / 2, delegate(ConMiasma con)
+                                Condition condition = chara.AddCondition(Condition.Create(power / 2, delegate(ConHarbingerMiasma con)
                                 {
                                     con.givenByPcParty = givenByPcParty;
                                     con.SetElement(refVal);

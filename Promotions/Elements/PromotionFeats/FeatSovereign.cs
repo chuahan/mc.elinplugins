@@ -10,13 +10,13 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     They specialize in the use of Law and Chaos Stances and the subsequent Orders to change the flow of battle.
 ///     All Orders are on a Cooldown of 10 Turns and will last 10 turns.
 ///     Skill - Law Stance - When Law Stance is in play. Defensive Orders will be given. In addition, all allies within 5
-///     radius will take 10% reduced damage.
+///     radius will take 5% reduced damage.
 ///     Will deactivate Chaos Stance.
 ///     Skill - Chaos Stance - When Chaos Stance is in play. Offensive Orders will be given. In addition, all allies within
-///     5 radius will deal 10% increased damage.
+///     5 radius will deal 5% increased damage.
 ///     Will deactivate Law Stance.
 ///     Skill - Morale Orders - To Victory! / To Death!
-///     - Law: Increase to all Attributes, Life, Mana, and SP.
+///     - Law: Increase to all Attributes, Life and Mana.
 ///     - Chaos: Speed Increase, Increase Casting/Combat skills.
 ///     Skill - Strategy Orders - Rally to me / Rout the Enemy!
 ///     - Law: Burst heals allies, gives them Protection, then slowly regenerates their HP / MP.

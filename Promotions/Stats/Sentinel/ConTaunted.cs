@@ -3,7 +3,7 @@ namespace PromotionMod.Stats.Sentinel;
 
 public class ConTaunted : BaseDebuff
 {
-    [JsonProperty(PropertyName = "N")] public int TaunterUID;
+    [JsonProperty(PropertyName = "T")] public int TaunterUID;
 
     public override bool TimeBased => true;
     public override ConditionType Type => ConditionType.Debuff;
@@ -11,7 +11,7 @@ public class ConTaunted : BaseDebuff
     public override void Tick()
     {
         Chara taunter = _map.zone.FindChara(TaunterUID);
-        owner.SetEnemy(taunter);
+        if (taunter != null) owner.SetEnemy(taunter);
         base.Tick();
     }
 }

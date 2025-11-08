@@ -10,8 +10,8 @@ public class TraitRangerPunjiTrap : TraitFactionTrap
         c.PlaySound("trap");
         Msg.Say(TrapName.langGame(), c);
 
-        c.DamageHP(owner.LV, AttackSource.Trap);
+        c.DamageHP(GetPower(), AttackSource.Trap);
         c.PlayEffect("hit_slash");
-        c.AddCondition<ConBleed>(owner.LV);
+        c.AddCondition<ConBleed>(GetPower(), true);
     }
 }

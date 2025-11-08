@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using PromotionMod.Common;
 using PromotionMod.Elements.PromotionFeats;
 using PromotionMod.Stats.Phantom;
@@ -51,6 +52,7 @@ public class ActSchwarzeKatze : Ability
         // Trigger Finisher if Target has 10 Phantom Stacks
         if (currMarks == 10)
         {
+            int power = this.GetPower(CC);
             // Remove Phantom Mark from the target.
             phantomMark.Kill();
 
@@ -62,11 +64,13 @@ public class ActSchwarzeKatze : Ability
                 laser.SetParticleColor(colorRef.colorTrail, true, "_TintColor");
                 laser.sr.color = colorRef.colorSprite;
                 laser.Play(CC.pos);
-                int damage = HelperFunctions.SafeDice("phantom_schwarzekatze", GetPower(CC));
-                HelperFunctions.ProcSpellDamage(GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleMagic);
-
-                // Proc Stamina and Mana Recovery of Phantom
+                ActEffect.DamageEle(CC, EffectId.None, power, Element.Create(Constants.EleMagic, power / 10), new List<Point>{target.pos}, new ActRef()
+                {
+                    act = this,
+                });
             }
+            
+            FeatPhantom.PhantomFinisherRestoration(CC);
         }
         return true;
     }

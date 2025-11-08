@@ -6,7 +6,7 @@ namespace PromotionMod.Stats.Berserker;
 ///     Regenerates 10% HP a turn.
 ///     Every time you are attacked with melee, counterattack immediately with ActMelee.
 /// </summary>
-public class ConBloodlust : BaseBuff
+public class ConBloodlust : Timebuff
 {
     public override void Tick()
     {

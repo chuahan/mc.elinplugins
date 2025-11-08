@@ -12,8 +12,8 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     The Sharpshooter will make an instant shot attack against any target that moves while affected by Overwatch.
 ///     Will not consume ammo when firing shots as Overwatch reaction.
 ///     When taking damage in Overwatch stance, exit Overwatch, gain a turn of increased Speed and stealth.
-///     Skill - Charged Shot - Consumes 25% of your remaining mana. Gain Vorpal + Drill + Damage based on the mana
-///     consumed.
+///     Skill - Charged Shot - Consumes 25% of your remaining mana. Gain Vorpal + Drill. Gain. Damage based on the mana
+///     consumed. Reduces speed. Can be casted multiple times to stack the effect
 ///     "I won't miss."
 ///     "All or nothing!"
 ///     "Watch for friendly fire!"
@@ -21,6 +21,9 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Costs Stamina.
 ///     Every target Marked restores 5% Mana.
 ///     Passive - Suppressive Fire - Ranged attacks will always apply Suppression on the target, even on miss.
+///
+/// TODO: Implement Passive, Implement increased FOV.
+/// 
 /// </summary>
 public class FeatSharpshooter : PromotionFeat
 {

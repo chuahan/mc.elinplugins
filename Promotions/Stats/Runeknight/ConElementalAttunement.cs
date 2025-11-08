@@ -7,7 +7,7 @@ public class ConElementalAttunement : BaseBuff
 
     [JsonProperty(PropertyName = "E")] public int AttunedElement;
 
-    [JsonProperty(PropertyName = "D")] public int StoredDamage;
+    [JsonProperty(PropertyName = "D")] public long StoredDamage;
 
     public override bool TimeBased => true;
 

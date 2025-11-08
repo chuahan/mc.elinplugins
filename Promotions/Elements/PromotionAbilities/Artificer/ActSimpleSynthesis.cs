@@ -2,8 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
-using PromotionMod.Trait.ArtificerTools;
-using PromotionMod.Trait.Machinist;
+using PromotionMod.Trait.Artificer;
 namespace PromotionMod.Elements.PromotionAbilities.Artificer;
 
 /// <summary>
@@ -64,12 +63,12 @@ public class ActSimpleSynthesis : Ability
                     ammo = ThingGen.Create("bullet_energy", "ether");
                     ammo.SetNum(30 - currentAmmoCount);
                     break;
-                case TraitToolRangeGun:
-                    ammo = ThingGen.Create("bullet", "ether");
+                case TraitToolRangeGunRocket:
+                    ammo = ThingGen.Create("bullet_rocket", "ether");
                     ammo.SetNum(30 - currentAmmoCount);
                     break;
-                case TraitToolRocketLauncher:
-                    ammo = ThingGen.Create("rocket", "ether");
+                case TraitToolRangeGun:
+                    ammo = ThingGen.Create("bullet", "ether");
                     ammo.SetNum(30 - currentAmmoCount);
                     break;
                 default:

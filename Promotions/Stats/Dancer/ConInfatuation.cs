@@ -1,5 +1,6 @@
 namespace PromotionMod.Stats.Dancer;
 
+// TODO: Reduce hit chance and cast chance.
 public class ConInfatuation : Timebuff
 {
     public override void Tick()

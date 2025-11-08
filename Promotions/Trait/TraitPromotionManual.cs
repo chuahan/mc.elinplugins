@@ -96,6 +96,96 @@ public class TraitPromotionManual : TraitScroll
         }
     };
 
+    public static Dictionary<int, string> PromotionIdToPromotionNameMap = new Dictionary<int, string>
+    {
+        {
+            Constants.FeatSentinel, Constants.SentinelId
+        },
+        {
+            Constants.FeatBerserker, Constants.BerserkerId
+        },
+        {
+            Constants.FeatHermit, Constants.HermitId
+        },
+        {
+            Constants.FeatTrickster, Constants.TricksterId
+        },
+        {
+            Constants.FeatElementalist, Constants.ElementalistId
+        },
+        {
+            Constants.FeatNecromancer, Constants.NecromancerId
+        },
+        {
+            Constants.FeatJenei, Constants.JeneiId
+        },
+        {
+            Constants.FeatDruid, Constants.DruidId
+        },
+        {
+            Constants.FeatSniper, Constants.SniperId
+        },
+        {
+            Constants.FeatRanger, Constants.RangerId
+        },
+        {
+            Constants.FeatBattlemage, Constants.BattlemageId
+        },
+        {
+            Constants.FeatRuneknight, Constants.RuneknightId
+        },
+        {
+            Constants.FeatAdventurer, Constants.AdventurerId
+        },
+        {
+            Constants.FeatDancer, Constants.DancerId
+        },
+        {
+            Constants.FeatKnightcaller, Constants.KnightcallerId
+        },
+        {
+            Constants.FeatSaint, Constants.SaintId
+        },
+        {
+            Constants.FeatWarCleric, Constants.WarClericId
+        },
+        {
+            Constants.FeatSharpshooter, Constants.SharpshooterId
+        },
+        {
+            Constants.FeatMachinist, Constants.MachinistId
+        },
+        {
+            Constants.FeatWitchHunter, Constants.WitchHunterId
+        },
+        {
+            Constants.FeatJusticar, Constants.JusticarId
+        },
+        {
+            Constants.FeatSovereign, Constants.SovereignId
+        },
+        {
+            Constants.FeatLuminary, Constants.LuminaryId
+        },
+        {
+            Constants.FeatHeadhunter, Constants.HeadhunterId
+        },
+        {
+            Constants.FeatHarbinger, Constants.HarbingerId
+        },
+        {
+            Constants.FeatSpellblade, Constants.SpellbladeId
+        },
+        {
+            Constants.FeatPhantom, Constants.PhantomId
+        },
+        {
+            Constants.FeatHexer, Constants.HexerId
+        },
+        {
+            Constants.FeatArtificer, Constants.ArtificerId
+        }
+    };
     public override bool CanRead(Chara c)
     {
         if (c.isBlind) return false;
@@ -217,7 +307,7 @@ public class TraitPromotionManual : TraitScroll
                 promotionIds = new List<string>
                 {
                     Constants.BattlemageId,
-                    Constants.SpellbladeId
+                    Constants.PhantomId
                 };
                 break;
             case "pianist":
@@ -273,7 +363,7 @@ public class TraitPromotionManual : TraitScroll
                 promotionIds = new List<string>
                 {
                     Constants.RuneknightId,
-                    Constants.PhantomId
+                    Constants.SpellbladeId
                 };
                 break;
             case "tourist": // Tourist Can go into any class.

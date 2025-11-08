@@ -12,10 +12,9 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Skill - Target Hand - Makes a ranged attack that on hit will disable melee and ranged attacks.
 ///     Skill - Target Legs - Makes a ranged attack that on hit will slow the target.
 ///     Skill - Spread Shot - Makes ranged attacks against all targets in a cone.
-///     Passive - No Distractions - When attacking a target outside their melee range, you will automatically fire a second
-///     shot
-///     Passive - Bowfaire - Gain Crit + Accuracy when your preferred weapon is the Crossbow or Bow.
-///     This bonus is doubled when there are no enemies within 3F radius.
+///     TODO (P3) Implement passives
+///     Passive Condition - No Distractions - When there are no enemies within 3F radius, you will gain a condition that
+///     increases Crit, Accuracy, and RapidFire.
 /// </summary>
 public class FeatSniper : PromotionFeat
 {

@@ -15,7 +15,7 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Skill - Sword Fouette - 2 Radius Swarm. For each enemy hit it applies a damage reduction to your next blow.
 ///     Skill - Wild Pirouette - Debuffs nearby targets with various debuffs. Charm/Sleep/Jealousy
 ///     Dance Stances - Only one dance can be active at once.
-///     Skill - Energy Dance Stance - Reduces Cost of abilities
+///     Skill - Energy Dance Stance - Reduces Cost of abilities TODO: IMPLEMENT
 ///     Skill - Freedom Dance Stance - Removes a debuff each turn.
 ///     Skill - Healing Dance Stance - Heals allies 10% every turn.
 ///     Skill - Mist Dance Stance - Increases DV and PV.
@@ -32,11 +32,11 @@ public class FeatDancer : PromotionFeat
         Constants.ActDaggerIllusionId,
         Constants.ActSwordFouetteId,
         Constants.ActWildPirouetteId,
-        Constants.StanceEnergyDanceId,
-        Constants.StanceFreedomDanceId,
-        Constants.StanceHealingDanceId,
-        Constants.StanceMistDanceId,
-        Constants.StanceSwiftDanceId
+        Constants.StEnergyDanceId,
+        Constants.StFreedomDanceId,
+        Constants.StHealingDanceId,
+        Constants.StMistDanceId,
+        Constants.StSwiftDanceId
     };
 
     protected override void ApplyInternalNPC(Chara c)
@@ -45,10 +45,10 @@ public class FeatDancer : PromotionFeat
         c.ability.Add(Constants.ActSwordFouetteId, 35, false);
         c.ability.Add(Constants.ActWildPirouetteId, 35, false);
 
-        c.ability.Add(Constants.StanceEnergyDanceId, 25, false);
-        c.ability.Add(Constants.StanceFreedomDanceId, 25, false);
-        c.ability.Add(Constants.StanceHealingDanceId, 25, false);
-        c.ability.Add(Constants.StanceSwiftDanceId, 25, false);
+        c.ability.Add(Constants.StEnergyDanceId, 25, false);
+        c.ability.Add(Constants.StFreedomDanceId, 25, false);
+        c.ability.Add(Constants.StHealingDanceId, 25, false);
+        c.ability.Add(Constants.StSwiftDanceId, 25, false);
     }
 
     protected override bool Requirement()

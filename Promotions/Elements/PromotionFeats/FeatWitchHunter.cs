@@ -17,7 +17,7 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     30 Turn Cooldown
 ///     Passive - Bane of Magickind
 ///     In additon to Excommunication, Bane inflicts Silence.
-///     When the Witch Hunter inflicts damage, 10% of the damage done is mana damage.
+///     When the Witch Hunter inflicts damage, 10% of the damage done is mana damage. TODO: implement.
 /// </summary>
 public class FeatWitchHunter : PromotionFeat
 {

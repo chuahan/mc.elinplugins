@@ -27,7 +27,7 @@ public class ActDeploySanctuary : Ability
     public override bool Perform()
     {
         CC.AddCondition<ConSanctuary>();
-        CC.AddCooldown(Constants.ActDeploySanctuaryId, 30);
+        CC.AddCooldown(Constants.ActDeploySanctuaryId, 100);
         return true;
     }
 }

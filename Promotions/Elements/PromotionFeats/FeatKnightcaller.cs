@@ -11,7 +11,9 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Skill - Rally Spirits - Recalls all your summons to your side, healing them, and boosting their defensive
 ///     capabilities.
 ///     Skill - Summon Knight - Summons a Spirit Knight to aid you in battle. If you do not have an active captain, has a
-///     25% chance of summoning a Knight Captain instead.
+///     25% chance of summoning a Knight Captain instead. Knight captains provide a 5% damage increase and mitigation to all allies.
+///     Adds a stack of summoning sickness on each summon, reducing max mana temporarily.
+/// 
 /// </summary>
 public class FeatKnightcaller : PromotionFeat
 {

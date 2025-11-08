@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using PromotionMod.Common;
+using PromotionMod.Stats.Druid;
 namespace PromotionMod.Elements.PromotionAbilities.Druid;
 
 /// <summary>
@@ -46,7 +47,8 @@ public class ActSowWrathSeeds : Ability
                 toSummon = Constants.DruidNaturesWrathCharaId;
             }
         }
-        ;
+        
+        int power = GetPower(CC);
 
         bool flowerSummoned = toSummon is Constants.DruidEntangleFlowerCharaId or Constants.DruidParalyticFlowerCharaId or Constants.DruidToxicFlowerCharaId
                 or Constants.DruidSoporificFlowerCharaId;
@@ -54,7 +56,7 @@ public class ActSowWrathSeeds : Ability
         plant.isSummon = true;
         if (flowerSummoned)
         {
-            // Flowers only last 30 seconds
+            // Flowers only last 30 turns
             plant.c_summonDuration = 30;
             plant.SetLv(1);
         }
@@ -62,7 +64,6 @@ public class ActSowWrathSeeds : Ability
         {
             // Normal summon leveling.
             // For PCs Ent Warriors and Nature's Warmth summons can scale to your deepest achieved depth instead.
-            int power = GetPower(CC);
             int levelOverride = CC.LV * (100 + power / 10) / 100 + power / 30;
             if (CC.IsPC) levelOverride = Math.Max(player.stats.deepest, levelOverride);
             plant.SetLv(levelOverride);
@@ -75,6 +76,28 @@ public class ActSowWrathSeeds : Ability
 
         // Flowers are not killable.
         if (flowerSummoned) plant.AddCondition<ConInvulnerable>(30000);
+        
+        // Apply the Aura Buff
+        switch (toSummon)
+        {
+            case Constants.DruidEntangleFlowerCharaId:
+                plant.AddCondition<EntanglingAura>(power);
+                break;
+            case Constants.DruidParalyticFlowerCharaId:
+                plant.AddCondition<ParalyzingAura>(power);
+                break;
+            case Constants.DruidToxicFlowerCharaId:
+                plant.AddCondition<ToxicAura>(power);
+                break;
+            case Constants.DruidSoporificFlowerCharaId:
+                plant.AddCondition<SleepAura>(power);
+                break;
+            case Constants.DruidNaturesWrathCharaId:
+                plant.AddCondition<EntanglingAura>(power);
+                plant.AddCondition<ToxicAura>(power);
+                break;
+                
+        }
         return true;
     }
 }

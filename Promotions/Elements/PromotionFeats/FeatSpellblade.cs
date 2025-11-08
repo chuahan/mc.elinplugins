@@ -44,7 +44,7 @@ public class FeatSpellblade : PromotionFeat
 
     protected override bool Requirement()
     {
-        return owner.Chara?.c_idJob == "warmage";
+        return owner.Chara?.c_idJob == "swordsage";
     }
 
     protected override void ApplyInternal()

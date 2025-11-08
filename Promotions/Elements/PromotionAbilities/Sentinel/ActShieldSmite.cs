@@ -1,8 +1,9 @@
 using PromotionMod.Common;
 using PromotionMod.Elements.PromotionFeats;
+using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.Sentinel;
 
-public class ActShieldSmite : ActMelee
+public class ActShieldSmite : Ability
 {
     public override bool CanPerform()
     {
@@ -13,19 +14,16 @@ public class ActShieldSmite : ActMelee
         }
 
         if (CC.body.GetAttackStyle() is not AttackStyle.Shield) return false;
-        return base.CanPerform();
+        if (Act.TC == null)
+        {
+            return false;
+        }
+        return ACT.Melee.CanPerform();
     }
 
     public override bool Perform()
     {
-        if (Attack())
-        {
-            int power = GetPower(CC);
-            int shieldPower = FeatSentinel.GetShieldPower(CC);
-            shieldPower += power;
-            shieldPower += (int)(TC.MaxHP * .125F);
-            HelperFunctions.ProcSpellDamage(power, shieldPower, CC, TC.Chara, AttackSource.Melee);
-        }
+        new ActMeleeShieldSmite().Perform(Act.CC, Act.TC);
         return true;
     }
 }

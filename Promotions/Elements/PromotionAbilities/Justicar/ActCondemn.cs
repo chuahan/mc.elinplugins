@@ -22,11 +22,22 @@ public class ActCondemn : Ability
     public override bool Perform()
     {
         // Can I play SFX Chains here?
-
         int condemnedTargets = 0;
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(TP, 3F, CC, false, true))
         {
-            target.AddCondition<ConEntangle>(GetPower(CC));
+            ActEffect.ProcAt(EffectId.Debuff, GetPower(Act.CC), BlessedState.Normal, Act.CC, target, target.pos, isNeg: true, new ActRef
+            {
+                origin = Act.CC.Chara,
+                n1 = nameof(ConEntangle),
+            });
+            
+            // Inflict Bane.
+            ActEffect.ProcAt(EffectId.Debuff, GetPower(Act.CC), BlessedState.Normal, Act.CC, target, target.pos, isNeg: true, new ActRef
+            {
+                origin = Act.CC.Chara,
+                n1 = nameof(ConBane),
+            });
+            
             int damage = HelperFunctions.SafeDice(Constants.CondemnAlias, GetPower(CC));
             target.DamageHP(damage, AttackSource.Melee, CC);
             condemnedTargets++;

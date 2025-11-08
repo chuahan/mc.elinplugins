@@ -11,7 +11,9 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Ability - Subdue - Inflicts Suppress, and Attack Break on the target. Also inflicts excommunicate.
 ///     Ability - Condemn - Inflicts Entangle on nearby enemies. For every enemy impacted, Justicar grants their team
 ///     Overshield.
-///     TODO (P2) Add a passive maybe?
+/// 
+///     Ability - Inspire - An ability buffs nearby allies with hero
+///     TODO (P2) Add a passive maybe? Or another ability.
 /// </summary>
 public class FeatJusticar : PromotionFeat
 {

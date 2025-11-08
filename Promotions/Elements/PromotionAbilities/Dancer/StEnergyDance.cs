@@ -1,10 +1,6 @@
 using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.Dancer;
 
-public class StEnergyDance : Ability
+public class StEnergyDance : ActBaseDance
 {
-    public override Sprite GetSprite()
-    {
-        return SpriteSheet.Get(source.alias);
-    }
 }

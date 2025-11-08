@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Jenei;
 
@@ -19,10 +20,10 @@ public class ActJeneiBlaze : Ability
     public override bool Perform()
     {
         int power = GetPower(CC);
-        int damage = HelperFunctions.SafeDice("jenei_blaze", power);
-        HelperFunctions.ProcSpellDamage(power, damage, CC, TC.Chara, ele: Constants.EleFire, eleP: 150);
-        TC.Chara.AddCondition<ConBurning>(GetPower(CC), true);
-        TC.pos.PlayEffect("ball_Fire");
+        ActEffect.DamageEle(CC, EffectId.None, power, Element.Create(Constants.EleFire, power / 10), new List<Point>{TP}, new ActRef()
+        {
+            act = this,
+        });
         _map.ModFire(TC.pos.x, TC.pos.z, 10);
         return true;
     }

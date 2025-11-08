@@ -7,8 +7,8 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Berserkers focus on unrelenting offense, felling enemy after enemy.
 ///     They specialize in gaining more damage and damage reduction the more HP they are missing.
 ///     Skill - Bloodlust - Activates Bloodlust. Boosts stats, but silences yourself
-///     Costs 25% of current HP to activate, but regenerates 5% HP a turn.
-///     Adds Counter to the character.
+///         Costs 25% of current HP to activate, but regenerates 5% HP a turn.
+///         Adds Counter to the character.
 ///     Skill - Sunder - Swaps debuffs with the enemy. Heals 25% HP and does 25% damage.
 ///     Skill - Lifebreak - Deals damage based on how much HP the user is missing.
 ///     10 Turn Cooldown.

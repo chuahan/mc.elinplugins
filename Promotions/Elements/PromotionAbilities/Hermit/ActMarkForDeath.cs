@@ -21,7 +21,7 @@ public class ActMarkForDeath : Ability
 
     public override bool Perform()
     {
-        TC.Chara.AddCondition<ConMarkedForDeath>();
+        TC.Chara.AddCondition<ConMarkedForDeath>(force: true);
         CC.AddCooldown(Constants.ActMarkForDeathId, 5);
         return true;
     }

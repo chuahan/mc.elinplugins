@@ -9,13 +9,15 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Skill - Hand of God - A large scale healing spell is cast on all allies and minions, healing 35% HP immediately.
 ///     All affected characters also gain a % healing over time.
 ///     30 Turn Cooldown.
-///     Skill - Blessing - Applies a buff to the target that boosts their piety. Up to 50% boost scaling off your own
-///     piety.
+///     Skill - Blessing - Applies a buff to the target that boosts their faith. Up to 50% boost scaling off your own
+///     faith.
 ///     Passive - God Protects - When you pray, you and your allies gain Protection that absorbs damage based on piety.
 ///     This will activate when the PC prays with a Saint or War Cleric ally as well.
 ///     Passive - In their name - When the Saint inflicts damage against an enemy that matches their religion,
 ///     if the Saint's Piety is higher than the target, it will convert the target into a temporary ally.
 ///     Passive - Conspectus of Light - Can convert Attack spellbooks into Holy Element.
+///
+///     TODO: Is it possible to have Faith added as a scale for their healing powers?
 /// </summary>
 public class FeatSaint : PromotionFeat
 {
@@ -45,5 +47,7 @@ public class FeatSaint : PromotionFeat
         owner.Chara.elements.ModPotential(286, 30);
         // Casting - 304
         owner.Chara.elements.ModPotential(304, 30);
+        // Healing Instinct
+        
     }
 }

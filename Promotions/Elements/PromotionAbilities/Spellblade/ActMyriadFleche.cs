@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
+using PromotionMod.Stats;
 using PromotionMod.Stats.Spellblade;
 using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.Spellblade;
@@ -104,81 +105,18 @@ public class ActMyriadFleche : ActMelee
             }
         });
         List<Point> coneRange = _map.ListPointsInArc(CC.pos, TP, 4, 35f);
-        ElementRef elementRef = setting.elements[activeIntonation.source.alias];
-        Effect spellEffect = Effect.Get("trail1");
-        spellEffect.SetParticleColor(elementRef.colorTrail, true, "_TintColor").Play(CC.pos);
-        spellEffect.sr.color = elementRef.colorSprite;
-        TrailRenderer componentInChildren = spellEffect.GetComponentInChildren<TrailRenderer>();
-        Color startColor = componentInChildren.endColor = elementRef.colorSprite;
-        componentInChildren.startColor = startColor;
 
         int power = GetPower(CC);
-        int damage = HelperFunctions.SafeDice("spellblade_myriad_fleche", power);
-        foreach (Point p in coneRange)
+        ActEffect.DamageEle(CC, EffectId.Breathe, power, Element.Create(intonationElement, power / 10), coneRange, new ActRef()
         {
-            spellEffect.Play(CC.pos, 0f, p);
-            foreach (Chara chara in p.Charas.Where(chara => chara.IsHostile(CC)))
-            {
-                // All enemies in the cone will take damage and be inflicted with elemental break of that element.
-                HelperFunctions.ProcSpellDamage(power, damage, CC, chara, ele: intonationElement);
-                ActMyriadFleche.ApplyElementalBreak(intonationElement, chara, power);
-            }
+            act = this,
+        });
+        
+        foreach (Chara target in coneRange.SelectMany(p => p.Charas.Where(target => target.IsHostile(CC))))
+        {
+            // All enemies in the cone will take damage and be inflicted with elemental break of that element.
+            HelperFunctions.ApplyElementalBreak(intonationElement, CC, target, power);
         }
         return true;
-    }
-
-    public static void ApplyElementalBreak(int eleId, Chara target, int power)
-    {
-        switch (eleId)
-        {
-            case Constants.EleCold:
-                target.AddCondition<ConColdBreak>(power);
-                return;
-            case Constants.EleLightning:
-                target.AddCondition<ConLightningBreak>(power);
-                return;
-            case Constants.EleDarkness:
-                target.AddCondition<ConDarknessBreak>(power);
-                return;
-            case Constants.EleMind:
-                target.AddCondition<ConMindBreak>(power);
-                return;
-            case Constants.ElePoison:
-                target.AddCondition<ConPoisonBreak>(power);
-                return;
-            case Constants.EleNether:
-                target.AddCondition<ConNetherBreak>(power);
-                return;
-            case Constants.EleSound:
-                target.AddCondition<ConSoundBreak>(power);
-                return;
-            case Constants.EleNerve:
-                target.AddCondition<ConNerveBreak>(power);
-                return;
-            case Constants.EleHoly:
-                target.AddCondition<ConHolyBreak>(power);
-                return;
-            case Constants.EleChaos:
-                target.AddCondition<ConChaosBreak>(power);
-                return;
-            case Constants.EleMagic:
-                target.AddCondition<ConMagicBreak>(power);
-                return;
-            case Constants.EleEther:
-                target.AddCondition<ConEtherBreak>(power);
-                return;
-            case Constants.EleAcid:
-                target.AddCondition<ConAcidBreak>(power);
-                return;
-            case Constants.EleCut:
-                target.AddCondition<ConCutBreak>(power);
-                return;
-            case Constants.EleImpact:
-                target.AddCondition<ConImpactBreak>(power);
-                return;
-            default: // And Fire
-                target.AddCondition<ConFireBreak>(power);
-                return;
-        }
     }
 }

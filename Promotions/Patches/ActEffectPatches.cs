@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Cwl.Helper.Extensions;
 using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Stats;
+using PromotionMod.Stats.Battlemage;
 using PromotionMod.Stats.Jenei;
 using UnityEngine;
 namespace PromotionMod.Patches;
@@ -32,7 +35,7 @@ public class ActEffectPatches
             {
                 int element = Constants.ElementIdLookup[actRef.aliasEle];
                 ConElementalist elementalist = chara.GetCondition<ConElementalist>() ?? chara.AddCondition<ConElementalist>() as ConElementalist;
-                elementalist?.AddElementalOrb(element);
+                if (tc.isChara) elementalist?.AddElementalOrb(element, tc.Chara);
             }
 
             // Jenei - Track Spellcasts for Impact/Fire/Cold/Lightning
@@ -75,19 +78,20 @@ public class ActEffectPatches
         {
             // Elementalists Summon multiple buffed Bits
             case Constants.FeatElementalist:
-                ActEffectPatches.SummonBitInternal("bit", caster, power, tp, element);
+                ActEffectPatches.SummonBitInternal(Constants.NormalBitCharaId, caster, power, tp, element);
                 break;
             // Battlemages Summon Shield Bits
             case Constants.FeatBattlemage:
-                ActEffectPatches.SummonBitInternal("shield_bit", caster, power, tp, element);
+                ActEffectPatches.SummonBitInternal(Constants.ShieldBitCharaId, caster, power, tp, element);
                 break;
-            // Luminaries Summon Sword Bits
+            // Luminaries and Spellblades Summon Sword Bits
             case Constants.FeatLuminary:
-                ActEffectPatches.SummonBitInternal("sword_bit", caster, power, tp, element);
+            case Constants.FeatSpellblade:
+                ActEffectPatches.SummonBitInternal(Constants.SwordBitCharaId, caster, power, tp, element);
                 break;
             // Phantoms Summon Phantom Bits
             case Constants.FeatPhantom:
-                ActEffectPatches.SummonBitInternal("phantom_bit", caster, power, tp, element);
+                ActEffectPatches.SummonBitInternal(Constants.PhantomBitCharaId, caster, power, tp, element);
                 break;
             default:
                 return;
@@ -99,7 +103,7 @@ public class ActEffectPatches
         // If it's the normal bit, which elementalists summon, they summon more of them and they spawn Boosted.
         int num = 2;
         bool addBuffs = false;
-        if (type == "bit")
+        if (type == Constants.NormalBitCharaId)
         {
             num = Math.Max(num, Mathf.Clamp(power / 100, 1, 5) + (power >= 100 ? EClass.rnd(2) : 0));
             addBuffs = true;
@@ -120,6 +124,7 @@ public class ActEffectPatches
             summonedBit.MakeMinion(caster);
             if (addBuffs)
             {
+                summonedBit.AddCondition<ConProtection>(power);
                 summonedBit.AddCondition<ConBoost>();
             }
         }

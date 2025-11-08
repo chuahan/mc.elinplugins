@@ -22,8 +22,20 @@ public class ActSubdue : Ability
     {
         int breakAmount = (int)HelperFunctions.SigmoidScaling(GetPower(CC), 10, 25);
         TC.Chara.AddCondition(SubPoweredCondition.Create(nameof(ConAttackBreak), GetPower(CC), breakAmount));
-        TC.Chara.AddCondition<ConSupress>(GetPower(CC));
-        TC.Chara.AddCondition<ConExcommunication>(GetPower(CC));
+        
+        // Inflict Bane
+        ActEffect.ProcAt(EffectId.Debuff, GetPower(Act.CC), BlessedState.Normal, Act.CC, TC, TC.pos, isNeg: true, new ActRef
+        {
+            origin = Act.CC.Chara,
+            n1 = nameof(ConBane),
+        });
+        
+        // Inflict Suppress
+        ActEffect.ProcAt(EffectId.Debuff, GetPower(Act.CC), BlessedState.Normal, Act.CC, TC, TC.pos, isNeg: true, new ActRef
+        {
+            origin = Act.CC.Chara,
+            n1 = nameof(ConSupress),
+        });
 
         CC.TalkRaw("justicarIntimidate".langList().RandomItem());
         return true;

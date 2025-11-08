@@ -36,7 +36,7 @@ public class ActDivineDescent : Ability
     public override bool Perform()
     {
         int power = GetPower(CC);
-        int damage = HelperFunctions.SafeDice(Constants.WarClericDivineDescentAlias, power);
+        int healPower = HelperFunctions.SafeDice(Constants.WarClericDivineDescentAlias, power);
         CC.AddCondition<ConDivineDescent>(GetPower(CC));
 
         // Cause a massive holy explosion that heals yourself and allies, damages enemies.
@@ -50,13 +50,16 @@ public class ActDivineDescent : Ability
                 // Damage Hostiles and apply Fear
                 if (target.IsHostile(CC))
                 {
-                    HelperFunctions.ProcSpellDamage(power, damage, CC, target, ele: Constants.EleHoly);
+                    ActEffect.DamageEle(CC, EffectId.Ball, power, Element.Create(Constants.EleHoly, power / 10), new List<Point>{target.pos}, new ActRef()
+                    {
+                        act = this,
+                    });
                     target.AddCondition<ConFear>(power);
                 }
                 else
                 {
                     // Heal allies.
-                    target.HealHP(damage);
+                    target.HealHP(healPower);
                     // Try to purge debuffs.
                     foreach (Condition debuff in target.conditions.Copy())
                     {

@@ -25,11 +25,11 @@ public class ActBlessingOfTheDead : Ability
 
     public override bool Perform()
     {
-        CC.TalkRaw("necromancerHeal".langList().RandomItem());
+        CC.TalkRaw("necromancer_blessing_dead".langList().RandomItem());
         if (!TC.isChara || !TC.IsMinion || TC.Chara.master != CC || !TC.Chara.HasTag(CTAG.undead) || !TC.IsAliveInCurrentZone) return false;
         if (TC.Chara.id == "sister_undead")
         {
-            Msg.Say("jureAngy".langGame());
+            Msg.Say("jure_angry".langGame());
             player.ModKarma(-1);
         }
         // Target's Remaining HP is scaled down.

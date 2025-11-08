@@ -9,7 +9,6 @@ public class TraitRangerSnare : TraitFactionTrap
     {
         c.PlaySound("trap");
         Msg.Say(TrapName.langGame(), c);
-
-        c.AddCondition<ConEntangle>(owner.LV);
+        c.AddCondition<ConEntangle>(GetPower(), true);
     }
 }

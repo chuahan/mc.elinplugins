@@ -19,7 +19,6 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Passive - Wake of the Trailblazer - Every time Vanguard redirects damage, Light wave hits an enemy, or an attack is
 ///     parried, gain stacks of Class condition
 ///     Luminary takes reduced damage per stack.
-///     TODO (P3) Rename Parry cause it was actually added to the damn game...
 /// </summary>
 public class FeatLuminary : PromotionFeat
 {
@@ -28,16 +27,16 @@ public class FeatLuminary : PromotionFeat
 
     public override List<int> PromotionAbilities => new List<int>
     {
-        Constants.VanguardStanceId,
+        Constants.StVanguardId,
         Constants.ActLightWaveId,
-        Constants.ActParryId
+        Constants.ActLuminousDeflectionId
     };
 
     protected override void ApplyInternalNPC(Chara c)
     {
-        c.ability.Add(Constants.VanguardStanceId, 100, false);
+        c.ability.Add(Constants.StVanguardId, 100, false);
         c.ability.Add(Constants.ActLightWaveId, 75, false);
-        c.ability.Add(Constants.ActParryId, 75, false);
+        c.ability.Add(Constants.ActLuminousDeflectionId, 75, false);
     }
 
     protected override bool Requirement()

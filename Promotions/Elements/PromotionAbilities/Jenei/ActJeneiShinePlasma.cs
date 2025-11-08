@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Jenei;
 
@@ -19,10 +20,11 @@ public class ActJeneiShinePlasma : Ability
     public override bool Perform()
     {
         int power = GetPower(CC);
-        int damage = HelperFunctions.SafeDice("jenei_shineplasma", power);
-        HelperFunctions.ProcSpellDamage(power, damage, CC, TC.Chara, ele: Constants.EleLightning);
-        TC.Chara.AddCondition<ConWet>(GetPower(CC), true);
         TC.pos.PlayEffect("attack_lightning");
+        ActEffect.DamageEle(CC, EffectId.None, power, Element.Create(Constants.EleLightning, power / 10), new List<Point>{TP}, new ActRef()
+        {
+            act = this,
+        });
         return true;
     }
 }

@@ -16,7 +16,7 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     You gain a debuff that reduces your PV by that amount.
 ///     Your melee attacks gain increased damage based on your PV lost.
 ///     You cannot activate Sentinel's Stance while this Buff is active.
-///     Class Passive - Sentinel - Doubles your PV when wearing Shield Style + Heavy Armor.
+///     Class Passive - Sentinel - Increases PV by 50% for each Heavy Armor and Shield.
 ///     Passive - Block - When using Shield Style, 85% to block damage and reduce it between 25 to 75%. Gain Retaliate on
 ///     block.
 ///     Retaliate - Your next melee attack will do increased damage.
@@ -53,7 +53,7 @@ public class FeatSentinel : PromotionFeat
         owner.Chara.elements.ModPotential(304, 30);
     }
 
-    public static int GetShieldPower(Chara cc)
+    public static long GetShieldPower(Chara cc)
     {
         int totalShield = 0;
         foreach (BodySlot slot in cc.body.slots)

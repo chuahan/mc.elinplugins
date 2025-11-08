@@ -79,13 +79,13 @@ public class ActVerbrechen : Ability
             // Trigger Finisher if Target has 10 Phantom Stacks
             if (currMarks == 10)
             {
+                int power = this.GetPower(CC);
+                
                 // Remove Phantom Mark from the target.
                 phantomMark?.Kill();
 
                 // Fire a piercing Magic Bolt at the target.
-                int damage = HelperFunctions.SafeDice("phantom_verbrechen", GetPower(CC));
                 List<Point> phantomBeam = _map.ListPointsInLine(CC.pos, target.pos, 10);
-                List<Chara> finisherTargets = new List<Chara>();
 
                 // Render Beam
                 Point from = CC.pos;
@@ -98,15 +98,16 @@ public class ActVerbrechen : Ability
                 componentInChildren.startColor = startColor;
                 spellEffect.Play(CC.pos, 0f, target.pos);
 
-                foreach (Chara beamTarg in from pos in phantomBeam from beamTarg in pos.Charas where !finisherTargets.Contains(beamTarg) select beamTarg)
+                ActEffect.DamageEle(CC, EffectId.Bolt, power, Element.Create(Constants.EleMagic, power / 10), phantomBeam, new ActRef()
                 {
-                    finisherTargets.Add(beamTarg);
-                    HelperFunctions.ProcSpellDamage(GetPower(CC), damage, CC, beamTarg, AttackSource.MagicSword, Constants.EleMagic);
-                }
+                    act = this,
+                });
 
                 // Spawn 2 Phantom Bits
                 FeatPhantom.SpawnPhantomBit(GetPower(CC), CC, CC.pos);
                 FeatPhantom.SpawnPhantomBit(GetPower(CC), CC, CC.pos);
+                
+                FeatPhantom.PhantomFinisherRestoration(CC);
             }
 
             maxTargets--;

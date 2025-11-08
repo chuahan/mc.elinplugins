@@ -14,10 +14,9 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Tracer Rounds - Increased Accuracy.
 ///     Skill - Overlock - Machinist and all Machine-Type allies + summons will gain boost.
 ///     Spell - Summon Turret - Deploys one of four different gun turrets. They come with a gun. They have Duration.
-///     Nightfall : Stationary Rifle Turret.
-///     Echo : Stationary Railgun Turret.
-///     Liger Tail : Stationary Rocket Launcher
 ///     Passive - Conspectus of Machinery - Converts Summon Spellbooks into Summon Auto Turret
+///     TODO (P3) Give em something with firearms, another passive.
+/// 
 /// </summary>
 public class FeatMachinist : PromotionFeat
 {

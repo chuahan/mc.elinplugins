@@ -45,7 +45,7 @@ public class SpSummonTurret : Spell
                 summon.AddThing(ThingGen.Create("gun_rail", lv: summon.LV));
                 break;
             case Constants.MachinistRocketTurretCharaId:
-                summon.AddThing(ThingGen.Create("gun_rocket", lv: summon.LV));
+                summon.AddThing(ThingGen.Create("panzerfaust", lv: summon.LV));
                 break;
             default: //Constants.MachinistRifleTurretCharaId
                 summon.AddThing(ThingGen.Create("gun_assault", lv: summon.LV));

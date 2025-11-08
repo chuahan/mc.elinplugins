@@ -10,8 +10,16 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     single burst as needed.
 ///     Skill - Elemental Fury - Summons a massive damaging elemental storm that harms nearby enemies.
 ///     Skill - Flare - Does massive void-typed damage to a single target.
-///     TODO (P3) Add another skill?
-///     Passive - Torrent Bit Conversion - Summons multiple bits at one time with boost.
+/// 
+///     Passive - Spell Tempo - When you cast a spell of an element that you do not have stockpiled:
+///         That element will inflict Elemental Break to reduce their resistances to that element.
+///         You will gain a stack of Spell Tempo. Each stack of Spell Tempo will grant:
+///             Speed
+///             Mana Regeneration
+///             Enhance Spell 
+///
+///     Passive - Arsenal Conspectus - When reading an elemental spellbook, will grant charges of two different elements of the same spell.
+///     Passive - Torrent Bit Conversion - Summons multiple bits in a single cast. Bits start with Boost and Protection.
 ///     Passive - Elemental Mastery - Doubles eleP.
 /// </summary>
 public class FeatElementalist : PromotionFeat

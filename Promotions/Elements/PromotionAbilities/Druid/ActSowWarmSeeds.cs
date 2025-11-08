@@ -90,8 +90,7 @@ public class ActSowWarmSeeds : Ability
                 plant.AddCondition<EsunaAura>(power);
                 break;
         }
-        
-        // TODO: Force them to have the respective Auras.
+
         return true;
     }
 }

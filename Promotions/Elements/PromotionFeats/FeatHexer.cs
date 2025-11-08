@@ -14,6 +14,8 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Skill - Blood Curse - Force applies one of the curses randomly at the cost of 10% life. Will prioritize curses you
 ///     have not applied of the same tier that you roll.
 ///     TODO (P2) Add another skill?
+///     Skill - Revenge - Consumes a debuff on the Hexer and does damage equal to it's power against a target.
+///         Must have a debuff on yourself in order to use.
 /// 
 ///     Passive - Hexmaster - When applying spell damage or taking damage, there is a chance to apply a hex out of a pool.
 ///     Passive - Do not cite the deep magic to me - If you have active Debuffs on you, your curses apply at double power

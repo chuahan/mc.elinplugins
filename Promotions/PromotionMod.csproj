@@ -372,6 +372,8 @@
         <Compile Include="Stats\Sharpshooter\ConMarked.cs" />
         <Compile Include="Stats\Sharpshooter\ConUnderFire.cs" />
         <Compile Include="Stats\Sharpshooter\StanceOverwatch.cs" />
+        <Compile Include="Stats\Sniper\ConNoDistractions.cs" />
+        <Compile Include="Stats\Sniper\ConSniperTarget.cs" />
         <Compile Include="Stats\Sovereign\ConOrderBarricade.cs" />
         <Compile Include="Stats\Sovereign\ConOrderDeath.cs" />
         <Compile Include="Stats\Sovereign\ConOrderRally.cs" />

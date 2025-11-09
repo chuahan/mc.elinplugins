@@ -11,6 +11,7 @@ using PromotionMod.Stats.Battlemage;
 using PromotionMod.Stats.Harbinger;
 using PromotionMod.Stats.Luminary;
 using PromotionMod.Stats.Runeknight;
+using PromotionMod.Stats.Sniper;
 using PromotionMod.Stats.Sovereign;
 using PromotionMod.Stats.Spellblade;
 using PromotionMod.Stats.WarCleric;
@@ -172,6 +173,31 @@ public class CardDamageHPPatches
                     target.lastEmo = Emo.angry;
                     target.Chara.MakeMinion(origin.Chara.IsPCParty ? EClass.pc : origin.Chara);
                     return false;
+                }
+            }
+            
+            // Sniper - Targets specific body parts.
+            if (originConditions.Contains(typeof(ConSniperTarget)))
+            {
+                ConSniperTarget sniperTarget = (ConSniperTarget)originConditions[typeof(ConSniperTarget)].Single();
+                switch (sniperTarget.Target)
+                {
+                    case ConSniperTarget.TargetPart.Hand:
+                        target.AddCondition<ConDisable>(sniperTarget.power);
+                        break;
+                    case ConSniperTarget.TargetPart.Head:
+                        // 25% chance to cull the target at or under 30% HP.
+                        if (target.hp <= target.MaxHP * 0.30F && EClass.rnd(4) == 0)
+                        {
+                            target.DamageHP(target.MaxHP, AttackSource.Finish, origin);
+                        }
+                        target.AddCondition<ConDim>(sniperTarget.power);
+                        target.AddCondition<ConSilence>(sniperTarget.power);
+                        break;
+                    case ConSniperTarget.TargetPart.Legs:
+                        int breakAmount = (int)HelperFunctions.SigmoidScaling(sniperTarget.power, 10, 25);
+                        target.AddCondition(SubPoweredCondition.Create(nameof(ConSpeedBreak), sniperTarget.power, breakAmount));
+                        break;
                 }
             }
 

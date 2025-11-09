@@ -1,5 +1,7 @@
 using PromotionMod.Common;
 using PromotionMod.Stats;
+using PromotionMod.Stats.Sniper;
+
 namespace PromotionMod.Elements.PromotionAbilities.Sniper;
 
 public class ActTargetLegs : Ability
@@ -24,17 +26,11 @@ public class ActTargetLegs : Ability
 
     public override bool Perform()
     {
-        // Snapshot the HP Before and After. This is so I can avoid using a transpiler.
-        int currentHP = TC.hp;
+        ConSniperTarget sniperTarget = CC.AddCondition<ConSniperTarget>(this.GetPower(CC)) as ConSniperTarget;
+        sniperTarget.Target = ConSniperTarget.TargetPart.Legs;
         // Perform a Ranged attack at the target.
         ACT.Ranged.Perform(CC, TC);
-
-        // If the HP changed after the attack, we'll consider it a hit.
-        if (TC.hp < currentHP)
-        {
-            int breakAmount = (int)HelperFunctions.SigmoidScaling(GetPower(CC), 10, 25);
-            TC.Chara.AddCondition(SubPoweredCondition.Create(nameof(ConSpeedBreak), GetPower(CC), breakAmount));
-        }
+        sniperTarget.Kill();
         return true;
     }
 }

@@ -12,9 +12,9 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Skill - Target Hand - Makes a ranged attack that on hit will disable melee and ranged attacks.
 ///     Skill - Target Legs - Makes a ranged attack that on hit will slow the target.
 ///     Skill - Spread Shot - Makes ranged attacks against all targets in a cone.
-///     TODO (P3) Implement passives
 ///     Passive Condition - No Distractions - When there are no enemies within 3F radius, you will gain a condition that
 ///     increases Crit, Accuracy, and RapidFire.
+///     Passive - Anti-air - When shooting aerial enemies, ranged attacks will do double damage.
 /// </summary>
 public class FeatSniper : PromotionFeat
 {

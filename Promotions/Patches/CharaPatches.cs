@@ -2,16 +2,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using Cwl.Helper.Extensions;
 using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Stats;
 using PromotionMod.Stats.Adventurer;
+using PromotionMod.Stats.Berserker;
 using PromotionMod.Stats.Dancer;
 using PromotionMod.Stats.Harbinger;
 using PromotionMod.Stats.Hermit;
+using PromotionMod.Stats.Jenei;
+using PromotionMod.Stats.Luminary;
 using PromotionMod.Stats.Ranger;
 using PromotionMod.Stats.Runeknight;
 using PromotionMod.Stats.Sharpshooter;
+using PromotionMod.Stats.Sniper;
 using PromotionMod.Stats.WitchHunter;
 using PromotionMod.Trait;
 using PromotionMod.Trait.Artificer;
@@ -271,6 +276,55 @@ internal class CharaPatches : EClass
         {
             return false;
         }
+        return true;
+    }
+    
+    [HarmonyPatch(nameof(Chara.Tick))]
+    [HarmonyPrefix]
+    internal static bool CharaTick_Patches(Chara __instance)
+    {
+        // For the classes that have a class condition, add it if they don't have it.
+        int promotionId = __instance.GetFlagValue(Constants.PromotionFeatFlag);
+        if (promotionId != null)
+        {
+            // Luminary, Berserker, Jenei, Elementalist
+            switch (promotionId)
+            {
+                case Constants.FeatLuminary:
+                    if (__instance.HasCondition<ConLuminary>() == false)
+                    {
+                        __instance.AddCondition<ConLuminary>();
+                    }
+                    break;
+                case Constants.FeatBerserker:
+                    if (__instance.HasCondition<ConBerserker>() == false)
+                    {
+                        __instance.AddCondition<ConBerserker>();
+                    }
+                    break;
+                case Constants.FeatJenei:
+                    if (__instance.HasCondition<ConJenei>() == false)
+                    {
+                        __instance.AddCondition<ConJenei>();
+                    }
+                    break;
+                case Constants.FeatElementalist:
+                    if (__instance.HasCondition<ConElementalist>() == false)
+                    {
+                        __instance.AddCondition<ConElementalist>();
+                    }
+                    break;
+                case Constants.FeatSniper:
+                    // If the sniper doesn't have the condition and there are no enemies with 3 tiles.
+                    if ((__instance.HasCondition<ConNoDistractions>() == false)
+                        && HelperFunctions.GetCharasWithinRadius(__instance.pos, 3, __instance, false, true).Count > 0)
+                    {
+                        __instance.AddCondition<ConNoDistractions>();
+                    }
+                    break;
+            }
+        }
+        
         return true;
     }
 }

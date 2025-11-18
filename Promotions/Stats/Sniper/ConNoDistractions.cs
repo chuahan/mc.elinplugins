@@ -1,5 +1,4 @@
 using PromotionMod.Common;
-
 namespace PromotionMod.Stats.Sniper;
 
 public class ConNoDistractions : BaseBuff
@@ -10,7 +9,7 @@ public class ConNoDistractions : BaseBuff
     {
         if (HelperFunctions.GetCharasWithinRadius(owner.pos, 3, owner, false, true).Count > 0)
         {
-            this.Kill();
+            Kill();
         }
     }
 }

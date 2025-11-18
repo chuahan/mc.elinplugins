@@ -3,7 +3,7 @@ namespace PromotionMod.Stats.Druid;
 public class EsunaAura : ConAura
 {
     public override bool CanManualRemove => false;
-    
+
     public override void ApplyInternal(Chara target)
     {
         foreach (Condition condition in target.conditions.Copy())

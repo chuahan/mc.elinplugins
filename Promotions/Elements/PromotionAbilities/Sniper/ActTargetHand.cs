@@ -1,7 +1,5 @@
 using PromotionMod.Common;
-using PromotionMod.Stats;
 using PromotionMod.Stats.Sniper;
-
 namespace PromotionMod.Elements.PromotionAbilities.Sniper;
 
 public class ActTargetHand : Ability
@@ -26,7 +24,7 @@ public class ActTargetHand : Ability
 
     public override bool Perform()
     {
-        ConSniperTarget sniperTarget = CC.AddCondition<ConSniperTarget>(this.GetPower(CC)) as ConSniperTarget;
+        ConSniperTarget sniperTarget = CC.AddCondition<ConSniperTarget>(GetPower(CC)) as ConSniperTarget;
         sniperTarget.Target = ConSniperTarget.TargetPart.Hand;
         // Perform a Ranged attack at the target.
         ACT.Ranged.Perform(CC, TC);

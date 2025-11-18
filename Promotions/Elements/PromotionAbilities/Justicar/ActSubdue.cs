@@ -22,19 +22,19 @@ public class ActSubdue : Ability
     {
         int breakAmount = (int)HelperFunctions.SigmoidScaling(GetPower(CC), 10, 25);
         TC.Chara.AddCondition(SubPoweredCondition.Create(nameof(ConAttackBreak), GetPower(CC), breakAmount));
-        
+
         // Inflict Bane
-        ActEffect.ProcAt(EffectId.Debuff, GetPower(Act.CC), BlessedState.Normal, Act.CC, TC, TC.pos, isNeg: true, new ActRef
+        ActEffect.ProcAt(EffectId.Debuff, GetPower(CC), BlessedState.Normal, CC, TC, TC.pos, true, new ActRef
         {
-            origin = Act.CC.Chara,
-            n1 = nameof(ConBane),
+            origin = CC.Chara,
+            n1 = nameof(ConBane)
         });
-        
+
         // Inflict Suppress
-        ActEffect.ProcAt(EffectId.Debuff, GetPower(Act.CC), BlessedState.Normal, Act.CC, TC, TC.pos, isNeg: true, new ActRef
+        ActEffect.ProcAt(EffectId.Debuff, GetPower(CC), BlessedState.Normal, CC, TC, TC.pos, true, new ActRef
         {
-            origin = Act.CC.Chara,
-            n1 = nameof(ConSupress),
+            origin = CC.Chara,
+            n1 = nameof(ConSupress)
         });
 
         CC.TalkRaw("justicarIntimidate".langList().RandomItem());

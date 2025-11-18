@@ -50,9 +50,12 @@ public class ActDivineDescent : Ability
                 // Damage Hostiles and apply Fear
                 if (target.IsHostile(CC))
                 {
-                    ActEffect.DamageEle(CC, EffectId.Ball, power, Element.Create(Constants.EleHoly, power / 10), new List<Point>{target.pos}, new ActRef()
+                    ActEffect.DamageEle(CC, EffectId.Ball, power, Element.Create(Constants.EleHoly, power / 10), new List<Point>
                     {
-                        act = this,
+                        target.pos
+                    }, new ActRef
+                    {
+                        act = this
                     });
                     target.AddCondition<ConFear>(power);
                 }

@@ -6,7 +6,7 @@ public class ActMeleeLifebreak : ActMelee
     public override bool AllowCounter => false;
     public override bool AllowParry => false;
     public override bool UseWeaponDist => true;
-    
+
     public override bool Perform()
     {
         bool hasHit = AttackProcess.Current.Perform(1, false);

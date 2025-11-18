@@ -17,7 +17,6 @@ public class ActBlessing : Ability
 
     public override Cost GetCost(Chara c)
     {
-        // TODO (P3) Change to cost % of mana.
         Cost convertToMp = base.GetCost(c);
         convertToMp.type = CostType.MP;
         return convertToMp;

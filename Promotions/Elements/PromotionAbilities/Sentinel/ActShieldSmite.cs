@@ -1,6 +1,4 @@
 using PromotionMod.Common;
-using PromotionMod.Elements.PromotionFeats;
-using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.Sentinel;
 
 public class ActShieldSmite : Ability
@@ -14,16 +12,23 @@ public class ActShieldSmite : Ability
         }
 
         if (CC.body.GetAttackStyle() is not AttackStyle.Shield) return false;
-        if (Act.TC == null)
+        if (TC == null)
         {
             return false;
         }
         return ACT.Melee.CanPerform();
     }
 
+    public override Cost GetCost(Chara c)
+    {
+        Cost convertToMp = base.GetCost(c);
+        convertToMp.type = CostType.MP;
+        return convertToMp;
+    }
+
     public override bool Perform()
     {
-        new ActMeleeShieldSmite().Perform(Act.CC, Act.TC);
+        new ActMeleeShieldSmite().Perform(CC, TC);
         return true;
     }
 }

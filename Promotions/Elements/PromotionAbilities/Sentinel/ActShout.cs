@@ -15,6 +15,13 @@ public class ActShout : Ability
         return base.CanPerform();
     }
 
+    public override Cost GetCost(Chara c)
+    {
+        Cost convertToMp = base.GetCost(c);
+        convertToMp.type = CostType.MP;
+        return convertToMp;
+    }
+
     public override bool Perform()
     {
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, false, true))

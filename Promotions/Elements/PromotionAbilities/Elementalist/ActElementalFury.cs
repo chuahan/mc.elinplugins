@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using PromotionMod.Common;
 using PromotionMod.Stats;
+using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.Elementalist;
 
 /// <summary>
@@ -11,12 +11,6 @@ namespace PromotionMod.Elements.PromotionAbilities.Elementalist;
 public class ActElementalFury : Ability
 {
     public int ElementalFuryRequirement = 4;
-    public override Cost GetCost(Chara c)
-    {
-        Cost cost = base.GetCost(c);
-        cost.type = CostType.MP;
-        return cost;
-    }
 
     public override bool CanPerform()
     {
@@ -38,30 +32,27 @@ public class ActElementalFury : Ability
         return base.CanPerform();
     }
 
+    public override Cost GetCost(Chara c)
+    {
+        Cost cost = base.GetCost(c);
+        cost.type = CostType.MP;
+        return cost;
+    }
+
+    // Apply Spell Enhance to this ability.
+    public override int GetPower(Card c)
+    {
+        int power = base.GetPower(c);
+        return power * Mathf.Max(100 + c.Evalue(411) - c.Evalue(93), 1) / 100;
+    }
+
     public override bool Perform()
     {
         ConElementalist elementalist = CC.GetCondition<ConElementalist>();
-        // Increases duration with your variety count. 
-        int elementalCombo = 0;
-        List<int> activeElements = new List<int>();
-        foreach (KeyValuePair<int, int> elementOrb in elementalist.ElementalStockpile)
-        {
-            if (elementalist.ElementalStockpile[elementOrb.Key] > 0)
-            {
-                elementalCombo++;
-                activeElements.Add(elementOrb.Key);
-            }
-        }
+        // Clone the Elemental Stockpile to deplete.
         ConElementalFury fury = CC.AddCondition<ConElementalFury>(GetPower(CC)) as ConElementalFury;
-        if (fury != null)
-        {
-            fury.Mod(elementalCombo / 2);
-            fury.Stacks = Math.Min(10, elementalist.GetElementalStrength());
-            // At minimum, if you have 4 elements you will Fury for the base 3 ticks.
-            // Additional 1/2/4/6/8 turns.
-            fury.ElementsToUse.AddRange(activeElements);
-        }
-
+        fury.ElementalStockpile = new Dictionary<int, int>(elementalist.ElementalStockpile);
+        elementalist.ConsumeElementalOrbs();
         return true;
     }
 }

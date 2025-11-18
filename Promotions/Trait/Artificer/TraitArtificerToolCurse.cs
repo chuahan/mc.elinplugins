@@ -1,12 +1,10 @@
 using System.Collections.Generic;
 using PromotionMod.Stats;
 using PromotionMod.Stats.Spellblade;
-using UnityEngine;
 namespace PromotionMod.Trait.Artificer;
 
 public class TraitArtificerToolCurse : TraitArtificerTool
 {
-    public override string ArtificerToolId => "artificer_cursecube";
 
     internal static List<string> PossibleConditions = new List<string>
     {
@@ -17,12 +15,14 @@ public class TraitArtificerToolCurse : TraitArtificerTool
         nameof(ConStatBreak),
         nameof(ConFaint)
     };
-    
+
+    public override string ArtificerToolId => "artificer_cursecube";
+
     public override bool ArtificerToolEffect(Chara cc, Point pos, int power)
     {
         List<Chara> targets = pos.Charas;
         pos.PlayEffect("curse");
-        foreach(Chara target in targets)
+        foreach (Chara target in targets)
         {
             if (target.IsHostile(cc))
             {
@@ -35,13 +35,13 @@ public class TraitArtificerToolCurse : TraitArtificerTool
                     }
                     else
                     {
-                        ActEffect.ProcAt(EffectId.Debuff, power, BlessedState.Normal, Act.CC, target, target.pos, isNeg: true, new ActRef
+                        ActEffect.ProcAt(EffectId.Debuff, power, BlessedState.Normal, Act.CC, target, target.pos, true, new ActRef
                         {
                             origin = Act.CC.Chara,
-                            n1 = randomCondition,
+                            n1 = randomCondition
                         });
                     }
-                    
+
                     target.AddCondition(SubPoweredCondition.Create(nameof(ConMagicBreak), power, 5));
                 }
             }

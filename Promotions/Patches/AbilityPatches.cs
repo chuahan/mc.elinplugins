@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Cwl.Helper.Extensions;
 using HarmonyLib;
 using PromotionMod.Common;
-using PromotionMod.Stats;
 using PromotionMod.Stats.Battlemage;
-using PromotionMod.Stats.Jenei;
 using UnityEngine;
 namespace PromotionMod.Patches;
 
@@ -25,7 +19,6 @@ public class AbilityPatches
             {
                 // Focus Stance increases power based on current mana. Has Antimage/Spell enhance applied too.
                 int spellBoost = (int)(mage.mana.value * 0.15F);
-                // TODO: Should I be curving this part too?
                 spellBoost = EClass.curve(spellBoost, 400, 100);
                 spellBoost = spellBoost * Mathf.Max(100 + mage.Evalue(411) - mage.Evalue(93), 1) / 100;
                 __result += spellBoost;

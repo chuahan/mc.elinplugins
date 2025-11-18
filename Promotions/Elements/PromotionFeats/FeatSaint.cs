@@ -16,8 +16,6 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Passive - In their name - When the Saint inflicts damage against an enemy that matches their religion,
 ///     if the Saint's Piety is higher than the target, it will convert the target into a temporary ally.
 ///     Passive - Conspectus of Light - Can convert Attack spellbooks into Holy Element.
-///
-///     TODO: Is it possible to have Faith added as a scale for their healing powers?
 /// </summary>
 public class FeatSaint : PromotionFeat
 {
@@ -48,6 +46,6 @@ public class FeatSaint : PromotionFeat
         // Casting - 304
         owner.Chara.elements.ModPotential(304, 30);
         // Healing Instinct
-        
+
     }
 }

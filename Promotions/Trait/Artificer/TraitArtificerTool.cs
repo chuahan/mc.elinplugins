@@ -1,8 +1,8 @@
-using System.Collections.Generic;
 namespace PromotionMod.Trait.Artificer;
 
 /// <summary>
 ///     Artificer Tools are basically chargeable canes that unleash large scale firepower.
+///     Balance: Do I want to scale Artificer tools with their respective skills? Or will this be too powerful?
 ///     Fire - Pyroclasm Sword - Fire Sword, inflicts Fire Res Down, inflicts burn. Does increased damage against burning
 ///     targets, does increased damage against targets who have over 80% hp.
 ///     Ice - Glacial Axe - Ice Ball, inflicts Ice Res Down, guaranteed crit damage against chilled targets, inflicts
@@ -11,11 +11,13 @@ namespace PromotionMod.Trait.Artificer;
 ///     chance to inflict paralysis.
 ///     Impact - Gaia's Gauntlet - Impact Ball, inflicts Impact Res Down. inflicts gravity and speed down.
 ///     Rainbow - Trinity  - Tri-Element Arrow, 25% chance to not consume charges., extends buff durations.
-///     Time - Chronomancer's Hourglass - Hastens allies, Reduces ally cooldowns
+///     Time - Chronomancer's Hourglass - Hastens allies, Reduces ally cooldowns, slows enemies.
 ///     Healing - Bouquet of Life - Heals % HP, Increases Maximum HP, Applies Regeneration
 ///     Light - Heavenly Pearl - Heals % HP, applies instances of damage reduction OR damage increase to the ally.
 ///     Death - Curseladen Cube - Can inflict up to 3 random debuffs from a list, 30% chance. Reduces magic resistance.
-///     TODO (P1) Implement all of the Artificer Tools.
+///     Sound - Sonic Bomb - Grenade type tool that inflicts Dim
+///     Poison - Bio Bomb - Grenade type tool that inflicts poison.
+///     Light - Flash Bomb - Grenade type tool that inflicts blind.
 /// </summary>
 public class TraitArtificerTool : TraitTool
 {
@@ -27,7 +29,7 @@ public class TraitArtificerTool : TraitTool
     public override void OnCreate(int lv)
     {
         owner.c_ammo = MaxCharges;
-        owner.SetEncLv(100 * (100 + EClass.pc.Evalue(305) * 10 + EClass.pc.MAG / 2 + EClass.pc.PER / 2) / 100);
+        owner.SetEncLv(100 * (100 + pc.Evalue(305) * 10 + pc.MAG / 2 + pc.PER / 2) / 100);
     }
 
     public void Recharge(int chargeAmount)
@@ -61,7 +63,7 @@ public class TraitArtificerTool : TraitTool
             return false;
         }, owner, CursorSystem.IconRange);
     }
-    
+
     public virtual bool ArtificerToolEffect(Chara cc, Point pos, int power)
     {
         return false;

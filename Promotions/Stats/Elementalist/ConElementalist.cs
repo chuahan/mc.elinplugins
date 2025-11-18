@@ -7,6 +7,12 @@ namespace PromotionMod.Stats;
 
 public class ConElementalist : ClassCondition
 {
+
+    // When you haven't gained elemental orbs in the past 5 turns, you will lose one random stockpiled orb a turn.
+    private const int DecayDelayMax = 5;
+
+    [JsonProperty(PropertyName = "R")] private int _decayDelay;
+
     [JsonProperty(PropertyName = "E")] public Dictionary<int, int> ElementalStockpile = new Dictionary<int, int>
     {
         {
@@ -59,17 +65,12 @@ public class ConElementalist : ClassCondition
         }
     };
 
-    [JsonProperty(PropertyName = "R")] private int _decayDelay = 0;
-    
-    // When you haven't gained elemental orbs in the past 5 turns, you will lose one random stockpiled orb a turn.
-    private const int DecayDelayMax = 5;
-    
     public int GetPower(Chara cc)
     {
-        int basePower = (cc.LV * 6) + 100; // Level * 6 + 100
+        int basePower = cc.LV * 6 + 100; // Level * 6 + 100
         basePower += cc.Evalue(76) * 4; // Add MAG stat * 4
         basePower = EClass.curve(basePower, 400, 100); // Curve
-        return (basePower * Mathf.Max(100 + cc.Evalue(411) - cc.Evalue(93), 1) / 100); // Add Spellpower + AntiMag
+        return basePower * Mathf.Max(100 + cc.Evalue(411) - cc.Evalue(93), 1) / 100; // Add Spellpower + AntiMag
     }
 
     public int GetElementalStrength()
@@ -96,8 +97,8 @@ public class ConElementalist : ClassCondition
     }
 
     /// <summary>
-    /// Can accumulate up to 5 of each Element.
-    /// If gaining the elemental orb for the first time, gain a stack of Spell Tempo (caps at 10.)
+    ///     Can accumulate up to 5 of each Element.
+    ///     If gaining the elemental orb for the first time, gain a stack of Spell Tempo (caps at 10.)
     /// </summary>
     public void AddElementalOrb(int eleId, Chara tc)
     {
@@ -114,7 +115,7 @@ public class ConElementalist : ClassCondition
             }
 
             owner.AddCondition<ConSpellTempo>(tempoStage);
-            HelperFunctions.ApplyElementalBreak(eleId, this.owner, tc, this.GetPower(owner));
+            HelperFunctions.ApplyElementalBreak(eleId, owner, tc, GetPower(owner));
         }
         if (ElementalStockpile[eleId] < 5) ElementalStockpile[eleId]++;
         _decayDelay = 0;
@@ -135,10 +136,11 @@ public class ConElementalist : ClassCondition
         if (_decayDelay == DecayDelayMax)
         {
             // Lose a random orb.
-            List<int> elementsWithOrbs = this.ElementalStockpile.Where(s => s.Value > 0).Select(s => s.Key).ToList();
+            List<int> elementsWithOrbs = ElementalStockpile.Where(s => s.Value > 0).Select(s => s.Key).ToList();
             if (elementsWithOrbs.Count == 0) return;
             ElementalStockpile[elementsWithOrbs.RandomItem()]--;
-        } else if (_decayDelay < DecayDelayMax)
+        }
+        else if (_decayDelay < DecayDelayMax)
         {
             _decayDelay++;
         }

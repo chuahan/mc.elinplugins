@@ -8,7 +8,13 @@ public class TraitArtificerToolIce : TraitArtificerTool
 
     public override bool ArtificerToolEffect(Chara cc, Point pos, int power)
     {
-        List<Point> targetTiles = new List<Point>() {pos};
+        float powerMulti = 1f + (cc.Evalue(102) / 2F + cc.Evalue(101)) / 50f;
+        int scaledPower = (int)(power * powerMulti);
+
+        List<Point> targetTiles = new List<Point>
+        {
+            pos
+        };
         pos.ForeachNeighbor(delegate(Point p)
         {
             if (!p.Equals(pos))
@@ -33,17 +39,17 @@ public class TraitArtificerToolIce : TraitArtificerTool
                     if (tc.Chara.HasCondition<ConFreeze>())
                     {
                         int damage = HelperFunctions.SafeDice(ArtificerToolId, power, true);
-                        HelperFunctions.ProcSpellDamage(power, damage, cc, tc.Chara, AttackSource.MagicSword, ele: Constants.EleCold);
+                        HelperFunctions.ProcSpellDamage(scaledPower, damage, cc, tc.Chara, AttackSource.MagicSword, Constants.EleCold);
                     }
                     else
                     {
                         int damage = HelperFunctions.SafeDice(ArtificerToolId, power);
-                        HelperFunctions.ProcSpellDamage(power, damage, cc, tc.Chara, AttackSource.MagicSword, ele: Constants.EleCold);
+                        HelperFunctions.ProcSpellDamage(scaledPower, damage, cc, tc.Chara, AttackSource.MagicSword, Constants.EleCold);
                     }
-                    ActEffect.ProcAt(EffectId.Debuff, power, BlessedState.Normal, Act.CC, tc.Chara, tc.Chara.pos, isNeg: true, new ActRef
+                    ActEffect.ProcAt(EffectId.Debuff, scaledPower, BlessedState.Normal, Act.CC, tc.Chara, tc.Chara.pos, true, new ActRef
                     {
                         origin = Act.CC.Chara,
-                        n1 = nameof(ConFreeze),
+                        n1 = nameof(ConFreeze)
                     });
                 }
             }

@@ -38,7 +38,7 @@ public class TraitTricksterArcaneTrap : TraitFactionTrap
         {
             if (randomCondition == nameof(ConMagicBreak))
             {
-                HelperFunctions.ApplyElementalBreak(Constants.EleMagic, null, target, this.GetPower());
+                HelperFunctions.ApplyElementalBreak(Constants.EleMagic, null, target, GetPower());
             }
             Condition trapCondition = Condition.Create(randomCondition, owner.LV);
             target.AddCondition(trapCondition, true);

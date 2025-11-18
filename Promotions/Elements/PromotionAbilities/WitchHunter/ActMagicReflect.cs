@@ -2,7 +2,6 @@ using PromotionMod.Common;
 using PromotionMod.Stats.WitchHunter;
 namespace PromotionMod.Elements.PromotionAbilities.WitchHunter;
 
-// TODO: IMPLEMENT
 public class ActMagicReflect : Ability
 {
     public override bool CanPerform()

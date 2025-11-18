@@ -52,12 +52,12 @@ public class CardDamageHPPatches
             {
                 damageMultiplier += 0.5F;
             }
-            
+
             if (originChara.Evalue(Constants.FeatMaiaCorrupted) > 0 && target.source.mainElement.Contains(Constants.ElementAliasLookup[Constants.EleHoly].Remove(0, 3)))
             {
                 damageMultiplier += 0.5F;
             }
-            
+
             // Harbinger - Every active Miasma on the target boosts damage from Harbingers by 5%.
             if (targetConditions.Contains(typeof(ConHarbingerMiasma)) && origin.isChara && origin.Evalue(Constants.FeatHarbinger) > 0)
             {
@@ -175,7 +175,7 @@ public class CardDamageHPPatches
                     return false;
                 }
             }
-            
+
             // Sniper - Targets specific body parts.
             if (originConditions.Contains(typeof(ConSniperTarget)))
             {
@@ -251,7 +251,7 @@ public class CardDamageHPPatches
             {
                 damageMultiplier -= 0.75F;
             }
-            
+
             // Floor Damage Multiplier to 0. Don't want any healing on negative multiplier shenanigans
             damageMultiplier = Math.Max(damageMultiplier, 0);
             // Apply Damage multiplier.
@@ -265,7 +265,7 @@ public class CardDamageHPPatches
                 afterimage.Mod(-1);
                 if (afterimage.value <= 0) afterimage.Kill();
             }
-            
+
             // Protection - Protects flat amount of damage.
             if (targetConditions.Contains(typeof(ConProtection)))
             {
@@ -279,18 +279,25 @@ public class CardDamageHPPatches
                 dmg -= protection.value;
                 protection.Kill();
             }
-            
+
             // Mana Shield - Protects a flat amount of damage with shield gating.
             // Taking any hit will reset the cooldown delay though.
             if (targetConditions.Contains(typeof(StanceManaShield)))
             {
                 StanceManaShield manaShield = (StanceManaShield)targetConditions[typeof(StanceManaShield)].Single();
                 int energyPower = manaShield.Stacks;
-                manaShield.ModShield((int)(0-dmg));
+                manaShield.ModShield((int)(0 - dmg));
                 if (energyPower > 0)
                 {
                     dmg = 0;
                 }
+            }
+
+            // Witch Hunter - When HP damage is done as a Witch Hunter with Melee/Ranged, they will also inflict 10% of the damage as mana.
+            if (originChara.Evalue(Constants.FeatWitchHunter) > 0 && attackSource is AttackSource.Melee or AttackSource.Range && dmg > 0)
+            {
+                int manaDamage = (int)(dmg * 0.1F) * -1;
+                target.mana.Mod(manaDamage);
             }
         }
         return true;
@@ -318,8 +325,8 @@ public class CardDamageHPPatches
                     new CodeInstruction(OpCodes.Call, damagePierceMethod),
                     // Add to power
                     new CodeInstruction(OpCodes.Add)
-                ); 
-        
+                );
+
         return matcher.InstructionEnumeration();
 
     }

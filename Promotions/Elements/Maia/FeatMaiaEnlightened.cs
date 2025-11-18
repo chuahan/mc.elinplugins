@@ -1,11 +1,10 @@
 using System;
 using Cwl.Helper.Extensions;
 using PromotionMod.Common;
-using UnityEngine;
 namespace PromotionMod.Elements;
 
 /// <summary>
-/// The Maia has ascended to Enlightenment.
+///     The Maia has ascended to Enlightenment.
 /// </summary>
 public class FeatMaiaEnlightened : Feat
 {
@@ -25,7 +24,7 @@ public class FeatMaiaEnlightened : Feat
         owner.ModBase(955, 10); // Poison Resistance
 
         owner.ModBase(416, 1); // See invisible
-        
+
         if (owner.Chara is { IsPC: true })
         {
             owner.Chara.AddElement(Constants.ActEnlightenedVengeanceId, 0); // Unusable by NPCS

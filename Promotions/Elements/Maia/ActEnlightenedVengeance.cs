@@ -1,10 +1,8 @@
-using System.Collections.Generic;
 using PromotionMod.Common;
-using PromotionMod.Stats;
 namespace PromotionMod.Elements.Maia;
 
 /// <summary>
-/// Vengeance recalls all allies to your side on the same floor. Not used for NPCs
+///     Vengeance recalls all allies to your side on the same floor. Not used for NPCs
 /// </summary>
 public class ActEnlightenedVengeance : Ability
 {
@@ -22,7 +20,7 @@ public class ActEnlightenedVengeance : Ability
 
     public override bool Perform()
     {
-        foreach (Chara target in EClass._zone.map.charas)
+        foreach (Chara target in _zone.map.charas)
         {
             if (target != CC && (target.IsPCParty || target.IsPCPartyMinion))
             {

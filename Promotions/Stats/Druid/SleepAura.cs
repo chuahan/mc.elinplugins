@@ -9,7 +9,7 @@ public class SleepAura : ConAura
         ActEffect.ProcAt(EffectId.Debuff, power, BlessedState.Normal, CC, target, target.pos, true, new ActRef
         {
             origin = CC,
-            n1 = nameof(ConSleep),
+            n1 = nameof(ConSleep)
         });
     }
 }

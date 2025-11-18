@@ -24,7 +24,7 @@ public class SpSummonSkeleton : Spell
 
     public override bool Perform()
     {
-        SpSummonSkeleton.SummonSkeleton(CC, TP, this.GetPower(CC));
+        SpSummonSkeleton.SummonSkeleton(CC, TP, GetPower(CC));
         return true;
     }
 
@@ -36,15 +36,15 @@ public class SpSummonSkeleton : Spell
             caster.Say("necromancer_limit".langGame());
             return;
         }
-        
+
         string summonName = SkeletonOptions.RandomItem();
         if (EClass.rnd(deathknightChance) == 0) summonName = Constants.NecromancerDeathKnightCharaId;
-        
+
         Chara summon = CharaGen.Create(summonName);
         summon.isSummon = true;
         // Normal summon leveling.
         // For PCs Summons can scale to your deepest achieved depth instead.
-        int levelOverride = (Math.Max(caster.LV, targetLevel) * (100 + power / 10) / 100 + power / 30);
+        int levelOverride = Math.Max(caster.LV, targetLevel) * (100 + power / 10) / 100 + power / 30;
         if (caster.IsPC) levelOverride = Math.Max(player.stats.deepest, levelOverride);
         summon.SetLv(levelOverride);
         summon.interest = 0;

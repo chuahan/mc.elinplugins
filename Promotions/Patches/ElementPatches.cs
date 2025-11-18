@@ -1,7 +1,5 @@
 using HarmonyLib;
 using PromotionMod.Common;
-using PromotionMod.Elements.PromotionFeats;
-using PromotionMod.Stats;
 using PromotionMod.Stats.Battlemage;
 namespace PromotionMod.Patches;
 
@@ -19,7 +17,6 @@ public class ElementPatches
             if (focusCon != null && c.mana.value > 0)
             {
                 __result.cost += (int)(c.mana.value * 0.05F);
-                return;
             }
         }
     }

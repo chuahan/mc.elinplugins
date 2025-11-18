@@ -1,6 +1,4 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.Battlemage;
-
 namespace PromotionMod.Elements.PromotionAbilities.Battlemage;
 
 public class StManaFocus : Ability

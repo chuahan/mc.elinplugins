@@ -29,7 +29,7 @@ public class ActReversal : Ability
 
     public override bool Perform()
     {
-        List<Condition> negativeConditions = TC.Chara.conditions.Where(con => con.Type is ConditionType.Bad or ConditionType.Debuff).ToList();
+        List<Condition> negativeConditions = TC.Chara.conditions.Where(con => con.Type is ConditionType.Debuff).ToList();
         if (negativeConditions.Count == 0)
         {
             CC.SayNothingHappans();

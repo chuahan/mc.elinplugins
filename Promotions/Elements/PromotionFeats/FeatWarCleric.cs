@@ -8,8 +8,7 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     War Clerics focus on being durable enough to move to the front lines to rescue beleaguered allies or bring down the
 ///     hammer on enemies.
 ///     They specialize in being able to provide curative support or frontline strength as needed, no matter the situation.
-///     TODO (P3) Change name? Also maybe make it more of a martial class.
-/// 
+///     TODO (P4) Change name? Also maybe make it more of a martial class.
 ///     SKill - Divine Descent - Embodies yourself as the avatar of your god, massively boosting your physical attributes
 ///     based on your Faith.
 ///     When descending, causes a massive holy 3F explosion.

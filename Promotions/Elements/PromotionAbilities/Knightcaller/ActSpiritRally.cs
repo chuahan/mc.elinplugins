@@ -15,6 +15,13 @@ public class ActSpiritRally : Ability
         return base.CanPerform();
     }
 
+    public override Cost GetCost(Chara c)
+    {
+        Cost convertToMp = base.GetCost(c);
+        convertToMp.type = CostType.MP;
+        return convertToMp;
+    }
+
     public override bool Perform()
     {
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, 10F, CC, true, true))
@@ -31,8 +38,8 @@ public class ActSpiritRally : Ability
                 target.AddCondition<ConSpiritRally>();
             }
         }
-        
-        CC.AddCondition<ConSpiritRally>(this.GetPower(CC));
+
+        CC.AddCondition<ConSpiritRally>(GetPower(CC));
 
         CC.AddCooldown(Constants.ActSpiritRallyId, 10);
         return true;

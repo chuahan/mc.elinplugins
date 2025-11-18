@@ -53,9 +53,12 @@ public class ActDivineFist : ActMelee
             if (target == TC || target == CC) continue;
             if (target.IsHostile(CC))
             {
-                ActEffect.DamageEle(CC, EffectId.Arrow, power, Element.Create(Constants.EleHoly, power / 10), new List<Point>{target.pos}, new ActRef()
+                ActEffect.DamageEle(CC, EffectId.Arrow, power, Element.Create(Constants.EleHoly, power / 10), new List<Point>
                 {
-                    act = this,
+                    target.pos
+                }, new ActRef
+                {
+                    act = this
                 });
             }
             else

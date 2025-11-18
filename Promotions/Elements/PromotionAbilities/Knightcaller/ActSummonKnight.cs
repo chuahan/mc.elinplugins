@@ -21,7 +21,9 @@ public class ActSummonKnight : Ability
 
     public override Cost GetCost(Chara c)
     {
-        return base.GetCost(c);
+        Cost convertToMp = base.GetCost(c);
+        convertToMp.type = CostType.MP;
+        return convertToMp;
     }
 
     public override bool Perform()
@@ -42,7 +44,7 @@ public class ActSummonKnight : Ability
         string toSummon = knights.RandomItem();
         bool captainSummoned = false;
         // If you have no active knight captain, 1/4 chance to summon one instead.
-        // TODO: Do we want to allow multiple captains active at once?
+        // BALANCE: Do we want to allow multiple captains active at once?
         if (CC.currentZone.ListMinions(CC).FirstOrDefault(x => x.trait is TraitSpiritKnightCaptain) != null)
         {
             // There can only be one of each active knight captain in the zone.
@@ -76,7 +78,7 @@ public class ActSummonKnight : Ability
         knight.PlayEffect("curse");
         knight.MakeMinion(CC);
         EquipKnight(knight);
-        
+
         // Add Summoning Sickness to the caster.
         int sicknessStacks = 1;
         ConSummoningSickness sickness = CC.GetCondition<ConSummoningSickness>();
@@ -85,8 +87,8 @@ public class ActSummonKnight : Ability
             sicknessStacks += sickness.power;
             sickness.Kill();
         }
-        CC.AddCondition<ConSummoningSickness>(sicknessStacks, force:true);
-        
+        CC.AddCondition<ConSummoningSickness>(sicknessStacks, true);
+
         return true;
     }
 
@@ -98,7 +100,7 @@ public class ActSummonKnight : Ability
             case Constants.DinatogCharaId:
                 chara.AddThing(ThingGen.Create("dagger", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("bow", -1, chara.LV));
-                
+
                 chara.AddThing(ThingGen.Create("hat_feather", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("armor_light", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("gloves_light", -1, chara.LV));
@@ -106,12 +108,12 @@ public class ActSummonKnight : Ability
                 chara.AddThing(ThingGen.Create("cloak_foreign", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("boots_tight", -1, chara.LV));
                 break;
-            
+
             case Constants.KnightHermitCharaId:
             case Constants.AlestieCharaId:
                 chara.AddThing(ThingGen.Create("dagger", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("dagger", -1, chara.LV));
-                
+
                 chara.AddThing(ThingGen.Create("helm", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("armor_light", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("gloves_light", -1, chara.LV));
@@ -119,12 +121,12 @@ public class ActSummonKnight : Ability
                 chara.AddThing(ThingGen.Create("cloak_foreign", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("boots_tight", -1, chara.LV));
                 break;
-            
+
             case Constants.KnightLancerCharaId:
             case Constants.ValeroCharaId:
                 chara.AddThing(ThingGen.Create("spear", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("shield_knight", -1, chara.LV));
-                
+
                 chara.AddThing(ThingGen.Create("helm_knight", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("armor_breast", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("gloves_plate", -1, chara.LV));
@@ -132,11 +134,11 @@ public class ActSummonKnight : Ability
                 chara.AddThing(ThingGen.Create("cloak_armored", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("boots_heavy", -1, chara.LV));
                 break;
-                    
+
             case Constants.KnightPriestessCharaId:
             case Constants.EctoleCharaId:
                 chara.AddThing(ThingGen.Create("blunt_mace", 40, chara.LV));
-                
+
                 chara.AddThing(ThingGen.Create("hat_wizard", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("robe_pope", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("gloves", -1, chara.LV));
@@ -144,24 +146,24 @@ public class ActSummonKnight : Ability
                 chara.AddThing(ThingGen.Create("cloak_light", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("boots_", -1, chara.LV));
                 break;
-                
+
             case Constants.KnightDuelistCharaId:
             case Constants.ArkunCharaId:
                 chara.AddThing(ThingGen.Create("sword", -1, chara.LV));
-                
+
                 chara.AddThing(ThingGen.Create("helm_knight", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("armor_light", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("gloves_thick", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("girdle_corset", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("cloak_foreign", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("boots_heavy", -1, chara.LV));
-                
+
                 break;
 
             case Constants.KnightWarriorCharaId:
             case Constants.DiasCharaId:
                 chara.AddThing(ThingGen.Create("axe_battle", -1, chara.LV));
-                
+
                 chara.AddThing(ThingGen.Create("helm_knight", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("armor_breast", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("gloves_plate", -1, chara.LV));
@@ -169,11 +171,11 @@ public class ActSummonKnight : Ability
                 chara.AddThing(ThingGen.Create("cloak_armored", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("boots_heavy", -1, chara.LV));
                 break;
-                
+
             case Constants.KnightWizardCharaId:
             case Constants.RolingerCharaId:
                 chara.AddThing(ThingGen.Create("staff", -1, chara.LV));
-                
+
                 chara.AddThing(ThingGen.Create("hat_wizard", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("robe_pope", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("gloves", -1, chara.LV));
@@ -181,6 +183,6 @@ public class ActSummonKnight : Ability
                 chara.AddThing(ThingGen.Create("cloak_light", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("boots_", -1, chara.LV));
                 break;
-        } 
+        }
     }
 }

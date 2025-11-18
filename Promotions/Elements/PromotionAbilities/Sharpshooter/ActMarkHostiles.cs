@@ -15,6 +15,13 @@ public class ActMarkHostiles : Ability
         return base.CanPerform();
     }
 
+    public override Cost GetCost(Chara c)
+    {
+        Cost convertToMp = base.GetCost(c);
+        convertToMp.type = CostType.MP;
+        return convertToMp;
+    }
+
     public override bool Perform()
     {
         int manaRestore = (int)(CC.mana.max * 0.05F);

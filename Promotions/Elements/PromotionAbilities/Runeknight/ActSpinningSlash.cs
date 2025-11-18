@@ -11,6 +11,7 @@ public class ActSpinningSlash : Ability
             Msg.Say("classlocked_ability".lang(Constants.RuneknightId.lang()));
             return false;
         }
+        if (CC.HasCondition<ConElementalAttunement>() == false) return false;
         return base.CanPerform();
     }
 

@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using HarmonyLib;
 using PromotionMod.Common;
-using PromotionMod.Stats;
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(TraitBaseSpellbook))]
@@ -21,7 +18,7 @@ public class TraitBaseSpellbookPatches
             {
                 int currentElement = __instance.source.id % 100;
                 int spellType = __instance.source.id / 100;
-                
+
                 // Pick first random number.
                 int r1 = EClass.rnd(15);
                 int firstElement = r1 >= currentElement ? r1 + 1 : r1;
@@ -31,11 +28,12 @@ public class TraitBaseSpellbookPatches
                 if (r2 >= Math.Min(currentElement, firstElement)) r2++;
                 if (r2 >= Math.Max(currentElement, firstElement)) r2++;
                 int secondElement = r2;
-                
+
                 c.Say("elementalist_arsenalconspectus".langGame());
-                c.GainAbility((spellType * 100 + firstElement), 100, __instance.owner.Thing);
-                c.GainAbility((spellType * 100 + secondElement), 100, __instance.owner.Thing);
-            };
+                c.GainAbility(spellType * 100 + firstElement, 100, __instance.owner.Thing);
+                c.GainAbility(spellType * 100 + secondElement, 100, __instance.owner.Thing);
+            }
+            ;
         }
 
         return true;

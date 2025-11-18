@@ -29,7 +29,7 @@ public class ActWolkenkratzer : Ability
     {
         return new Cost
         {
-            cost = 25,
+            cost = 12,
             type = CostType.SP
         };
     }

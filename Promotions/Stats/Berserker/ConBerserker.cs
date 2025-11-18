@@ -15,7 +15,7 @@ public class ConBerserker : ClassCondition
     // For every Point, 
     public int GetBerserkPower()
     {
-        int debuffs = owner.conditions.Count(x => x.Type == ConditionType.Debuff);
+        int debuffs = owner.conditions.Count(x => x.Type is ConditionType.Debuff or ConditionType.Bad);
         int hpChunks = (int)(owner.MaxHP * 0.05F);
         int hpBuff = (owner.MaxHP - owner.hp) / hpChunks;
         return hpBuff + debuffs;

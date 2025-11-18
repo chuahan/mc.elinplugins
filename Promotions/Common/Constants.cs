@@ -7,7 +7,7 @@ public class Constants
 
     internal const int SigmoidScalingMax = 3000;
     internal const float SigmoidScalingPowerSlope = 1.2f;
-    
+
     public const int PromotionLevelRequirement = 20;
 
     #region CWL Flags
@@ -247,6 +247,8 @@ public class Constants
     // Artificer
     public const int ActImprovisedBrewId = 1;
     public const int ActSimpleSynthesisId = 1;
+    public const int ActTrampleId = 1;
+    public const string ActTrampleAlias = "trample";
 
     // Berserker
     public const int ActBloodlustId = 1;
@@ -271,6 +273,7 @@ public class Constants
     // Druid
     public const int ActSowWarmSeedsId = 1;
     public const int ActSowWrathSeedsId = 1;
+    public const int ActLivingArmorId = 1;
     public const int SpSummonTreeEntId = 1;
 
     // Elementalist
@@ -296,6 +299,7 @@ public class Constants
     public const int ActTraumatizeId = 1;
     public const string TraumatizeAlias = "hexer_traumatize";
     public const int ActBloodCurseId = 1;
+    public const int ActRevengeId = 1;
 
     // Jenei
     public const int ActSpiritSummonId = 1;
@@ -420,14 +424,14 @@ public class Constants
     #endregion
 
     #region Maia
-    
+
     public const int FeatMaia = 1;
     public const int FeatMaiaEnlightened = 1;
     public const int FeatMaiaCorrupted = 1;
-    
+
     public const string MaiaLightFateFlag = "MaiaLightFate";
     public const string MaiaDarkFateFlag = "MaiaDarkFate";
-    
+
     public const string CandlebearerCharaId = "candlebearer";
     public const string DarklingCharaId = "darkling";
 
@@ -438,6 +442,19 @@ public class Constants
     public const int ActCorruptedEmpowermentId = 1;
     public const int ActCorruptedSilentForceId = 1;
     public const int ActGatewayId = 1;
-    
+
     #endregion
+
+    #region Golems
+
+    public const int FeatArtificerGolemUpgrade = 1;
+    public const string ArtificerGolem_MemoryChipId = "golem_memorychip";
+    public const string ArtificerGolem_ComponentChipId = "golem_componentchip";
+    public const string MimGolemCharaId = "golem_mim";
+    public const string HarpyGolemCharaId = "golem_harpy";
+    public const string SirenGolemCharaId = "golem_siren";
+    public const string TitanGolemCharaId = "golem_titan";
+
+    #endregion
+
 }

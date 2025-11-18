@@ -1,6 +1,4 @@
-
 using PromotionMod.Common;
-using PromotionMod.Stats.Dancer;
 namespace PromotionMod.Elements.PromotionAbilities.Dancer;
 
 public abstract class ActBaseDance : Act
@@ -25,7 +23,7 @@ public abstract class ActBaseDance : Act
         CC.AddCooldown(Constants.StHealingDanceId, 5);
         CC.AddCooldown(Constants.StMistDanceId, 5);
         CC.AddCooldown(Constants.StSwiftDanceId, 5);
-        
+
         return base.Perform();
     }
 }

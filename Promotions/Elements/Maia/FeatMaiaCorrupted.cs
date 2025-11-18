@@ -1,11 +1,10 @@
 using System;
 using Cwl.Helper.Extensions;
 using PromotionMod.Common;
-using UnityEngine;
 namespace PromotionMod.Elements.Maia;
 
 /// <summary>
-/// The Maia has submitted to Corruption.
+///     The Maia has submitted to Corruption.
 /// </summary>
 public class FeatMaiaCorrupted : Feat
 {
@@ -22,7 +21,7 @@ public class FeatMaiaCorrupted : Feat
         owner.ModBase(950, 20); // Fire Immunity
         owner.ModBase(953, 20); // Dark Immunity
         owner.ModBase(955, 10); // Poison Resistance
-        
+
         if (owner.Chara is { IsPC: true })
         {
             owner.Chara.AddElement(Constants.ActCorruptedVengeanceId, 0);

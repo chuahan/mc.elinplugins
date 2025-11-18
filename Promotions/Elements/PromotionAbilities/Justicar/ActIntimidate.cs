@@ -27,16 +27,16 @@ public class ActIntimidate : Ability
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(TC.pos, 5F, CC, false, false))
         {
             // Inflict AOE Bane and Fear
-            ActEffect.ProcAt(EffectId.Debuff, GetPower(Act.CC), BlessedState.Normal, Act.CC, target, target.pos, isNeg: true, new ActRef
+            ActEffect.ProcAt(EffectId.Debuff, GetPower(CC), BlessedState.Normal, CC, target, target.pos, true, new ActRef
             {
-                origin = Act.CC.Chara,
-                n1 = nameof(ConBane),
+                origin = CC.Chara,
+                n1 = nameof(ConBane)
             });
-            
-            ActEffect.ProcAt(EffectId.Debuff, GetPower(Act.CC), BlessedState.Normal, Act.CC, target, target.pos, isNeg: true, new ActRef
+
+            ActEffect.ProcAt(EffectId.Debuff, GetPower(CC), BlessedState.Normal, CC, target, target.pos, true, new ActRef
             {
-                origin = Act.CC.Chara,
-                n1 = nameof(ConFear),
+                origin = CC.Chara,
+                n1 = nameof(ConFear)
             });
         }
 

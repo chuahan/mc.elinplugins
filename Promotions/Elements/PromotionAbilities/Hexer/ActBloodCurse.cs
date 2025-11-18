@@ -1,5 +1,6 @@
 using PromotionMod.Common;
 using PromotionMod.Elements.PromotionFeats;
+using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.Hexer;
 
 // Force applies one of the curses randomly at the cost of 10% life. Will prioritize curses you have not applied of the same tier that you roll.
@@ -21,6 +22,13 @@ public class ActBloodCurse : Ability
             cost = 0,
             type = CostType.None
         };
+    }
+
+    // Apply Spell Enhance to this ability.
+    public override int GetPower(Card c)
+    {
+        int power = base.GetPower(c);
+        return power * Mathf.Max(100 + c.Evalue(411) - c.Evalue(93), 1) / 100;
     }
 
     public override bool Perform()

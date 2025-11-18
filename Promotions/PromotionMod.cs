@@ -11,7 +11,9 @@ internal static class ModInfo
 
 /// <summary>
 ///     TODO LIST (Excluding the ones in each Promotion Class)
-///     TODO (P1) Implement acquisition method for Promotion Manuals. This likely includes Lailah's quest.F
+///     TODO (P1) Implement acquisition method for Promotion Manuals. This likely includes Lailah's quest.
+///     TODO (P2) Add SFX and animations for abilities. This is gonna be a lot...
+///     TODO: Weapons. Do I want these in this mod? These are mostly weapons for each of the Knights + Lailah.
 ///     TODO (P4) Implement Rapiers: Flurry and Pursuit inherent.
 ///     TODO (P4) Implement Lances: Unique Weapon Mod that increases damage based on speed.
 ///     TODO (P4) Implement Sniper Rifles: Increased Crit / Accuracy. Low Mag size. High Effective Range.

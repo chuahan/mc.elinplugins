@@ -18,11 +18,9 @@ public class ActManaBreak : Ability
 
     public override Cost GetCost(Chara c)
     {
-        return new Cost
-        {
-            type = CostType.SP,
-            cost = 10
-        };
+        Cost convertToMp = base.GetCost(c);
+        convertToMp.type = CostType.MP;
+        return convertToMp;
     }
 
     public override bool Perform()

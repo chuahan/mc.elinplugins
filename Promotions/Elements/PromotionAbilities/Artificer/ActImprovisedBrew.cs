@@ -44,9 +44,9 @@ public class ActImprovisedBrew : Ability
 
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatHexer) == 0)
+        if (CC.Evalue(Constants.FeatArtificer) == 0)
         {
-            Msg.Say("classlocked_ability".lang(Constants.HexerId.lang()));
+            Msg.Say("classlocked_ability".lang(Constants.ArtificerId.lang()));
             return false;
         }
         return base.CanPerform();

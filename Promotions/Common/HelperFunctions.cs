@@ -119,7 +119,7 @@ public static class HelperFunctions
 
         return (friendlies, enemies);
     }
-    
+
     // Helper function to do direct spell damage while incorporating Shatter, Control Magic, Protection.
     // This is mostly used for attacks which pass in the damage to deal, or have to go through tools such as artificer tools.
     public static void ProcSpellDamage(int power, long damage, Chara cc, Chara tc, AttackSource attackSource = AttackSource.None, int ele = Constants.EleVoid, int eleP = 100)
@@ -138,7 +138,7 @@ public static class HelperFunctions
                 tc = a;
             });
         }
-        
+
         // Try reducing it by Control Magic if it's a friendly.
         if (tc.IsFriendOrAbove(cc.Chara))
         {
@@ -166,13 +166,13 @@ public static class HelperFunctions
                     return;
                 }
             }
-            
-            if ((cc.HasElement(1214) || (!cc.IsPC && (cc.IsPCFaction || cc.IsPCFactionMinion) && EClass.pc.HasElement(1214))) && EClass.rnd(5) != 0)
+
+            if ((cc.HasElement(1214) || !cc.IsPC && (cc.IsPCFaction || cc.IsPCFactionMinion) && EClass.pc.HasElement(1214)) && EClass.rnd(5) != 0)
             {
                 return;
             }
         }
-        
+
         // Actually inflict the damage.
         tc.DamageHP(adjustedDamage, ele, eleP, attackSource, cc);
     }
@@ -193,7 +193,7 @@ public static class HelperFunctions
         string[] names = Enum.GetNames(typeof(T));
         return names.RandomItem();
     }
-    
+
     public static void ApplyElementalBreak(int eleId, Chara? origin, Chara target, int power)
     {
         // Copied this section from Proc so I can account for their resistance.
@@ -210,7 +210,7 @@ public static class HelperFunctions
             origin?.DoHostileAction(target);
             return;
         }
-        
+
         switch (eleId)
         {
             case Constants.EleCold:

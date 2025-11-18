@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
+using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.Hexer;
 
 /// <summary>
@@ -25,6 +26,13 @@ public class ActTraumatize : Ability
             type = CostType.MP,
             cost = (int)(c.mana.max * 0.2F)
         };
+    }
+
+    // Apply Spell Enhance to this ability.
+    public override int GetPower(Card c)
+    {
+        int power = base.GetPower(c);
+        return power * Mathf.Max(100 + c.Evalue(411) - c.Evalue(93), 1) / 100;
     }
 
     public override bool Perform()

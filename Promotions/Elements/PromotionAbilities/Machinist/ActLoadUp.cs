@@ -34,6 +34,13 @@ public class ActLoadUp : Ability
         return base.CanPerform();
     }
 
+    public override Cost GetCost(Chara c)
+    {
+        Cost convertToMp = base.GetCost(c);
+        convertToMp.type = CostType.MP;
+        return convertToMp;
+    }
+
     public override bool Perform()
     {
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, true, true))
@@ -47,7 +54,10 @@ public class ActLoadUp : Ability
                 rangedWeapon.c_ammo = rangedTrait.MaxAmmo;
                 switch (rangedWeapon.trait)
                 {
-                    // TODO: Add one for Rocket launchers
+                    case TraitToolRangeGunRocket:
+                        ammo = ThingGen.Create("bullet_rocket", "ether");
+                        ammo.SetNum(rangedTrait.MaxAmmo);
+                        break;
                     case TraitToolRangeGunEnergy:
                         ammo = ThingGen.Create("bullet_energy", "ether");
                         ammo.SetNum(rangedTrait.MaxAmmo);

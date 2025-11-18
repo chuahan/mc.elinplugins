@@ -13,17 +13,10 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Will not consume ammo when firing shots as Overwatch reaction.
 ///     When taking damage in Overwatch stance, exit Overwatch, gain a turn of increased Speed and stealth.
 ///     Skill - Charged Shot - Consumes 25% of your remaining mana. Gain Vorpal + Drill. Gain. Damage based on the mana
-///     consumed. Reduces speed. Can be casted multiple times to stack the effect
-///     "I won't miss."
-///     "All or nothing!"
-///     "Watch for friendly fire!"
-///     Skill - Mark Hostiles - Applies a Marked debuff that reduces DV rating for all enemies in the area.
-///     Costs Stamina.
-///     Every target Marked restores 5% Mana.
+///     consumed. Reduces speed. Can be casted multiple times to stack the effect.
+///     Skill - Mark Hostiles - Applies a Marked debuff that reduces DV rating for all enemies in the area. Every target
+///     Marked restores 5% Mana.
 ///     Passive - Suppressive Fire - Ranged attacks will always apply Suppression on the target, even on miss.
-///
-/// TODO: Implement Passive, Implement increased FOV.
-/// 
 /// </summary>
 public class FeatSharpshooter : PromotionFeat
 {

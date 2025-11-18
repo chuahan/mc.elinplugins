@@ -24,6 +24,13 @@ public class ActSowWarmSeeds : Ability
         return base.CanPerform();
     }
 
+    public override Cost GetCost(Chara c)
+    {
+        Cost convertToMp = base.GetCost(c);
+        convertToMp.type = CostType.MP;
+        return convertToMp;
+    }
+
     public override bool Perform()
     {
         // Randomly pick one of the flowers to spawn.
@@ -45,7 +52,7 @@ public class ActSowWarmSeeds : Ability
                 toSummon = Constants.DruidNaturesWarmthCharaId;
             }
         }
-        
+
         int power = GetPower(CC);
         bool flowerSummoned = toSummon is Constants.DruidSoothingBloomCharaId or Constants.DruidWardingBloomCharaId or Constants.DruidSereneBloomCharaId;
         Chara plant = CharaGen.Create(toSummon);
@@ -72,7 +79,7 @@ public class ActSowWarmSeeds : Ability
 
         // Flowers are not killable.
         if (flowerSummoned) plant.AddCondition<ConInvulnerable>(30000);
-        
+
         // Apply the Aura Buff
         switch (toSummon)
         {

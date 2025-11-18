@@ -11,11 +11,12 @@ public class TraitArtificerToolHeaven : TraitArtificerTool
     {
         List<Chara> targets = HelperFunctions.GetCharasWithinRadius(cc.pos, 3F, cc, true, true);
         float healingAmount = HelperFunctions.SigmoidScaling(power, 10F, 40F);
+        int instanceCount = (int)HelperFunctions.SigmoidScaling(power, 5f, 30f);
         foreach (Chara target in targets)
         {
             int heal = (int)(target.MaxHP * healingAmount);
             target.HealHP(heal, HealSource.Item);
-            target.AddCondition<ConHeavenlyEmbrace>(power); // TODO IMPLEMENT
+            target.AddCondition<ConHeavenlyEmbrace>(instanceCount); // TODO (P1) IMPLEMENT
         }
         owner.c_ammo--;
         return true;

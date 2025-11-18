@@ -1,22 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using PromotionMod.Common;
 namespace PromotionMod.Stats;
 
 public class ConElementalFury : BaseBuff
 {
-
-    public static List<int> BackupElementsToUse = new List<int>
-    {
-        Constants.EleCold,
-        Constants.EleFire,
-        Constants.EleLightning,
-        Constants.EleMagic
-    };
-
-    [JsonProperty(PropertyName = "E")] public List<int> ElementsToUse = new List<int>();
-
-    [JsonProperty(PropertyName = "S")] public int Stacks = 1;
+    [JsonProperty(PropertyName = "E")] public Dictionary<int, int> ElementalStockpile = new Dictionary<int, int>();
 
     public override void Tick()
     {
@@ -26,38 +16,28 @@ public class ConElementalFury : BaseBuff
             Kill();
         }
 
-        if (Stacks <= 0) Kill();
-
-        List<Chara> potentialTargets = HelperFunctions.GetCharasWithinRadius(owner.pos, 5f, owner, false, true);
+        List<Chara> potentialTargets = HelperFunctions.GetCharasWithinRadius(owner.pos, 3f, owner, false, true);
         if (potentialTargets.Count != 0)
         {
-            foreach (Chara target in potentialTargets)
+            // Pick up 3 elements to cut nearby enemies every tick.
+            for (int i = 0; i < 3; i++)
             {
-                // Pick 3 elements to fire as bolts at every enemy.
-                for (int i = 0; i < 3; i++)
-                {
-                    if (Stacks <= 0) Kill();
+                // If the stockpile was depleted, end the Fury.
+                if (ElementalStockpile.Count == 0) Kill();
+                int element = ElementalStockpile.Keys.RandomItem();
+                int powerAmped = power * ElementalStockpile[element];
+                ActRef actRef = default(ActRef);
+                actRef.origin = owner;
+                actRef.aliasEle = Constants.ElementAliasLookup[element];
 
-                    int element;
-                    if (ElementsToUse.Count == 0)
-                    {
-                        element = BackupElementsToUse.RandomItem();
-                    }
-                    else
-                    {
-                        element = ElementsToUse.RandomItem();
-                    }
-                    int damage = HelperFunctions.SafeDice(Constants.ElementalFuryAlias, power);
-                    if (target is null) continue;
-                    ActRef actRef = default(ActRef);
-                    actRef.origin = owner;
-                    actRef.aliasEle = Constants.ElementAliasLookup[element];
-                    // Meheheh. Change to Arrow or Bolt if too dangerous...
-                    ActEffect.ProcAt(EffectId.Meteor, damage, BlessedState.Normal, owner, target, target.pos, true, actRef);
-                    Stacks--;
+                foreach (Chara target in potentialTargets.OfType<Chara>())
+                {
+                    ActEffect.ProcAt(EffectId.Sword, powerAmped, BlessedState.Normal, owner, target, target.pos, true, actRef);
                 }
+
+                // After cutting all enemies, remove that element from the stockpile.
+                ElementalStockpile.Remove(element);
             }
-            Mod(-1);
         }
     }
 }

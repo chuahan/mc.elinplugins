@@ -23,7 +23,7 @@ public class ActJeneiMove : Ability
     {
         if (TryMoveFrom(TC, CC.pos) == Card.MoveResult.Success)
         {
-            // TODO (P3) Render hand moving it.
+            // FX: Render hand moving it.
             return true;
         }
         return false;

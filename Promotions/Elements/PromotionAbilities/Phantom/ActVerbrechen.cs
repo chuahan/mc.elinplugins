@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Elements.PromotionFeats;
 using PromotionMod.Stats.Phantom;
@@ -42,7 +41,7 @@ public class ActVerbrechen : Ability
     {
         return new Cost
         {
-            cost = 25,
+            cost = 12,
             type = CostType.SP
         };
     }
@@ -79,8 +78,8 @@ public class ActVerbrechen : Ability
             // Trigger Finisher if Target has 10 Phantom Stacks
             if (currMarks == 10)
             {
-                int power = this.GetPower(CC);
-                
+                int power = GetPower(CC);
+
                 // Remove Phantom Mark from the target.
                 phantomMark?.Kill();
 
@@ -98,15 +97,15 @@ public class ActVerbrechen : Ability
                 componentInChildren.startColor = startColor;
                 spellEffect.Play(CC.pos, 0f, target.pos);
 
-                ActEffect.DamageEle(CC, EffectId.Bolt, power, Element.Create(Constants.EleMagic, power / 10), phantomBeam, new ActRef()
+                ActEffect.DamageEle(CC, EffectId.Bolt, power, Element.Create(Constants.EleMagic, power / 10), phantomBeam, new ActRef
                 {
-                    act = this,
+                    act = this
                 });
 
                 // Spawn 2 Phantom Bits
                 FeatPhantom.SpawnPhantomBit(GetPower(CC), CC, CC.pos);
                 FeatPhantom.SpawnPhantomBit(GetPower(CC), CC, CC.pos);
-                
+
                 FeatPhantom.PhantomFinisherRestoration(CC);
             }
 

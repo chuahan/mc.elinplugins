@@ -19,7 +19,7 @@ public class TraitFactionTrap : TraitTrap
 
     public int GetPower()
     {
-        return this.owner.LV * 10;
+        return owner.LV * 10;
     }
 
     public override void OnStepped(Chara c)

@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Cwl.Helper.Extensions;
 using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Stats;
-using PromotionMod.Stats.Battlemage;
 using PromotionMod.Stats.Jenei;
+using PromotionMod.Stats.WitchHunter;
 using UnityEngine;
 namespace PromotionMod.Patches;
 
@@ -15,7 +13,7 @@ public class ActEffectPatches
 {
     [HarmonyPatch(nameof(ActEffect.ProcAt))]
     [HarmonyPrefix]
-    internal static bool ProcAtPrefix(ActEffect __instance, EffectId id, int power, BlessedState state, Card cc, Card tc, Point tp, bool isNeg, ActRef actRef)
+    internal static bool ProcAtPrefix(ActEffect __instance, EffectId id, int power, BlessedState state, ref Card cc, ref Card tc, Point tp, bool isNeg, ActRef actRef)
     {
         Chara chara = cc.Chara;
         if (cc.isChara)
@@ -48,6 +46,26 @@ public class ActEffectPatches
                     jenei?.AddElement(element);
                 }
             }
+
+            if (tc.isChara)
+            {
+                // Witch Hunter - Magic Reflect will reflect targeted magic.
+                if (tc.Chara.HasCondition<ConMagicReflect>())
+                {
+                    ConMagicReflect magicReflect = chara.GetCondition<ConMagicReflect>();
+                    magicReflect.Mod(-1);
+                    if (magicReflect.value <= 0) magicReflect.Kill();
+
+                    // Swap the TC and CC
+                    (tc, cc) = (cc, tc);
+                }
+
+                // Witch Hunter - Target gets silenced with Bane in addition to excommunication.
+                if (cc.Chara.Evalue(Constants.FeatWitchHunter) > 0 && string.Equals(actRef.n1, "ConBane", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    tc.Chara.AddCondition<ConSilence>(power);
+                }
+            }
         }
 
         return true;
@@ -55,14 +73,11 @@ public class ActEffectPatches
 
     private static bool HasAltSummonBits(Chara caster)
     {
-        caster.Say("DEBUG::HasAltSummonBits");
-        if (PromotionMod.Debug) return true;
         return caster.GetFlagValue(Constants.PromotionFeatFlag) is Constants.FeatElementalist or Constants.FeatBattlemage or Constants.FeatLuminary or Constants.FeatPhantom;
     }
 
     private static void SummonAltBits(Chara caster, int power, Point tp, ActRef actRef = default(ActRef))
     {
-        if (PromotionMod.Debug) caster.Say("DEBUG::SummonBits");
         Element element = Element.Create(actRef.aliasEle.IsEmpty("eleFire"), power / 10);
         int promotion = caster.GetFlagValue(Constants.PromotionFeatFlag);
         if (EClass._zone.CountMinions(caster) >= caster.MaxSummon || caster.c_uidMaster != 0)

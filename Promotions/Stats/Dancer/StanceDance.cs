@@ -32,7 +32,7 @@ public class StanceDance : BaseStance
         {
             return;
         }
-        
+
         bool hasPartner = false;
         Chara partner = null;
         if (CC.HasCondition<StancePartnerStyle>())

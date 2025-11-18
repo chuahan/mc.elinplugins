@@ -73,7 +73,7 @@ public abstract class SpellbookConversion
 {
     public virtual int PromotionFeatId { get; }
     public virtual HashSet<int> ConvertableBooks { get; }
-    
+
     public virtual bool CanConvert(int ele)
     {
         return ConvertableBooks.Contains(ele);
@@ -126,7 +126,7 @@ public class BattlemageSpellbookConversion : SpellbookConversion
     public override bool CanConvert(int ele)
     {
         // Can convert any non-void elemental attack except flare spells since we are converting into flares. 
-        return (ele > 50100 && ele < 51215) && ele / 100 != 512;
+        return ele > 50100 && ele < 51215 && ele / 100 != 512;
     }
     public override void ConvertSpellbook(ref TraitSpellbook spellbook)
     {
@@ -171,9 +171,9 @@ public class JeneiSpellbookConversion : SpellbookConversion
     public override bool CanConvert(int ele)
     {
         // Has to be within the elemental attack spells and can't be one of the four natural elements already.
-        return (ele > 50100 && ele < 51215) && !JeneiElements.Contains(ele % 100);
+        return ele > 50100 && ele < 51215 && !JeneiElements.Contains(ele % 100);
     }
-    
+
     public override void ConvertSpellbook(ref TraitSpellbook spellbook)
     {
         int prefix = spellbook.owner.refVal / 100;
@@ -188,7 +188,7 @@ public class SaintSpellbookConversion : SpellbookConversion
     public override bool CanConvert(int ele)
     {
         // Has to be within the elemental attack spells and can't be holy.
-        return (ele > 50100 && ele < 51215) && (ele % 100 != 9);
+        return ele > 50100 && ele < 51215 && ele % 100 != 9;
     }
 
     public override void ConvertSpellbook(ref TraitSpellbook spellbook)
@@ -207,7 +207,7 @@ public class SpellbladeSpellbookConversion : SpellbookConversion
     {
         // Has to be within the elemental attack spells and can't be sword or intonation
         int spellType = ele / 100;
-        return (ele > 50100 && ele < 51215) && spellType != 510 && spellType != 508;
+        return ele > 50100 && ele < 51215 && spellType != 510 && spellType != 508;
     }
 
     public override void ConvertSpellbook(ref TraitSpellbook spellbook)

@@ -28,7 +28,7 @@ public class ActSchwarzeKatze : Ability
     {
         return new Cost
         {
-            cost = 30,
+            cost = 15,
             type = CostType.SP
         };
     }
@@ -52,7 +52,7 @@ public class ActSchwarzeKatze : Ability
         // Trigger Finisher if Target has 10 Phantom Stacks
         if (currMarks == 10)
         {
-            int power = this.GetPower(CC);
+            int power = GetPower(CC);
             // Remove Phantom Mark from the target.
             phantomMark.Kill();
 
@@ -64,12 +64,15 @@ public class ActSchwarzeKatze : Ability
                 laser.SetParticleColor(colorRef.colorTrail, true, "_TintColor");
                 laser.sr.color = colorRef.colorSprite;
                 laser.Play(CC.pos);
-                ActEffect.DamageEle(CC, EffectId.None, power, Element.Create(Constants.EleMagic, power / 10), new List<Point>{target.pos}, new ActRef()
+                ActEffect.DamageEle(CC, EffectId.None, power, Element.Create(Constants.EleMagic, power / 10), new List<Point>
                 {
-                    act = this,
+                    target.pos
+                }, new ActRef
+                {
+                    act = this
                 });
             }
-            
+
             FeatPhantom.PhantomFinisherRestoration(CC);
         }
         return true;

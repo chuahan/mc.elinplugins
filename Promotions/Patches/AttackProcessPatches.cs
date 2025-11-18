@@ -47,7 +47,7 @@ public class AttackProcessPatches
         }
 
         // Sharpshooter - Charged Chamber applies the mana consumed (power) as a damage multiplier. Caps at 5x damage.
-        // TODO (P3) This might... be a little too strong later?
+        // BALANCE: This might... be a little too strong later?
         if (__instance.CC.Chara.Evalue(Constants.FeatSharpshooter) > 0 && __instance.CC.HasCondition<ConChargedChamber>() && __instance.IsRanged)
         {
             ConChargedChamber charge = __instance.CC.GetCondition<ConChargedChamber>();
@@ -61,6 +61,22 @@ public class AttackProcessPatches
     [HarmonyPostfix]
     internal static void PerformPostfixPatch(AttackProcess __instance, int count, bool hasHit, ref float dmgMulti, ref bool maxRoll, bool subAttack)
     {
+        // Machinist - Heavyarms mode followup rockets.
+        if (__instance.CC.HasCondition<StanceHeavyarms>() &&
+            !subAttack &&
+            __instance.TC.isChara &&
+            __instance is { IsRanged: true, toolRange: not null })
+        {
+            StanceHeavyarms heavyarms = __instance.CC.GetCondition<StanceHeavyarms>();
+            __instance.CC.Say("machinist_heavyarms_followup".langGame(), Act.CC);
+            __instance.CC.PlaySound("missile");
+            ActEffect.ProcAt(EffectId.Rocket, heavyarms.power, BlessedState.Normal, __instance.CC, null, __instance.TC.pos, true, new ActRef
+            {
+                origin = __instance.CC.Chara,
+                aliasEle = "eleImpact"
+            });
+        }
+
         // Ranger - Gimmick Coatings. Does not work on Canes
         if (__instance.CC.HasCondition<ConGimmickCoating>() &&
             !subAttack &&
@@ -74,31 +90,31 @@ public class AttackProcessPatches
                 switch (coatingType)
                 {
                     case Constants.RangerCoatings.HammerCoating:
-                        ActEffect.ProcAt(EffectId.Debuff, coating.power, BlessedState.Normal, Act.CC, __instance.TC.Chara, __instance.TC.Chara.pos, isNeg: true, new ActRef
+                        ActEffect.ProcAt(EffectId.Debuff, coating.power, BlessedState.Normal, Act.CC, __instance.TC.Chara, __instance.TC.Chara.pos, true, new ActRef
                         {
                             origin = Act.CC.Chara,
-                            n1 = nameof(ConFaint),
+                            n1 = nameof(ConFaint)
                         });
                         break;
                     case Constants.RangerCoatings.BladedCoating:
-                        ActEffect.ProcAt(EffectId.Debuff, coating.power, BlessedState.Normal, Act.CC, __instance.TC.Chara, __instance.TC.Chara.pos, isNeg: true, new ActRef
+                        ActEffect.ProcAt(EffectId.Debuff, coating.power, BlessedState.Normal, Act.CC, __instance.TC.Chara, __instance.TC.Chara.pos, true, new ActRef
                         {
                             origin = Act.CC.Chara,
-                            n1 = nameof(ConBleed),
+                            n1 = nameof(ConBleed)
                         });
                         break;
                     case Constants.RangerCoatings.ParalyticCoating:
-                        ActEffect.ProcAt(EffectId.Debuff, coating.power, BlessedState.Normal, Act.CC, __instance.TC.Chara, __instance.TC.Chara.pos, isNeg: true, new ActRef
+                        ActEffect.ProcAt(EffectId.Debuff, coating.power, BlessedState.Normal, Act.CC, __instance.TC.Chara, __instance.TC.Chara.pos, true, new ActRef
                         {
                             origin = Act.CC.Chara,
-                            n1 = nameof(ConParalyze),
+                            n1 = nameof(ConParalyze)
                         });
                         break;
                     case Constants.RangerCoatings.PoisonCoating:
-                        ActEffect.ProcAt(EffectId.Debuff, coating.power, BlessedState.Normal, Act.CC, __instance.TC.Chara, __instance.TC.Chara.pos, isNeg: true, new ActRef
+                        ActEffect.ProcAt(EffectId.Debuff, coating.power, BlessedState.Normal, Act.CC, __instance.TC.Chara, __instance.TC.Chara.pos, true, new ActRef
                         {
                             origin = Act.CC.Chara,
-                            n1 = nameof(ConPoison),
+                            n1 = nameof(ConPoison)
                         });
                         break;
                     case Constants.RangerCoatings.ShatterCoating:
@@ -131,10 +147,16 @@ public class AttackProcessPatches
         // Sharpshooter - Charged Chamber is consumed on shot.
         if (__instance.CC.Chara.Evalue(Constants.FeatSharpshooter) > 0 && __instance.CC.HasCondition<ConChargedChamber>() && __instance.IsRanged)
         {
-            __instance.TC.Chara.RemoveCondition<ConChargedChamber>();
+            __instance.CC.Chara.RemoveCondition<ConChargedChamber>();
         }
 
-        // Sovereign - Order Sword allows follow up attacks from allies in Coherency.
+        // Sharpshooter - Ranged Attacks will automatically apply the Suppress effect, regardless of hitting or not
+        if (__instance.CC.Chara.Evalue(Constants.FeatSharpshooter) > 0 && __instance.IsRanged)
+        {
+            __instance.TC.Chara.AddCondition<ConSupress>();
+        }
+
+        // Sovereign - Order Sword allows follow-up attacks from allies in Coherency.
         ConOrderSword orderSword = Act.CC.GetCondition<ConOrderSword>();
         if (orderSword is { FollowUpAvailable: true } && !subAttack)
         {

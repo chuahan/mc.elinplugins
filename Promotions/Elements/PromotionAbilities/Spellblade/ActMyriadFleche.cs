@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
-using PromotionMod.Stats;
-using PromotionMod.Stats.Spellblade;
 using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.Spellblade;
 
@@ -60,6 +58,13 @@ public class ActMyriadFleche : ActMelee
         return convertToMp;
     }
 
+    // Apply Spell Enhance to this ability.
+    public override int GetPower(Card c)
+    {
+        int power = base.GetPower(c);
+        return power * Mathf.Max(100 + c.Evalue(411) - c.Evalue(93), 1) / 100;
+    }
+
     public override bool Perform()
     {
         bool flag = CC.IsPC && !(CC.ai is GoalAutoCombat);
@@ -107,11 +112,11 @@ public class ActMyriadFleche : ActMelee
         List<Point> coneRange = _map.ListPointsInArc(CC.pos, TP, 4, 35f);
 
         int power = GetPower(CC);
-        ActEffect.DamageEle(CC, EffectId.Breathe, power, Element.Create(intonationElement, power / 10), coneRange, new ActRef()
+        ActEffect.DamageEle(CC, EffectId.Breathe, power, Element.Create(intonationElement, power / 10), coneRange, new ActRef
         {
-            act = this,
+            act = this
         });
-        
+
         foreach (Chara target in coneRange.SelectMany(p => p.Charas.Where(target => target.IsHostile(CC))))
         {
             // All enemies in the cone will take damage and be inflicted with elemental break of that element.

@@ -1,12 +1,10 @@
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
 using Cwl.Helper.Extensions;
 using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Stats;
 using PromotionMod.Stats.Adventurer;
+using PromotionMod.Stats.Artificer;
 using PromotionMod.Stats.Berserker;
 using PromotionMod.Stats.Dancer;
 using PromotionMod.Stats.Harbinger;
@@ -179,6 +177,20 @@ internal class CharaPatches : EClass
     }
 
     [HarmonyPatch(nameof(Chara._Move))]
+    [HarmonyPrefix]
+    internal static bool MovePrefix(Chara __instance, Point newPoint, Card.MoveType type, ref Card.MoveResult __result)
+    {
+        if (__instance.HasCondition<StanceHeavyarms>())
+        {
+            __result = Card.MoveResult.Fail;
+            __instance.Say("machinist_heavyarms_nomove".langGame(__instance.NameSimple));
+            return false;
+        }
+
+        return true;
+    }
+
+    [HarmonyPatch(nameof(Chara._Move))]
     [HarmonyPostfix]
     internal static void MovePostfix(Chara __instance, Point newPoint, Card.MoveType type, ref Card.MoveResult __result)
     {
@@ -222,7 +234,8 @@ internal class CharaPatches : EClass
         // Ranger - If the character is currently a symbiote with Ranger's Canto on, and there is an available target they will make a free shot at the target. Will not work if the weapon needs to be reloaded.
         if (!_zone.IsRegion &&
             c.host == __instance &&
-            c.HasCondition<StanceRangerCanto>() && c.GetBestRangedWeapon() != null)
+            c.HasCondition<StanceRangerCanto>() &&
+            c.GetBestRangedWeapon() != null)
         {
             Thing rangedWeapon = c.GetBestRangedWeapon();
             TraitToolRange traitToolRange = rangedWeapon.trait as TraitToolRange;
@@ -246,7 +259,7 @@ internal class CharaPatches : EClass
         {
             __result = (int)(__result * 0.75F);
         }
-        
+
         // WitchHunter - Null Presence prevents casting.
         if (__instance.Chara.HasCondition<ConNullPresence>())
         {
@@ -266,19 +279,19 @@ internal class CharaPatches : EClass
         }
         return true;
     }
-    
+
     [HarmonyPatch(nameof(Chara.MakeGene))]
     [HarmonyPrefix]
     internal static bool MakeGene(Chara __instance)
     {
         // The Unique Characters in this mod will not drop their genes.
-        if (__instance.trait is (TraitHarbinger or TraitSpiritKnight or TraitUniqueSummon or TraitLailah or TraitArtificerGolem))
+        if (__instance.trait is TraitHarbinger or TraitSpiritKnight or TraitUniqueSummon or TraitLailah or TraitArtificerGolem)
         {
             return false;
         }
         return true;
     }
-    
+
     [HarmonyPatch(nameof(Chara.Tick))]
     [HarmonyPrefix]
     internal static bool CharaTick_Patches(Chara __instance)
@@ -316,15 +329,37 @@ internal class CharaPatches : EClass
                     break;
                 case Constants.FeatSniper:
                     // If the sniper doesn't have the condition and there are no enemies with 3 tiles.
-                    if ((__instance.HasCondition<ConNoDistractions>() == false)
-                        && HelperFunctions.GetCharasWithinRadius(__instance.pos, 3, __instance, false, true).Count > 0)
+                    if (__instance.HasCondition<ConNoDistractions>() == false && HelperFunctions.GetCharasWithinRadius(__instance.pos, 3, __instance, false, true).Count > 0)
                     {
                         __instance.AddCondition<ConNoDistractions>();
                     }
                     break;
             }
         }
-        
+
+        return true;
+    }
+
+    [HarmonyPatch(nameof(Chara.TickConditions))]
+    [HarmonyPrefix]
+    internal static bool CharaTickConditions_Patches(Chara __instance)
+    {
+        // Two conditions will hasten cooldowns by 1 extra turn.
+        if (__instance.HasCondition<StanceHeavyarms>())
+        {
+            if (__instance._cooldowns != null)
+            {
+                __instance.TickCooldown();
+            }
+        }
+
+        if (__instance.HasCondition<ConAcceleration>())
+        {
+            if (__instance._cooldowns != null)
+            {
+                __instance.TickCooldown();
+            }
+        }
         return true;
     }
 }

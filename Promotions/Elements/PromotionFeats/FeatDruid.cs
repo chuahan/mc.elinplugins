@@ -7,13 +7,11 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Druids focus on magics related to nature, summoning plantlife to aid their cause.
 ///     They specialize in supporting their teams through casting various control spells.
 ///     Skill - Sow Wrath Seeds - Summon Offensive flowers
-///     Skill - Sow Warm Seeds - Summon Defensive or Support flowers/// 
+///     Skill - Sow Warm Seeds - Summon Defensive or Support flowers
+///     Skill - Living Armor - Surrounds the target with living vines, increasing their PV and providing regeneration.
 ///     Spell - Summon Tree Ent Warrior
-/// 
-///     TODO (P3) Give them another skill Maybe? Or is it because Sow Warmth and Wrath have so many options it should count?
-/// 
 ///     Passive - Conspectus of Nature - Convert Summon books to Summon Tree Ent Warrior
-///     Passive - Friends with Nature. Basically Kumiromi effect.
+///     Passive - Friends with Nature. Wild plants and animals become friendly.
 /// </summary>
 public class FeatDruid : PromotionFeat
 {
@@ -23,7 +21,8 @@ public class FeatDruid : PromotionFeat
     public override List<int> PromotionAbilities => new List<int>
     {
         Constants.ActSowWarmSeedsId,
-        Constants.ActSowWrathSeedsId
+        Constants.ActSowWrathSeedsId,
+        Constants.ActLivingArmorId
     };
 
     protected override void ApplyInternalNPC(Chara c)
@@ -31,6 +30,7 @@ public class FeatDruid : PromotionFeat
         c.ability.Add(Constants.ActSowWarmSeedsId, 60, false);
         c.ability.Add(Constants.ActSowWrathSeedsId, 60, false);
         c.ability.Add(Constants.SpSummonTreeEntId, 80, false);
+        c.ability.Add(Constants.ActLivingArmorId, 80, false);
     }
 
     protected override bool Requirement()
@@ -46,5 +46,8 @@ public class FeatDruid : PromotionFeat
         owner.Chara.elements.ModPotential(304, 30);
         // Regeneration
         //owner.Chara.elements.ModPotential(305, 30);
+
+        // Druids become immune to poison.
+
     }
 }

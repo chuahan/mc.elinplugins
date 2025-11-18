@@ -1,5 +1,4 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.Sharpshooter;
 namespace PromotionMod.Elements.PromotionAbilities.Sharpshooter;
 
 public class StOverwatch : Ability

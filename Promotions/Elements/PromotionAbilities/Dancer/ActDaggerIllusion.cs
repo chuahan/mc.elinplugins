@@ -40,23 +40,29 @@ public class ActDaggerIllusion : Ability
             ActThrow.Throw(CC, target.pos, target, thing.HasElement(410) ? thing : thing.Split(1));
             // Attempt to afflict statuses
             if (EClass.rnd(3) == 0)
-                ActEffect.ProcAt(EffectId.Debuff, GetPower(Act.CC), BlessedState.Normal, Act.CC, target, target.pos, isNeg: true, new ActRef
+            {
+                ActEffect.ProcAt(EffectId.Debuff, GetPower(CC), BlessedState.Normal, CC, target, target.pos, true, new ActRef
                 {
-                    origin = Act.CC.Chara,
-                    n1 = nameof(ConParalyze),
+                    origin = CC.Chara,
+                    n1 = nameof(ConParalyze)
                 });
+            }
             if (EClass.rnd(3) == 0)
-                ActEffect.ProcAt(EffectId.Debuff, GetPower(Act.CC), BlessedState.Normal, Act.CC, target, target.pos, isNeg: true, new ActRef
+            {
+                ActEffect.ProcAt(EffectId.Debuff, GetPower(CC), BlessedState.Normal, CC, target, target.pos, true, new ActRef
                 {
-                    origin = Act.CC.Chara,
-                    n1 = nameof(ConBleed),
+                    origin = CC.Chara,
+                    n1 = nameof(ConBleed)
                 });
+            }
             if (EClass.rnd(3) == 0)
-                ActEffect.ProcAt(EffectId.Debuff, GetPower(Act.CC), BlessedState.Normal, Act.CC, target, target.pos, isNeg: true, new ActRef
+            {
+                ActEffect.ProcAt(EffectId.Debuff, GetPower(CC), BlessedState.Normal, CC, target, target.pos, true, new ActRef
                 {
-                    origin = Act.CC.Chara,
-                    n1 = nameof(ConPoison),
+                    origin = CC.Chara,
+                    n1 = nameof(ConPoison)
                 });
+            }
 
             // If the Partner is in Melee range, they get a free attack.
             if (hasPartner)

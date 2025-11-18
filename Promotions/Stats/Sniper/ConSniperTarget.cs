@@ -6,7 +6,7 @@ public class ConSniperTarget : BaseBuff
     {
         Hand,
         Head,
-        Legs,
+        Legs
     }
 
     public TargetPart Target;

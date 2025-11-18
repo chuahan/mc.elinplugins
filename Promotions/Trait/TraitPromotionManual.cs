@@ -186,6 +186,7 @@ public class TraitPromotionManual : TraitScroll
             Constants.FeatArtificer, Constants.ArtificerId
         }
     };
+
     public override bool CanRead(Chara c)
     {
         if (c.isBlind) return false;

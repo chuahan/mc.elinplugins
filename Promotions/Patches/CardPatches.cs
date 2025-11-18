@@ -4,15 +4,12 @@ using System.Linq;
 using Cwl.Helper.Extensions;
 using HarmonyLib;
 using PromotionMod.Common;
-using PromotionMod.Elements;
-using PromotionMod.Elements.Maia;
 using PromotionMod.Elements.PromotionAbilities;
 using PromotionMod.Stats.Headhunter;
 using PromotionMod.Stats.Hexer;
 using PromotionMod.Stats.Necromancer;
 using PromotionMod.Stats.Sentinel;
 using PromotionMod.Stats.Sovereign;
-using PromotionMod.Stats.Trickster;
 using PromotionMod.Trait;
 using PromotionMod.Trait.Artificer;
 using PromotionMod.Trait.Trickster;
@@ -81,7 +78,7 @@ public class CardPatches
         if (__instance.isChara)
         {
             Chara target = __instance.Chara;
-            
+
             // Berserker - Heal on Kill
             if (origin.isChara && origin.Chara.Evalue(Constants.FeatBerserker) > 0)
             {
@@ -147,7 +144,7 @@ public class CardPatches
                             else
                             {
                                 Msg.Say("maiar_enlightened".langGame(origin.NameSimple));
-                                origin.SetFlagValue(Constants.MaiaLightFateFlag, 1);
+                                origin.SetFlagValue(Constants.MaiaLightFateFlag);
                             }
                             break;
 
@@ -160,7 +157,7 @@ public class CardPatches
                             else
                             {
                                 Msg.Say("maiar_corrupted".langGame(origin.NameSimple));
-                                EClass.pc.SetFlagValue(Constants.MaiaDarkFateFlag, 1);   
+                                EClass.pc.SetFlagValue(Constants.MaiaDarkFateFlag);
                             }
                             break;
                     }
@@ -201,20 +198,20 @@ public class CardPatches
 
         return true;
     }
-    
+
     [HarmonyPatch(nameof(Card.MakeEgg))]
     [HarmonyPrefix]
     internal static bool PromotionMod_PreventMakeEgg_Patch(Card __instance)
     {
         // The Unique Characters in this mod will not drop their genes.
-        if (__instance.isChara && 
-            __instance.Chara.trait is (TraitHarbinger or TraitSpiritKnight or TraitUniqueSummon or TraitLailah or TraitArtificerGolem))
+        if (__instance.isChara &&
+            __instance.Chara.trait is TraitHarbinger or TraitSpiritKnight or TraitUniqueSummon or TraitLailah or TraitArtificerGolem)
         {
             return false;
         }
         return true;
     }
-    
+
     [HarmonyPatch(nameof(Card.LevelUp))]
     [HarmonyPostfix]
     internal static void PromotionMod_Maia_LevelUp_Patch(Card __instance)
@@ -250,13 +247,13 @@ public class CardPatches
                     if (__instance.GetFlagValue(Constants.MaiaLightFateFlag) > 0)
                     {
                         // Englightened Ascension
-                        __instance.Chara.SetFeat(Constants.FeatMaiaEnlightened, 1, msg: true);
+                        __instance.Chara.SetFeat(Constants.FeatMaiaEnlightened, 1, true);
                     }
-                    
+
                     if (__instance.GetFlagValue(Constants.MaiaDarkFateFlag) > 0)
                     {
                         // Corrupted Ascension
-                        __instance.Chara.SetFeat(Constants.FeatMaiaCorrupted, 1, msg: true);
+                        __instance.Chara.SetFeat(Constants.FeatMaiaCorrupted, 1, true);
                     }
                 }
             }

@@ -1,6 +1,5 @@
 using PromotionMod.Common;
 using PromotionMod.Stats.Dancer;
-using UnityEngine.UI;
 namespace PromotionMod.Elements.PromotionAbilities.Dancer;
 
 public class ActWildPirouette : Ability
@@ -30,24 +29,30 @@ public class ActWildPirouette : Ability
         {
             // Attempt to afflict statuses
             if (EClass.rnd(3) == 0)
-                ActEffect.ProcAt(EffectId.Debuff, GetPower(Act.CC), BlessedState.Normal, Act.CC, target, target.pos, isNeg: true, new ActRef
+            {
+                ActEffect.ProcAt(EffectId.Debuff, GetPower(CC), BlessedState.Normal, CC, target, target.pos, true, new ActRef
                 {
-                    origin = Act.CC.Chara,
-                    n1 = nameof(ConInfatuation),
+                    origin = CC.Chara,
+                    n1 = nameof(ConInfatuation)
                 });
-            if (EClass.rnd(3) == 0) 
-                ActEffect.ProcAt(EffectId.Debuff, GetPower(Act.CC), BlessedState.Normal, Act.CC, target, target.pos, isNeg: true, new ActRef
-                {
-                    origin = Act.CC.Chara,
-                    n1 = nameof(ConSleep),
-                });
+            }
             if (EClass.rnd(3) == 0)
-                ActEffect.ProcAt(EffectId.Debuff, GetPower(Act.CC), BlessedState.Normal, Act.CC, target, target.pos, isNeg: true, new ActRef
+            {
+                ActEffect.ProcAt(EffectId.Debuff, GetPower(CC), BlessedState.Normal, CC, target, target.pos, true, new ActRef
                 {
-                    origin = Act.CC.Chara,
-                    n1 = nameof(ConJealousy),
+                    origin = CC.Chara,
+                    n1 = nameof(ConSleep)
                 });
-            
+            }
+            if (EClass.rnd(3) == 0)
+            {
+                ActEffect.ProcAt(EffectId.Debuff, GetPower(CC), BlessedState.Normal, CC, target, target.pos, true, new ActRef
+                {
+                    origin = CC.Chara,
+                    n1 = nameof(ConJealousy)
+                });
+            }
+
             // If the Partner is in Melee range, they get a free attack.
             if (hasPartner)
             {

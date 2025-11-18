@@ -48,10 +48,10 @@ public class ActAccursedTouch : Ability
             target.Say("harbinger_max_affliction".langGame());
             return;
         }
-        ActEffect.ProcAt(EffectId.Debuff, GetPower(Act.CC), BlessedState.Normal, Act.CC, target, target.pos, isNeg: true, new ActRef
+        ActEffect.ProcAt(EffectId.Debuff, GetPower(CC), BlessedState.Normal, CC, target, target.pos, true, new ActRef
         {
-            origin = Act.CC.Chara,
-            n1 = inactiveMiasma.RandomItem(),
+            origin = CC.Chara,
+            n1 = inactiveMiasma.RandomItem()
         });
     }
 }

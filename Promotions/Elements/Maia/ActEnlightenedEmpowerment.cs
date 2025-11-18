@@ -1,9 +1,8 @@
 using PromotionMod.Common;
-using PromotionMod.Stats;
 namespace PromotionMod.Elements.Maia;
 
 /// <summary>
-/// Increases Speed, Melee Attack, and Accuracy
+///     Increases Speed, Melee Attack, and Accuracy
 /// </summary>
 public class ActEnlightenedEmpowerment : Ability
 {

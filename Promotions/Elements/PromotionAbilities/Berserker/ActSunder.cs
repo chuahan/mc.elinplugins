@@ -39,16 +39,21 @@ public class ActSunder : Ability
     {
         int heal = (int)(CC.MaxHP * HealthCost);
         int damage = (int)(TC.Chara.MaxHP * HealthCost);
-        List<Condition> casterDebuffs = CC.Chara.conditions.Where(x => x.Type == ConditionType.Debuff).ToList();
-        List<Condition> targetDebuffs = TC.Chara.conditions.Where(x => x.Type == ConditionType.Debuff).ToList();
-        foreach (Condition send in casterDebuffs)
+        List<Condition> casterDebuffs = CC.Chara.conditions.Where(x =>
+                x.Type is ConditionType.Debuff or ConditionType.Bad && x is not ConDeathSentense && x is not ConWrath && x is not ConAnorexia && x is not ConSuspend).ToList();
+        List<Condition> targetDebuffs = TC.Chara.conditions.Where(x =>
+                x.Type is ConditionType.Debuff or ConditionType.Bad && x is not ConDeathSentense && x is not ConWrath && x is not ConAnorexia && x is not ConSuspend).ToList();
+        for (int i = 0; i < casterDebuffs.Count; i++)
         {
-            TC.Chara.AddCondition(send, true);
+            TC.Chara.AddCondition(casterDebuffs[i].source.alias, casterDebuffs[i].power, true);
+            casterDebuffs[i].Kill();
         }
-        foreach (Condition recieve in targetDebuffs)
+        for (int i = 0; i < targetDebuffs.Count; i++)
         {
-            CC.AddCondition(recieve, true);
+            CC.Chara.AddCondition(targetDebuffs[i].source.alias, targetDebuffs[i].power, true);
+            targetDebuffs[i].Kill();
         }
+
         TC.DamageHP(damage, AttackSource.Melee, CC);
         CC.HealHP(heal, HealSource.Magic);
         CC.AddCooldown(Constants.ActSunderId, 10);

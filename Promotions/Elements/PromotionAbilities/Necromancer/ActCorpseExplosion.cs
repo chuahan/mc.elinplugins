@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
+using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities;
 
 public class ActCorpseExplosion : Ability
@@ -21,6 +22,13 @@ public class ActCorpseExplosion : Ability
         Cost convertToMp = base.GetCost(c);
         convertToMp.type = CostType.MP;
         return convertToMp;
+    }
+
+    // Apply Spell Enhance to this ability.
+    public override int GetPower(Card c)
+    {
+        int power = base.GetPower(c);
+        return power * Mathf.Max(100 + c.Evalue(411) - c.Evalue(93), 1) / 100;
     }
 
     public override bool Perform()

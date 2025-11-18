@@ -25,19 +25,19 @@ public class ActCondemn : Ability
         int condemnedTargets = 0;
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(TP, 3F, CC, false, true))
         {
-            ActEffect.ProcAt(EffectId.Debuff, GetPower(Act.CC), BlessedState.Normal, Act.CC, target, target.pos, isNeg: true, new ActRef
+            ActEffect.ProcAt(EffectId.Debuff, GetPower(CC), BlessedState.Normal, CC, target, target.pos, true, new ActRef
             {
-                origin = Act.CC.Chara,
-                n1 = nameof(ConEntangle),
+                origin = CC.Chara,
+                n1 = nameof(ConEntangle)
             });
-            
+
             // Inflict Bane.
-            ActEffect.ProcAt(EffectId.Debuff, GetPower(Act.CC), BlessedState.Normal, Act.CC, target, target.pos, isNeg: true, new ActRef
+            ActEffect.ProcAt(EffectId.Debuff, GetPower(CC), BlessedState.Normal, CC, target, target.pos, true, new ActRef
             {
-                origin = Act.CC.Chara,
-                n1 = nameof(ConBane),
+                origin = CC.Chara,
+                n1 = nameof(ConBane)
             });
-            
+
             int damage = HelperFunctions.SafeDice(Constants.CondemnAlias, GetPower(CC));
             target.DamageHP(damage, AttackSource.Melee, CC);
             condemnedTargets++;

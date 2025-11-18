@@ -1,10 +1,8 @@
-using System.Collections.Generic;
 using PromotionMod.Common;
-using PromotionMod.Stats;
 namespace PromotionMod.Elements.Maia;
 
 /// <summary>
-/// Increases crit chance.
+///     Increases crit chance.
 /// </summary>
 public class ActCorruptedSilentForce : Ability
 {

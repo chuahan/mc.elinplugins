@@ -25,10 +25,26 @@ public class ActLightWave : Ability
         }
 
         if (CC.isRestrained) return false;
-        if (CC.host != null || CC.Dist(TP) <= 2) return false;
+        if (CC.host != null || CC.Dist(TP) <= 6) return false;
         if (Los.GetRushPoint(CC.pos, TP) == null) return false;
 
         return base.CanPerform();
+    }
+
+    public override void OnMarkMapHighlights()
+    {
+        if (!scene.mouseTarget.pos.IsValid || scene.mouseTarget.TargetChara == null)
+        {
+            return;
+        }
+        Point dest = scene.mouseTarget.pos;
+        Los.IsVisible(pc.pos, dest, delegate(Point p, bool blocked)
+        {
+            if (!p.Equals(pc.pos))
+            {
+                p.SetHighlight(blocked || p.IsBlocked || !p.Equals(dest) && p.HasChara ? 4 : p.Distance(pc.pos) <= 2 ? 2 : 8);
+            }
+        });
     }
 
     public override bool Perform()
@@ -71,22 +87,17 @@ public class ActLightWave : Ability
 
         // Inflict Holy Damage and Summon a Holy Swordbit
         int power = GetPower(CC);
-        ActEffect.DamageEle(CC, EffectId.Sword, power, Element.Create(Constants.EleHoly, power / 10), affectedPoints, new ActRef()
+        ActEffect.DamageEle(CC, EffectId.Sword, power, Element.Create(Constants.EleHoly, power / 10), affectedPoints, new ActRef
         {
-            act = this,
+            act = this
         });
-        
+
         List<Chara> impacted = new List<Chara>();
         foreach (Chara target in from affected in affectedPoints from target in affected.ListCharas() where target.IsHostile(CC) && !impacted.Contains(target) select target)
         {
             impacted.Add(target);
             SpawnHolySwordBit(power, CC, target.pos);
         }
-
-        ActEffect.DamageEle(CC, EffectId.Sword, power, Element.Create(Constants.EleHoly, power / 10), affectedPoints, new ActRef()
-        {
-            act = this,
-        });
 
         ConLuminary? luminary = CC.GetCondition<ConLuminary>() ?? CC.AddCondition<ConLuminary>() as ConLuminary;
         luminary?.AddStacks(impacted.Count);

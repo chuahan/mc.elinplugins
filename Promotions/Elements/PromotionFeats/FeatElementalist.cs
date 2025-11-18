@@ -8,17 +8,26 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Elementalists focus on casting a variety of spells across all elements.
 ///     They specialize in continuous casting of spells, stockpiling the elemental orbs and able to combine them all into a
 ///     single burst as needed.
-///     Skill - Elemental Fury - Summons a massive damaging elemental storm that harms nearby enemies.
-///     Skill - Flare - Does massive void-typed damage to a single target.
-/// 
+///     Skill - Elemental Fury - Consumes the elemental stockpile to summon a massive damaging elemental storm that shreds
+///     nearby enemies with magical swords.
+///     For each turn the storm is active, up to three of the elements will be consumed to make a magical sword attack
+///     against every nearby enemy.
+///     Skill - Elemental Extinction - Consumes the elemental stockpile to unload a barrage of magical attacks at the
+///     target.
+///     Each orb will drop a single meteor of that element on the target.
+///     If the target dies before the spell is over. The spell will try to continue against nearby targets.
 ///     Passive - Spell Tempo - When you cast a spell of an element that you do not have stockpiled:
-///         That element will inflict Elemental Break to reduce their resistances to that element.
-///         You will gain a stack of Spell Tempo. Each stack of Spell Tempo will grant:
-///             Speed
-///             Mana Regeneration
-///             Enhance Spell 
-///
-///     Passive - Arsenal Conspectus - When reading an elemental spellbook, will grant charges of two different elements of the same spell.
+///     That element will inflict Elemental Break to reduce their resistance to that element.
+///     You will gain a stack of Spell Tempo. Each stack of Spell Tempo will grant:
+///     Speed
+///     Mana Regeneration
+///     Enhance Spell
+///     Passive - Elemental Stockpile - As Elementalists cast attack spells, they will gain elemental orbs (up to 5) of
+///     each.
+///     The Elementalist can consume their orb stockpile to cast either Elemental Fury or Elemental Intercession.
+///     Not casting spells for 5 turns will start decaying orbs.
+///     Passive - Arsenal Conspectus - When reading an elemental spellbook, will grant charges of two different elements of
+///     the same spell.
 ///     Passive - Torrent Bit Conversion - Summons multiple bits in a single cast. Bits start with Boost and Protection.
 ///     Passive - Elemental Mastery - Doubles eleP.
 /// </summary>

@@ -8,7 +8,10 @@ public class TraitArtificerToolEarth : TraitArtificerTool
 
     public override bool ArtificerToolEffect(Chara cc, Point pos, int power)
     {
-        int damage = HelperFunctions.SafeDice(ArtificerToolId, power);
+        float powerMulti = 1f + (cc.Evalue(100) / 2F + cc.Evalue(132)) / 50f;
+        int scaledPower = (int)(power * powerMulti);
+
+        int damage = HelperFunctions.SafeDice(ArtificerToolId, scaledPower);
         Effect spellEffect = Effect.Get("Element/ball_Impact");
         List<Chara> targetsHit = new List<Chara>();
         foreach (Point tile in _map.ListPointsInCircle(pos, 5f, false, false))

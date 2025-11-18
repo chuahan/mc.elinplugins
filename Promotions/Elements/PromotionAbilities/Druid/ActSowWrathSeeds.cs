@@ -25,6 +25,13 @@ public class ActSowWrathSeeds : Ability
         return base.CanPerform();
     }
 
+    public override Cost GetCost(Chara c)
+    {
+        Cost convertToMp = base.GetCost(c);
+        convertToMp.type = CostType.MP;
+        return convertToMp;
+    }
+
     public override bool Perform()
     {
         // Randomly pick one of the flowers to spawn.
@@ -47,7 +54,7 @@ public class ActSowWrathSeeds : Ability
                 toSummon = Constants.DruidNaturesWrathCharaId;
             }
         }
-        
+
         int power = GetPower(CC);
 
         bool flowerSummoned = toSummon is Constants.DruidEntangleFlowerCharaId or Constants.DruidParalyticFlowerCharaId or Constants.DruidToxicFlowerCharaId
@@ -76,7 +83,7 @@ public class ActSowWrathSeeds : Ability
 
         // Flowers are not killable.
         if (flowerSummoned) plant.AddCondition<ConInvulnerable>(30000);
-        
+
         // Apply the Aura Buff
         switch (toSummon)
         {
@@ -96,7 +103,7 @@ public class ActSowWrathSeeds : Ability
                 plant.AddCondition<EntanglingAura>(power);
                 plant.AddCondition<ToxicAura>(power);
                 break;
-                
+
         }
         return true;
     }

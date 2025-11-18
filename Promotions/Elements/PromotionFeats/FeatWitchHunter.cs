@@ -15,9 +15,8 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     All characters within 5F of the Null Zone are afflicted with Spell Null, which will set cast chance to 0% for any
 ///     spell.
 ///     30 Turn Cooldown
-///     Passive - Bane of Magickind
-///     In additon to Excommunication, Bane inflicts Silence.
-///     When the Witch Hunter inflicts damage, 10% of the damage done is mana damage. TODO: implement.
+///     Passive - Bane of Magickind - In addition to Excommunication, Bane inflicts Silence.
+///     When the Witch Hunter inflicts damage, 10% of the damage done is mana damage.
 /// </summary>
 public class FeatWitchHunter : PromotionFeat
 {

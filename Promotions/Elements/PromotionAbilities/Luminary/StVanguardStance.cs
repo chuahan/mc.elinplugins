@@ -1,5 +1,4 @@
 using PromotionMod.Common;
-using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.Luminary;
 
 public class StVanguardStance : Ability

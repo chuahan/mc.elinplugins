@@ -10,7 +10,7 @@ public class ActLifebreak : Ability
             Msg.Say("classlocked_ability".lang(Constants.BerserkerId.lang()));
             return false;
         }
-        if (Act.TC == null)
+        if (TC == null)
         {
             return false;
         }
@@ -28,7 +28,7 @@ public class ActLifebreak : Ability
 
     public override bool Perform()
     {
-        new ActMeleeLifebreak().Perform(Act.CC, Act.TC);
+        new ActMeleeLifebreak().Perform(CC, TC);
         CC.AddCooldown(Constants.ActLifebreakId, 10);
         return true;
     }

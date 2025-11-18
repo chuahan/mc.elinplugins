@@ -1,4 +1,3 @@
-using PromotionMod.Common;
 using PromotionMod.Elements.PromotionFeats;
 using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.Sentinel;
@@ -10,7 +9,7 @@ public class ActMeleeShieldSmite : ActMelee
     public override bool UseWeaponDist => false;
 
     public override int PerformDistance => 1;
-    
+
     public override bool Perform()
     {
         int shieldSkill = CC.Evalue(123);
@@ -26,7 +25,7 @@ public class ActMeleeShieldSmite : ActMelee
             if (TC.IsAliveInCurrentZone && TC.isChara)
             {
                 if (EClass.rnd(2) == 0)
-                    TC.Chara.AddCondition<ConDim>(50 + (int) Mathf.Sqrt((float) shieldSkill) * 10);
+                    TC.Chara.AddCondition<ConDim>(50 + (int)Mathf.Sqrt(shieldSkill) * 10);
                 TC.Chara.AddCondition<ConParalyze>(EClass.rnd(2), true);
             }
             AttackProcess.ProcShieldEncs(CC, TC, 500 + basherEnc);

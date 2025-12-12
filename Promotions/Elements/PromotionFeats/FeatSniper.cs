@@ -14,7 +14,6 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Skill - Spread Shot - Makes ranged attacks against all targets in a cone.
 ///     Passive Condition - No Distractions - When there are no enemies within 3F radius, you will gain a condition that
 ///     increases Crit, Accuracy, and RapidFire.
-///     Passive - Anti-air - When shooting aerial enemies, ranged attacks will do double damage.
 /// </summary>
 public class FeatSniper : PromotionFeat
 {
@@ -41,14 +40,9 @@ public class FeatSniper : PromotionFeat
     {
         return owner.Chara?.c_idJob == "archer";
     }
-    protected override void ApplyInternal()
+    
+    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        // Bow
-        owner.Chara.elements.ModPotential(286, 30);
-        // Crossbow
-        owner.Chara.elements.ModPotential(304, 30);
-        // Marskman
-        // Dex
-
+        base._OnApply(add,eleOwner, hint);
     }
 }

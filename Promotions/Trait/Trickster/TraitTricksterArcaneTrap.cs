@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Stats.Hexer;
 using PromotionMod.Stats.Spellblade;
@@ -22,28 +23,40 @@ public class TraitTricksterArcaneTrap : TraitFactionTrap
         nameof(ConMagicBreak) // Spellblade - Reduces Magic Resistance
     };
 
-    public override string TrapName => Constants.TricksterArcaneTrapAlias;
+    public override bool IgnoreWhenLevitating() => false;
+    
+    public override int radius => 2;
 
-    public override void OnActivateTrap(Chara c)
+    public override string TrapName => Constants.TricksterArcaneTrapAlias;
+    
+    public override void ActivateTrapInternal(Chara c)
     {
-        c.PlaySound("trap");
-        Msg.Say(TrapName.langGame(), c);
         DetonateTrap();
     }
 
-    public void DetonateTrap()
+    public void DetonateTrap(bool destroyTrap = false)
     {
+        owner.pos.PlaySound("spell_ball");
         string randomCondition = TricksterDebuffs.RandomItem();
-        foreach (Chara target in HelperFunctions.GetCharasWithinRadius(owner.pos, 2F, IsPCFactionTrap, true))
+        bool isPcTrap = IsPCFactionTrap();
+        int power = GetPower();
+        foreach (Point pos in EClass.pc.currentZone.map.ListPointsInCircle(owner.pos, radius, true, true))
         {
-            if (randomCondition == nameof(ConMagicBreak))
+            foreach (Chara target in pos.Charas.Where(target => target.IsAliveInCurrentZone && ((isPcTrap && target.IsHostile(EClass.pc)) || !isPcTrap && !target.IsHostile(EClass.pc))))
             {
-                HelperFunctions.ApplyElementalBreak(Constants.EleMagic, null, target, GetPower());
+                if (randomCondition == nameof(ConMagicBreak))
+                {
+                    HelperFunctions.ApplyElementalBreak(Constants.EleMagic, null, target, power);
+                }
+                //Condition trapCondition = Condition.Create(randomCondition, GetPower());
+                ActEffect.ProcAt(EffectId.Debuff, power, BlessedState.Normal, owner, target, target.pos, true, new ActRef
+                {
+                    n1 = randomCondition
+                });
+                //target.AddCondition(trapCondition, true);
             }
-            Condition trapCondition = Condition.Create(randomCondition, owner.LV);
-            target.AddCondition(trapCondition, true);
-            target.PlayEffect("ball_Chaos");
+            pos.PlayEffect("Element/ball_Chaos");
         }
-        owner.pos.PlayEffect("curse");
+        if (destroyTrap) owner.Destroy();
     }
 }

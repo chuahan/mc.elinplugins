@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using PromotionMod.Common;
 using PromotionMod.Stats.Headhunter;
 namespace PromotionMod.Elements.PromotionAbilities.Headhunter;
@@ -44,7 +45,14 @@ public class ActExecute : Ability
             TC.DamageHP(TC.MaxHP, AttackSource.Finish, CC);
 
             // If the cull was successful, do not add a cooldown and refund stamina cost.
+            // Apply Momentum to all allies.
             CC.stamina.Mod(GetCost(CC).cost);
+            
+            List<Chara> affectedAllies = HelperFunctions.GetCharasWithinRadius(CC.pos, 3, CC, true, true);
+            foreach (Chara target in affectedAllies)
+            {
+                target.AddCondition<ConMomentum>(100, true);
+            }
             return true;
         }
 

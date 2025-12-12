@@ -16,5 +16,9 @@ public class ConBloodlust : Timebuff
         {
             owner.GetCondition<ConSilence>().Mod(1);
         }
+        else
+        {
+            owner.AddCondition<ConSilence>(10, true);
+        }
     }
 }

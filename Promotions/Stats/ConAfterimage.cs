@@ -3,7 +3,6 @@ namespace PromotionMod.Stats;
 public class ConAfterimage : BaseBuff
 {
     public override ConditionType Type => ConditionType.Buff;
-    public override bool WillOverride => false;
 
     public override void Tick()
     {

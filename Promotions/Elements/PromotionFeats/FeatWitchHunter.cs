@@ -41,18 +41,9 @@ public class FeatWitchHunter : PromotionFeat
     {
         return owner.Chara?.c_idJob == "inquisitor";
     }
-
-    protected override void ApplyInternal()
+    
+    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        // Gun Skill - 105
-        owner.Chara.elements.ModPotential(105, 30);
-        // Crossbow Skill - 109
-        owner.Chara.elements.ModPotential(109, 30);
-        // Sword - 101
-        owner.Chara.elements.ModPotential(101, 30);
-        // Will - 75
-        owner.Chara.elements.ModPotential(75, 10);
-        // Base Antimagic - 93
-        owner.Chara.elements.ModBase(93, 30);
+        base._OnApply(add,eleOwner, hint);
     }
 }

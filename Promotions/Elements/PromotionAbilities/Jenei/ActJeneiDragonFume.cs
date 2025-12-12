@@ -7,7 +7,11 @@ public class ActJeneiDragonFume : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatJenei) == 0) return false;
+        if (CC.Evalue(Constants.FeatJenei) == 0)
+        {
+            Msg.Say("classlocked_ability".lang(Constants.JeneiId.lang()));
+            return false;
+        }
         return base.CanPerform();
     }
 
@@ -38,7 +42,9 @@ public class ActJeneiDragonFume : Ability
 
         ActEffect.DamageEle(CC, EffectId.Breathe, power, Element.Create(Constants.EleFire, power / 10), coneRange, new ActRef
         {
-            act = this
+            act = this,
+            aliasEle = Constants.ElementAliasLookup[Constants.EleFire],
+            origin = CC,
         });
         return true;
     }

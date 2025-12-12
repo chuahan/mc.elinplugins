@@ -6,6 +6,10 @@ public class StanceRangerCanto : BaseStance
     public override void Tick()
     {
         // If the owner is no longer riding, cancel Canto
-        if (CC.ride == null) Kill();
+        if (owner.ride == null)
+        {
+            //TODO TEXT: Canto stop.
+            Kill();
+        }
     }
 }

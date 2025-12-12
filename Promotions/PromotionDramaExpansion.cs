@@ -30,7 +30,7 @@ internal class PromotionDramaExpansion : DramaExpansion
     private static bool check_component_capacity(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
         dm.RequiresActor(out Chara actor);
-        return actor.Evalue(Constants.FeatArtificerGolemUpgrade) < 256;
+        return actor.Evalue(Constants.FeatArtificerGolemUpgrade) < 32;
     }
 
     private static bool artificer_install_component_chip(DramaManager dm, Dictionary<string, string> line, params string[] parameters)

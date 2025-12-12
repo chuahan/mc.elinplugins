@@ -241,114 +241,114 @@ public class Constants
     #region Promoted Class Spells/Abilities
 
     // Adventurer
-    public const int ActThisWayId = 1;
-    public const int ActSenseDangerId = 1;
+    public const int ActThisWayId = 891055;
+    public const int ActSenseDangerId = 891054;
 
     // Artificer
-    public const int ActImprovisedBrewId = 1;
-    public const int ActSimpleSynthesisId = 1;
-    public const int ActTrampleId = 1;
-    public const string ActTrampleAlias = "trample";
+    public const int ActImprovisedBrewId = 891056;
+    public const int ActSimpleSynthesisId = 891057;
+    public const int ActTrampleId = 891158;
+    public const string ActTrampleAlias = "ActTrample";
 
     // Berserker
-    public const int ActBloodlustId = 1;
-    public const int ActSunderId = 1;
-    public const int ActLifebreakId = 1;
+    public const int ActBloodlustId = 891060;
+    public const int ActSunderId = 891062;
+    public const int ActLifebreakId = 891061;
 
     // Battlemage
-    public const int StManaShieldId = 1;
-    public const int StManaFocusId = 1;
+    public const int StManaShieldId = 891058;
+    public const int StManaFocusId = 891059;
 
     // Dancer
-    public const int ActDancePartnerId = 1;
-    public const int ActDaggerIllusionId = 1;
-    public const int ActSwordFouetteId = 1;
-    public const int ActWildPirouetteId = 1;
-    public const int StEnergyDanceId = 1;
-    public const int StFreedomDanceId = 1;
-    public const int StHealingDanceId = 1;
-    public const int StMistDanceId = 1;
-    public const int StSwiftDanceId = 1;
+    public const int ActDancePartnerId = 891064;
+    public const int ActDaggerIllusionId = 891063;
+    public const int ActSwordFouetteId = 891065;
+    public const int ActWildPirouetteId = 891066;
+    public const int StEnergyDanceId = 891067;
+    public const int StFreedomDanceId = 891068;
+    public const int StHealingDanceId = 891069;
+    public const int StMistDanceId = 891070;
+    public const int StSwiftDanceId = 891071;
 
     // Druid
-    public const int ActSowWarmSeedsId = 1;
-    public const int ActSowWrathSeedsId = 1;
-    public const int ActLivingArmorId = 1;
-    public const int SpSummonTreeEntId = 1;
+    public const int ActSowWarmSeedsId = 891072;
+    public const int ActSowWrathSeedsId = 891073;
+    public const int ActLivingArmorId = 891074;
+    public const int SpSummonTreeEntId = 891075;
 
     // Elementalist
-    public const int ActElementalFuryId = 1;
-    public const string ElementalFuryAlias = "elementalist_elementalfury";
-    public const int ActFlareId = 1;
-    public const string FlareAlias = "elementalist_flare";
+    public const int ActElementalFuryId = 891076;
+    public const int ActElementalExtinctionId = 891077;
 
     // Harbinger
-    public const int ActEndlessMistsId = 1;
-    public const int ActAccursedTouchId = 1;
+    public const int ActEndlessMistsId = 891079;
+    public const int ActAccursedTouchId = 891078;
+    public const int StGloomId = 891080;
 
     // Headhunter
-    public const int ActExecuteId = 1;
-    public const int ActReapId = 1;
+    public const int ActExecuteId = 891081;
+    public const int ActReapId = 891082;
 
     // Hermit
-    public const int ActMarkForDeathId = 1;
-    public const int ActShadowShroudId = 1;
-    public const int ActAssassinateId = 1;
+    public const int ActMarkForDeathId = 891084;
+    public const int ActShadowShroudId = 891085;
+    public const int ActAssassinateId = 891083;
 
     // Hexer
-    public const int ActTraumatizeId = 1;
-    public const string TraumatizeAlias = "hexer_traumatize";
-    public const int ActBloodCurseId = 1;
-    public const int ActRevengeId = 1;
+    public const int ActTraumatizeId = 891087;
+    public const string TraumatizeAlias = "ActTraumatize";
+    public const int ActBloodCurseId = 891086;
+    public const int ActRevengeId = 891088;
 
     // Jenei
-    public const int ActSpiritSummonId = 1;
-    public const int ActJeneiMoveId = 1;
-    public const int ActJeneiMotherGaiaId = 1;
-    public const int ActJeneiBlazeId = 1;
-    public const int ActJeneiDragonPlumeId = 1;
-    public const int ActJeneiRevealId = 1;
-    public const int ActJeneiShinePlasmaId = 1;
-    public const int ActJeneiDelugeId = 1;
-    public const int ActJeneiPlyId = 1;
+    public const int ActSpiritSummonId = 891089;
+    public const int ActJeneiMoveId = 891094;
+    public const int ActJeneiMotherGaiaId = 891093;
+    public const int ActJeneiBlazeId = 891090;
+    public const int ActJeneiDragonPlumeId = 891092;
+    public const int ActJeneiRevealId = 891096;
+    public const int ActJeneiShinePlasmaId = 891097;
+    public const int ActJeneiDelugeId = 891091;
+    public const int ActJeneiPlyId = 891095;
 
     // Justicar
-    public const int ActIntimidateId = 1;
-    public const int ActSubdueId = 1;
-    public const int ActCondemnId = 1;
-    public const string CondemnAlias = "justicar_condemn";
+    public const int ActIntimidateId = 891099;
+    public const int ActSubdueId = 891100;
+    public const int ActCondemnId = 891098;
+    public const int StJudgementFlameId = 891101;
+    public const string CondemnAlias = "ActCondemn";
 
     // Knightcaller
-    public const int ActSpiritRageId = 1;
-    public const int ActSpiritRallyId = 1;
-    public const int ActSummonKnightId = 1;
+    public const int ActSpiritRageId = 891102;
+    public const int ActSpiritRallyId = 891103;
+    public const int ActSpiritMobilizeId = 891104;
+    public const int ActSummonKnightId = 891105;
 
     // Luminary
-    public const int StVanguardId = 1;
-    public const int ActLightWaveId = 1;
-    public const string LightwaveAlias = "luminary_lightwave";
-    public const int ActLuminousDeflectionId = 1;
+    public const int StVanguardId = 891108;
+    public const int ActLightWaveId = 891106;
+    public const int ActLuminousDeflectionId = 891107;
 
     // Machinist
-    public const int ActLoadUpId = 1;
-    public const int ActOverclockId = 1;
-    public const int SpSummonTurretId = 1;
+    public const int ActLoadUpId = 891109;
+    public const int ActOverclockId = 891110;
+    public const int SpSummonTurretId = 891112;
 
     // Necromancer
-    public const int ActBeckonOfTheDeadId = 1;
-    public const int ActBlessingOfTheDeadId = 1;
-    public const int ActCorpseExplosionId = 1;
-    public const int SpSummonSkeleton = 1;
+    public const int ActBeckonOfTheDeadId = 891113;
+    public const int ActBlessingOfTheDeadId = 891114;
+    public const int ActCorpseExplosionId = 891115;
+    public const int SpSummonSkeleton = 891116;
 
     // Phantom
-    public const int ActWolkenkratzerId = 1;
-    public const int ActSchwarzeKatze = 1;
-    public const int ActVerbrechenId = 1;
+    public const int ActWolkenkratzerId = 891119;
+    public const int ActSchwarzeKatze = 891117;
+    public const int ActVerbrechenId = 891118;
 
     // Ranger
-    public const int StRangersCanto = 1;
-    public const int ActGimmickCoatingId = 1;
-    public const int ActSetTrapId = 1;
+    public const int StRangersCanto = 891122;
+    public const int ActGimmickCoatingId = 891120;
+    public const int ActSetTrapId = 891121;
     public const string RangerBlastTrapAlias = "ranger_blast_trap";
     public const string RangerParalyzeTrapAlias = "ranger_paralyze_trap";
     public const string RangerPoisonTrapAlias = "ranger_poison_trap";
@@ -365,69 +365,69 @@ public class Constants
     }
 
     // Rune Knight
-    public const int ActRunicGuardId = 1;
-    public const int ActSpinningSlashId = 1;
-    public const int ActRuneEtchingId = 1;
+    public const int ActRunicGuardId = 891124;
+    public const int ActSpinningSlashId = 891125;
+    public const int ActRuneEtchingId = 891123;
 
     // Saint
-    public const int ActHandOfGodId = 1;
-    public const int ActBlessingId = 1;
+    public const int ActHandOfGodId = 891127;
+    public const int ActBlessingId = 891126;
 
     // Sentinel
-    public const int ActShoutId = 1;
-    public const int ActShieldSmiteId = 1;
-    public const int StRageId = 1;
-    public const int StRestraintId = 1;
+    public const int ActShoutId = 891129;
+    public const int ActShieldSmiteId = 891128;
+    public const int StRageId = 891130;
+    public const int StRestraintId = 891131;
 
     // Sharpshooter
-    public const int StOverwatchId = 1;
-    public const int ActChargedShotId = 1;
-    public const int ActMarkHostilesId = 1;
+    public const int StOverwatchId = 891134;
+    public const int ActChargedShotId = 891132;
+    public const int ActMarkHostilesId = 891133;
 
     // Sniper
-    public const int ActTargetHeadId = 1;
-    public const int ActTargetHandId = 1;
-    public const int ActTargetLegsId = 1;
-    public const int ActSpreadShotId = 1;
+    public const int ActTargetHeadId = 891137;
+    public const int ActTargetHandId = 891136;
+    public const int ActTargetLegsId = 891138;
+    public const int ActSpreadShotId = 891135;
 
     // Sovereign
-    public const int StLawModeId = 1;
-    public const int StChaosModeId = 1;
-    public const int ActMoraleOrderId = 1;
-    public const int ActStrategyOrderId = 1;
-    public const int ActFormationOrderId = 1;
+    public const int StLawModeId = 891143;
+    public const int StChaosModeId = 891142;
+    public const int ActMoraleOrderId = 891140;
+    public const int ActStrategyOrderId = 891141;
+    public const int ActFormationOrderId = 891139;
 
     // Spellblade
-    public const int ActCrushingStrikeId = 1;
-    public const int ActMyriadFlecheId = 1;
-    public const int ActSiphoningBladeId = 1;
+    public const int ActCrushingStrikeId = 891144;
+    public const int ActMyriadFlecheId = 891145;
+    public const int ActSiphoningBladeId = 891146;
 
     // Trickster
-    public const int ActArcaneTrapId = 1;
+    public const int ActArcaneTrapId = 891147;
     public const string TricksterArcaneTrapAlias = "trickster_arcane_trap";
-    public const int ActDetonateTrapId = 1;
-    public const int ActDiversionId = 1;
-    public const int ActReversalId = 1;
-    public const string TricksterReversalAlias = "trickster_reversal";
+    public const int ActDetonateTrapId = 891148;
+    public const int ActDiversionId = 891149;
+    public const int ActReversalId = 891150;
+    public const string TricksterReversalAlias = "ActReversal";
 
     // War Cleric
-    public const int ActDivineDescentId = 1;
-    public const string WarClericDivineDescentAlias = "warcleric_divine_descent";
-    public const int ActDeploySanctuaryId = 1;
-    public const int ActDivineFistId = 1;
+    public const int ActDivineDescentId = 891152;
+    public const string WarClericDivineDescentAlias = "ActDivineDescent";
+    public const int ActDeploySanctuaryId = 891151;
+    public const int ActDivineFistId = 891153;
 
     // Witch Hunter
-    public const int ActManaBreakId = 1;
-    public const int ActMagicReflectId = 1;
-    public const int ActNullZoneId = 1;
+    public const int ActManaBreakId = 891155;
+    public const int ActMagicReflectId = 891154;
+    public const int ActNullZoneId = 891156;
 
     #endregion
 
     #region Maia
 
-    public const int FeatMaia = 1;
-    public const int FeatMaiaEnlightened = 1;
-    public const int FeatMaiaCorrupted = 1;
+    public const int FeatMaia = 891029;
+    public const int FeatMaiaEnlightened = 891030;
+    public const int FeatMaiaCorrupted = 891031;
 
     public const string MaiaLightFateFlag = "MaiaLightFate";
     public const string MaiaDarkFateFlag = "MaiaDarkFate";
@@ -435,21 +435,26 @@ public class Constants
     public const string CandlebearerCharaId = "candlebearer";
     public const string DarklingCharaId = "darkling";
 
-    public const int ActEnlightenedVengeanceId = 1;
-    public const int ActEnlightenedEmpowermentId = 1;
-    public const int ActEnlightenedSilentForceId = 1;
-    public const int ActCorruptedVengeanceId = 1;
-    public const int ActCorruptedEmpowermentId = 1;
-    public const int ActCorruptedSilentForceId = 1;
-    public const int ActGatewayId = 1;
+    public const int ActEnlightenedVengeanceId = 891164;
+    public const int ActEnlightenedEmpowermentId = 891162;
+    public const int ActEnlightenedSilentForceId = 891163;
+    public const int ActCorruptedVengeanceId = 891161;
+    public const int ActCorruptedEmpowermentId = 891159;
+    public const int ActCorruptedSilentForceId = 891160;
+    public const int ActGatewayId = 891165;
 
     #endregion
 
     #region Golems
 
-    public const int FeatArtificerGolemUpgrade = 1;
-    public const string ArtificerGolem_MemoryChipId = "golem_memorychip";
-    public const string ArtificerGolem_ComponentChipId = "golem_componentchip";
+    public const int FeatArtificerGolemUpgrade = 891036;
+    public const int FeatHarpyGolemVision = 891032;
+    public const int FeatSirenGolemSpeed = 891033;
+    public const int FeatSirenGolemMagic = 891034;
+    public const int FeatTitanGolem = 891035;
+    
+    public const string ArtificerGolem_MemoryChipId = "artificer_golem_memorychip";
+    public const string ArtificerGolem_ComponentChipId = "artificer_golem_componentchip";
     public const string MimGolemCharaId = "golem_mim";
     public const string HarpyGolemCharaId = "golem_harpy";
     public const string SirenGolemCharaId = "golem_siren";

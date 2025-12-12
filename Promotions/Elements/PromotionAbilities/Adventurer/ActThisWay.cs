@@ -18,12 +18,21 @@ public class ActThisWay : Ability
         // Unusable by NPCs.
         if (!CC.IsPC) return false;
         if (CC.HasCooldown(Constants.ActThisWayId)) return false;
+        
+        // Not usable outside of dungeons.
+        if (CC.currentZone.IsPCFactionOrTent || CC.currentZone is not Zone_Dungeon) return false;
+        
         return base.CanPerform();
     }
 
     public override bool Perform()
     {
         TraitStairs stairs = CC.currentZone.map.FindThing<TraitStairsUp>();
+        if (stairs == null)
+        {
+            CC.SayNothingHappans();
+            return false;
+        }
         Point exitPoint = stairs.owner.pos;
         CC.Teleport(exitPoint.GetNearestPoint(false, false) ?? exitPoint);
         CC.AddCooldown(Constants.ActThisWayId, 30);

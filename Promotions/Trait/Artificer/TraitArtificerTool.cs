@@ -7,13 +7,13 @@ namespace PromotionMod.Trait.Artificer;
 ///     targets, does increased damage against targets who have over 80% hp.
 ///     Ice - Glacial Axe - Ice Ball, inflicts Ice Res Down, guaranteed crit damage against chilled targets, inflicts
 ///     chill.
-///     Thunder - Plasma Spear - Thunder Bolt, inflicts Lightning Res Down. does bonus % HP damage against stunned enemies,
+///     Thunder - Plasma Spear - Thunder Bolt, inflicts Lightning Res Down. Does bonus % HP damage against stunned enemies,
 ///     chance to inflict paralysis.
-///     Impact - Gaia's Gauntlet - Impact Ball, inflicts Impact Res Down. inflicts gravity and speed down.
-///     Rainbow - Trinity  - Tri-Element Arrow, 25% chance to not consume charges., extends buff durations.
+///     Impact - Gaia's Gauntlet - Impact Ball, inflicts Impact Res Down. Inflicts gravity and speed down.
+///     Rainbow - Trinity  - Tri-Element Arrow, 25% chance to not consume charges, extends buff durations.
 ///     Time - Chronomancer's Hourglass - Hastens allies, Reduces ally cooldowns, slows enemies.
 ///     Healing - Bouquet of Life - Heals % HP, Increases Maximum HP, Applies Regeneration
-///     Light - Heavenly Pearl - Heals % HP, applies instances of damage reduction OR damage increase to the ally.
+///     Light - Heavenly Pearl - Heals % HP, applies instances of damage reduction to the ally.
 ///     Death - Curseladen Cube - Can inflict up to 3 random debuffs from a list, 30% chance. Reduces magic resistance.
 ///     Sound - Sonic Bomb - Grenade type tool that inflicts Dim
 ///     Poison - Bio Bomb - Grenade type tool that inflicts poison.
@@ -22,7 +22,7 @@ namespace PromotionMod.Trait.Artificer;
 public class TraitArtificerTool : TraitTool
 {
     public virtual string ArtificerToolId => "";
-    public int MaxCharges => 12;
+    public virtual int MaxCharges => 12;
 
     public virtual int ChargesConsumed => 1;
 

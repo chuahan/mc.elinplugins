@@ -45,14 +45,13 @@ public class FeatSentinel : PromotionFeat
     {
         return owner.Chara?.c_idJob == "warrior";
     }
-    protected override void ApplyInternal()
+    
+    
+    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        // Shield - 286
-        owner.Chara.elements.ModPotential(286, 30);
-        // Heavy Armor - 304
-        owner.Chara.elements.ModPotential(304, 30);
+        base._OnApply(add,eleOwner, hint);
     }
-
+    
     public static long GetShieldPower(Chara cc)
     {
         int totalShield = 0;

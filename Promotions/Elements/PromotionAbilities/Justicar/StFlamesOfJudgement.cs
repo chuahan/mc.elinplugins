@@ -10,6 +10,9 @@ public class StFlamesOfJudgement : Ability
             Msg.Say("classlocked_ability".lang(Constants.JusticarId.lang()));
             return false;
         }
+
+        // Do not allow the user to use it if they are near death.
+        if (CC.hp <= CC.MaxHP * 0.05F) return false;
         return base.CanPerform();
     }
 }

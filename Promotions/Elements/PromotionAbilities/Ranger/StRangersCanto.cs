@@ -5,7 +5,7 @@ public class StRangersCanto : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatLuminary) == 0)
+        if (CC.Evalue(Constants.FeatRanger) == 0)
         {
             Msg.Say("classlocked_ability".lang(Constants.RangerId.lang()));
             return false;

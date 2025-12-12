@@ -2,11 +2,8 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Hermit;
 namespace PromotionMod.Elements.PromotionAbilities.Hermit;
 
-public class ActAssassinate : ActMelee
+public class ActAssassinate : Ability
 {
-    public override bool AllowCounter => false;
-    public override bool AllowParry => false;
-    public override bool ShouldRollMax => true;
     public override bool CanPerform()
     {
         if (CC.Evalue(Constants.FeatHermit) == 0)
@@ -14,9 +11,11 @@ public class ActAssassinate : ActMelee
             Msg.Say("classlocked_ability".lang(Constants.HermitId.lang()));
             return false;
         }
-        // Target must be marked for death and must have 10 Stalk.
+        // Must have a Target. Target must be marked for death with at least 10 value.
+        if (TC == null) return false;
+        
         ConMarkedForDeath deathMark = TC.Chara.GetCondition<ConMarkedForDeath>();
-        if (deathMark == null || deathMark.Stalk < 10) return false;
+        if (deathMark == null || deathMark.value < 10) return false;
         return base.CanPerform();
     }
 
@@ -24,23 +23,23 @@ public class ActAssassinate : ActMelee
     {
         ConMarkedForDeath deathMark = TC.Chara.GetCondition<ConMarkedForDeath>();
         if (deathMark == null) return false;
-        int stalkAmount = deathMark.Stalk;
+        int stalkAmount = deathMark.value;
         // Adding Deathbringer guarantees the hit accuracy.
         CC.AddCondition<ConDeathbringer>();
-        if (stalkAmount >= 50)
+        if (stalkAmount >= 30)
         {
-            // 50 Stalk does 2x the Damage, Guaranteed Crit
-            Attack(2f);
+            // 30 Stalk does 2x the Damage, Guaranteed Crit
+            new ActMeleeVitalAssassination().Perform(CC, TC);
         }
         else if (stalkAmount >= 20)
         {
             // 20 Stalk does 1.25x the Damage. 
-            Attack(1.25f);
+            new ActMeleeAssassination().Perform(CC, TC);
         }
         else
         {
             // Normal hit.
-            Attack();
+            new ActMelee().Perform(CC, TC);
         }
         CC.RemoveCondition<ConDeathbringer>();
         return true;

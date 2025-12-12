@@ -70,13 +70,10 @@ public class FeatHexer : PromotionFeat
     {
         return owner.Chara?.c_idJob == "witch";
     }
-
-    protected override void ApplyInternal()
+    
+    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        // Casting
-        // Regeneration
-        // Mana Consumption
-        //owner.Chara.elements.ModPotential(257, 30);
+        base._OnApply(add,eleOwner, hint);
     }
 
     public static void ApplyCondition(Chara target, Chara caster, int power, bool force)

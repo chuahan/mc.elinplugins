@@ -38,10 +38,9 @@ public class FeatBerserker : PromotionFeat
     {
         return owner.Chara?.c_idJob == "warrior";
     }
-
-    protected override void ApplyInternal()
+    
+    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        // Reading - 285
-        owner.Chara.elements.ModPotential(285, 30);
+        base._OnApply(add,eleOwner, hint);
     }
 }

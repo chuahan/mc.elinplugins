@@ -9,9 +9,12 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     their attacks.
 ///     Skill - Endless Mists - Extends debuff duration on enemies of Harbinger Miasmas
 ///     Skill - Accursed Touch - Applies a Harbinger Miasma to the target
+///     Skill - Gloom - Stance that reserves mana and emits a debuffing aura at a radius of 3. Inflicts a random Harbinger Miasma.
+///
 ///     Passive - Miasma Hunter - Gains increased damage if the target has miasma on them.
 ///     Passive - Miasma Armor - Every time Miasma is applied to an enemy, you gain a stack of damage reduction.
 ///     Passive - Miasma Mastery - Absorbs nearby Miasmas from allies.
+///     Passive - Conspectus of Miasma - Can convert Elemental ATtack spells into Miasmas of the same kind. 
 /// </summary>
 public class FeatHarbinger : PromotionFeat
 {
@@ -21,7 +24,8 @@ public class FeatHarbinger : PromotionFeat
     public override List<int> PromotionAbilities => new List<int>
     {
         Constants.ActEndlessMistsId,
-        Constants.ActAccursedTouchId
+        Constants.ActAccursedTouchId,
+        Constants.StGloomId,
     };
 
     protected override void ApplyInternalNPC(Chara c)
@@ -34,12 +38,9 @@ public class FeatHarbinger : PromotionFeat
     {
         return owner.Chara?.c_idJob == "executioner";
     }
-
-    protected override void ApplyInternal()
+    
+    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        // Heavy Armor
-        owner.Chara.elements.ModPotential(286, 30);
-        // Axes
-        owner.Chara.elements.ModPotential(304, 30);
+        base._OnApply(add,eleOwner, hint);
     }
 }

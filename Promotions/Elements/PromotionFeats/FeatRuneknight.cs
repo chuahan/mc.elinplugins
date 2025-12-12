@@ -46,13 +46,9 @@ public class FeatRuneknight : PromotionFeat
     {
         return owner.Chara?.c_idJob == "swordsage";
     }
-
-    protected override void ApplyInternal()
+    
+    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        // Longsword -
-        // Casting - 304
-        // Shield
-        owner.Chara.elements.ModPotential(286, 30);
-        owner.Chara.elements.ModPotential(304, 30);
+        base._OnApply(add,eleOwner, hint);
     }
 }

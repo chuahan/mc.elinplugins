@@ -33,16 +33,9 @@ public class FeatArtificer : PromotionFeat
     {
         return owner.Chara?.c_idJob == "witch";
     }
-
-    protected override void ApplyInternal()
+    
+    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        // Crafting - 261
-        owner.Chara.elements.ModPotential(261, 30);
-        // Jewelry - 259
-        owner.Chara.elements.ModPotential(259, 30);
-        // Magic Device - 305
-        owner.Chara.elements.ModPotential(305, 30);
-        // Gathering - 250
-        owner.Chara.elements.ModPotential(250, 30);
+        base._OnApply(add,eleOwner, hint);
     }
 }

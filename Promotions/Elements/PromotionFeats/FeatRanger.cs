@@ -43,14 +43,9 @@ public class FeatRanger : PromotionFeat
     {
         return owner.Chara?.c_idJob == "archer";
     }
-
-    protected override void ApplyInternal()
+    
+    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        // Bows - 286
-        // Crossbows
-        owner.Chara.elements.ModPotential(286, 30);
-        // Marksmanship - 304
-        owner.Chara.elements.ModPotential(304, 30);
-        // Riding
+        base._OnApply(add,eleOwner, hint);
     }
 }

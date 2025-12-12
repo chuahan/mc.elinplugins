@@ -49,6 +49,7 @@ public class ActDivineFist : ActMelee
         int healAmount = HelperFunctions.SafeDice("warcleric_divine_fist", power);
         foreach (Chara target in pc.currentZone.map.ListCharasInCircle(TC.pos, 3F))
         {
+            if (boltCount <= 0) break;
             // Doesn't proc on user or original target.
             if (target == TC || target == CC) continue;
             if (target.IsHostile(CC))
@@ -66,6 +67,7 @@ public class ActDivineFist : ActMelee
                 target.HealHP(healAmount, HealSource.Magic);
             }
             arrowEffect.Play(CC.pos, 0f, target.pos);
+            boltCount--;
         }
 
         if (!divineDescentActive)

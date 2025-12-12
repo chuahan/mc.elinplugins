@@ -47,9 +47,11 @@
         </Reference>
         <Reference Include="CustomWhateverLoader">
             <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\2135150\3370512305\CustomWhateverLoader.dll</HintPath>
+            <Private>False</Private>
         </Reference>
         <Reference Include="DOTween">
-            <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Elin\Elin_Data\Managed\DOTween.dll</HintPath>
+            <HintPath>$(ElinGamePath)\Elin_Data\Managed\DOTween.dll</HintPath>
+            <Private>False</Private>
         </Reference>
         <Reference Include="Elin">
             <HintPath>$(ElinGamePath)\Elin_Data\Managed\Elin.dll</HintPath>
@@ -76,7 +78,8 @@
             <Private>False</Private>
         </Reference>
         <Reference Include="Plugins.Tween">
-            <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Elin\Elin_Data\Managed\Plugins.Tween.dll</HintPath>
+            <HintPath>$(ElinGamePath)\Elin_Data\Managed\Plugins.Tween.dll</HintPath>
+            <Private>False</Private>
         </Reference>
         <Reference Include="Plugins.UI">
             <HintPath>$(ElinGamePath)\Elin_Data\Managed\Plugins.UI.dll</HintPath>
@@ -113,13 +116,15 @@
         <Compile Include="Elements\PromotionAbilities\Artificer\ActImprovisedBrew.cs"/>
         <Compile Include="Elements\PromotionAbilities\Artificer\ActSimpleSynthesis.cs"/>
         <Compile Include="Elements\PromotionAbilities\Artificer\ActTrample.cs"/>
-        <Compile Include="Elements\PromotionAbilities\Battlemage\SpElementalCannon.cs"/>
-        <Compile Include="Elements\PromotionAbilities\Battlemage\SpElementalHammer.cs"/>
+        <Compile Include="Elements\PromotionAbilities\Artificer\FeatArtificerGolemUpgrade.cs" />
+        <Compile Include="Elements\PromotionAbilities\Artificer\FeatHarpyGolemVision.cs" />
+        <Compile Include="Elements\PromotionAbilities\Artificer\FeatSirenGolemMagic.cs" />
+        <Compile Include="Elements\PromotionAbilities\Artificer\FeatSirenGolemSpeed.cs" />
+        <Compile Include="Elements\PromotionAbilities\Artificer\FeatTitanGolem.cs" />
         <Compile Include="Elements\PromotionAbilities\Battlemage\StManaFocus.cs"/>
         <Compile Include="Elements\PromotionAbilities\Battlemage\StManaShield.cs"/>
         <Compile Include="Elements\PromotionAbilities\Berserker\ActBloodlust.cs"/>
         <Compile Include="Elements\PromotionAbilities\Berserker\ActLifebreak.cs"/>
-        <Compile Include="Elements\PromotionAbilities\Berserker\ActMeleeLifebreak.cs"/>
         <Compile Include="Elements\PromotionAbilities\Berserker\ActSunder.cs"/>
         <Compile Include="Elements\PromotionAbilities\Dancer\ActDaggerIllusion.cs"/>
         <Compile Include="Elements\PromotionAbilities\Dancer\ActDancePartner.cs"/>
@@ -137,15 +142,20 @@
         <Compile Include="Elements\PromotionAbilities\Druid\SpSummonTreeEnt.cs"/>
         <Compile Include="Elements\PromotionAbilities\Elementalist\ActElementalExtinction.cs"/>
         <Compile Include="Elements\PromotionAbilities\Elementalist\ActElementalFury.cs"/>
-        <Compile Include="Elements\PromotionAbilities\Elementalist\ActFlare.cs"/>
+        <Compile Include="Elements\PromotionAbilities\Etoile\ActLightWave.cs" />
+        <Compile Include="Elements\PromotionAbilities\Etoile\ActLuminousDeflection.cs" />
+        <Compile Include="Elements\PromotionAbilities\Etoile\StVanguardStance.cs" />
         <Compile Include="Elements\PromotionAbilities\Harbinger\ActAccursedTouch.cs"/>
         <Compile Include="Elements\PromotionAbilities\Harbinger\ActEndlessMists.cs"/>
+        <Compile Include="Elements\PromotionAbilities\Harbinger\StGloom.cs" />
         <Compile Include="Elements\PromotionAbilities\Headhunter\ActExecute.cs"/>
         <Compile Include="Elements\PromotionAbilities\Headhunter\ActMeleeReap.cs"/>
         <Compile Include="Elements\PromotionAbilities\Headhunter\ActReap.cs"/>
         <Compile Include="Elements\PromotionAbilities\Hermit\ActAssassinate.cs"/>
         <Compile Include="Elements\PromotionAbilities\Hermit\ActMarkForDeath.cs"/>
+        <Compile Include="Elements\PromotionAbilities\Hermit\ActMeleeVitalAssassination.cs" />
         <Compile Include="Elements\PromotionAbilities\Hermit\ActShadowShroud.cs"/>
+        <Compile Include="Elements\PromotionAbilities\Hermit\ActMeleeAssassination.cs" />
         <Compile Include="Elements\PromotionAbilities\Hexer\ActBloodCurse.cs"/>
         <Compile Include="Elements\PromotionAbilities\Hexer\ActRevenge.cs"/>
         <Compile Include="Elements\PromotionAbilities\Hexer\ActTraumatize.cs"/>
@@ -180,6 +190,7 @@
         <Compile Include="Elements\PromotionAbilities\Justicar\ActIntimidate.cs"/>
         <Compile Include="Elements\PromotionAbilities\Justicar\ActSubdue.cs"/>
         <Compile Include="Elements\PromotionAbilities\Justicar\StFlamesOfJudgement.cs"/>
+        <Compile Include="Elements\PromotionAbilities\Knightcaller\ActSpiritMobilize.cs" />
         <Compile Include="Elements\PromotionAbilities\Knightcaller\ActSpiritRage.cs"/>
         <Compile Include="Elements\PromotionAbilities\Knightcaller\ActSpiritRally.cs"/>
         <Compile Include="Elements\PromotionAbilities\Knightcaller\ActSummonKnight.cs"/>
@@ -187,9 +198,9 @@
         <Compile Include="Elements\Maia\FeatMaiaEnlightened.cs"/>
         <Compile Include="Elements\Maia\FeatMaia.cs"/>
         <Compile Include="Elements\PromotionAbilities\Knightcaller\StCommanderAura.cs"/>
-        <Compile Include="Elements\PromotionAbilities\Luminary\ActLightWave.cs"/>
-        <Compile Include="Elements\PromotionAbilities\Luminary\ActLuminousDeflection.cs"/>
-        <Compile Include="Elements\PromotionAbilities\Luminary\StVanguardStance.cs"/>
+        <Compile Include="Elements\PromotionAbilities\HolyKnight\ActLightWave.cs" />
+        <Compile Include="Elements\PromotionAbilities\HolyKnight\ActLuminousDeflection.cs" />
+        <Compile Include="Elements\PromotionAbilities\HolyKnight\StVanguardStance.cs" />
         <Compile Include="Elements\PromotionAbilities\Machinist\ActLoadUp.cs"/>
         <Compile Include="Elements\PromotionAbilities\Machinist\ActOverclock.cs"/>
         <Compile Include="Elements\PromotionAbilities\Machinist\SpSummonTurret.cs"/>
@@ -211,7 +222,6 @@
         <Compile Include="Elements\PromotionAbilities\Runeknight\ActSpinningSlash.cs"/>
         <Compile Include="Elements\PromotionAbilities\Saint\ActBlessing.cs"/>
         <Compile Include="Elements\PromotionAbilities\Saint\ActHandOfGod.cs"/>
-        <Compile Include="Elements\PromotionAbilities\Sentinel\ActMeleeShieldSmite.cs"/>
         <Compile Include="Elements\PromotionAbilities\Sentinel\ActShout.cs"/>
         <Compile Include="Elements\PromotionAbilities\Sentinel\ActShieldSmite.cs"/>
         <Compile Include="Elements\PromotionAbilities\Sentinel\StRage.cs"/>
@@ -230,7 +240,6 @@
         <Compile Include="Elements\PromotionAbilities\Sovereign\StChaosMode.cs"/>
         <Compile Include="Elements\PromotionAbilities\Sovereign\StLawMode.cs"/>
         <Compile Include="Elements\PromotionAbilities\Spellblade\ActCrushingStrike.cs"/>
-        <Compile Include="Elements\PromotionAbilities\Spellblade\ActMeleeCrushingStrike.cs"/>
         <Compile Include="Elements\PromotionAbilities\Spellblade\ActMyriadFleche.cs"/>
         <Compile Include="Elements\PromotionAbilities\Spellblade\ActSiphoningBlade.cs"/>
         <Compile Include="Elements\PromotionAbilities\Trickster\ActArcaneTrap.cs"/>
@@ -244,6 +253,7 @@
         <Compile Include="Elements\PromotionAbilities\WitchHunter\ActManaBreak.cs"/>
         <Compile Include="Elements\PromotionAbilities\WitchHunter\ActNullZone.cs"/>
         <Compile Include="Elements\PromotionFeats\FeatAdventurer.cs"/>
+        <Compile Include="Elements\PromotionFeats\FeatDreadKnight.cs" />
         <Compile Include="Elements\PromotionFeats\FeatHexer.cs"/>
         <Compile Include="Elements\PromotionFeats\FeatArtificer.cs"/>
         <Compile Include="Elements\PromotionFeats\FeatBattlemage.cs"/>
@@ -254,10 +264,11 @@
         <Compile Include="Elements\PromotionFeats\FeatHarbinger.cs"/>
         <Compile Include="Elements\PromotionFeats\FeatHeadhunter.cs"/>
         <Compile Include="Elements\PromotionFeats\FeatHermit.cs"/>
+        <Compile Include="Elements\PromotionFeats\FeatHolyKnight.cs" />
         <Compile Include="Elements\PromotionFeats\FeatJenei.cs"/>
         <Compile Include="Elements\PromotionFeats\FeatJusticar.cs"/>
         <Compile Include="Elements\PromotionFeats\FeatKnightcaller.cs"/>
-        <Compile Include="Elements\PromotionFeats\FeatLuminary.cs"/>
+        <Compile Include="Elements\PromotionFeats\FeatEtoile.cs" />
         <Compile Include="Elements\PromotionFeats\FeatMachinist.cs"/>
         <Compile Include="Elements\PromotionFeats\FeatNecromancer.cs"/>
         <Compile Include="Elements\PromotionFeats\FeatPhantom.cs"/>
@@ -278,6 +289,7 @@
         <Compile Include="Patches\ActMeleePatches.cs"/>
         <Compile Include="Patches\ActPrayPatches.cs"/>
         <Compile Include="Patches\ActRangedPatches.cs"/>
+        <Compile Include="Patches\ActRidePatches.cs" />
         <Compile Include="Patches\ActThrowPatches.cs"/>
         <Compile Include="Patches\AttackProcessPatches.cs"/>
         <Compile Include="Patches\CardDamageHPPatches.cs"/>
@@ -285,6 +297,7 @@
         <Compile Include="Patches\CharaPatches.cs"/>
         <Compile Include="Patches\ConMiasmaPatches.cs"/>
         <Compile Include="Patches\ElementPatches.cs"/>
+        <Compile Include="Patches\InvOwnerPatches.cs" />
         <Compile Include="Patches\StatsManaPatch.cs"/>
         <Compile Include="Patches\ThingGenPatches.cs"/>
         <Compile Include="Patches\TraitBaseSpellbookPatches.cs"/>
@@ -294,7 +307,11 @@
         <Compile Include="PromotionMod.cs"/>
         <Compile Include="Stats\Adventurer\ConSenseDanger.cs"/>
         <Compile Include="Stats\Artificer\ConAcceleration.cs"/>
+        <Compile Include="Stats\Artificer\ConAdaptiveMobility.cs" />
         <Compile Include="Stats\Artificer\ConHeavenlyEmbrace.cs"/>
+        <Compile Include="Stats\Artificer\ConAerialVision.cs" />
+        <Compile Include="Stats\Artificer\ConLiquidCooling.cs" />
+        <Compile Include="Stats\Artificer\ConTitanProtocol.cs" />
         <Compile Include="Stats\Battlemage\StanceManaFocus.cs"/>
         <Compile Include="Stats\Battlemage\StanceManaShield.cs"/>
         <Compile Include="Stats\Berserker\ConBerserkDefiance.cs"/>
@@ -302,16 +319,19 @@
         <Compile Include="Stats\Berserker\ConBerserker.cs"/>
         <Compile Include="Stats\Berserker\ConBloodlust.cs"/>
         <Compile Include="Stats\Berserker\ConBerserkAnger.cs"/>
+        <Compile Include="Stats\Berserker\ConLifebreakAttack.cs" />
         <Compile Include="Stats\Berserker\ConUnrelenting.cs"/>
         <Compile Include="Stats\ClassCondition.cs"/>
         <Compile Include="Stats\ConAfterimage.cs"/>
         <Compile Include="Stats\ConArmorBreak.cs"/>
         <Compile Include="Stats\ConAttackBoost.cs"/>
         <Compile Include="Stats\ConAttackBreak.cs"/>
+        <Compile Include="Stats\ConAttackResolveCondition.cs" />
         <Compile Include="Stats\ConAura.cs"/>
         <Compile Include="Stats\ConCritBoost.cs"/>
         <Compile Include="Stats\ConDisable.cs"/>
         <Compile Include="Stats\ConGreaterRegen.cs"/>
+        <Compile Include="Stats\ConLifeBoost.cs" />
         <Compile Include="Stats\ConProtection.cs"/>
         <Compile Include="Stats\ConSpeedBreak.cs"/>
         <Compile Include="Stats\ConStatBreak.cs"/>
@@ -346,7 +366,9 @@
         <Compile Include="Stats\Harbinger\ConHarbingerMiasma.cs"/>
         <Compile Include="Stats\Harbinger\ConRendingMiasma.cs"/>
         <Compile Include="Stats\Harbinger\ConSmotheringMiasma.cs"/>
+        <Compile Include="Stats\Harbinger\StanceGloom.cs" />
         <Compile Include="Stats\Headhunter\ConHeadhunter.cs"/>
+        <Compile Include="Stats\Headhunter\ConMomentum.cs" />
         <Compile Include="Stats\Hermit\ConDeathbringer.cs"/>
         <Compile Include="Stats\Hermit\ConMarkedForDeath.cs"/>
         <Compile Include="Stats\Hermit\ConShadowShroud.cs"/>
@@ -366,9 +388,10 @@
         <Compile Include="Stats\Luminary\ConLuminousDeflection.cs"/>
         <Compile Include="Stats\Luminary\StanceVanguardStance.cs"/>
         <Compile Include="Stats\Machinist\ConOverclock.cs"/>
+        <Compile Include="Stats\Machinist\StanceHeavyarms.cs" />
         <Compile Include="Stats\Maia\ConGateway.cs"/>
         <Compile Include="Stats\Maia\ConMagicResBoost.cs"/>
-        <Compile Include="Stats\Maia\StanceHeavyarms.cs"/>
+        <Compile Include="Stats\Maia\ConMaiarFury.cs" />
         <Compile Include="Stats\Necromancer\ConDeadBeckon.cs"/>
         <Compile Include="Stats\Phantom\ConPhantomMark.cs"/>
         <Compile Include="Stats\Ranger\ConGimmickCoating.cs"/>
@@ -377,6 +400,7 @@
         <Compile Include="Stats\Runeknight\ConRunicGuard.cs"/>
         <Compile Include="Stats\Runeknight\ConWardingRune.cs"/>
         <Compile Include="Stats\Saint\ConBlessing.cs"/>
+        <Compile Include="Stats\Sentinel\ConShieldSmiteAttack.cs" />
         <Compile Include="Stats\Sentinel\ConTaunted.cs"/>
         <Compile Include="Stats\Sentinel\StanceRage.cs"/>
         <Compile Include="Stats\Sentinel\StanceRestraint.cs"/>
@@ -400,6 +424,7 @@
         <Compile Include="Stats\Spellblade\ConAcidBreak.cs"/>
         <Compile Include="Stats\Spellblade\ConChaosBreak.cs"/>
         <Compile Include="Stats\Spellblade\ConColdBreak.cs"/>
+        <Compile Include="Stats\Spellblade\ConCrushingStrikeAttack.cs" />
         <Compile Include="Stats\Spellblade\ConCutBreak.cs"/>
         <Compile Include="Stats\Spellblade\ConDarknessBreak.cs"/>
         <Compile Include="Stats\Spellblade\ConEtherBreak.cs"/>
@@ -447,7 +472,6 @@
         <Compile Include="Trait\TraitHarbinger.cs"/>
         <Compile Include="Trait\TraitLailah.cs"/>
         <Compile Include="Trait\TraitPromotionManual.cs"/>
-        <Compile Include="Trait\TraitScribingTable.cs"/>
         <Compile Include="Trait\TraitSpiritKnight.cs"/>
         <Compile Include="Trait\TraitSpiritKnightCaptain.cs"/>
         <Compile Include="Trait\TraitUniqueSummon.cs"/>

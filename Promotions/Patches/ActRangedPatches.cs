@@ -1,5 +1,6 @@
 using HarmonyLib;
 using PromotionMod.Stats;
+using PromotionMod.Stats.Machinist;
 using PromotionMod.Stats.Sharpshooter;
 namespace PromotionMod.Patches;
 
@@ -27,5 +28,14 @@ public class ActRangedPatches
         {
             Act.CC.RemoveCondition<ConReload>();
         }
+    }
+
+    [HarmonyPatch(nameof(ActRanged.Perform))]
+    [HarmonyPostfix]
+    public static void PromoMod_ActRanged_Perform_Postfix()
+    {
+        // Sharpshooter - Charged Chamber is consumed on shot.
+        ConChargedChamber chargedChamber = Act.CC.GetCondition<ConChargedChamber>();
+        chargedChamber?.Kill();
     }
 }

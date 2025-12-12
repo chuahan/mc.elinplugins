@@ -41,7 +41,6 @@ public class ActReap : Ability
     public override bool Perform()
     {
         float num = 0f;
-        Card tC = TC;
         HashSet<int> hashSet = new HashSet<int>();
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, PerformDistance, CC, false, true))
         {

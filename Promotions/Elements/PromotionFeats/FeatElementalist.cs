@@ -39,13 +39,13 @@ public class FeatElementalist : PromotionFeat
     public override List<int> PromotionAbilities => new List<int>
     {
         Constants.ActElementalFuryId,
-        Constants.ActFlareId
+        Constants.ActElementalExtinctionId
     };
 
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActElementalFuryId, 50, false);
-        c.ability.Add(Constants.ActFlareId, 50, false);
+        c.ability.Add(Constants.ActElementalExtinctionId, 50, false);
         for (int x = 0; x <= 15; x++) // Add all the Arrow spells
         {
             c.ability.Add(50500 + x, 75, false);
@@ -56,12 +56,9 @@ public class FeatElementalist : PromotionFeat
     {
         return owner.Chara?.c_idJob == "wizard";
     }
-
-    protected override void ApplyInternal()
+    
+    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        // Farming - 286
-        owner.Chara.elements.ModPotential(286, 30);
-        // Casting - 304
-        owner.Chara.elements.ModPotential(304, 30);
+        base._OnApply(add,eleOwner, hint);
     }
 }

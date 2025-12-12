@@ -217,7 +217,10 @@ public class TraitPromotionManual : TraitScroll
             {
                 JeneiPromotionAttunement(c);
             }
-            Promote(promotionId, c);
+            else
+            {
+                Promote(promotionId, c);   
+            }
         });
     }
 
@@ -253,6 +256,7 @@ public class TraitPromotionManual : TraitScroll
 
     public void Promote(string promotionId, Chara c)
     {
+        // TODO Text : Add Promote Text.
         c.SetFeat(PromotionIdMap[promotionId]);
         c.SetFlagValue(Constants.PromotionFeatFlag, PromotionIdMap[promotionId]);
         // The Promotion Feat should handle the abilities for both PC and NPCs once it gets added with OnApply.

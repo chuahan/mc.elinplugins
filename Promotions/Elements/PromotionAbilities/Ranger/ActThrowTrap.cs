@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 using PromotionMod.Trait;
 namespace PromotionMod.Elements.PromotionAbilities.Ranger;
@@ -29,7 +30,7 @@ public class ActThrowTrap : Ability
             return false;
         }
 
-        // Cannot stack traps. or place in pc faction
+        // Cannot stack traps or place in pc faction
         if (TP.Installed != null || _zone.IsPCFaction) return false;
         return base.CanPerform();
     }
@@ -37,9 +38,9 @@ public class ActThrowTrap : Ability
     public override bool Perform()
     {
         Thing trap = ThingGen.Create(PossibleTraps.RandomItem());
+        if (CC.IsPCFaction) trap.SetFlagValue(Constants.IsPlayerFactionTrapFlag, 1);
         Zone.ignoreSpawnAnime = true;
-        _zone.AddCard(trap, TP);
-        (trap.trait as TraitFactionTrap)?.OnInstall(CC.IsPCFactionOrMinion);
+        _zone.AddCard(trap, TP).Install();
         return true;
     }
 }

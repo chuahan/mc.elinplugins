@@ -1,13 +1,31 @@
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Jenei;
 
-public class ActJeneiMove : Ability
+public class ActJeneiMove : AI_TargetCard
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatJenei) == 0) return false;
-        if (TC.isChara && TC.isRestrained) return false; // Cannot move restrained characters.
-        return base.CanPerform();
+        if (CC.Evalue(Constants.FeatJenei) == 0)
+        {
+            Msg.Say("classlocked_ability".lang(Constants.JeneiId.lang()));
+            return false;
+        }
+        if (Act.TC == null) return false;
+        return this.IsValidTC(Act.TC);
+    }
+    
+    public override bool IsValidTC(Card c)
+    {
+        if (EClass._zone.IsUserZone)
+        {
+            return false;
+        }
+        if (c.isThing & (EClass._zone is Zone_LittleGarden))
+        {
+            return false;
+        }
+        if (c.isChara && c.Chara.isRestrained) return false;
+        return true;
     }
 
     public override Cost GetCost(Chara c)
@@ -50,6 +68,10 @@ public class ActJeneiMove : Ability
         newPoint.Set(target.pos);
         newPoint.x -= num1;
         newPoint.z -= num2;
-        return newPoint is { IsValid: true, HasChara: false, IsBlocked: false, IsInBounds: false } ? target._Move(newPoint, Card.MoveType.Force) : Card.MoveResult.Fail;
+        if (newPoint is { IsValid: true, HasChara: false, IsBlocked: false, IsInBounds: true })
+        {
+            return target._Move(newPoint, Card.MoveType.Force);
+        } 
+        return Card.MoveResult.Fail;
     }
 }

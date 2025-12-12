@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 using PromotionMod.Stats.Phantom;
 namespace PromotionMod.Elements.PromotionFeats;
@@ -19,6 +20,9 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     You can trigger multiple Phantom Finishers in a single skill proc.
 ///     Phantom Finishers will add additional effects to the Skill.
 ///     Phantom Finishers will restore stamina and MP.
+///
+///     TODO: Bench for now. We'll leave the Scion Classes as a secret unlock later or something.
+///  
 /// </summary>
 public class FeatPhantom : PromotionFeat
 {
@@ -41,16 +45,12 @@ public class FeatPhantom : PromotionFeat
 
     protected override bool Requirement()
     {
-        return owner.Chara?.c_idJob == "warmage";
+        return (EClass.pc != null && EClass.pc.GetFlagValue(Constants.PhantomPromotionUnlockedFlag > 0));
     }
-
-    protected override void ApplyInternal()
+    
+    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        // weaponScythe - 110
-        // weaponSword
-        // weaponGun - 105
-        // casting - 304
-        owner.Chara.elements.ModPotential(304, 30);
+        base._OnApply(add,eleOwner, hint);
     }
 
     public static void AddPhantomMarks(Chara target, int count)

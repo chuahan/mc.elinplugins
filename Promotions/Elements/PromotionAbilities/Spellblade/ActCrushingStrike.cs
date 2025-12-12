@@ -1,4 +1,5 @@
 using PromotionMod.Common;
+using PromotionMod.Stats.Spellblade;
 namespace PromotionMod.Elements.PromotionAbilities.Spellblade;
 
 public class ActCrushingStrike : Ability
@@ -22,7 +23,7 @@ public class ActCrushingStrike : Ability
 
     public override bool Perform()
     {
-        new ActMeleeCrushingStrike().Perform(CC, TC);
-        return true;
+        CC.AddCondition<ConCrushingStrikeAttack>(this.GetPower(CC), true);
+        return new ActMelee().Perform(CC, TC);
     }
 }

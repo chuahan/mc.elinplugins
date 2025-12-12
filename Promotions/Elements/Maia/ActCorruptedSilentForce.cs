@@ -1,4 +1,5 @@
 using PromotionMod.Common;
+using PromotionMod.Stats;
 namespace PromotionMod.Elements.Maia;
 
 /// <summary>
@@ -14,5 +15,11 @@ public class ActCorruptedSilentForce : Ability
             return false;
         }
         return base.CanPerform();
+    }
+    
+    public override bool Perform()
+    {
+        CC.AddCondition<ConCritBoost>(this.GetPower(CC));
+        return true;
     }
 }

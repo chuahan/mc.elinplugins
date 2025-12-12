@@ -1,6 +1,5 @@
 namespace PromotionMod.Elements.PromotionAbilities.Knightcaller;
 
-public class StCommanderAura : BaseStance
+public class StCommanderAura : Ability
 {
-    public override bool TimeBased => true;
 }

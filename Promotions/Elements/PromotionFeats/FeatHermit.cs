@@ -36,13 +36,9 @@ public class FeatHermit : PromotionFeat
     {
         return owner.Chara?.c_idJob == "thief";
     }
-
-    protected override void ApplyInternal()
+    
+    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        // Stealth
-        // Short Swords
-        // Evasion
-        //owner.Chara.elements.ModPotential(286, 30);
-        owner.Chara.elements.ModPotential(304, 30);
+        base._OnApply(add,eleOwner, hint);
     }
 }

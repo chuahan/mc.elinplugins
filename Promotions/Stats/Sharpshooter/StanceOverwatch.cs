@@ -4,7 +4,7 @@ namespace PromotionMod.Stats.Sharpshooter;
 
 public class StanceOverwatch : BaseStance
 {
-    public const int FOVBuffAmount = 20;
+    public const int FOVBuffAmount = 5;
 
     public override void OnStartOrStack()
     {
@@ -13,10 +13,7 @@ public class StanceOverwatch : BaseStance
 
     public override void OnCalculateFov(Fov fov, ref int radius, ref float power)
     {
-        if (radius < FOVBuffAmount)
-        {
-            radius = FOVBuffAmount;
-        }
+        radius += FOVBuffAmount;
     }
 
     public override void OnRemoved()

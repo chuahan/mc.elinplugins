@@ -7,7 +7,11 @@ public class ActJeneiShinePlasma : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatJenei) == 0) return false;
+        if (CC.Evalue(Constants.FeatJenei) == 0)
+        {
+            Msg.Say("classlocked_ability".lang(Constants.JeneiId.lang()));
+            return false;
+        }
         return base.CanPerform();
     }
 
@@ -34,7 +38,9 @@ public class ActJeneiShinePlasma : Ability
             TP
         }, new ActRef
         {
-            act = this
+            act = this,
+            aliasEle = Constants.ElementAliasLookup[Constants.EleLightning],
+            origin = CC,
         });
         return true;
     }

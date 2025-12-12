@@ -6,14 +6,18 @@ namespace PromotionMod.Stats.Justicar;
 
 public class StanceFlamesOfJudgement : BaseStance
 {
-    public override bool TimeBased => true;
-
     public override void Tick()
     {
         if (_zone.IsRegion)
         {
             // Not allowed in regions.
             Kill();
+        }
+        
+        if (owner.hp <= (owner.MaxHP * 0.3F))
+        {
+            // TODO Text: Stance off.
+            this.Kill();
         }
 
         // Get Karma Scores for the Player.

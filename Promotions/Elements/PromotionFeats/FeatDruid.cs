@@ -30,24 +30,16 @@ public class FeatDruid : PromotionFeat
         c.ability.Add(Constants.ActSowWarmSeedsId, 60, false);
         c.ability.Add(Constants.ActSowWrathSeedsId, 60, false);
         c.ability.Add(Constants.SpSummonTreeEntId, 80, false);
-        c.ability.Add(Constants.ActLivingArmorId, 80, false);
+        c.ability.Add(Constants.ActLivingArmorId, 80, true);
     }
 
     protected override bool Requirement()
     {
         return owner.Chara?.c_idJob == "farmer";
     }
-
-    protected override void ApplyInternal()
+    
+    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        // Farming - 286
-        owner.Chara.elements.ModPotential(286, 30);
-        // Casting - 304
-        owner.Chara.elements.ModPotential(304, 30);
-        // Regeneration
-        //owner.Chara.elements.ModPotential(305, 30);
-
-        // Druids become immune to poison.
-
+        base._OnApply(add,eleOwner, hint);
     }
 }

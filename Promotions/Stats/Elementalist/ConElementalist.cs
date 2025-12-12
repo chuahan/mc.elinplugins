@@ -124,7 +124,7 @@ public class ConElementalist : ClassCondition
     // Upon casting Flare or Elemental Fury, all orbs are consumed.
     public void ConsumeElementalOrbs()
     {
-        foreach (int elementId in ElementalStockpile.Keys)
+        foreach (int elementId in ElementalStockpile.Keys.ToList())
         {
             ElementalStockpile[elementId] = 0;
         }
@@ -143,6 +143,15 @@ public class ConElementalist : ClassCondition
         else if (_decayDelay < DecayDelayMax)
         {
             _decayDelay++;
+        }
+    }
+    
+    public override void OnWriteNote(List<string> list)
+    {
+        list.Add("hintElementalist".lang());
+        foreach (int elementId in ElementalStockpile.Keys)
+        {
+            if (ElementalStockpile[elementId] > 0) list.Add("elementalistOrbCount".lang(EClass.sources.elements.map[elementId].GetName(), ElementalStockpile[elementId].ToString()));
         }
     }
 }

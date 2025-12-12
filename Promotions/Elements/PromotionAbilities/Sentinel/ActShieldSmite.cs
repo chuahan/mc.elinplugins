@@ -1,4 +1,5 @@
 using PromotionMod.Common;
+using PromotionMod.Stats.Sentinel;
 namespace PromotionMod.Elements.PromotionAbilities.Sentinel;
 
 public class ActShieldSmite : Ability
@@ -28,7 +29,8 @@ public class ActShieldSmite : Ability
 
     public override bool Perform()
     {
-        new ActMeleeShieldSmite().Perform(CC, TC);
-        return true;
+        CC.AddCondition<ConShieldSmiteAttack>(this.GetPower(CC), true);
+        CC.PlaySound("shield_bash");
+        return new ActMelee().Perform(CC, TC);
     }
 }

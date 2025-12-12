@@ -55,14 +55,9 @@ public class FeatDancer : PromotionFeat
     {
         return owner.Chara?.c_idJob == "pianist";
     }
-
-    protected override void ApplyInternal()
+    
+    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        // Daggers - 107
-        owner.Chara.elements.ModPotential(107, 30);
-        // Throwing - 108
-        owner.Chara.elements.ModPotential(108, 30);
-        // Dual Wield - 131
-        owner.Chara.elements.ModPotential(131, 30);
+        base._OnApply(add,eleOwner, hint);
     }
 }

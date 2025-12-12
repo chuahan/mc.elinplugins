@@ -4,8 +4,6 @@ namespace PromotionMod.Stats.Hermit;
 
 public class ConMarkedForDeath : Condition
 {
-    [JsonProperty(PropertyName = "S")] public int Stalk;
-
     public override void Tick()
     {
         // If there is no enemy Hermits within range, rapidly decays.
@@ -22,7 +20,6 @@ public class ConMarkedForDeath : Condition
         if (isStalked)
         {
             Mod(2);
-            Stalk++;
         }
         else
         {

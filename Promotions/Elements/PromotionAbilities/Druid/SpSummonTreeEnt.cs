@@ -22,7 +22,6 @@ public class SpSummonTreeEnt : Spell
             while (CC.currentZone.CountMinions(CC) < CC.MaxSummon)
             {
                 Chara plant = CharaGen.Create(Constants.DruidWarriorEntCharaId);
-                plant.isSummon = true;
                 // Normal summon leveling.
                 // For PCs Ent Warriors and Nature's Warmth summons can scale to your deepest achieved depth instead.
                 int power = GetPower(CC);

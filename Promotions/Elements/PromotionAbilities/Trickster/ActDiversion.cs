@@ -33,6 +33,7 @@ public class ActDiversion : Ability
             phantom.isSummon = true;
             phantom.SetLv(CC.LV);
             phantom.interest = 0;
+            phantom.c_summonDuration = 30;
             CC.currentZone.AddCard(phantom, summonPoint);
             phantom.PlayEffect("teleport");
             phantom.MakeMinion(CC);

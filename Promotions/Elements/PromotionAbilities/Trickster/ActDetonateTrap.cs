@@ -1,9 +1,12 @@
+using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Trait.Trickster;
 namespace PromotionMod.Elements.PromotionAbilities.Trickster;
 
 public class ActDetonateTrap : Ability
 {
+    public override int PerformDistance => 5;
+    
     public override bool CanPerform()
     {
         if (CC.Evalue(Constants.FeatTrickster) == 0)
@@ -27,7 +30,7 @@ public class ActDetonateTrap : Ability
     public override bool Perform()
     {
         TraitTricksterArcaneTrap arcaneTrap = TP.GetInstalled<TraitTricksterArcaneTrap>();
-        arcaneTrap.DetonateTrap();
+        arcaneTrap.DetonateTrap(true);
         return true;
     }
 }

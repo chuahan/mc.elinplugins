@@ -28,7 +28,6 @@ public class SpSummonTurret : Spell
         // For PCs summons can scale to your deepest achieved depth instead.
         string summonedGunType = TurretOptions.RandomItem();
         Chara summon = CharaGen.Create(summonedGunType);
-        summon.isSummon = true;
         int power = GetPower(CC);
         int levelOverride = CC.LV * (100 + power / 10) / 100 + power / 30;
         if (CC.IsPC) levelOverride = Math.Max(player.stats.deepest, levelOverride);

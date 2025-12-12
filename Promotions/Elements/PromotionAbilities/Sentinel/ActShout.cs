@@ -24,6 +24,7 @@ public class ActShout : Ability
 
     public override bool Perform()
     {
+        Act.CC.PlaySound("warcry");
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, false, true))
         {
             ConTaunted taunted = target.AddCondition<ConTaunted>(force: true) as ConTaunted;

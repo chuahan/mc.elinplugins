@@ -49,16 +49,9 @@ public class FeatWarCleric : PromotionFeat
     {
         return owner.Chara?.c_idJob == "priest";
     }
-
-    protected override void ApplyInternal()
+    
+    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        // Martial Arts
-        // Staff
-        // Maces
-        // Faith
-        // Will
-        owner.Chara.elements.ModPotential(286, 30);
-        // Casting - 304
-        owner.Chara.elements.ModPotential(304, 30);
+        base._OnApply(add,eleOwner, hint);
     }
 }

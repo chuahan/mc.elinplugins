@@ -10,6 +10,7 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Skill - Enrage Spirits - Enrages all your summons, boosting their offensive capabilities.
 ///     Skill - Rally Spirits - Recalls all your summons to your side, healing them, and boosting their defensive
 ///     capabilities.
+///     Skill - Mobilize Spirits - Teleports all your spirits to the target location.
 ///     Skill - Summon Knight - Summons a Spirit Knight to aid you in battle. If you do not have an active captain, has a
 ///     25% chance of summoning a Knight Captain instead. Knight captains provide a 5% damage increase and mitigation to
 ///     all allies.
@@ -24,6 +25,7 @@ public class FeatKnightcaller : PromotionFeat
     {
         Constants.ActSpiritRageId,
         Constants.ActSpiritRallyId,
+        Constants.ActSpiritMobilizeId,
         Constants.ActSummonKnightId
     };
 
@@ -38,10 +40,9 @@ public class FeatKnightcaller : PromotionFeat
     {
         return owner.Chara?.c_idJob == "pianist";
     }
-
-    protected override void ApplyInternal()
+    
+    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        // Instrument - 286
-        //owner.Chara.elements.ModPotential(286, 30);
+        base._OnApply(add,eleOwner, hint);
     }
 }

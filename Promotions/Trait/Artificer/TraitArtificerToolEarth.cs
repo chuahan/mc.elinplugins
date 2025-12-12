@@ -24,6 +24,18 @@ public class TraitArtificerToolEarth : TraitArtificerTool
                     if (target.IsHostile(cc))
                     {
                         HelperFunctions.ProcSpellDamage(power, damage, cc, target, ele: Constants.EleImpact);
+                        // Apply Gravity and Speed Down.
+                        ActEffect.ProcAt(EffectId.Debuff, power, BlessedState.Normal, Act.CC, target, target.pos, true, new ActRef
+                        {
+                            origin = Act.CC.Chara,
+                            n1 = nameof(ConGravity)
+                        });
+                        
+                        ActEffect.ProcAt(EffectId.DebuffStats, power, BlessedState.Normal, Act.CC, target, target.pos, true, new ActRef
+                        {
+                            origin = Act.CC.Chara,
+                            n1 = "SPD"
+                        });
                     }
                 }
 

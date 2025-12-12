@@ -17,7 +17,7 @@ public class WindowCharaPatches
             int promotionId = __instance.chara.GetFlagValue(Constants.PromotionFeatFlag);
             if (promotionId > 0)
             {
-                __instance.textBio.text = $"{TraitPromotionManual.PromotionIdToPromotionNameMap[promotionId].lang()}({__instance.chara.job.GetText().ToTitleCase()})";
+                __instance.textBio.text = $"{TraitPromotionManual.PromotionIdToPromotionNameMap[promotionId].lang()} ({__instance.chara.job.GetText().ToTitleCase()})";
             }
         }
     }

@@ -3,7 +3,7 @@ using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionFeats;
 
 /// <summary>
-///     The shooting star that pierces the veil of night. The Luminary is guiding light that pierces the enemy.
+///     The shooting star that pierces the veil of night. The Etoile is guiding light that pierces the enemy.
 ///     Luminaries focus on paving the way, holding their own in combat in addition to protecting their allies.
 ///     Luminaries specialize in closing in at the start of battle and doing enough damage to shift the momentum to their
 ///     side.
@@ -16,14 +16,20 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Reduces the cooldown of Parry to 0 (Recharges it instantly)
 ///     Refunds the Mana cost.
 ///     Summons a Holy Sword Bit.
-///     Passive - Wake of the Trailblazer - Every time Vanguard redirects damage, Light wave hits an enemy, or an attack is
-///     parried, gain stacks of Class condition
-///     Luminary takes reduced damage per stack.
+///     Passive - Wake of the Trailblazer - Every time Light wave hits an enemy, or an attack is parried, gain stacks of Class condition
+///     Etoile takes reduced damage per stack.
+///
+///     TODO: Rename to Holy Knight
+///         Vanguard Remains the Same
+///         Light Wave -> Spearhead
+///         Rename Parry -> Deflection
+///         Add Sol -> Add condition to heal 30% damage as life.
+///         Add Aegis as a passive - Reduce incoming damage by 50% with a chance.
 /// </summary>
-public class FeatLuminary : PromotionFeat
+public class FeatEtoile : PromotionFeat
 {
-    public override string PromotionClassId => Constants.LuminaryId;
-    public override int PromotionClassFeatId => Constants.FeatLuminary;
+    public override string PromotionClassId => Constants.EtoileId;
+    public override int PromotionClassFeatId => Constants.FeatEtoile;
 
     public override List<int> PromotionAbilities => new List<int>
     {
@@ -41,14 +47,11 @@ public class FeatLuminary : PromotionFeat
 
     protected override bool Requirement()
     {
-        return owner.Chara?.c_idJob == "paladin";
+        return (EClass.pc != null && EClass.pc.GetFlagValue(Constants.EtoilePromotionUnlockedFlag > 0));
     }
-
-    protected override void ApplyInternal()
+    
+    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        // Longsword - 286
-        //owner.Chara.elements.ModPotential(286, 30);
-        // Casting - 304
-        // Dual Wielding 
+        base._OnApply(add,eleOwner, hint);
     }
 }

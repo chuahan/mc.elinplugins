@@ -7,7 +7,11 @@ public class ActJeneiBlaze : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatJenei) == 0) return false;
+        if (CC.Evalue(Constants.FeatJenei) == 0)
+        {
+            Msg.Say("classlocked_ability".lang(Constants.JeneiId.lang()));
+            return false;
+        }
         return base.CanPerform();
     }
 

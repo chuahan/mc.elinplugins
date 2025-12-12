@@ -7,6 +7,7 @@ using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Elements.PromotionFeats;
 using PromotionMod.Stats;
+using PromotionMod.Stats.Artificer;
 using PromotionMod.Stats.Battlemage;
 using PromotionMod.Stats.Harbinger;
 using PromotionMod.Stats.Luminary;
@@ -21,90 +22,189 @@ namespace PromotionMod.Patches;
 [HarmonyPatch(typeof(Card))]
 public class CardDamageHPPatches
 {
-    internal static List<AttackSource> ActiveAttackSources = new List<AttackSource>
+    private static readonly List<AttackSource> MagicAttackSources = new List<AttackSource>
     {
-        AttackSource.Melee,
-        AttackSource.Range,
-        AttackSource.Throw,
+        AttackSource.MagicArrow,
+        AttackSource.MagicHand,
         AttackSource.MagicSword,
-        AttackSource.Shockwave,
-        AttackSource.None
+        AttackSource.MoonSpear,
+        AttackSource.None,
     };
 
     [HarmonyPatch(nameof(Card.DamageHP), typeof(long), typeof(int), typeof(int), typeof(AttackSource), typeof(Card), typeof(bool), typeof(Thing), typeof(Chara))]
     [HarmonyPrefix]
-    internal static bool OnDamageHP_Patches(Card __instance, ref long dmg, ref int ele, ref int eleP, AttackSource attackSource, Card origin, bool showEffect, Thing weapon)
+    internal static bool OnDamageHP_Patches(Card __instance, ref long dmg, ref int ele, ref int eleP, AttackSource attackSource, Card? origin, bool showEffect, Thing weapon, Chara originalTarget)
     {
-        if (__instance.isChara && ActiveAttackSources.Contains(attackSource))
+        //if (__instance.isChara && ActiveAttackSources.Contains(attackSource))
+        // This is the same attack source conditions as Wall of Flesh, so active attack sources.
+        if (__instance.isChara && ((uint)(attackSource - 3) > 2u && (uint)(attackSource - 13) > 4u))
         {
             Chara target = __instance.Chara;
-            Chara originChara = origin.Chara;
-
-            // Build condition lookups for perf.
-            ILookup<Type, Condition> targetConditions = target.conditions.ToLookup(c => c.GetType());
-            ILookup<Type, Condition> originConditions = originChara.conditions.ToLookup(c => c.GetType());
+            Chara? originChara = origin?.Chara;
 
             float damageMultiplier = 1F;
-            List<Chara> targetAllies = HelperFunctions.GetCharasWithinRadius(target.pos, 5f, target, true, false);
+            
+            // Target Conditionals
+            ILookup<Type, Condition> targetConditions = target.conditions.ToLookup(c => c.GetType());
 
-            // Maia - Maias deal 50% increased damage against their opposing element(s).
-            if (originChara.Evalue(Constants.FeatMaiaEnlightened) > 0 && target.source.mainElement.Contains(Constants.ElementAliasLookup[Constants.EleDarkness].Remove(0, 3)))
+            // Origin Conditionals
+            if (originChara != null)
             {
-                damageMultiplier += 0.5F;
-            }
-
-            if (originChara.Evalue(Constants.FeatMaiaCorrupted) > 0 && target.source.mainElement.Contains(Constants.ElementAliasLookup[Constants.EleHoly].Remove(0, 3)))
-            {
-                damageMultiplier += 0.5F;
-            }
-
-            // Harbinger - Every active Miasma on the target boosts damage from Harbingers by 5%.
-            if (targetConditions.Contains(typeof(ConHarbingerMiasma)) && origin.isChara && origin.Evalue(Constants.FeatHarbinger) > 0)
-            {
-                int miasmaCount = target.conditions.Count(con => con is ConHarbingerMiasma);
-                damageMultiplier += miasmaCount * 0.05F;
-            }
-
-            // Headhunter - Damage is increased by 25% against higher quality enemies.
-            if (target.source.quality >= 3 && origin.isChara && origin.Evalue(Constants.FeatHeadhunter) > 0)
-            {
-                damageMultiplier += 0.25F;
-            }
-
-            // Hexer - When applying spell damage there is a 10% chance to force apply a hex out of a pool.
-            if (origin.Evalue(Constants.FeatHexer) > 0 && attackSource == AttackSource.None)
-            {
-                if (EClass.rnd(10) == 0)
+                ILookup<Type, Condition>? originConditions = originChara.conditions.ToLookup(c => c.GetType());
+                
+                // Artificer - If the target is riding a Titan Golem, divert damage to the Titan Golem instead.
+                if (target.ride is { id: Constants.TitanGolemCharaId })
                 {
-                    origin.SayRaw("hexer_hextouch".lang());
-                    FeatHexer.ApplyCondition(__instance.Chara, origin.Chara, 100, true);
+                    target.ride.DamageHP(dmg, ele, eleP, attackSource, origin, showEffect, weapon, target);
+                    return false;
+                }
+                
+                // Hexer - When applying spell damage, there is a 10% chance to apply a hex out of a pool.
+                if (originChara.Evalue(Constants.FeatHexer) > 0 && MagicAttackSources.Contains(attackSource))
+                {
+                    if (EClass.rnd(10) == 0)
+                    {
+                        originChara.SayRaw("hexer_hextouch".lang());
+                        FeatHexer.ApplyCondition(__instance.Chara, originChara, 100, true);
+                    }
+                }
+
+                // Hexer - When taking damage, there is a 10% chance to force-apply a hex out of a pool in retaliation.
+                if (target.Evalue(Constants.FeatHexer) > 0)
+                {
+                    if (EClass.rnd(10) == 0)
+                    {
+                        target.SayRaw("hexer_revenge".lang(originChara.NameSimple));
+                        FeatHexer.ApplyCondition(originChara, __instance.Chara, 100, true);
+                    }
+                }
+                
+                // Maia - Maias deal 50% increased damage against their opposing element(s).
+                if (originChara.Evalue(Constants.FeatMaiaEnlightened) > 0 && target.source.mainElement.Contains(Constants.ElementAliasLookup[Constants.EleDarkness].Remove(0, 3)))
+                {
+                    damageMultiplier += 0.5F;
+                }
+
+                if (originChara.Evalue(Constants.FeatMaiaCorrupted) > 0 && target.source.mainElement.Contains(Constants.ElementAliasLookup[Constants.EleHoly].Remove(0, 3)))
+                {
+                    damageMultiplier += 0.5F;
+                }
+
+                // Harbinger - Every active Miasma on the target boosts damage from Harbingers by 5%.
+                if (originChara.Evalue(Constants.FeatHarbinger) > 0 && targetConditions.Contains(typeof(ConHarbingerMiasma)))
+                {
+                    int miasmaCount = target.conditions.Count(con => con is ConHarbingerMiasma);
+                    damageMultiplier += miasmaCount * 0.05F;
+                }
+
+                // Headhunter - Damage is increased by 25% against higher quality enemies.
+                if (target.source.quality >= 3 && originChara.Evalue(Constants.FeatHeadhunter) > 0)
+                {
+                    damageMultiplier += 0.25F;
+                }
+                
+                // Saint - If the Saint and the target share the same religion, the Saint can attempt to convert the opponent.
+                if (originChara.Evalue(Constants.FeatSaint) > 0 && originChara.faith.id == target.faith.id)
+                {
+                    if (Math.Max(originChara.Evalue(85), originChara.Evalue(Constants.FaithId)) > target.Evalue(Constants.FaithId) &&
+                        !target.IsMinion &&
+                        target.CanBeTempAlly(originChara))
+                    {
+                        target.Say("dominate_machine", target, originChara);
+                        target.PlayEffect("boost");
+                        target.PlaySound("boost");
+                        target.ShowEmo(Emo.love);
+                        target.lastEmo = Emo.angry;
+                        target.Chara.MakeMinion(originChara.IsPCParty ? EClass.pc : originChara);
+                        return false;
+                    }
+                }
+            
+                // Sniper - Targets specific body parts.
+                if (originConditions.Contains(typeof(ConSniperTarget)))
+                {
+                    ConSniperTarget sniperTarget = (ConSniperTarget)originConditions[typeof(ConSniperTarget)].Single();
+                    switch (sniperTarget.Target)
+                    {
+                        case ConSniperTarget.TargetPart.Hand:
+                            target.AddCondition<ConDisable>(sniperTarget.power);
+                            break;
+                        case ConSniperTarget.TargetPart.Head:
+                            // 25% chance to cull the target at or under 30% HP.
+                            if (target.hp <= target.MaxHP * 0.30F && EClass.rnd(4) == 0)
+                            {
+                                target.DamageHP(target.MaxHP, AttackSource.Finish, origin);
+                            }
+                            target.AddCondition<ConDim>(sniperTarget.power);
+                            target.AddCondition<ConSilence>(sniperTarget.power);
+                            break;
+                        case ConSniperTarget.TargetPart.Legs:
+                            int breakAmount = (int)HelperFunctions.SigmoidScaling(sniperTarget.power, 10, 25);
+                            target.AddCondition(SubPoweredCondition.Create(nameof(ConSpeedBreak), sniperTarget.power, breakAmount));
+                            break;
+                    }
+                }
+                
+                // Sovereign - Chaos Stance Increases damage by 10%.
+                if (originConditions.Contains(typeof(ConSovereignChaos)))
+                {
+                    damageMultiplier += 0.1F;
+                }
+
+            
+                // Spellblade - If the Spellblade is using Siphoning Blade. Do no damage and instead deal the 50% damage as MP instead, absorbing it.
+                if (originChara.Evalue(Constants.FeatSpellblade) > 0)
+                {
+                    if (originConditions.Contains(typeof(ConSiphoningBlade)))
+                    {
+                        dmg = (int)(dmg * 0.5F);
+                        target.mana.Mod((int)(0 - dmg));
+                        originChara.mana.Mod((int)dmg);
+                        return false;
+                    }
+                }
+            
+                // War Cleric - Sol Blade causes the healer to absorb 30% of the damage dealt.
+                if (originChara.Evalue(Constants.FeatWarCleric) > 0 && originConditions.Contains(typeof(ConSolBlade)))
+                {
+                    int heal = (int)(dmg * 0.3F);
+                    originChara.HealHP(heal, HealSource.Magic);
+                }
+                // Spellblade and Elementalist - Excel at applying status effects. eleP doubled.
+                if (originChara.Evalue(Constants.FeatSpellblade) > 0 || originChara.Evalue(Constants.FeatElementalist) > 0)
+                {
+                    eleP = HelperFunctions.SafeMultiplier(eleP, 2);
                 }
             }
 
-            // Hexer - When taking damage, there is a 10% chance to force-apply a hex out of a pool.
-            if (target.Evalue(Constants.FeatHexer) > 0 && ActiveAttackSources.Contains(attackSource))
+            // Artificer - Heavenly Pearl will decrease a damage instance by 25%
+            if (targetConditions.Contains(typeof(ConHeavenlyEmbrace)))
             {
-                if (EClass.rnd(10) == 0)
-                {
-                    origin.SayRaw("hexer_revenge".lang());
-                    FeatHexer.ApplyCondition(origin.Chara, __instance.Chara, 100, true);
-                }
+                ConHeavenlyEmbrace heavenlyEmbrace = (ConHeavenlyEmbrace)targetConditions[typeof(ConHeavenlyEmbrace)].Single();
+                damageMultiplier -= 0.25F;
+                heavenlyEmbrace.Mod(-1);
             }
 
             // Luminary - Vanguard Stance: Redirect damage from allies to the Luminary in Vanguard Stance.
             // Does not redirect if the target is already the Luminary.
-            if (!targetConditions.Contains(typeof(StVanguardStance)) && targetAllies.Count(c => c.conditions.Any(cond => cond.GetType() == typeof(StVanguardStance))) > 0)
+            if (!targetConditions.Contains(typeof(StVanguardStance)))
             {
-                Chara luminaryAlly = targetAllies.First(c => c.conditions.Any(cond => cond.GetType() == typeof(StVanguardStance)));
-                luminaryAlly.DamageHP(dmg, ele, eleP, attackSource, origin, showEffect, weapon);
-                return false;
+                List<Chara> targetAllies = HelperFunctions.GetCharasWithinRadius(target.pos, 5f, target, true, false);
+                if (targetAllies.Count(c => c.conditions.Any(cond => cond.GetType() == typeof(StVanguardStance))) > 0)
+                {
+                    Chara luminaryAlly = targetAllies.First(c => c.conditions.Any(cond => cond.GetType() == typeof(StVanguardStance)));
+                    luminaryAlly.DamageHP(dmg, ele, eleP, attackSource, origin, showEffect, weapon, target);
+                    return false;   
+                }
             }
 
-            // Luminary - When taking damage, if currently Parrying, reduce damage to zero.
+            // Luminary - When taking damage, if currently Parrying, reduce damage to zero and add a stack of Luminary.
             if (targetConditions.Contains(typeof(ConLuminousDeflection)))
             {
                 dmg = 0;
                 target.AddCooldown(Constants.ActLuminousDeflectionId, -5);
+                ConLuminary? luminary = (ConLuminary)targetConditions[typeof(ConLuminary)].Single() ?? target.AddCondition<ConLuminary>() as ConLuminary;
+                luminary?.AddStacks(1);
             }
 
             // Luminary - Reduces damage based on Class Condition Stacks (1% per stack, caps at 30)
@@ -158,58 +258,11 @@ public class CardDamageHPPatches
                 ((ConWardingRune)targetConditions[typeof(ConWardingRune)].Single()).Mod(-1);
                 damageMultiplier -= 0.2F;
             }
-
-            // Saint - If the Saint and the target share the same religion, the Saint can attempt to convert the opponent.
-            if (origin.Chara.Evalue(Constants.FeatSaint) > 0 && origin.Chara.faith.id == target.faith.id)
-            {
-                if (Math.Max(origin.Evalue(85), origin.Evalue(Constants.FaithId)) > target.Evalue(Constants.FaithId) &&
-                    !target.IsMinion &&
-                    target.CanBeTempAlly(origin.Chara))
-                {
-                    target.Say("dominate_machine", target, origin);
-                    target.PlayEffect("boost");
-                    target.PlaySound("boost");
-                    target.ShowEmo(Emo.love);
-                    target.lastEmo = Emo.angry;
-                    target.Chara.MakeMinion(origin.Chara.IsPCParty ? EClass.pc : origin.Chara);
-                    return false;
-                }
-            }
-
-            // Sniper - Targets specific body parts.
-            if (originConditions.Contains(typeof(ConSniperTarget)))
-            {
-                ConSniperTarget sniperTarget = (ConSniperTarget)originConditions[typeof(ConSniperTarget)].Single();
-                switch (sniperTarget.Target)
-                {
-                    case ConSniperTarget.TargetPart.Hand:
-                        target.AddCondition<ConDisable>(sniperTarget.power);
-                        break;
-                    case ConSniperTarget.TargetPart.Head:
-                        // 25% chance to cull the target at or under 30% HP.
-                        if (target.hp <= target.MaxHP * 0.30F && EClass.rnd(4) == 0)
-                        {
-                            target.DamageHP(target.MaxHP, AttackSource.Finish, origin);
-                        }
-                        target.AddCondition<ConDim>(sniperTarget.power);
-                        target.AddCondition<ConSilence>(sniperTarget.power);
-                        break;
-                    case ConSniperTarget.TargetPart.Legs:
-                        int breakAmount = (int)HelperFunctions.SigmoidScaling(sniperTarget.power, 10, 25);
-                        target.AddCondition(SubPoweredCondition.Create(nameof(ConSpeedBreak), sniperTarget.power, breakAmount));
-                        break;
-                }
-            }
-
+            
             // Sovereign - Law Stance Reduces damage by 10%.
             if (targetConditions.Contains(typeof(ConSovereignLaw)))
             {
                 damageMultiplier -= 0.1F;
-            }
-            // Sovereign - Chaos Stance Increases damage by 10%.
-            if (originConditions.Contains(typeof(ConSovereignChaos)))
-            {
-                damageMultiplier += 0.1F;
             }
 
             // Sovereign - Barricade Order: Reduces damage based on # of allies neighboring you
@@ -219,33 +272,7 @@ public class CardDamageHPPatches
                 float barricadeCoherence = target.pos.ListCharasInNeighbor(c => c == Act.CC || c.IsHostile(Act.CC)).Count * 0.05F;
                 damageMultiplier -= barricadeCoherence;
             }
-
-            // Spellblade - If the Spellblade is using Siphoning Blade. do no damage and instead deal the 50% damage as MP instead, absorbing it.
-            if (origin.Chara.Evalue(Constants.FeatSpellblade) > 0)
-            {
-                if (originConditions.Contains(typeof(ConSiphoningBlade)))
-                {
-                    dmg = (int)(dmg * 0.5F);
-                    target.mana.Mod((int)(0 - dmg));
-                    origin.Chara.mana.Mod((int)dmg);
-                    return false;
-                }
-            }
-
-            // Spellblade and Elementalist - Excel at applying status effects. eleP doubled.
-            if (origin.Chara.Evalue(Constants.FeatSpellblade) > 0 || origin.Chara.Evalue(Constants.FeatElementalist) > 0)
-            {
-                eleP = HelperFunctions.SafeMultiplier(eleP, 2);
-            }
-
-
-            // War Cleric - Sol Blade causes the healer to absorb 30% of the damage dealt.
-            if (originChara.Evalue(Constants.FeatWarCleric) > 0 && originConditions.Contains(typeof(ConSolBlade)))
-            {
-                int heal = (int)(dmg * 0.3F);
-                originChara.HealHP(heal, HealSource.Magic);
-            }
-
+            
             // War Cleric - Sanctuary reduces all damage dealt by 75%.
             if (targetConditions.Contains(typeof(ConSanctuary)))
             {
@@ -285,16 +312,15 @@ public class CardDamageHPPatches
             if (targetConditions.Contains(typeof(StanceManaShield)))
             {
                 StanceManaShield manaShield = (StanceManaShield)targetConditions[typeof(StanceManaShield)].Single();
-                int energyPower = manaShield.Stacks;
-                manaShield.ModShield((int)(0 - dmg));
-                if (energyPower > 0)
+                if (manaShield.Stacks > 0)
                 {
+                    manaShield.ModShield((int)(0 - dmg));
                     dmg = 0;
                 }
             }
-
+            
             // Witch Hunter - When HP damage is done as a Witch Hunter with Melee/Ranged, they will also inflict 10% of the damage as mana.
-            if (originChara.Evalue(Constants.FeatWitchHunter) > 0 && attackSource is AttackSource.Melee or AttackSource.Range && dmg > 0)
+            if (originChara != null && originChara.Evalue(Constants.FeatWitchHunter) > 0 && attackSource is AttackSource.Melee or AttackSource.Range && dmg > 0)
             {
                 int manaDamage = (int)(dmg * 0.1F) * -1;
                 target.mana.Mod(manaDamage);
@@ -305,36 +331,43 @@ public class CardDamageHPPatches
 
     [HarmonyPatch(nameof(Card.DamageHP), typeof(long), typeof(int), typeof(int), typeof(AttackSource), typeof(Card), typeof(bool), typeof(Thing), typeof(Chara))]
     [HarmonyTranspiler]
-    internal IEnumerable<CodeInstruction> OnDamageHP_TranspilePatch(IEnumerable<CodeInstruction> instructions)
+    internal static IEnumerable<CodeInstruction> OnDamageHP_TranspilePatch(IEnumerable<CodeInstruction> instructions, ILGenerator il)
     {
-        MethodInfo damagePierceMethod = AccessTools.Method(typeof(CardDamageHPPatches), nameof(CardDamageHPPatches.BattleMageDamagePierce));
-        FieldInfo origin = AccessTools.Field(typeof(Card), "origin");
+        // Helper: static int BattleMageDamagePierce(Card)
+        MethodInfo battleMageDamagePierce = AccessTools.Method(
+            typeof(CardDamageHPPatches),
+            nameof(CardDamageHPPatches.BattleMageDamagePierce),
+            new[] { typeof(Card) }
+        );
+        
+        MethodInfo getResistDamage = AccessTools.Method(
+            typeof(Element), "GetResistDamage",
+            new[] { typeof(int), typeof(int), typeof(int) }
+        );
+        
+        // We'll add this to the piercing power after.
+        LocalBuilder pierceLocal = il.DeclareLocal(typeof(int));
 
-        CodeMatcher matcher = new CodeMatcher(instructions)
-                .MatchForward(true,
-                    new CodeMatch(OpCodes.Ldloc_S), // power
-                    new CodeMatch(OpCodes.Call, AccessTools.Method(typeof(Element), "GetResistDamage"))
-                )
-                .ThrowIfInvalid("GetResistDamage not found")
+        CodeMatcher m = new CodeMatcher(instructions, il)
+                .MatchForward(true, new CodeMatch(OpCodes.Call, getResistDamage))
+                .ThrowIfInvalid("GetResistDamage call not found")
                 .Advance(-1)
                 .Insert(
-                    // Pass Origin Card into the Damage Pierce
-                    new CodeInstruction(OpCodes.Ldloc_0),
-                    new CodeInstruction(OpCodes.Ldfld, origin),
-                    // Call DamagePiercePatch(origin)
-                    new CodeInstruction(OpCodes.Call, damagePierceMethod),
-                    // Add to power
+                    new CodeInstruction(OpCodes.Ldarg, 5),
+                    new CodeInstruction(OpCodes.Call, battleMageDamagePierce),
+                    new CodeInstruction(OpCodes.Stloc, pierceLocal),
+                    new CodeInstruction(OpCodes.Ldloc, pierceLocal),
                     new CodeInstruction(OpCodes.Add)
                 );
 
-        return matcher.InstructionEnumeration();
+        return m.InstructionEnumeration();
 
     }
 
-    internal int BattleMageDamagePierce(Chara origin)
+    internal static int BattleMageDamagePierce(Card origin)
     {
         // Battlemages in Focus Stance with mana remaining will pierce one tier.
-        if (origin.Evalue(Constants.FeatBattlemage) > 0 && origin.HasCondition<StanceManaFocus>() && origin.mana.value > 0)
+        if (origin != null && origin.Evalue(Constants.FeatBattlemage) > 0 && origin.HasCondition<StanceManaFocus>() && origin.Chara.mana.value > 0)
         {
             return 1;
         }

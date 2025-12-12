@@ -2,7 +2,7 @@ using PromotionMod.Common;
 using UnityEngine;
 namespace PromotionMod.Stats.Hermit;
 
-public class ConShadowShroud : Timebuff
+public class ConShadowShroud : BaseBuff
 {
     public override void Tick()
     {

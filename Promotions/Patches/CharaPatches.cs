@@ -1,23 +1,30 @@
+using System;
 using System.Linq;
 using Cwl.Helper.Extensions;
 using HarmonyLib;
 using PromotionMod.Common;
+using PromotionMod.Elements.PromotionAbilities;
 using PromotionMod.Stats;
 using PromotionMod.Stats.Adventurer;
 using PromotionMod.Stats.Artificer;
 using PromotionMod.Stats.Berserker;
 using PromotionMod.Stats.Dancer;
 using PromotionMod.Stats.Harbinger;
+using PromotionMod.Stats.Headhunter;
 using PromotionMod.Stats.Hermit;
 using PromotionMod.Stats.Jenei;
 using PromotionMod.Stats.Luminary;
+using PromotionMod.Stats.Machinist;
+using PromotionMod.Stats.Necromancer;
 using PromotionMod.Stats.Ranger;
 using PromotionMod.Stats.Runeknight;
 using PromotionMod.Stats.Sharpshooter;
 using PromotionMod.Stats.Sniper;
+using PromotionMod.Stats.Sovereign;
 using PromotionMod.Stats.WitchHunter;
 using PromotionMod.Trait;
 using PromotionMod.Trait.Artificer;
+using PromotionMod.Trait.Trickster;
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(Chara))]
@@ -52,16 +59,6 @@ internal class CharaPatches : EClass
     [HarmonyPostfix]
     internal static void CanSeePatching(Chara __instance, ref bool __result, Card c)
     {
-        // DangerSense - Adventurers
-        if (__instance.HasCondition<ConSenseDanger>() && __instance.IsPC && (c.isChara || c.trait is TraitTrap))
-        {
-            if (c.isChara && c.Chara.IsHostile(__instance) || c.trait is TraitTrap)
-            {
-                __result = true;
-                return;
-            }
-        }
-
         // Hermit - Shadow Shroud
         if (c.isChara && c.Chara.HasCondition<ConShadowShroud>())
         {
@@ -70,7 +67,6 @@ internal class CharaPatches : EClass
             if (distance > 1 || sightRadius < distance)
             {
                 __result = false;
-                return;
             }
 
             // Perception + Spotting Skill * 2 and Shadow Shroud reduces detection by 75%.
@@ -84,6 +80,23 @@ internal class CharaPatches : EClass
         }
     }
 
+    [HarmonyPatch(nameof(Chara.Refresh))]
+    [HarmonyPostfix]
+    internal static void RefreshPatch(Chara __instance, bool calledRecursive)
+    {
+        if (!calledRecursive)
+        {
+            try
+            {
+                __instance.visibleWithTelepathy |= (EClass.pc.HasCondition<ConSenseDanger>() && __instance.IsHostile(EClass.pc));
+            }
+            catch (Exception e)
+            {
+                // Swallow this cause this can be called without PC being loaded, but Eclass.pc is not null?
+            }
+        }
+    }
+    
     [HarmonyPatch(nameof(Chara.AddCondition), typeof(Condition), typeof(bool))]
     [HarmonyPrefix]
     internal static bool AddConditionPrefixPatches(Chara __instance, ref Condition __result, Condition c, bool force)
@@ -168,12 +181,119 @@ internal class CharaPatches : EClass
 
     [HarmonyPatch(nameof(Chara.Die))]
     [HarmonyPrefix]
-    internal static void Promotion_CharaPatch_SpawnDoubleLoot(Chara __instance, Card origin)
+    internal static bool Promotion_CharaDie_PrefixPatch(Chara __instance, Card origin)
     {
-        if (!__instance.IsPC && !__instance.IsPCParty && __instance.IsInActiveZone)
+        if (__instance.isChara)
         {
-            __instance.SpawnLoot(origin);
+            // Adventurer - Double Loot.
+            if (!__instance.IsPC && !(__instance.IsPCParty || __instance.IsPCFactionMinion) && __instance.IsInActiveZone && EClass.pc.Evalue(Constants.FeatAdventurer) > 0)
+            {
+                __instance.SpawnLoot(origin);
+            }
+            
+            Chara target = __instance.Chara;
+
+            if (origin is { Chara: not null, isChara: true })
+            {
+                Chara originChara = origin.Chara;
+                // Berserker - Heal on Kill
+                if (originChara.Evalue(Constants.FeatBerserker) > 0)
+                {
+                    int healAmount = (int)(originChara.MaxHP * .25F);
+                    origin.Say("berserker_revel".langGame(originChara.NameSimple));
+                    originChara.HealHP(healAmount);
+                }
+
+                // Headhunter - Gain Headhunter stacks on Kill.
+                if (originChara.Evalue(Constants.FeatHeadhunter) > 0)
+                {
+                    if (!originChara.HasCondition<ConHeadhunter>())
+                    {
+                        originChara.AddCondition<ConHeadhunter>(1);
+                    }
+                    else
+                    {
+                        int newStacks = originChara.GetCondition<ConHeadhunter>().power + 1;
+                        originChara.AddCondition<ConHeadhunter>(newStacks);
+                    }
+                }
+                
+                // Headhunter - Steal a buff on kill.
+                if (origin.isChara && originChara.Evalue(Constants.FeatHeadhunter) > 0)
+                {
+                    Condition? buff = target.conditions.FirstOrDefault(x => x.Type == ConditionType.Buff);
+                    if (buff != null)
+                    {
+                        originChara.AddCondition(buff.source.alias, buff.power, true);
+                    }
+                }
+
+                // Necromancer - If target is afflicted with ConDeadBeckon, on death can summon a skeleton of their level.
+                if (target.HasCondition<ConDeadBeckon>())
+                {
+                    ConDeadBeckon deadBeckon = target.GetCondition<ConDeadBeckon>();
+                    Chara necromancer = EClass._map.zone.FindChara(deadBeckon.NecromancerUID);
+
+                    if (necromancer != null) SpSummonSkeleton.SummonSkeleton(necromancer, target.pos, target.LV, 10, target.LV);
+                }
+
+                // Sovereign - Rout Order will replenish value on kill. Any active Intonation will also replenish value.
+                if (origin.isChara)
+                {
+                    originChara.GetCondition<ConOrderRout>()?.Mod(1);
+                    originChara.GetCondition<ConWeapon>()?.Mod(1);
+                }
+
+                // Trickster - Phantom Trickster Ids will inflict one of the random Trickster debuffs on their killer.
+                if (origin.isChara && originChara.IsHostile(target) && target.id == Constants.PhantomTricksterCharaId)
+                {
+                    string randomCondition = TraitTricksterArcaneTrap.TricksterDebuffs.RandomItem();
+                    Condition tricksterCondition = Condition.Create(randomCondition, target.LV);
+                    originChara.AddCondition(tricksterCondition, true);
+                    origin.PlayEffect("curse");
+                }
+
+                // If a Maiar makes the kill on a Harbinger.
+                if (target.trait is TraitHarbinger && originChara.Evalue(Constants.FeatMaia) > 0)
+                {
+                    // If the Maia hasn't yet ascended.
+                    if (originChara.Evalue(Constants.FeatMaiaEnlightened) == 0 && originChara.Evalue(Constants.FeatMaiaCorrupted) == 0)
+                    {
+                        // Check kills on Harbinger.
+                        // If the has already killed a Harbinger, kill the character and skip credit.
+                        switch (target.id)
+                        {
+                            case Constants.CandlebearerCharaId:
+                                if (originChara.GetFlagValue(Constants.MaiaDarkFateFlag) > 0)
+                                {
+                                    Msg.Say("maiar_forfeit".langGame(originChara.NameSimple));
+                                    originChara.Die(null, null, AttackSource.Wrath);
+                                }
+                                else
+                                {
+                                    Msg.Say("maiar_enlightened".langGame(originChara.NameSimple));
+                                    originChara.SetFlagValue(Constants.MaiaLightFateFlag);
+                                }
+                                break;
+
+                            case Constants.DarklingCharaId:
+                                if (originChara.GetFlagValue(Constants.MaiaLightFateFlag) > 0)
+                                {
+                                    Msg.Say("maiar_forfeit".langGame(originChara.NameSimple));
+                                    originChara.Die(null, null, AttackSource.Wrath);
+                                }
+                                else
+                                {
+                                    Msg.Say("maiar_corrupted".langGame(originChara.NameSimple));
+                                    originChara.SetFlagValue(Constants.MaiaDarkFateFlag);
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
         }
+        return true;
     }
 
     [HarmonyPatch(nameof(Chara._Move))]
@@ -206,12 +326,12 @@ internal class CharaPatches : EClass
         {
             Thing rangedWeapon = __instance.GetBestRangedWeapon();
             TraitToolRange traitToolRange = rangedWeapon.trait as TraitToolRange;
+            __instance.ranged = rangedWeapon;
             if (!(rangedWeapon.c_ammo <= 0 && traitToolRange.NeedReload))
             {
                 foreach (Chara target in HelperFunctions.GetCharasWithinRadius(__instance.pos, rangedWeapon.range, __instance, false, true))
                 {
                     ACT.Ranged.Perform(__instance, target);
-                    break;
                 }
             }
         }
@@ -222,6 +342,8 @@ internal class CharaPatches : EClass
             foreach (Chara sharpshooter in HelperFunctions.GetCharasWithinRadius(newPoint, 6F, __instance, false, true)
                              .Where(sharpshooter => sharpshooter.Evalue(Constants.FeatSharpshooter) > 0 && sharpshooter.HasCondition<StanceOverwatch>()))
             {
+                Thing rangedWeapon = __instance.GetBestRangedWeapon();
+                __instance.ranged = rangedWeapon;
                 ACT.Ranged.Perform(sharpshooter, __instance);
             }
         }
@@ -296,47 +418,50 @@ internal class CharaPatches : EClass
     [HarmonyPrefix]
     internal static bool CharaTick_Patches(Chara __instance)
     {
-        // For the classes that have a class condition, add it if they don't have it.
         int promotionId = __instance.GetFlagValue(Constants.PromotionFeatFlag);
-        if (promotionId != null)
+        // Class-specific passives:
+        // Berserker
+        // Sniper
+        switch (promotionId)
         {
-            // Luminary, Berserker, Jenei, Elementalist
-            switch (promotionId)
-            {
-                case Constants.FeatLuminary:
-                    if (__instance.HasCondition<ConLuminary>() == false)
-                    {
-                        __instance.AddCondition<ConLuminary>();
-                    }
-                    break;
-                case Constants.FeatBerserker:
-                    if (__instance.HasCondition<ConBerserker>() == false)
-                    {
-                        __instance.AddCondition<ConBerserker>();
-                    }
-                    break;
-                case Constants.FeatJenei:
-                    if (__instance.HasCondition<ConJenei>() == false)
-                    {
-                        __instance.AddCondition<ConJenei>();
-                    }
-                    break;
-                case Constants.FeatElementalist:
-                    if (__instance.HasCondition<ConElementalist>() == false)
-                    {
-                        __instance.AddCondition<ConElementalist>();
-                    }
-                    break;
-                case Constants.FeatSniper:
-                    // If the sniper doesn't have the condition and there are no enemies with 3 tiles.
-                    if (__instance.HasCondition<ConNoDistractions>() == false && HelperFunctions.GetCharasWithinRadius(__instance.pos, 3, __instance, false, true).Count > 0)
-                    {
-                        __instance.AddCondition<ConNoDistractions>();
-                    }
-                    break;
-            }
+            case Constants.FeatBerserker:
+                if (__instance.HasCondition<ConBerserker>() == false)
+                {
+                    __instance.AddCondition<ConBerserker>();
+                }
+                break;
+            case Constants.FeatSniper:
+                // If the sniper doesn't have the condition and there are no enemies with 3 tiles.
+                if (__instance.HasCondition<ConNoDistractions>() == false && HelperFunctions.GetCharasWithinRadius(__instance.pos, 3, __instance, false, true).Count == 0)
+                {
+                    __instance.AddCondition<ConNoDistractions>();
+                }
+                break;
         }
 
+        // Harpy Golem will attempt to add extra FOV Condition to the player.
+        if (__instance is { IsPCParty: true, IsAliveInCurrentZone: true } && __instance.Evalue(Constants.FeatHarpyGolemVision) > 0 && EClass.pc.IsAliveInCurrentZone)
+        {
+            Condition? visionBuff = EClass.pc.GetCondition<ConAerialVision>() ?? EClass.pc.AddCondition<ConAerialVision>();
+            if (visionBuff is { value: <= 1 }) visionBuff?.Mod(5);
+        }
+
+        // Siren Golems gain Adaptive Mobility when floating
+        // Siren Golems gain Liquid Cooling when Wet
+        if (__instance.IsAliveInCurrentZone)
+        {
+            if (__instance.Evalue(Constants.FeatSirenGolemSpeed) > 0 && (EClass._zone.IsUnderwater || __instance.Chara.isFloating))
+            {
+                Condition? movementBuff = EClass.pc.GetCondition<ConAdaptiveMobility>() ?? EClass.pc.AddCondition<ConAdaptiveMobility>();
+                if (movementBuff is { value: <= 1 }) movementBuff?.Mod(5);
+            }
+
+            if (__instance.HasCondition<ConWet>() && __instance.Evalue(Constants.FeatSirenGolemMagic) > 0)
+            {
+                Condition? castingBuff = EClass.pc.GetCondition<ConLiquidCooling>() ?? EClass.pc.AddCondition<ConLiquidCooling>();
+                if (castingBuff is { value: <= 1 }) castingBuff?.Mod(5);
+            }
+        }
         return true;
     }
 

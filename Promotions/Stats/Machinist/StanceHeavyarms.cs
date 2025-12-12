@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-namespace PromotionMod.Stats.Sharpshooter;
+namespace PromotionMod.Stats.Machinist;
 
 public class StanceHeavyarms : BaseStance
 {
-    public const int FOVBuffAmount = 15;
+    public const int FOVBuffAmount = 2;
 
     public override bool TimeBased => true;
 
@@ -14,10 +14,7 @@ public class StanceHeavyarms : BaseStance
 
     public override void OnCalculateFov(Fov fov, ref int radius, ref float power)
     {
-        if (radius < FOVBuffAmount)
-        {
-            radius = FOVBuffAmount;
-        }
+        radius += FOVBuffAmount;
     }
 
     public override void OnRemoved()

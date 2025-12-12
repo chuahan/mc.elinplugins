@@ -39,8 +39,8 @@ public class FeatAdventurer : PromotionFeat
         return owner.Chara?.c_idJob == "tourist";
     }
 
-    protected override void ApplyInternal()
+    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        // Lol.
+        base._OnApply(add,eleOwner, hint);
     }
 }

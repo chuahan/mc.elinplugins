@@ -2,7 +2,7 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Ranger;
 namespace PromotionMod.Elements.PromotionAbilities.Ranger;
 
-public class ActGimmickShot : Ability
+public class ActGimmickCoating : Ability
 {
     public override Cost GetCost(Chara c)
     {

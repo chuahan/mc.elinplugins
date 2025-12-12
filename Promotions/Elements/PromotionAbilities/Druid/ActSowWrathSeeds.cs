@@ -60,11 +60,10 @@ public class ActSowWrathSeeds : Ability
         bool flowerSummoned = toSummon is Constants.DruidEntangleFlowerCharaId or Constants.DruidParalyticFlowerCharaId or Constants.DruidToxicFlowerCharaId
                 or Constants.DruidSoporificFlowerCharaId;
         Chara plant = CharaGen.Create(toSummon);
-        plant.isSummon = true;
         if (flowerSummoned)
         {
             // Flowers only last 30 turns
-            plant.c_summonDuration = 30;
+            plant.SetSummon(30);
             plant.SetLv(1);
         }
         else

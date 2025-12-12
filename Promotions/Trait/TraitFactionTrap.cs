@@ -6,14 +6,17 @@ public class TraitFactionTrap : TraitTrap
 {
     public virtual string TrapName => "faction_trap";
 
-    public virtual bool IsPCFactionTrap => owner.GetFlagValue(Constants.IsPlayerFactionTrapFlag) > 0;
-
     public override bool CanDisarmTrap => false;
     public override bool IsJammed => false;
+    
+    public override bool IsNegativeEffect => true;
 
+    public override int radius => 1;
+
+    public override bool IgnoreWhenLevitating() => true;
+    
     public override void OnInstall(bool byPlayer)
     {
-        owner.SetFlagValue(Constants.IsPlayerFactionTrapFlag, byPlayer ? 1 : 0);
         owner.SetHidden(false); // Faction Traps are always visible.
     }
 
@@ -22,22 +25,40 @@ public class TraitFactionTrap : TraitTrap
         return owner.LV * 10;
     }
 
+    public virtual void ActivateTrapInternal(Chara c)
+    {
+        
+    }
+
+    public bool IsPCFactionTrap()
+    {
+        return owner.GetFlagValue(Constants.IsPlayerFactionTrapFlag) > 0;
+    }
+
     public override void OnStepped(Chara c)
     {
-        if (!IsNegativeEffect || !_zone.IsPCFaction && !_zone.IsUserZone)
+        if (!_zone.IsPCFaction && !_zone.IsUserZone)
         {
-            if (IsPCFactionTrap && c.IsHostile(pc) || !IsPCFactionTrap && !c.IsHostile(pc))
+            bool isPCTrap = IsPCFactionTrap();
+            if ((isPCTrap && c.IsHostile(pc)) || (!isPCTrap && !c.IsHostile(pc)))
             {
-                owner.SetHidden(hide: false);
                 if (IgnoreWhenLevitating() && c.IsLevitating)
                 {
                     owner.Say("levitating");
                 }
-                else if (!CanDisarmTrap || !IsPCFactionTrap && !TryDisarmTrap(c) && pc.Evalue(1656) < 3)
+                else if (!CanDisarmTrap || (!isPCTrap && !TryDisarmTrap(c) && pc.Evalue(1656) < 3))
                 {
                     ActivateTrap(c);
                 }
             }
         }
+    }
+    
+    public override void OnActivateTrap(Chara c)
+    {
+        c.PlaySound("trap");
+        Msg.Say(TrapName.langGame(), c.NameSimple);
+        ActivateTrapInternal(c);
+        owner.Destroy();
     }
 }

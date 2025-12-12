@@ -7,7 +7,11 @@ public class ActJeneiMotherGaia : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatJenei) == 0) return false;
+        if (CC.Evalue(Constants.FeatJenei) == 0)
+        {
+            Msg.Say("classlocked_ability".lang(Constants.JeneiId.lang()));
+            return false;
+        }
         return base.CanPerform();
     }
 
@@ -27,30 +31,31 @@ public class ActJeneiMotherGaia : Ability
 
     public override bool Perform()
     {
+		Msg.Say("DLL path: " + typeof(ActJeneiMotherGaia).Assembly.Location);
+        Msg.Say("START GAIA");
         int power = GetPower(CC);
-
-        List<Point> targets = new List<Point>
-        {
-            TC.pos
-        };
-
-        _map.ForeachNeighbor(TC.pos, delegate(Point neighbor)
-        {
-            TweenUtil.Tween(0.8F, null, delegate
-            {
-                targets.Add(neighbor);
-                neighbor.Animate(AnimeID.Quake, true);
-            });
-        });
 
         TC.pos.Animate(AnimeID.Quake, true);
         CC.PlaySound("spell_earthquake");
         Shaker.ShakeCam("ball");
-
-        ActEffect.DamageEle(CC, EffectId.Earthquake, power, Element.Create(Constants.EleImpact, power / 10), targets, new ActRef
+        ActEffect.DamageEle(CC, EffectId.Earthquake, power, Element.Create(Constants.EleImpact, power / 10), new List<Point> {TC.pos}, new ActRef
         {
-            act = this
+            act = this,
+            aliasEle = Constants.ElementAliasLookup[Constants.EleImpact],
+            origin = CC,
         });
+        
+        TC.pos.ForeachNeighbor(delegate(Point point)
+        {
+            ActEffect.DamageEle(CC, EffectId.Earthquake, power, Element.Create(Constants.EleImpact, power / 10), new List<Point> {point}, new ActRef
+            {
+                act = this,
+                aliasEle = Constants.ElementAliasLookup[Constants.EleImpact],
+                origin = CC,
+            });
+        });
+
+        Msg.Say("END GAIA");
         return true;
     }
 }

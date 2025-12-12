@@ -3,7 +3,7 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Battlemage;
 namespace PromotionMod.Patches;
 
-[HarmonyPatch(typeof(ELEMENT))]
+[HarmonyPatch(typeof(Element))]
 public class ElementPatches
 {
     [HarmonyPatch(nameof(Element.GetCost))]

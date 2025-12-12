@@ -34,6 +34,7 @@ public class ActChargedShot : Ability
         }
 
         CC.AddCondition<ConChargedChamber>(chargeAmount);
+        CC.TalkRaw("sharpshooterCharge".langList().RandomItem());
         return true;
     }
 }

@@ -6,7 +6,11 @@ public class ActJeneiPly : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatJenei) == 0) return false;
+        if (CC.Evalue(Constants.FeatJenei) == 0)
+        {
+            Msg.Say("classlocked_ability".lang(Constants.JeneiId.lang()));
+            return false;
+        }
         return base.CanPerform();
     }
 
@@ -26,7 +30,8 @@ public class ActJeneiPly : Ability
 
     public override bool Perform()
     {
-        int healAmount = HelperFunctions.SafeDice("jenei_ply_heal", GetPower(CC));
+        float healMultiplier = HelperFunctions.SigmoidScaling(this.GetPower(CC), 0.08F, 0.4F, 4600);
+        int healAmount = (int)(TC.MaxHP * healMultiplier);
         TC.HealHP(healAmount, HealSource.Magic);
         return true;
     }

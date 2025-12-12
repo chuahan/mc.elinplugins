@@ -41,12 +41,9 @@ public class FeatSharpshooter : PromotionFeat
     {
         return owner.Chara?.c_idJob == "gunner";
     }
-
-    protected override void ApplyInternal()
+    
+    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        // Gunning
-        // Marksman
-        // Stealth
-        //owner.Chara.elements.ModPotential(286, 30);
+        base._OnApply(add,eleOwner, hint);
     }
 }

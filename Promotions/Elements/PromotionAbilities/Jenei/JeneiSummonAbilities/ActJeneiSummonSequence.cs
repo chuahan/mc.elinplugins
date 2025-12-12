@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using PromotionMod.Common;
 using PromotionMod.Trait;
 namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
 

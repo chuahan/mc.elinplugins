@@ -11,6 +11,13 @@ public class SpSummonSkeleton : Spell
         Constants.NecromancerSkeletonMageCharaId
     };
 
+    public static readonly List<int> MageElements = new List<int>{
+        Constants.EleFire,
+        Constants.EleCold,
+        Constants.EleLightning,
+        Constants.ElePoison,
+    };
+
     public override bool CanPerform()
     {
         if (CC.Evalue(Constants.FeatNecromancer) == 0)
@@ -41,7 +48,6 @@ public class SpSummonSkeleton : Spell
         if (EClass.rnd(deathknightChance) == 0) summonName = Constants.NecromancerDeathKnightCharaId;
 
         Chara summon = CharaGen.Create(summonName);
-        summon.isSummon = true;
         // Normal summon leveling.
         // For PCs Summons can scale to your deepest achieved depth instead.
         int levelOverride = Math.Max(caster.LV, targetLevel) * (100 + power / 10) / 100 + power / 30;
@@ -51,11 +57,14 @@ public class SpSummonSkeleton : Spell
         caster.currentZone.AddCard(summon, target);
         summon.PlayEffect("mutation");
         summon.MakeMinion(caster);
+        //summon.c_summonDuration
 
         // Equip the Skeleton.
         switch (summonName)
         {
             case Constants.NecromancerSkeletonMageCharaId:
+                // Skeleton Mages will have a random element between Fire, Cold, Lightning, and Poison
+                summon.SetMainElement(Constants.ElementAliasLookup[MageElements.RandomItem()], 50, elemental: true);
                 summon.AddThing(ThingGen.Create("staff", 40, summon.LV));
                 break;
             case Constants.NecromancerSkeletonWarriorCharaId:

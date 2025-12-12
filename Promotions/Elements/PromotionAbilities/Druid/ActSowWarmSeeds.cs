@@ -56,11 +56,10 @@ public class ActSowWarmSeeds : Ability
         int power = GetPower(CC);
         bool flowerSummoned = toSummon is Constants.DruidSoothingBloomCharaId or Constants.DruidWardingBloomCharaId or Constants.DruidSereneBloomCharaId;
         Chara plant = CharaGen.Create(toSummon);
-        plant.isSummon = true;
         if (flowerSummoned)
         {
             // Flowers only last 30 turns
-            plant.c_summonDuration = 30;
+            plant.SetSummon(30);
             plant.SetLv(1);
         }
         else

@@ -34,13 +34,12 @@ public class ActAccursedTouch : Ability
 
     public override bool Perform()
     {
-        if (TC != null && TC.isChara) AddMiasma(GetPower(CC), CC, TC.Chara);
+        if (TC is { isChara: true }) ActAccursedTouch.AddMiasma(GetPower(CC), CC, TC.Chara);
         return true;
     }
 
-    internal void AddMiasma(int power, Chara caster, Chara target)
+    internal static void AddMiasma(int power, Chara caster, Chara target)
     {
-        Random rng = new Random();
         List<string> activeMiasma = target.conditions.Select(t => nameof(t)).ToList();
         List<string> inactiveMiasma = PossibleMiasmas.Except(activeMiasma).ToList();
         if (inactiveMiasma.Count == 0)
@@ -48,7 +47,7 @@ public class ActAccursedTouch : Ability
             target.Say("harbinger_max_affliction".langGame());
             return;
         }
-        ActEffect.ProcAt(EffectId.Debuff, GetPower(CC), BlessedState.Normal, CC, target, target.pos, true, new ActRef
+        ActEffect.ProcAt(EffectId.Debuff, power, BlessedState.Normal, CC, target, target.pos, true, new ActRef
         {
             origin = CC.Chara,
             n1 = inactiveMiasma.RandomItem()

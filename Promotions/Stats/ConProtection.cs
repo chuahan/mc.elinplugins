@@ -4,7 +4,6 @@ namespace PromotionMod.Stats;
 public class ConProtection : BaseBuff
 {
     public override ConditionType Type => ConditionType.Buff;
-    public override bool WillOverride => false;
 
     public static int CalcProtectionAmount(int power)
     {

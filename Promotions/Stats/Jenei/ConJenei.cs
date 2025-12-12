@@ -35,10 +35,11 @@ public class ConJenei : ClassCondition
     {
         Dictionary<int, int> stockpile = GetElementalStockpile();
         string? readySummon = FeatJenei.JeneiSummons.GetSummon(stockpile);
-        list.Add("hintJeneiVenus".lang(stockpile[Constants.EleImpact].ToString()));
-        list.Add("hintJeneiMars".lang(stockpile[Constants.EleImpact].ToString()));
-        list.Add("hintJeneiJupiter".lang(stockpile[Constants.EleImpact].ToString()));
-        list.Add("hintJeneiMercury".lang(stockpile[Constants.EleImpact].ToString()));
+        list.Add("hintJenei".lang());
+        if (stockpile.TryGetValue(Constants.EleImpact, out int earthCount)) list.Add("hintJeneiVenus".lang(earthCount.ToString()));
+        if (stockpile.TryGetValue(Constants.EleFire, out int fireCount)) list.Add("hintJeneiMars".lang(fireCount.ToString()));
+        if (stockpile.TryGetValue(Constants.EleLightning, out int windCount)) list.Add("hintJeneiJupiter".lang(windCount.ToString()));
+        if (stockpile.TryGetValue(Constants.EleCold, out int waterCount)) list.Add("hintJeneiMercury".lang(waterCount.ToString()));
         if (readySummon != null)
         {
             string summonName = readySummon + "_formalname";

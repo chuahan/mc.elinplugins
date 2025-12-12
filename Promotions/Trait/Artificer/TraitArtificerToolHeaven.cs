@@ -6,6 +6,8 @@ namespace PromotionMod.Trait.Artificer;
 public class TraitArtificerToolHeaven : TraitArtificerTool
 {
     public override string ArtificerToolId => "artificier_heavenpearl";
+    
+    public override int MaxCharges => 10;
 
     public override bool ArtificerToolEffect(Chara cc, Point pos, int power)
     {
@@ -16,7 +18,7 @@ public class TraitArtificerToolHeaven : TraitArtificerTool
         {
             int heal = (int)(target.MaxHP * healingAmount);
             target.HealHP(heal, HealSource.Item);
-            target.AddCondition<ConHeavenlyEmbrace>(instanceCount); // TODO (P1) IMPLEMENT
+            target.AddCondition<ConHeavenlyEmbrace>(instanceCount);
         }
         owner.c_ammo--;
         return true;

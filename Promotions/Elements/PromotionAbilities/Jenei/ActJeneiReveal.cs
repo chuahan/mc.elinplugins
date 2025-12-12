@@ -8,8 +8,12 @@ public class ActJeneiReveal : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatJenei) == 0) return false;
-        if (!TC.isChara) return false;
+        if (CC.Evalue(Constants.FeatJenei) == 0)
+        {
+            Msg.Say("classlocked_ability".lang(Constants.JeneiId.lang()));
+            return false;
+        }
+        if (TC == null || !TC.isChara) return false;
         return base.CanPerform();
     }
 
@@ -39,12 +43,12 @@ public class ActJeneiReveal : Ability
                     Msg.Say("noteFav", target);
                     target.knowFav = true;
                 }
+                ui.AddLayer<LayerChara>().SetChara(target);
             }
-            ui.AddLayer<LayerChara>().SetChara(target);
-        }
-        else
-        {
-            TC.Chara.AddCondition(SubPoweredCondition.Create(nameof(ConMagicBreak), GetPower(CC), 5));
+            else
+            {
+                TC.Chara.AddCondition(SubPoweredCondition.Create(nameof(ConMagicBreak), GetPower(CC), 5));
+            }
         }
         return true;
     }

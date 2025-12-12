@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
+using PromotionMod.Common;
 namespace PromotionMod.Stats.Battlemage;
 
 /// <summary>
@@ -11,13 +13,14 @@ namespace PromotionMod.Stats.Battlemage;
 /// </summary>
 public class StanceManaShield : BaseStance
 {
-
     // Need to avoid taking damage for 3 turns
     private const int RechargeDelayMax = 3;
     [JsonProperty(PropertyName = "R")] private int _rechargeDelay;
     [JsonProperty(PropertyName = "S")] public int Stacks;
 
     public override bool TimeBased => true;
+    
+    public override string TextDuration => "" + Stacks;
 
     public override void OnStart()
     {
@@ -44,6 +47,15 @@ public class StanceManaShield : BaseStance
         else if (_rechargeDelay > 0)
         {
             _rechargeDelay--;
+        }
+    }
+    
+    public override void OnWriteNote(List<string> list)
+    {
+        list.Add("hintManaShield".lang(this.Stacks.ToString(), power.ToString()));
+        if (_rechargeDelay > 0)
+        {
+            list.Add("hintManaShieldDelay".lang(this._rechargeDelay.ToString()));
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using Cwl.Helper.Extensions;
 using HarmonyLib;
 using PromotionMod.Common;
+using PromotionMod.Elements.PromotionAbilities.Elementalist;
 using PromotionMod.Stats;
 using PromotionMod.Stats.Jenei;
 using PromotionMod.Stats.WitchHunter;
@@ -29,10 +30,10 @@ public class ActEffectPatches
             }
 
             // Elementalist - Track Spellcasts
-            if (chara.Evalue(Constants.FeatElementalist) > 0 && actRef.aliasEle != null && !actRef.aliasEle.IsEmpty())
+            if (tc is { isChara: true } && chara.Evalue(Constants.FeatElementalist) > 0 && actRef.aliasEle != null && !actRef.aliasEle.IsEmpty() && (actRef.act is not ActElementalFury && actRef.act is not ActElementalExtinction))
             {
                 int element = Constants.ElementIdLookup[actRef.aliasEle];
-                ConElementalist elementalist = chara.GetCondition<ConElementalist>() ?? chara.AddCondition<ConElementalist>() as ConElementalist;
+                ConElementalist? elementalist = chara.GetCondition<ConElementalist>() ?? chara.AddCondition<ConElementalist>() as ConElementalist;
                 if (tc.isChara) elementalist?.AddElementalOrb(element, tc.Chara);
             }
 
@@ -42,7 +43,7 @@ public class ActEffectPatches
                 int element = Constants.ElementIdLookup[actRef.aliasEle];
                 if (element is Constants.EleImpact or Constants.EleFire or Constants.EleCold or Constants.EleLightning)
                 {
-                    ConJenei jenei = chara.GetCondition<ConJenei>() ?? chara.AddCondition<ConJenei>() as ConJenei;
+                    ConJenei? jenei = chara.GetCondition<ConJenei>() ?? chara.AddCondition<ConJenei>() as ConJenei;
                     jenei?.AddElement(element);
                 }
             }

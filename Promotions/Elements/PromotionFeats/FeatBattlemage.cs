@@ -42,14 +42,9 @@ public class FeatBattlemage : PromotionFeat
     {
         return owner.Chara?.c_idJob == "warmage";
     }
-
-    protected override void ApplyInternal()
+    
+    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        // Reading - 285
-        owner.Chara.elements.ModPotential(285, 30);
-        // Casting - 304
-        owner.Chara.elements.ModPotential(304, 30);
-        // Control Magic - 302
-        owner.Chara.elements.ModPotential(302, 30);
+        base._OnApply(add,eleOwner, hint);
     }
 }

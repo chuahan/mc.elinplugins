@@ -11,7 +11,11 @@ public class StHeavyarms : Ability
             Msg.Say("classlocked_ability".lang(Constants.MachinistId.lang()));
             return false;
         }
+        
+        // Cannot be used while riding or as a parasite.
+        if (CC.ride != null) return false;
 
+        // Can only be used if there are visible targets.
         List<Point> targets = new List<Point>();
         foreach (Point p in CC.fov.ListPoints())
         {
@@ -22,6 +26,7 @@ public class StHeavyarms : Ability
                 break;
             }
         }
+        
         return targets.Count != 0 && base.CanPerform();
 
     }

@@ -63,15 +63,31 @@ public class ActElementalExtinction : Ability
                 List<Chara> nearbyEnemies = HelperFunctions.GetCharasWithinRadius(TP, 3F, CC, false, false);
                 if (nearbyEnemies.Count == 0)
                 {
+                    // No targets left, finish consuming.
                     elementalist.ConsumeElementalOrbs();
                     return true;
                 }
                 TC = nearbyEnemies.RandomItem();
             }
             ActRef actRef = default(ActRef);
+            actRef.act = this;
             actRef.origin = CC;
             actRef.aliasEle = Constants.ElementAliasLookup[element];
-            ActEffect.ProcAt(EffectId.Meteor, power, BlessedState.Normal, CC, TC, TC.pos, true, actRef);
+
+            Element eleObj = Element.Create(Constants.ElementAliasLookup[element], power / 10);
+            // Go straight to Damage ele to focus fire meteors on that location.
+            // Need to well... draw em though.
+            EffectMeteor.Create(TC.pos, 1, 1, delegate
+            {
+            });
+            CC.PlaySound("spell_ball");
+            if (CC.IsInMutterDistance())
+            {
+                Shaker.ShakeCam("ball");
+            }
+            EClass.Wait(1f, CC);
+            ActEffect.DamageEle(CC, EffectId.Meteor, power, eleObj, new List<Point>{TC.pos}, actRef, nameof(ActElementalExtinction));
+            //ActEffect.ProcAt(EffectId.Meteor, power, BlessedState.Normal, CC, TC, TC.pos, true, actRef);
 
             // Consume an orb.
             activeStockpile[element]--;

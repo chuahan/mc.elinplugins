@@ -1,4 +1,5 @@
 using PromotionMod.Common;
+using PromotionMod.Stats.Berserker;
 namespace PromotionMod.Elements.PromotionAbilities.Berserker;
 
 public class ActLifebreak : Ability
@@ -28,7 +29,8 @@ public class ActLifebreak : Ability
 
     public override bool Perform()
     {
-        new ActMeleeLifebreak().Perform(CC, TC);
+        CC.AddCondition<ConLifebreakAttack>(this.GetPower(CC), true);
+        new ActMelee().Perform(CC, TC);
         CC.AddCooldown(Constants.ActLifebreakId, 10);
         return true;
     }

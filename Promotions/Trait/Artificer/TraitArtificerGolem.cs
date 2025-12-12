@@ -20,7 +20,7 @@ namespace PromotionMod.Trait.Artificer;
 ///     Siren Type Golems are aquatic golems inspired by the nereids. Lacking Legs, they are far slower normally, but will
 ///     show their potential when levitating or in water.
 ///     1 Arm. 1 Aquatic Module.
-///     When levitating or in water, they gain "Aquatic Mobility" condition, which gives them a boost to their speed and
+///     When levitating or in water, they gain "Adaptive Mobility" condition, which gives them a boost to their speed and
 ///     evasion.
 ///     When in water, they will gain the "Aquatic Cooling" condition, which gives them a boost to rapid magic and spell
 ///     enhance.
@@ -29,8 +29,8 @@ namespace PromotionMod.Trait.Artificer;
 ///     1 Arm, 1 Leg. 1 Pilot Module.
 ///     Has the "Core Protocols" Feat. When being ridden, the Titan golem gains increased stats, while redirecting 100% of
 ///     the damage done to the rider to itself.
-///     When being ridden, Pilot gets access to the "Titan Charge" ability, which is a bodyslam/rush attack that scales
-///     based on the weight and speed of the titan.
+///     When being ridden, Pilot gets access to the "Trample" ability, which is a bodyslam/rush attack that scales
+///     based on the speed and END of the titan.
 ///     "Welcome back, pilot."
 ///     "Control transferring to pilot."
 ///     "Transferring systems to manual operations."
@@ -47,7 +47,7 @@ namespace PromotionMod.Trait.Artificer;
 ///     Starts with Rush, Taunt. Tactics. Evasion. Strategy.
 ///     Tower Class - A magical focused class.
 ///     Tourist / Wizard
-///     Starts with Magic Arrow, Bolt, and Flare, Casting, Mana Capacity, and Mana Consumption.
+///     Starts with Magic Arrow, Bolt, and Flare, Casting, Mana Capacity, and Mana Control.
 ///     Siege Class - A ranged focused class.
 ///     Tourist / Archer
 ///     Starts with Missile Barrage, Marksmanship. Evasion. Eye of Mind.

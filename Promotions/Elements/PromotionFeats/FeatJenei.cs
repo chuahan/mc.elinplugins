@@ -79,14 +79,9 @@ public class FeatJenei : PromotionFeat
     {
         return owner.Chara?.c_idJob == "farmer";
     }
-
-    protected override void ApplyInternal()
+    
+    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        // Farming - 286
-        owner.Chara.elements.ModPotential(286, 30);
-        // Casting - 304
-        owner.Chara.elements.ModPotential(304, 30);
-
         // For PCs, depending on which element they attuned to, add their two abilities.
         if (owner.Chara.IsPC)
         {
@@ -111,6 +106,7 @@ public class FeatJenei : PromotionFeat
                     break;
             }
         }
+        base._OnApply(add,eleOwner, hint);
     }
 
     public class JeneiSummonCost

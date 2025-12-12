@@ -42,12 +42,9 @@ public class FeatNecromancer : PromotionFeat
     {
         return owner.Chara?.c_idJob == "wizard";
     }
-
-    protected override void ApplyInternal()
+    
+    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        // Anatomy - 286
-        //owner.Chara.elements.ModPotential(286, 30);
-        // Casting - 304
-        //owner.Chara.elements.ModPotential(304, 30);
+        base._OnApply(add,eleOwner, hint);
     }
 }

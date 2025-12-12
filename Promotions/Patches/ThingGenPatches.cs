@@ -9,7 +9,7 @@ public class ThingGenPatches
     [HarmonyPostfix]
     internal static void Promotion_ArtificerDoubleCrystalsPatch(ref Thing __result, string id, int idMat, int lv)
     {
-        if (EClass.pc.Evalue(Constants.FeatArtificer) > 0 && (__result.id == "crystal_earth" || __result.id == "crystal_sun" || __result.id == "crystal_mana"))
+        if (EClass.pc != null && __result != null && EClass.pc.Evalue(Constants.FeatArtificer) > 0 && (__result.id == "crystal_earth" || __result.id == "crystal_sun" || __result.id == "crystal_mana"))
         {
             __result.Num *= 2;
         }

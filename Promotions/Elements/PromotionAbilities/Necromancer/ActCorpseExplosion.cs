@@ -13,7 +13,7 @@ public class ActCorpseExplosion : Ability
             return false;
         }
         // Must be a minion of the caster and must be undead.
-        if (!TC.isChara || !TC.IsMinion || TC.Chara.master != CC || !TC.Chara.HasTag(CTAG.undead)) return false;
+        if (!TC.isChara || !TC.IsMinion || TC.Chara.master != CC || !TC.Chara.IsUndead || !TC.IsAliveInCurrentZone) return false;
         return base.CanPerform();
     }
 
@@ -33,16 +33,15 @@ public class ActCorpseExplosion : Ability
 
     public override bool Perform()
     {
-        if (!TC.isChara || !TC.IsMinion || TC.Chara.master != CC || !TC.Chara.HasTag(CTAG.undead) || !TC.IsAliveInCurrentZone) return false;
+        if (EClass.rnd(4) == 0) CC.TalkRaw($"necromancer_corpse_explosion{EClass.rnd(5)}".langGame());
         if (TC.Chara.id == "sister_undead")
         {
-            Msg.Say("jureAngy".langGame());
-            player.ModKarma(-1);
+            Msg.Say("jureAngy".langList().RandomItem());
+            player.ModKarma(-10);
         }
         // Target's Remaining HP is scaled down.
         int healthPercent = (int)HelperFunctions.SigmoidScaling(GetPower(CC), 40, 75);
         int healthValue = TC.Chara.hp * (healthPercent / 100);
-        Effect spellEffect = Effect.Get("Element/ball_Nether");
         List<Chara> targetsHit = new List<Chara>();
         foreach (Point tile in _map.ListPointsInCircle(TC.pos, 3f, false, false))
         {
@@ -62,12 +61,13 @@ public class ActCorpseExplosion : Ability
             }
 
             // Get distance from the origin. Use that to add delay to the explosion,
-            float delay = distance * 0.7F;
+            float delay = distance * 0.07F;
             TweenUtil.Delay(delay, delegate
             {
-                spellEffect.Play(tile, 0f, tile);
+                tile.PlayEffect("Element/ball_Nether");
             });
         }
+        TC.Chara.Die();
         return true;
     }
 }

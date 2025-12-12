@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
+using PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
 using PromotionMod.Elements.PromotionFeats;
 using PromotionMod.Stats.Jenei;
 namespace PromotionMod.Elements.PromotionAbilities.Jenei;
@@ -9,7 +11,11 @@ public class ActSpiritSummon : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatJenei) == 0) return false;
+        if (CC.Evalue(Constants.FeatJenei) == 0)
+        {
+            Msg.Say("classlocked_ability".lang(Constants.JeneiId.lang()));
+            return false;
+        }
         if (CC.HasCooldown(Constants.ActSpiritSummonId)) return false;
 
         // NPCs can summon a random summon every 30 turns.
@@ -28,6 +34,61 @@ public class ActSpiritSummon : Ability
         };
     }
 
+    public static Dictionary<string, Ability> SummonAbility = new Dictionary<string, Ability>
+    {
+        {
+            Constants.JeneiAtlantaCharaId, new ActAtalanta()
+        },
+        {
+            Constants.JeneiAzulCharaId, new ActAzul()
+        },
+        {
+            Constants.JeneiBoreasCharaId, new ActBoreas()
+        },
+        {
+            Constants.JeneiCatastropheCharaId, new ActCatastrophe()
+        },
+        {
+            Constants.JeneiCharonCharaId, new ActCharon()
+        },
+        {
+            Constants.JeneiCoatlicueCharaId, new ActCoatilcue()
+        },
+        {
+            Constants.JeneiCybeleCharaId, new ActCybele()
+        },
+        {
+            Constants.JeneiDaedalusCharaId, new ActDaedalus()
+        },
+        {
+            Constants.JeneiEclipseCharaId, new ActEclipse()
+        },
+        {
+            Constants.JeneiFloraCharaId, new ActFlora()
+        },
+        {
+            Constants.JeneiHauresCharaId, new ActHaures()
+        },
+        {
+            Constants.JeneiIrisCharaId, new ActIris()
+        },
+        {
+            Constants.JeneiMegaeraCharaId, new ActMegaera()
+        },
+        {
+            Constants.JeneiMolochCharaId, new ActMoloch()
+        },
+        {
+            Constants.JeneiTiamatCharaId, new ActTiamat()
+        },
+        {
+            Constants.JeneiUlyssesCharaId, new ActUlysses()
+        },
+        {
+            Constants.JeneiZaganCharaId, new ActZagan()
+        },
+    };
+
     public override bool Perform()
     {
         // NPCs can summon a random summon with higher cooldown.
@@ -41,7 +102,7 @@ public class ActSpiritSummon : Ability
 
         // Summon - For PCs summons can scale to your deepest achieved depth instead.
         Chara jeneiSummon = CharaGen.Create(summon);
-        jeneiSummon.isSummon = true;
+        jeneiSummon.SetSummon(10);
         int power = GetPower(CC);
         int levelOverride = CC.LV * (100 + power / 10) / 100 + power / 30;
         if (CC.IsPC) levelOverride = Math.Max(player.stats.deepest, levelOverride);
@@ -66,7 +127,7 @@ public class ActSpiritSummon : Ability
         {
             CC.AddCooldown(Constants.ActSpiritSummonId, 30);
         }
-
+        SummonAbility[summon].Perform(jeneiSummon, null, jeneiSummon.pos);
         return true;
     }
 }

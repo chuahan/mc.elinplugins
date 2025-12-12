@@ -61,7 +61,7 @@ public class ActTitanCharge : Ability
         Chara actor = CC.id == Constants.TitanGolemCharaId || CC.id == Constants.KnightLancerCharaId ? CC : CC.ride;
         int multiplier = actor.PV * actor.END;
         int power = EClass.curve(actor.Speed, 300, 75);
-        long damage = Dice.Create(Constants.ActTrampleAlias, power, actor, act).Roll() * multiplier;
+        long damage = Dice.Create(Constants.ActTrampleAlias, power / 2, actor, act).Roll() * multiplier;
 
         bool flag = CC.IsPC && !(CC.ai is GoalAutoCombat);
         if (flag)

@@ -56,14 +56,9 @@ public class FeatSovereign : PromotionFeat
     {
         return owner.Chara?.c_idJob == "paladin";
     }
-
-    protected override void ApplyInternal()
+    
+    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        // Strategy
-        // Heavy Armor
-        // Tactics
-        // Charisma
-        owner.Chara.elements.ModPotential(286, 30);
-        owner.Chara.elements.ModPotential(304, 30);
+        base._OnApply(add,eleOwner, hint);
     }
 }

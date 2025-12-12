@@ -7,7 +7,11 @@ public class ActJeneiDeluge : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatJenei) == 0) return false;
+        if (CC.Evalue(Constants.FeatJenei) == 0)
+        {
+            Msg.Say("classlocked_ability".lang(Constants.JeneiId.lang()));
+            return false;
+        }
         return base.CanPerform();
     }
 
@@ -28,12 +32,14 @@ public class ActJeneiDeluge : Ability
     public override bool Perform()
     {
         int power = GetPower(CC);
-        ActEffect.DamageEle(CC, EffectId.None, power, Element.Create(Constants.EleCold, power / 10), new List<Point>
+        ActEffect.DamageEle(CC, EffectId.Puddle, power, Element.Create(Constants.EleCold, power / 10), new List<Point>
         {
             TP
         }, new ActRef
         {
-            act = this
+            act = this,
+            aliasEle = Constants.ElementAliasLookup[Constants.EleCold],
+            origin = CC,
         });
         _map.ModLiquid(TC.pos.x, TC.pos.z, 10);
         return true;

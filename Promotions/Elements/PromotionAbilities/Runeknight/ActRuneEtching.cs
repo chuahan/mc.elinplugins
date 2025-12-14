@@ -6,9 +6,9 @@ public class ActRuneEtching : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatRuneknight) == 0)
+        if (CC.Evalue(Constants.FeatRuneKnight) == 0)
         {
-            Msg.Say("classlocked_ability".lang(Constants.RuneknightId.lang()));
+            Msg.Say("classlocked_ability".lang(Constants.RuneKnightId.lang()));
             return false;
         }
 

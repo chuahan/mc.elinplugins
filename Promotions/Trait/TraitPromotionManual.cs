@@ -41,7 +41,7 @@ public class TraitPromotionManual : TraitScroll
             Constants.BattlemageId, Constants.FeatBattlemage
         },
         {
-            Constants.RuneknightId, Constants.FeatRuneknight
+            Constants.RuneKnightId, Constants.FeatRuneKnight
         },
         {
             Constants.AdventurerId, Constants.FeatAdventurer
@@ -74,7 +74,7 @@ public class TraitPromotionManual : TraitScroll
             Constants.SovereignId, Constants.FeatSovereign
         },
         {
-            Constants.LuminaryId, Constants.FeatLuminary
+            Constants.HolyKnightId, Constants.FeatHolyKnight
         },
         {
             Constants.HeadhunterId, Constants.FeatHeadhunter
@@ -87,6 +87,9 @@ public class TraitPromotionManual : TraitScroll
         },
         {
             Constants.PhantomId, Constants.FeatPhantom
+        },
+        {
+            Constants.DreadKnightId, Constants.FeatDreadKnight
         },
         {
             Constants.HexerId, Constants.FeatHexer
@@ -132,7 +135,7 @@ public class TraitPromotionManual : TraitScroll
             Constants.FeatBattlemage, Constants.BattlemageId
         },
         {
-            Constants.FeatRuneknight, Constants.RuneknightId
+            Constants.FeatRuneKnight, Constants.RuneKnightId
         },
         {
             Constants.FeatAdventurer, Constants.AdventurerId
@@ -165,7 +168,7 @@ public class TraitPromotionManual : TraitScroll
             Constants.FeatSovereign, Constants.SovereignId
         },
         {
-            Constants.FeatLuminary, Constants.LuminaryId
+            Constants.FeatHolyKnight, Constants.HolyKnightId
         },
         {
             Constants.FeatHeadhunter, Constants.HeadhunterId
@@ -184,6 +187,9 @@ public class TraitPromotionManual : TraitScroll
         },
         {
             Constants.FeatArtificer, Constants.ArtificerId
+        },
+        {
+            Constants.FeatDreadKnight, Constants.DreadKnightId
         }
     };
 
@@ -312,7 +318,7 @@ public class TraitPromotionManual : TraitScroll
                 promotionIds = new List<string>
                 {
                     Constants.BattlemageId,
-                    Constants.PhantomId
+                    Constants.DreadKnightId
                 };
                 break;
             case "pianist":
@@ -347,7 +353,7 @@ public class TraitPromotionManual : TraitScroll
                 promotionIds = new List<string>
                 {
                     Constants.SovereignId,
-                    Constants.LuminaryId
+                    Constants.HolyKnightId
                 };
                 break;
             case "witch":
@@ -367,7 +373,7 @@ public class TraitPromotionManual : TraitScroll
             case "swordsage":
                 promotionIds = new List<string>
                 {
-                    Constants.RuneknightId,
+                    Constants.RuneKnightId,
                     Constants.SpellbladeId
                 };
                 break;
@@ -386,7 +392,7 @@ public class TraitPromotionManual : TraitScroll
                     Constants.SniperId,
                     Constants.RangerId,
                     Constants.BattlemageId,
-                    Constants.RuneknightId,
+                    Constants.RuneKnightId,
                     Constants.DancerId,
                     Constants.KnightcallerId,
                     Constants.SaintId,
@@ -396,11 +402,11 @@ public class TraitPromotionManual : TraitScroll
                     Constants.WitchHunterId,
                     Constants.JusticarId,
                     Constants.SovereignId,
-                    Constants.LuminaryId,
+                    Constants.HolyKnightId,
                     Constants.HeadhunterId,
                     Constants.HarbingerId,
                     Constants.SpellbladeId,
-                    Constants.PhantomId,
+                    Constants.DreadKnightId,
                     Constants.HexerId,
                     Constants.ArtificerId
                 };

@@ -5,8 +5,9 @@ namespace PromotionMod.Common;
 /// <summary>
 ///     Some Promotion classes can convert spellbooks into spells specific for their class.
 ///     Druids can convert any summoning book into Summon Tree Ent.
-///     Luminaries can convert any intonation spell into Holy Intonation.
+///     Holy Knights can convert any intonation spell into Holy Intonation.
 ///     Battlemage can convert any elemental books into Flare spells of the same element // TODO (P4) NOT WORKING. THINK OF SOMETHING ELSE
+///     Dread Knights can convert any elemental books into the Nether Element.
 ///     Necromancers can convert any summoning books into Summon Skeleton.
 ///     Jenei can convert summon any basic elemental books into Fire/Cold/Lightning/Impact.
 ///     Saints can convert any basic elemental books into Holy Element.
@@ -21,11 +22,14 @@ public static class SpellbookConversionManager
             Constants.FeatDruid, new DruidSpellbookConversion()
         },
         {
-            Constants.FeatLuminary, new LuminarySpellbookConversion()
+            Constants.FeatHolyKnight, new HolyKnightSpellbookConversion()
         },
         //{
             //Constants.FeatBattlemage, new BattlemageSpellbookConversion()
         //},
+        {
+            Constants.FeatDreadKnight, new DreadKnightSpellbookConversion()
+        },
         {
             Constants.FeatNecromancer, new NecromancerSpellbookConversion()
         },
@@ -102,9 +106,9 @@ public class DruidSpellbookConversion : SpellbookConversion
     }
 }
 
-public class LuminarySpellbookConversion : SpellbookConversion
+public class HolyKnightSpellbookConversion : SpellbookConversion
 {
-    public override int PromotionFeatId => Constants.FeatLuminary;
+    public override int PromotionFeatId => Constants.FeatHolyKnight;
 
     public override bool CanConvert(int ele)
     {
@@ -181,6 +185,24 @@ public class JeneiSpellbookConversion : SpellbookConversion
     }
 }
 
+public class DreadKnightSpellbookConversion : SpellbookConversion
+{
+    public override int PromotionFeatId => Constants.FeatDreadKnight;
+
+    public override bool CanConvert(int ele)
+    {
+        // Has to be within the elemental attack spells and can't be nether.
+        return ele > 50100 && ele < 51215 && ele % 100 != 16;
+    }
+
+    public override void ConvertSpellbook(ref TraitSpellbook spellbook)
+    {
+        int prefix = spellbook.owner.refVal / 100;
+        if (prefix < 501 || prefix > 510) return; // Sanity Check
+        spellbook.owner.refVal = prefix * 100 + 16;
+    }
+}
+
 public class SaintSpellbookConversion : SpellbookConversion
 {
     public override int PromotionFeatId => Constants.FeatSaint;
@@ -188,14 +210,14 @@ public class SaintSpellbookConversion : SpellbookConversion
     public override bool CanConvert(int ele)
     {
         // Has to be within the elemental attack spells and can't be holy.
-        return ele > 50100 && ele < 51215 && ele % 100 != 9;
+        return ele > 50100 && ele < 51215 && ele % 100 != 19;
     }
 
     public override void ConvertSpellbook(ref TraitSpellbook spellbook)
     {
         int prefix = spellbook.owner.refVal / 100;
         if (prefix < 501 || prefix > 510) return; // Sanity Check
-        spellbook.owner.refVal = prefix * 100 + 9;
+        spellbook.owner.refVal = prefix * 100 + 19;
     }
 }
 

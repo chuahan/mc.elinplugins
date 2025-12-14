@@ -25,8 +25,8 @@ namespace PromotionMod.Elements.PromotionFeats;
 /// </summary>
 public class FeatRuneknight : PromotionFeat
 {
-    public override string PromotionClassId => Constants.RuneknightId;
-    public override int PromotionClassFeatId => Constants.FeatRuneknight;
+    public override string PromotionClassId => Constants.RuneKnightId;
+    public override int PromotionClassFeatId => Constants.FeatRuneKnight;
 
     public override List<int> PromotionAbilities => new List<int>
     {

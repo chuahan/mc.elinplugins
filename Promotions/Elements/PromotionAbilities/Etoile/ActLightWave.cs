@@ -10,12 +10,12 @@ public class ActLightWave : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatLuminary) == 0)
+        if (CC.Evalue(Constants.FeatEtoile) == 0)
         {
-            Msg.Say("classlocked_ability".lang(Constants.LuminaryId.lang()));
+            Msg.Say("classlocked_ability".lang(Constants.EtoileId.lang()));
             return false;
         }
-        if (CC.HasCooldown(Constants.ActLightWaveId)) return false;
+        //if (CC.HasCooldown(Constants.ActLightWaveId)) return false;
 
         if (CC.IsPC && !(CC.ai is GoalAutoCombat)) TC = scene.mouseTarget.card;
         if (TC != null) // Can rush to a point without a target.
@@ -101,7 +101,7 @@ public class ActLightWave : Ability
 
         ConLuminary? luminary = CC.GetCondition<ConLuminary>() ?? CC.AddCondition<ConLuminary>() as ConLuminary;
         luminary?.AddStacks(impacted.Count);
-        CC.AddCooldown(Constants.ActLightWaveId, 5);
+        //CC.AddCooldown(Constants.ActLightWaveId, 5);
         return true;
     }
 

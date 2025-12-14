@@ -45,7 +45,7 @@ public class FeatPhantom : PromotionFeat
 
     protected override bool Requirement()
     {
-        return (EClass.pc != null && EClass.pc.GetFlagValue(Constants.PhantomPromotionUnlockedFlag > 0));
+        return (EClass.pc != null && EClass.pc.GetFlagValue(Constants.PhantomPromotionUnlockedFlag) > 0);
     }
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)

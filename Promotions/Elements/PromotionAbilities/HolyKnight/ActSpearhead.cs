@@ -6,7 +6,7 @@ using PromotionMod.Stats.HolyKnight;
 using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.HolyKnight;
 
-public class ActSpearheadCharge : Ability
+public class ActSpearhead : Ability
 {
     public override bool CanPerform()
     {
@@ -15,7 +15,7 @@ public class ActSpearheadCharge : Ability
             Msg.Say("classlocked_ability".lang(Constants.HolyKnightId.lang()));
             return false;
         }
-        if (CC.HasCooldown(Constants.ActSpearHeadId)) return false;
+        if (CC.HasCooldown(Constants.ActSpearheadId)) return false;
 
         if (CC.IsPC && !(CC.ai is GoalAutoCombat)) TC = scene.mouseTarget.card;
         if (TC != null) // Can rush to a point without a target.
@@ -96,19 +96,20 @@ public class ActSpearheadCharge : Ability
         foreach (Chara target in from affected in affectedPoints from target in affected.ListCharas() where target.IsHostile(CC) && !impacted.Contains(target) select target)
         {
             impacted.Add(target);
+            target.TryMoveFrom(from); // Knock back targets
             SpawnHolySwordBit(power, CC, target.pos);
         }
 
-        ConLuminary? luminary = CC.GetCondition<ConLuminary>() ?? CC.AddCondition<ConLuminary>() as ConLuminary;
+        ConHeavenlyHost? luminary = CC.GetCondition<ConHeavenlyHost>() ?? CC.AddCondition<ConHeavenlyHost>() as ConHeavenlyHost;
         luminary?.AddStacks(impacted.Count);
-        CC.AddCooldown(Constants.ActLightWaveId, 5);
+        CC.AddCooldown(Constants.ActSpearheadId, 5);
         return true;
     }
 
-    public void SpawnHolySwordBit(int power, Chara caster, Point pos)
+    public static void SpawnHolySwordBit(int power, Chara caster, Point pos)
     {
         int levelOverride = power / 15;
-        if (caster.IsPC) levelOverride = Math.Max(player.stats.deepest, levelOverride);
+        if (caster.IsPCFaction) levelOverride = Math.Max(player.stats.deepest, levelOverride);
         Chara summonedBit = CharaGen.Create(Constants.SwordBitCharaId);
         summonedBit.SetMainElement("eleHoly", elemental: true);
         summonedBit.SetSummon(20 + power / 20 + EClass.rnd(10));

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionFeats;
 
@@ -33,21 +34,21 @@ public class FeatEtoile : PromotionFeat
 
     public override List<int> PromotionAbilities => new List<int>
     {
-        Constants.StVanguardId,
-        Constants.ActLightWaveId,
-        Constants.ActLuminousDeflectionId
+        //Constants.StVanguardId,
+        //Constants.ActLightWaveId,
+        //Constants.ActLuminousDeflectionId
     };
 
     protected override void ApplyInternalNPC(Chara c)
     {
-        c.ability.Add(Constants.StVanguardId, 100, false);
-        c.ability.Add(Constants.ActLightWaveId, 75, false);
-        c.ability.Add(Constants.ActLuminousDeflectionId, 75, false);
+        //c.ability.Add(Constants.StVanguardId, 100, false);
+        //c.ability.Add(Constants.ActLightWaveId, 75, false);
+        //c.ability.Add(Constants.ActLuminousDeflectionId, 75, false);
     }
 
     protected override bool Requirement()
     {
-        return (EClass.pc != null && EClass.pc.GetFlagValue(Constants.EtoilePromotionUnlockedFlag > 0));
+        return (EClass.pc != null && EClass.pc.GetFlagValue(Constants.EtoilePromotionUnlockedFlag) > 0);
     }
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)

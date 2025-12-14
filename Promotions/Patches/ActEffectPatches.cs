@@ -74,7 +74,7 @@ public class ActEffectPatches
 
     private static bool HasAltSummonBits(Chara caster)
     {
-        return caster.GetFlagValue(Constants.PromotionFeatFlag) is Constants.FeatElementalist or Constants.FeatBattlemage or Constants.FeatLuminary or Constants.FeatPhantom;
+        return caster.GetFlagValue(Constants.PromotionFeatFlag) is Constants.FeatElementalist or Constants.FeatBattlemage or Constants.FeatPhantom;
     }
 
     private static void SummonAltBits(Chara caster, int power, Point tp, ActRef actRef = default(ActRef))
@@ -100,8 +100,7 @@ public class ActEffectPatches
             case Constants.FeatBattlemage:
                 ActEffectPatches.SummonBitInternal(Constants.ShieldBitCharaId, caster, power, tp, element);
                 break;
-            // Luminaries and Spellblades Summon Sword Bits
-            case Constants.FeatLuminary:
+            // Spellblades Summon Sword Bits
             case Constants.FeatSpellblade:
                 ActEffectPatches.SummonBitInternal(Constants.SwordBitCharaId, caster, power, tp, element);
                 break;

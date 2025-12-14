@@ -22,6 +22,7 @@ public class ActBloodlust : Ability
             int hpCost = (int)(CC.MaxHP * HealthCost);
             if (CC.hp <= hpCost)
             {
+                // TODO Text
                 // You would die if you use this now.
                 return false;
             }

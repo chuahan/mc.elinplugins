@@ -15,10 +15,14 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Skill - Deflection - Enter a Deflection state for one turn. If you take damage while you are Deflecting:
 ///     Reduce damage by 100%.
 ///     Reduces the cooldown of Deflection to 0 (Recharges it instantly)
-///     Refunds the Mana cost.
 ///     Summons a Holy Sword Bit.
+///
+///     Skill - Holy Banner - Summons a Holy Banner minion that has 10HP on the target tile. This character cannot move or attack.
+///         Every turn, if the Holy Knight is neighboring the Banner, it provide area of effects.
+///         Any Enemies within range will be hit with Holy Damage with a chance to stun. This power is doubled if they are Undead.
+///         Any allies within range (Including the Holy Knight) will be granted Protection.
 /// 
-///     Passive - Heavenly Host - Every time you summon a Holy Sword Bit, you will gain a stack of 2 PDR/EDR, capping at 10 stacks.
+///     Passive - Heavenly Host - Every time you summon a Holy Sword Bit, you will gain a stack of 2% damage reduction capping at 10 stacks.
 ///     Passive - Aegis - If you have a shield equipped, chance to reduce incoming damage by 50%.
 ///         Chance is based off of Shield Skill. Caps at 60%.
 ///
@@ -26,30 +30,28 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///         Vanguard Remains the Same
 ///         Light Wave -> Spearhead
 ///         Rename Parry -> Deflection
-///         Add Sol -> Add condition to heal 30% damage as life.
+///         Add Sol -> Add condition to heal 30% damage as life with melee attacks
 ///         Add Aegis as a passive - Reduce incoming damage by 50% with a chance.
 /// </summary>
 public class FeatHolyKnight : PromotionFeat
 {
-    public override string PromotionClassId => Constants.LuminaryId;
-    public override int PromotionClassFeatId => Constants.FeatLuminary;
+    public override string PromotionClassId => Constants.HolyKnightId;
+    public override int PromotionClassFeatId => Constants.FeatHolyKnight;
 
     public override List<int> PromotionAbilities => new List<int>
     {
         Constants.StVanguardId,
         Constants.ActSpearheadId,
         Constants.ActDeflectionId,
-        Constants.ActSolBladeId,
-        
-        Constants.ActLightWaveId,
-        Constants.ActLuminousDeflectionId
+        Constants.ActBlessedArmamentsId,
     };
 
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.StVanguardId, 100, false);
-        c.ability.Add(Constants.ActLightWaveId, 75, false);
-        c.ability.Add(Constants.ActLuminousDeflectionId, 75, false);
+        c.ability.Add(Constants.ActSpearheadId, 75, false);
+        c.ability.Add(Constants.ActDeflectionId, 75, false);
+        c.ability.Add(Constants.ActDeflectionId, 25, false);
     }
 
     protected override bool Requirement()

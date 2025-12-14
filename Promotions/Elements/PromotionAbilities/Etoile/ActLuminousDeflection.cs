@@ -8,12 +8,12 @@ public class ActLuminousDeflection : AIAct
     public override bool CancelWhenDamaged => false;
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatLuminary) == 0)
+        if (CC.Evalue(Constants.FeatEtoile) == 0)
         {
-            Msg.Say("classlocked_ability".lang(Constants.LuminaryId.lang()));
+            Msg.Say("classlocked_ability".lang(Constants.EtoileId.lang()));
             return false;
         }
-        if (CC.HasCooldown(Constants.ActLuminousDeflectionId)) return false;
+        //if (CC.HasCooldown(Constants.ActLuminousDeflectionId)) return false;
         return base.CanPerform();
     }
 
@@ -44,7 +44,7 @@ public class ActLuminousDeflection : AIAct
             onProgressBegin = delegate
             {
                 CC.AddCondition<ConLuminousDeflection>();
-                CC.AddCooldown(Constants.ActLuminousDeflectionId, 3);
+                //CC.AddCooldown(Constants.ActLuminousDeflectionId, 3);
             }
         }.SetDuration(2);
         yield return Do(seq);

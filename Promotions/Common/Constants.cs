@@ -12,10 +12,18 @@ public class Constants
 
     #region CWL Flags
 
-    public const string PromotionFeatFlag = "promoted";
-    public const string IsPlayerFactionTrapFlag = "isPlayerFactionTrap";
-    public const string JeneiAttunementFlag = "jeneiAttunement";
-
+    public const string PromotionFeatFlag = "promo";
+    public const string IsPlayerFactionTrapFlag = "pcTrap";
+    public const string JeneiAttunementFlag = "jeAtt";
+    
+    public const string PhantomPromotionUnlockedFlag = "phUL";
+    public const string EtoilePromotionUnlockedFlag = "etUL";
+    public const string HeroPromotionUnlockedFlag = "heUL";
+    public const string LusterPromotionUnlockedFlag = "luUL";
+    
+    public const string MaiaLightFateFlag = "maLi";
+    public const string MaiaDarkFateFlag = "maDa";
+    
     #endregion
 
     #region Element Ids
@@ -124,13 +132,19 @@ public class Constants
     public const int FeatWitchHunter = 891019;
     public const int FeatJusticar = 891020;
     public const int FeatSovereign = 891021;
-    public const int FeatLuminary = 891022;
+    public const int FeatHolyKnight = 891022;
     public const int FeatHeadhunter = 891023;
     public const int FeatHarbinger = 891024;
-    public const int FeatPhantom = 891025;
-    public const int FeatRuneknight = 891026;
+    public const int FeatDreadKnight = 891025;
+    public const int FeatRuneKnight = 891026;
     public const int FeatHexer = 891027;
     public const int FeatArtificer = 891028;
+    
+    // Unimplemented. Future update
+    public const int FeatPhantom = 1;
+    public const int FeatEtoile = 1;
+    public const int FeatHero = 1;
+    public const int FeatLuster = 1;
 
     public const string SentinelId = "sentinel";
     public const string BerserkerId = "berserker";
@@ -154,14 +168,18 @@ public class Constants
     public const string WitchHunterId = "witchhunter";
     public const string JusticarId = "justicar";
     public const string SovereignId = "sovereign";
-    public const string LuminaryId = "luminary";
+    public const string HolyKnightId = "holyknight";
     public const string HeadhunterId = "headhunter";
     public const string HarbingerId = "harbinger";
-    public const string PhantomId = "phantom";
-    public const string RuneknightId = "runeknight";
+    public const string DreadKnightId = "dreadknight";
+    public const string RuneKnightId = "runeknight";
     public const string HexerId = "hexer";
     public const string ArtificerId = "artificer";
 
+    public const string PhantomId = "phantom";
+    public const string EtoileId = "etoile";
+    public const string HeroId = "hero";
+    public const string LusterId = "luster";
     #endregion
 
     #region Unique charas
@@ -324,10 +342,11 @@ public class Constants
     public const int ActSpiritMobilizeId = 891104;
     public const int ActSummonKnightId = 891105;
 
-    // Luminary
+    // Holy Knight
     public const int StVanguardId = 891108;
-    public const int ActLightWaveId = 891106;
-    public const int ActLuminousDeflectionId = 891107;
+    public const int ActSpearheadId = 891106;
+    public const int ActDeflectionId = 891107;
+    public const int ActBlessedArmamentsId = 1; // TODO Add
 
     // Machinist
     public const int ActLoadUpId = 891109;
@@ -421,6 +440,11 @@ public class Constants
     public const int ActMagicReflectId = 891154;
     public const int ActNullZoneId = 891156;
 
+    // Dread Knight
+    public const int ActManaStarterId = 1;
+    public const int StLifeIgnitionId = 1;
+    public const int ActDarkAuraId = 1;
+    
     #endregion
 
     #region Maia
@@ -428,10 +452,7 @@ public class Constants
     public const int FeatMaia = 891029;
     public const int FeatMaiaEnlightened = 891030;
     public const int FeatMaiaCorrupted = 891031;
-
-    public const string MaiaLightFateFlag = "MaiaLightFate";
-    public const string MaiaDarkFateFlag = "MaiaDarkFate";
-
+    
     public const string CandlebearerCharaId = "candlebearer";
     public const string DarklingCharaId = "darkling";
 

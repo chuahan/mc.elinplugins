@@ -16,7 +16,7 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     When entering this stance, the Battlemage will gain additional spellpower based off of 15% of their current mana.
 ///     Their spells will also cost more, increasing costs by 5% of their current mana.
 ///     Their spells will pierce 1 tier of elemental resistances.
-///     Passive - Conspectus of War - Can convert Elemental Spellbooks into Flare of the same element.
+///     Passive - Conspectus of War - Can convert Elemental Spellbooks into Flare of the same element. // TODO Flare turns out not to be fully implemented.
 ///     Passive - Magic Armor - Increases PV based on Max Mana.
 ///     Passive - Shield Bit Conversion - Bits summoned are replaced with Shield bits.
 /// </summary>

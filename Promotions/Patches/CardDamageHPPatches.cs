@@ -5,18 +5,20 @@ using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using PromotionMod.Common;
+using PromotionMod.Elements.PromotionAbilities.HolyKnight;
 using PromotionMod.Elements.PromotionFeats;
 using PromotionMod.Stats;
 using PromotionMod.Stats.Artificer;
 using PromotionMod.Stats.Battlemage;
 using PromotionMod.Stats.Harbinger;
-using PromotionMod.Stats.Luminary;
+using PromotionMod.Stats.HolyKnight;
 using PromotionMod.Stats.Runeknight;
 using PromotionMod.Stats.Sniper;
 using PromotionMod.Stats.Sovereign;
 using PromotionMod.Stats.Spellblade;
 using PromotionMod.Stats.WarCleric;
-using StVanguardStance = PromotionMod.Stats.Luminary.StVanguardStance;
+using StVanguardStance = PromotionMod.Stats.HolyKnight.StVanguardStance;
+
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(Card))]
@@ -164,12 +166,13 @@ public class CardDamageHPPatches
                     }
                 }
             
-                // War Cleric - Sol Blade causes the healer to absorb 30% of the damage dealt.
-                if (originChara.Evalue(Constants.FeatWarCleric) > 0 && originConditions.Contains(typeof(ConSolBlade)))
+                // War Cleric / Holy Knight - Sol Blade causes the healer to absorb 30% of the damage dealt.
+                if (originConditions.Contains(typeof(ConSolBlade)))
                 {
                     int heal = (int)(dmg * 0.3F);
                     originChara.HealHP(heal, HealSource.Magic);
                 }
+                
                 // Spellblade and Elementalist - Excel at applying status effects. eleP doubled.
                 if (originChara.Evalue(Constants.FeatSpellblade) > 0 || originChara.Evalue(Constants.FeatElementalist) > 0)
                 {
@@ -185,34 +188,49 @@ public class CardDamageHPPatches
                 heavenlyEmbrace.Mod(-1);
             }
 
-            // Luminary - Vanguard Stance: Redirect damage from allies to the Luminary in Vanguard Stance.
-            // Does not redirect if the target is already the Luminary.
+            // Holy Knight - Vanguard Stance: Redirect damage from allies to the Holy Knight in Vanguard Stance.
+            // Does not redirect if the target is already the Holy Knight.
             if (!targetConditions.Contains(typeof(StVanguardStance)))
             {
                 List<Chara> targetAllies = HelperFunctions.GetCharasWithinRadius(target.pos, 5f, target, true, false);
                 if (targetAllies.Count(c => c.conditions.Any(cond => cond.GetType() == typeof(StVanguardStance))) > 0)
                 {
-                    Chara luminaryAlly = targetAllies.First(c => c.conditions.Any(cond => cond.GetType() == typeof(StVanguardStance)));
-                    luminaryAlly.DamageHP(dmg, ele, eleP, attackSource, origin, showEffect, weapon, target);
+                    Chara holyKnightAlly = targetAllies.First(c => c.conditions.Any(cond => cond.GetType() == typeof(StVanguardStance)));
+                    holyKnightAlly.DamageHP(dmg, ele, eleP, attackSource, origin, showEffect, weapon, target);
                     return false;   
                 }
             }
 
-            // Luminary - When taking damage, if currently Parrying, reduce damage to zero and add a stack of Luminary.
-            if (targetConditions.Contains(typeof(ConLuminousDeflection)))
+            // Holy Knight - When taking damage, if currently in Deflection, reduce damage to zero and add a stack of Heavenly Host.
+            if (targetConditions.Contains(typeof(ConDeflection)))
             {
                 dmg = 0;
-                target.AddCooldown(Constants.ActLuminousDeflectionId, -5);
-                ConLuminary? luminary = (ConLuminary)targetConditions[typeof(ConLuminary)].Single() ?? target.AddCondition<ConLuminary>() as ConLuminary;
-                luminary?.AddStacks(1);
+                target.AddCooldown(Constants.ActDeflectionId, -5);
+                ConDeflection deflection = (ConDeflection)targetConditions[typeof(ConDeflection)].Single();
+                ConHeavenlyHost? heavenlyHost = (ConHeavenlyHost)targetConditions[typeof(ConHeavenlyHost)].Single() ?? target.AddCondition<ConHeavenlyHost>() as ConHeavenlyHost;
+                heavenlyHost?.AddStacks(1);
+                ActSpearhead.SpawnHolySwordBit(deflection.power, target, target.pos);
             }
 
-            // Luminary - Reduces damage based on Class Condition Stacks (1% per stack, caps at 30)
-            if (targetConditions.Contains(typeof(ConLuminary)))
+            // Holy Knight - Reduces damage based on Heavenly Host Condition Stacks (2% per stack, caps at 10)
+            if (targetConditions.Contains(typeof(ConHeavenlyHost)))
             {
-                ConLuminary luminary = (ConLuminary)targetConditions[typeof(ConLuminary)].Single();
-                damageMultiplier -= luminary.GetStacks() * 0.01F;
+                ConHeavenlyHost heavenlyHost = (ConHeavenlyHost)targetConditions[typeof(ConHeavenlyHost)].Single();
+                damageMultiplier -= heavenlyHost.GetStacks() * 0.02F;
 
+            }
+            
+            // Holy Knight - Aegis - If Holy Knight is equipped with a shield, chance to reduce damage to 0.
+            if (target.Evalue(Constants.FeatHolyKnight) > 0 && target.body.GetAttackStyle() == AttackStyle.Shield)
+            {
+                float aegisChance =
+                    HelperFunctions.SigmoidScaling((float)Math.Sqrt(target.Evalue(123) * 10), 30, 60,
+                        60); // Shield Skill.
+                if (EClass.rnd(100) > aegisChance)
+                {
+                    // TODO Text - Aegis Proc
+                    dmg = 0;
+                }
             }
 
             // Necromancer - Bone Armor. Reduces damage based on how many Skeleton Minions you have.

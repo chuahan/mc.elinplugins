@@ -3,7 +3,7 @@ using PromotionMod.Common;
 using PromotionMod.Stats.HolyKnight;
 namespace PromotionMod.Elements.PromotionAbilities.HolyKnight;
 
-public class ActLuminousDeflection : AIAct
+public class ActDeflection : AIAct
 {
     public override bool CancelWhenDamaged => false;
     public override bool CanPerform()
@@ -13,7 +13,7 @@ public class ActLuminousDeflection : AIAct
             Msg.Say("classlocked_ability".lang(Constants.HolyKnightId.lang()));
             return false;
         }
-        if (CC.HasCooldown(Constants.ActLuminousDeflectionId)) return false;
+        if (CC.HasCooldown(Constants.ActDeflectionId)) return false;
         return base.CanPerform();
     }
 
@@ -43,8 +43,8 @@ public class ActLuminousDeflection : AIAct
             showProgress = true,
             onProgressBegin = delegate
             {
-                CC.AddCondition<ConLuminousDeflection>();
-                CC.AddCooldown(Constants.ActLuminousDeflectionId, 3);
+                CC.AddCondition<ConDeflection>(this.GetPower(CC));
+                CC.AddCooldown(Constants.ActDeflectionId, 3);
             }
         }.SetDuration(2);
         yield return Do(seq);

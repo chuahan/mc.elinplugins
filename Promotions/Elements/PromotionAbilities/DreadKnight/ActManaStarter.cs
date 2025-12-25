@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Stats;
+using PromotionMod.Stats.DreadKnight;
 using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.DreadKnight;
 
@@ -35,7 +36,7 @@ public class ActManaStarter : Ability
 
     public int GetHPCost(Chara c)
     {
-        ConDarkTraces darkTrace = c.GetCondition<ConDarkTraces>();
+        ConDarkTraces darkTrace = CC.GetCondition<ConDarkTraces>();
         float hpCost = 0.1F;
         if (darkTrace != null)
         {
@@ -48,7 +49,7 @@ public class ActManaStarter : Ability
     
     public override bool Perform()
     {
-        ConDarkTraces darkTrace = c.GetCondition<ConDarkTraces>();
+        ConDarkTraces darkTrace = CC.GetCondition<ConDarkTraces>();
         float hpCost = 0.1F;
         if (darkTrace != null)
         {
@@ -57,7 +58,7 @@ public class ActManaStarter : Ability
         }
         else
         {
-            darkTrace = CC.AddCondition<ConDarkTraces>();
+            darkTrace = (ConDarkTraces)CC.AddCondition<ConDarkTraces>();
         }
 
         // User will restore 2x the cost in Mana.

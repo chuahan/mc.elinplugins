@@ -30,7 +30,7 @@ public class ActDivineFist : ActMelee
     {
         bool divineDescentActive = CC.HasCondition<ConDivineDescent>();
         // Divine Descent Removes cooldown from this ability and increases damage from the melee attack by 30%.
-        Condition solBlade = CC.AddCondition<ConSolBlade>();
+        Condition solBlade = CC.AddCondition<ConShiningBlade>(1);
         // Perform a melee attack against the enemy.
         float dmgMulti = 1.0F;
         if (divineDescentActive) dmgMulti = 1.3F;

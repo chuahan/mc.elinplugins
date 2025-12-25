@@ -136,7 +136,8 @@
         <Compile Include="Elements\PromotionAbilities\Dancer\StHealingDance.cs"/>
         <Compile Include="Elements\PromotionAbilities\Dancer\StMistDance.cs"/>
         <Compile Include="Elements\PromotionAbilities\Dancer\StSwiftDance.cs"/>
-        <Compile Include="Elements\PromotionAbilities\DreadKnight\ActDarkAura.cs" />
+        <Compile Include="Elements\PromotionAbilities\DreadKnight\ActDarkBurst.cs" />
+        <Compile Include="Elements\PromotionAbilities\DreadKnight\ActDarkBarrier.cs" />
         <Compile Include="Elements\PromotionAbilities\DreadKnight\StLifeIgnition.cs" />
         <Compile Include="Elements\PromotionAbilities\DreadKnight\ActManaStarter.cs" />
         <Compile Include="Elements\PromotionAbilities\Druid\ActLivingArmor.cs" />
@@ -163,6 +164,7 @@
         <Compile Include="Elements\PromotionAbilities\Hexer\ActRevenge.cs" />
         <Compile Include="Elements\PromotionAbilities\Hexer\ActTraumatize.cs" />
         <Compile Include="Elements\PromotionAbilities\HolyKnight\ActBlessedArmaments.cs" />
+        <Compile Include="Elements\PromotionAbilities\HolyKnight\ActHolyBanner.cs" />
         <Compile Include="Elements\PromotionAbilities\Jenei\ActJeneiBlaze.cs" />
         <Compile Include="Elements\PromotionAbilities\Jenei\ActJeneiDeluge.cs" />
         <Compile Include="Elements\PromotionAbilities\Jenei\ActJeneiDragonFume.cs" />
@@ -351,6 +353,7 @@
         <Compile Include="Stats\Dancer\StanceSwiftDance.cs" />
         <Compile Include="Stats\Dancer\StanceEnergyDance.cs" />
         <Compile Include="Stats\Dancer\StancePartnerStyle.cs" />
+        <Compile Include="Stats\DreadKnight\ConDarkTraces.cs" />
         <Compile Include="Stats\DreadKnight\StanceLifeIgnition.cs" />
         <Compile Include="Stats\Druid\ConLivingArmor.cs" />
         <Compile Include="Stats\Druid\EntanglingAura.cs" />
@@ -383,6 +386,7 @@
         <Compile Include="Stats\Hexer\ConReapersCall.cs" />
         <Compile Include="Stats\HolyKnight\ConHeavenlyHost.cs" />
         <Compile Include="Stats\HolyKnight\ConDeflection.cs" />
+        <Compile Include="Stats\HolyKnight\RadiantAura.cs" />
         <Compile Include="Stats\HolyKnight\StanceVanguardStance.cs" />
         <Compile Include="Stats\Jenei\ConJenei.cs" />
         <Compile Include="Stats\Jenei\ConWatersOfLife.cs" />
@@ -451,7 +455,7 @@
         <Compile Include="Stats\Trickster\ConDespair.cs" />
         <Compile Include="Stats\WarCleric\ConDivineDescent.cs" />
         <Compile Include="Stats\WarCleric\ConDivineSanctuary.cs" />
-        <Compile Include="Stats\WarCleric\ConSolBlade.cs" />
+        <Compile Include="Stats\WarCleric\ConShiningBlade.cs" />
         <Compile Include="Stats\WarCleric\ConSanctuary.cs" />
         <Compile Include="Stats\WitchHunter\ConMagicReflect.cs" />
         <Compile Include="Stats\WitchHunter\ConNullPresence.cs" />

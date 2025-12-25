@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
-using PromotionMod.Stats;
+using PromotionMod.Stats.DreadKnight;
 using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.DreadKnight;
 
-public class ActDarkAura : Ability
+public class ActDarkBurst : Ability
 {
     public override bool CanPerform()
     {
@@ -55,7 +55,7 @@ public class ActDarkAura : Ability
     
     public override bool Perform()
     {
-        ConDarkTraces darkTrace = c.GetCondition<ConDarkTraces>();
+        ConDarkTraces darkTrace = CC.GetCondition<ConDarkTraces>();
         float hpCost = 0.1F;
         if (darkTrace != null)
         {
@@ -64,7 +64,7 @@ public class ActDarkAura : Ability
         }
         else
         {
-            darkTrace = CC.AddCondition<ConDarkTraces>();
+            darkTrace = (ConDarkTraces)CC.AddCondition<ConDarkTraces>();
         }
 
         // User's consumed HP * 2 will be added as spellpower.

@@ -11,18 +11,33 @@ public abstract class ConAura : BaseBuff
 
     [JsonProperty(PropertyName = "T")] public int TriggerTick;
 
+    public enum AuraType
+    {
+        Friendly,
+        Foe,
+        Both,
+    }
+
     public override bool TimeBased => true;
 
     public virtual int AuraRadius => 3;
-    public virtual bool FriendlyAura => true;
+    public virtual AuraType AuraTarget => AuraType.Friendly;
 
     public virtual bool TimedAura => false;
 
     public virtual int TriggerDelay => 0;
 
-    public abstract void ApplyInternal(Chara target);
+    public virtual void ApplyFriendly(Chara target)
+    {
 
-    public override void Tick()
+    }
+    
+    public virtual void ApplyFoe(Chara target)
+    {
+        
+    }
+
+public override void Tick()
     {
         if (_zone.IsRegion)
         {
@@ -38,10 +53,31 @@ public abstract class ConAura : BaseBuff
 
         // Reset to 0 and trigger effects.
         TriggerTick = 0;
-        List<Chara> affectedCharas = HelperFunctions.GetCharasWithinRadius(CC.pos, AuraRadius, CC, FriendlyAura, true);
-        foreach (Chara target in affectedCharas)
+        (List<Chara> friendlies, List<Chara> enemies) = HelperFunctions.GetOrganizedCharasWithinRadius(CC.pos, AuraRadius, CC, true);
+        switch (AuraTarget)
         {
-            ApplyInternal(target);
+            case AuraType.Friendly:
+                foreach (Chara target in friendlies)
+                {
+                    ApplyFriendly(target);
+                }
+                return;
+            case AuraType.Foe:
+                foreach (Chara target in enemies)
+                {
+                    ApplyFoe(target);
+                }
+                return;
+            case AuraType.Both:
+                foreach (Chara target in friendlies)
+                {
+                    ApplyFriendly(target);
+                }
+                foreach (Chara target in enemies)
+                {
+                    ApplyFoe(target);
+                }
+                break;
         }
     }
 }

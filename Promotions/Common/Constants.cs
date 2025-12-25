@@ -253,6 +253,8 @@ public class Constants
     public const string ShieldBitCharaId = "shield_funnel";
     public const string SwordBitCharaId = "sword_funnel";
     public const string PhantomBitCharaId = "phantom_funnel";
+    
+    public const string HolyBannerCharaId = "holy_banner";
 
     #endregion
 
@@ -347,6 +349,7 @@ public class Constants
     public const int ActSpearheadId = 891106;
     public const int ActDeflectionId = 891107;
     public const int ActBlessedArmamentsId = 1; // TODO Add
+    public const int ActHolyBannerId = 1; // TODO Add
 
     // Machinist
     public const int ActLoadUpId = 891109;
@@ -441,9 +444,10 @@ public class Constants
     public const int ActNullZoneId = 891156;
 
     // Dread Knight
-    public const int ActManaStarterId = 1;
-    public const int StLifeIgnitionId = 1;
-    public const int ActDarkAuraId = 1;
+    public const int ActManaStarterId = 1; // TODO Add
+    public const int StLifeIgnitionId = 1; // TODO Add
+    public const int ActDarkBurstId = 1; // TODO Add
+    public const int ActDarkBarrierId = 1; // TODO Add
     
     #endregion
 

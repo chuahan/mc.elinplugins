@@ -13,7 +13,7 @@ public class ActStrategyOrder : ActSovereignOrder
         int healingAmount = HelperFunctions.SafeDice("sovereign_rally", GetPower(CC));
         healingAmount *= stacks;
         chara.HealHP(healingAmount, HealSource.Magic);
-        chara.AddCondition<ConProtection>(ConProtection.CalcProtectionAmount(healingAmount));
+        chara.AddCondition<ConProtection>(healingAmount / 2);
         chara.AddCondition<ConOrderRally>(stacks);
     }
     public override void AddChaosCondition(Chara chara, int stacks)

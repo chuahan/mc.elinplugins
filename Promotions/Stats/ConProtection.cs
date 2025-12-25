@@ -1,18 +1,22 @@
+using Newtonsoft.Json;
 using PromotionMod.Common;
 namespace PromotionMod.Stats;
 
 public class ConProtection : BaseBuff
 {
+    /// <summary>
+    /// When adding Protection for the first time, the power is used as the maximum protection amount.
+    /// When Protection is replenished, it will go up to the maximum amount.
+    /// If the incoming Protection Replenishment is HIGHER than the maximum amount, maxShield is increased to that amount.
+    /// </summary>
+    [JsonProperty(PropertyName = "S")] private int _maxShield = 1;
+    
     public override ConditionType Type => ConditionType.Buff;
-
-    public static int CalcProtectionAmount(int power)
-    {
-        return HelperFunctions.SafeMultiplier(10, 1 + power / 10);
-    }
 
     public override void OnStartOrStack()
     {
-        value = ConProtection.CalcProtectionAmount(power);
+        value = power;
+        _maxShield = value;
         base.OnStartOrStack();
     }
 
@@ -30,8 +34,6 @@ public class ConProtection : BaseBuff
         OnValueChanged();
     }
 
-    // When a new instance of Protection arrives
-    // It will evaluate itself against the new condition in OnStacked.
     public override bool CanStack(Condition c)
     {
         return c.GetType() == GetType();
@@ -39,10 +41,16 @@ public class ConProtection : BaseBuff
 
     public override void OnStacked(int p)
     {
-        if (p > value)
+        if (p > _maxShield)
         {
+            _maxShield = p;
             value = p;
         }
+        else
+        {
+            value = HelperFunctions.SafeAdd(value, p);   
+        }
+
         SetPhase();
     }
 }

@@ -16,13 +16,15 @@ public class ActPrayPatches
         List<Chara> allyAdvancedPray = EClass.pc.party.members.Where(x => x.Evalue(Constants.FeatSaint) > 0 || x.Evalue(Constants.FeatWarCleric) > 0).ToList();
         if (c.IsPC && (c.Evalue(Constants.FeatSaint) > 0 || c.Evalue(Constants.FeatWarCleric) > 0 || allyAdvancedPray.Count != 0))
         {
-            // Add Protection to entire party based on Faith of all Saints.
+            // Add Protection to entire party based on Faith of all Saints and War Clerics.
             int totalFaith = 0;
-            if (c.Evalue(Constants.FeatSaint) > 0) totalFaith += c.Evalue(Constants.FaithId);
+            if (c.Evalue(Constants.FeatSaint) > 0 || c.Evalue(Constants.FeatWarCleric) > 0) totalFaith += c.Evalue(Constants.FaithId);
             totalFaith += allyAdvancedPray.Sum(alliedSaint => alliedSaint.Evalue(Constants.FaithId));
+            // Faith is multiplied by 10.
+            totalFaith = HelperFunctions.SafeMultiplier(totalFaith, 10);
             foreach (Chara target in c.party.members)
             {
-                target.AddCondition<ConProtection>(ConProtection.CalcProtectionAmount(totalFaith));
+                target.AddCondition<ConProtection>(totalFaith);
             }
         }
     }

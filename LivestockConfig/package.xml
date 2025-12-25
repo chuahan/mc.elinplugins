@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Meta>
+  <title>Livestock Configurations</title>
+  <id>han.livestockconfig.mod</id>
+  <author>Han</author>
+  <loadPriority>10</loadPriority>
+  <description>
+    Adds a host of QOL options for when you hatch new livestock.
+  </description>
+  <tags>Tweak, QOL, Gameplay</tags>
+  <version>0.23.246</version>
+</Meta>

@@ -166,11 +166,13 @@ public class CardDamageHPPatches
                     }
                 }
             
-                // War Cleric / Holy Knight - Sol Blade causes the healer to absorb 30% of the damage dealt.
-                if (originConditions.Contains(typeof(ConSolBlade)))
+                // War Cleric / Holy Knight - Shining Blade causes the healer to absorb 30% of the damage dealt.
+                if (originConditions.Contains(typeof(ConShiningBlade)))
                 {
                     int heal = (int)(dmg * 0.3F);
                     originChara.HealHP(heal, HealSource.Magic);
+                    ConShiningBlade shiningBlade = (ConShiningBlade)targetConditions[typeof(ConHeavenlyEmbrace)].Single();
+                    shiningBlade.Mod(-1);
                 }
                 
                 // Spellblade and Elementalist - Excel at applying status effects. eleP doubled.
@@ -218,19 +220,6 @@ public class CardDamageHPPatches
                 ConHeavenlyHost heavenlyHost = (ConHeavenlyHost)targetConditions[typeof(ConHeavenlyHost)].Single();
                 damageMultiplier -= heavenlyHost.GetStacks() * 0.02F;
 
-            }
-            
-            // Holy Knight - Aegis - If Holy Knight is equipped with a shield, chance to reduce damage to 0.
-            if (target.Evalue(Constants.FeatHolyKnight) > 0 && target.body.GetAttackStyle() == AttackStyle.Shield)
-            {
-                float aegisChance =
-                    HelperFunctions.SigmoidScaling((float)Math.Sqrt(target.Evalue(123) * 10), 30, 60,
-                        60); // Shield Skill.
-                if (EClass.rnd(100) > aegisChance)
-                {
-                    // TODO Text - Aegis Proc
-                    dmg = 0;
-                }
             }
 
             // Necromancer - Bone Armor. Reduces damage based on how many Skeleton Minions you have.

@@ -203,6 +203,14 @@ internal class CharaPatches : EClass
                     origin.Say("berserker_revel".langGame(originChara.NameSimple));
                     originChara.HealHP(healAmount);
                 }
+                
+                // Dread Knight - Heal on Kill
+                if (originChara.Evalue(Constants.FeatDreadKnight) > 0)
+                {
+                    int healAmount = (int)(originChara.MaxHP * .25F);
+                    origin.Say("dreadknight_lifetaker".langGame(originChara.NameSimple));
+                    originChara.HealHP(healAmount);
+                }
 
                 // Headhunter - Gain Headhunter stacks on Kill.
                 if (originChara.Evalue(Constants.FeatHeadhunter) > 0)

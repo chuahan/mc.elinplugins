@@ -26,7 +26,7 @@ public class ActBlessedArmaments : ActMelee
 
     public override bool Perform()
     {
-        Condition solBlade = CC.AddCondition<ConSolBlade>();
+        CC.AddCondition<ConShiningBlade>(this.GetPower(CC));
         return true;
     }
 }

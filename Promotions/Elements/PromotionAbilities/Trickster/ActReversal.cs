@@ -37,21 +37,14 @@ public class ActReversal : Ability
         else
         {
             int protection = HelperFunctions.SafeDice(Constants.TricksterReversalAlias, GetPower(CC));
-            protection = ConProtection.CalcProtectionAmount(HelperFunctions.SafeMultiplier(protection, negativeConditions.Count));
+            protection = HelperFunctions.SafeMultiplier(protection, negativeConditions.Count);
             foreach (Condition con in negativeConditions)
             {
                 con.Kill();
             }
             foreach (Chara ally in HelperFunctions.GetCharasWithinRadius(CC.pos, 5f, CC, true, false))
             {
-                if (ally.HasCondition<ConProtection>())
-                {
-                    ally.GetCondition<ConProtection>().AddProtection(protection);
-                }
-                else
-                {
-                    ally.AddCondition<ConProtection>(protection);
-                }
+                ally.AddCondition<ConProtection>(protection);
             }
         }
 

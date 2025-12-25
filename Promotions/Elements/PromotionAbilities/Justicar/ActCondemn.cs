@@ -43,7 +43,7 @@ public class ActCondemn : Ability
             condemnedTargets++;
         }
 
-        int protectionAmount = condemnedTargets * ConProtection.CalcProtectionAmount(GetPower(CC));
+        int protectionAmount = condemnedTargets * GetPower(CC);
         foreach (Chara ally in HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, true, true))
         {
             ally.AddCondition<ConProtection>(protectionAmount);

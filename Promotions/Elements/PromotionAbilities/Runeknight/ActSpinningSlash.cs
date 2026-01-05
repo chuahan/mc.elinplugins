@@ -46,6 +46,7 @@ public class ActSpinningSlash : Ability
             target.PlayEffect("hit_slash");
             target.PlaySound("ab_magicsword");
         }
+        existingAttunement.Kill();
         return true;
     }
 }

@@ -15,7 +15,14 @@ public class ActSwordFouette : Ability
             Msg.Say("classlocked_ability".lang(Constants.DancerId.lang()));
             return false;
         }
-        return owner?.Chara?.conditions.Exists(x => x is StanceDance) ?? false;
+        
+        if (owner?.Chara?.conditions.Exists(x => x is StanceDance) == false)
+        {
+            if (CC.IsPC) Msg.Say("dancer_mustbedancing".lang());
+            return false;
+        }
+
+        return base.CanPerform();
     }
 
     public override bool Perform()

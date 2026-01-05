@@ -3,9 +3,11 @@ using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionFeats;
 
 /// <summary>
+///     Deprecated description...
 ///     Pen in one hand, sword in the other. The Battlemages are frontline mages tempered by the fires of war.
 ///     Battlemages focus on not merely being on the frontline, but becoming the frontline itself.
 ///     They specialize in heavy area damage, knocking enemies into disarray.
+/// 
 ///     Skill - Mana Shield Stance
 ///     At the cost of reserving your mana (-25% max mana), you will gain a regenerating shield that will take damage
 ///     before your HP does.
@@ -16,7 +18,6 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     When entering this stance, the Battlemage will gain additional spellpower based off of 15% of their current mana.
 ///     Their spells will also cost more, increasing costs by 5% of their current mana.
 ///     Their spells will pierce 1 tier of elemental resistances.
-///     Passive - Conspectus of War - Can convert Elemental Spellbooks into Flare of the same element. // TODO Flare turns out not to be fully implemented.
 ///     Passive - Magic Armor - Increases PV based on Max Mana.
 ///     Passive - Shield Bit Conversion - Bits summoned are replaced with Shield bits.
 /// </summary>

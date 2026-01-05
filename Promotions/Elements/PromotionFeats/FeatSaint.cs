@@ -32,6 +32,11 @@ public class FeatSaint : PromotionFeat
     {
         c.ability.Add(Constants.ActHandOfGodId, 75, false);
         c.ability.Add(Constants.ActBlessingId, 75, true);
+        c.ability.Add(50509, 75, false); // Holy Arrow
+        c.ability.Add(51209, 75, false); // Holy Flare
+        c.ability.Add(8403, 75, true); // Healing
+        // Add Healing Instinct?
+        
     }
 
     protected override bool Requirement()

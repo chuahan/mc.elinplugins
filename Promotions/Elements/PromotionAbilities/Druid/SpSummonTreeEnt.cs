@@ -23,7 +23,7 @@ public class SpSummonTreeEnt : Spell
             {
                 Chara plant = CharaGen.Create(Constants.DruidWarriorEntCharaId);
                 // Normal summon leveling.
-                // For PCs Ent Warriors and Nature's Warmth summons can scale to your deepest achieved depth instead.
+                // For PCs Ent Warriors summons can scale to your deepest achieved depth instead.
                 int power = GetPower(CC);
                 int levelOverride = CC.LV * (100 + power / 10) / 100 + power / 30;
                 if (CC.IsPC) levelOverride = Math.Max(player.stats.deepest, levelOverride);

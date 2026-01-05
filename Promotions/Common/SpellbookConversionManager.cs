@@ -210,14 +210,14 @@ public class SaintSpellbookConversion : SpellbookConversion
     public override bool CanConvert(int ele)
     {
         // Has to be within the elemental attack spells and can't be holy.
-        return ele > 50100 && ele < 51215 && ele % 100 != 19;
+        return ele > 50100 && ele < 51215 && ele % 100 != 9;
     }
 
     public override void ConvertSpellbook(ref TraitSpellbook spellbook)
     {
         int prefix = spellbook.owner.refVal / 100;
         if (prefix < 501 || prefix > 510) return; // Sanity Check
-        spellbook.owner.refVal = prefix * 100 + 19;
+        spellbook.owner.refVal = prefix * 100 + 9;
     }
 }
 

@@ -44,8 +44,8 @@ public class ActSummonKnight : Ability
         string toSummon = knights.RandomItem();
         bool captainSummoned = false;
         // If you have no active knight captain, 1/4 chance to summon one instead.
-        // BALANCE: Do we want to allow multiple captains active at once?
-        if (CC.currentZone.ListMinions(CC).FirstOrDefault(x => x.trait is TraitSpiritKnightCaptain) != null)
+        // BALANCE: Do we want to allow multiple captains active at once for the same character?
+        if (CC.currentZone.ListMinions(CC).FirstOrDefault(x => x.trait is TraitSpiritKnightCaptain) == null)
         {
             // There can only be one of each active knight captain in the zone.
             List<string> knightCaptains = new List<string>();
@@ -67,7 +67,6 @@ public class ActSummonKnight : Ability
         // For PCs summons can scale to your deepest achieved depth instead.
         // Captains come at 10% higher level.
         Chara knight = CharaGen.Create(toSummon);
-        knight.isSummon = true;
         int power = GetPower(CC);
         int levelOverride = CC.LV * (100 + power / 10) / 100 + power / 30;
         if (CC.IsPC) levelOverride = Math.Max(player.stats.deepest, levelOverride);
@@ -75,9 +74,11 @@ public class ActSummonKnight : Ability
         knight.SetLv(levelOverride);
         knight.interest = 0;
         CC.currentZone.AddCard(knight, TP);
-        knight.PlayEffect("curse");
+        CC.PlayEffect("curse");
         knight.MakeMinion(CC);
         EquipKnight(knight);
+
+        if (captainSummoned) Msg.Say("knightcaller_captainsummoned".langGame());
 
         // Add Summoning Sickness to the caster.
         int sicknessStacks = 1;

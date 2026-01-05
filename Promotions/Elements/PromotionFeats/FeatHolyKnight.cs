@@ -16,7 +16,7 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Summons a Holy Sword Bit.
 ///     Skill - Blessed Armaments - Adds Shining Blade condition, which heals on melee hit.
 ///
-///     Skill - Holy Banner - Summons an invulnerable Holy Banner minion for 10 turns on the target tile. Does not move, or attack.
+///     Skill - Holy Banner - Summons an invulnerable Holy Banner minion for 10 turns on the target tile. Does not move or attack.
 ///         Every turn, it will apply effects within 3 radius.
 ///         Any Enemies within range will be hit with Holy Damage with a chance to stun. This power is doubled if they are Undead or Demons
 ///         Any allies within range (Including the Holy Knight) will be granted Protection.
@@ -33,7 +33,7 @@ public class FeatHolyKnight : PromotionFeat
         Constants.StVanguardId,
         Constants.ActSpearheadId,
         Constants.ActDeflectionId,
-        Constants.ActBlessedArmamentsId,
+        //Constants.ActBlessedArmamentsId, // Maybe too many abilities...
         Constants.ActHolyBannerId,
     };
 
@@ -42,7 +42,7 @@ public class FeatHolyKnight : PromotionFeat
         c.ability.Add(Constants.StVanguardId, 100, false);
         c.ability.Add(Constants.ActSpearheadId, 75, false);
         c.ability.Add(Constants.ActDeflectionId, 75, false);
-        c.ability.Add(Constants.ActBlessedArmamentsId, 50, false);
+        // c.ability.Add(Constants.ActBlessedArmamentsId, 50, false);
         c.ability.Add(Constants.ActHolyBannerId, 25, false);
     }
 

@@ -348,8 +348,8 @@ public class Constants
     public const int StVanguardId = 891108;
     public const int ActSpearheadId = 891106;
     public const int ActDeflectionId = 891107;
-    public const int ActBlessedArmamentsId = 1; // TODO Add
-    public const int ActHolyBannerId = 1; // TODO Add
+    public const int ActBlessedArmamentsId = 891166;
+    public const int ActHolyBannerId = 891167;
 
     // Machinist
     public const int ActLoadUpId = 891109;
@@ -444,10 +444,10 @@ public class Constants
     public const int ActNullZoneId = 891156;
 
     // Dread Knight
-    public const int ActManaStarterId = 1; // TODO Add
-    public const int StLifeIgnitionId = 1; // TODO Add
-    public const int ActDarkBurstId = 1; // TODO Add
-    public const int ActDarkBarrierId = 1; // TODO Add
+    public const int ActManaStarterId = 891168;
+    public const int StLifeIgnitionId = 891169;
+    public const int ActDarkBurstId = 891170;
+    public const int ActDarkBarrierId = 891171;
     
     #endregion
 

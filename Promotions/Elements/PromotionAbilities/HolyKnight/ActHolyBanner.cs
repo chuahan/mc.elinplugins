@@ -16,16 +16,18 @@ public class ActHolyBanner : Ability
             return false;
         }
         if (CC.HasCooldown(Constants.ActHolyBannerId)) return false;
+        // Cannot use it if they already placed a Holy Banner.
+        if (CC.HasMinion(Constants.HolyBannerCharaId)) return false;
+        // Cannot use if TP is not placeable.
+        if (!TP.IsValid || !Los.IsVisible(CC.pos, TP)) return false;
         return base.CanPerform();
     }
 
     public override Cost GetCost(Chara c)
     {
-        return new Cost
-        {
-            type = CostType.None,
-            cost = 0
-        };
+        Cost convertToMp = base.GetCost(c);
+        convertToMp.type = CostType.MP;
+        return convertToMp;
     }
     
     public override bool Perform()
@@ -40,7 +42,7 @@ public class ActHolyBanner : Ability
         _zone.AddCard(bannerMob, TP);
         bannerMob.PlayEffect("teleport");
         bannerMob.MakeMinion(CC);
-        // Flowers are not killable.
+        // Add the Aura.
         bannerMob.AddCondition<RadiantAura>(power);
         return true;
     }

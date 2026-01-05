@@ -11,12 +11,20 @@ public class ActDaggerIllusion : Ability
             Msg.Say("classlocked_ability".lang(Constants.DancerId.lang()));
             return false;
         }
-        Thing thing = CC.TryGetThrowable();
+        Thing thing = GetBestThrowingWeapon(CC);
         if (thing == null)
         {
+            if (CC.IsPC) Msg.Say("daggerillusion_nothrowingweapon".lang());
             return false;
         }
-        return owner?.Chara?.conditions.Exists(x => x is StanceDance) ?? false;
+
+        if (owner?.Chara?.conditions.Exists(x => x is StanceDance) == false)
+        {
+            if (CC.IsPC) Msg.Say("dancer_mustbedancing".lang());
+            return false;
+        }
+
+        return base.CanPerform();
     }
 
     public override bool Perform()
@@ -32,11 +40,12 @@ public class ActDaggerIllusion : Ability
 
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, false, true))
         {
-            Thing thing = CC.TryGetThrowable();
+            Thing thing = ActDaggerIllusion.GetBestThrowingWeapon(CC);
             if (thing == null)
             {
                 return false;
             }
+            CC.ranged = thing;
             ActThrow.Throw(CC, target.pos, target, thing.HasElement(410) ? thing : thing.Split(1));
             // Attempt to afflict statuses
             if (EClass.rnd(3) == 0)
@@ -75,5 +84,34 @@ public class ActDaggerIllusion : Ability
         }
 
         return true;
+    }
+
+    public static Thing GetBestThrowingWeapon(Chara cc)
+    {
+        Thing result = null;
+        int equipPower = 0;
+        bool returningThrowable = false;
+        
+        foreach (Thing thing in cc.things)
+        {
+            if (thing.HasTag(CTAG.throwWeapon))
+            {
+                // Prioritize using returning throwables.
+                if (returningThrowable && !thing.HasElement(410))
+                {
+                    continue;
+                }
+                
+                // Higher equip power
+                if (thing.GetEquipValue() > equipPower)
+                {
+                    result = thing;
+                    equipPower = thing.GetEquipValue();
+                    returningThrowable = thing.HasElement(410);   
+                }
+            }
+        }
+        
+        return result;
     }
 }

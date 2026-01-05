@@ -24,7 +24,7 @@ public class ActSpiritRally : Ability
 
     public override bool Perform()
     {
-        foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, 10F, CC, true, true))
+        foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, 20F, CC, true, true))
         {
             if (target.IsPCPartyMinion)
             {

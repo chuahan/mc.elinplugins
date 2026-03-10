@@ -38,3 +38,49 @@ Includes the base Promotions, Lailah, and the Quiet Cottage Map.
 - Aluena Councilmember Doren
 - Aluena Councilmember Larissa
 - Aluena Councilmember Sarvesh
+
+### A New Threat
+With class promotions unlocking levels of power for the players, it is only natural that the enemies will also gain a power boost to provide adequate challenge.
+This mod adds a variety of new enemy types for you to face. 
+Upon reaching specific Void Depth, enemies can also potentially be a promoted class. They can also randomly possess Advanced Combat Skills, so be careful!
+Monsters that are promoted or possess combat skills with have a visual indicator of their increased strength, so tread with caution!
+
+### The Economy System
+This mod adds another layer to the in game economy. Supply/Demand/Events. I cannot sugar coat this, this is a direct hit to most people doing ELOB or Doormaxing.
+Every month the North Tyris Market will have reset it's supply/demand for all categories of goods. As the player ships goods and fulfills supply, demand will fall, reducing the value of these goods.
+Additionally, every city can potentially have economic events that can further impact these prices. For example, a violent demon incursion would drive up prices of equipment, while the discovery of an ancient armory would drive it down.
+There is an option in the configs to turn this feature off if you don't want to deal with the price changes.
+WIP: Not sure how easy it is to code this, having to store a lot. I'll see what I can do...
+
+### Aluèna City
+Aluèna is a large bustling city located to the west of the Quiet Cottage, south of the Little Garden. A thriving commercial Hub, this city houses two new guilds that provide unique services to help the player.
+An incredibly diverse city rich with opportunity, it draws people from all walks of life. Aluèna possesses a sizeable military force, even having them work as the City Watch, protecting both the walls and the streets.
+However, behind it's great walls and affluent Commercial and Government Districts, this city hides many secrets. The Slum area is a bleak reminder that the road to riches is pocked with pitfalls of greed and villiany.
+The city is ruled by a high council of multiple nobles, whom all have something to hide. Keep your wits around you while exploring this city.
+
+### The Adventurer's Guild
+Aluèna possesses a branch of the Adventurer's Guild run by a retired soldier, Vyers. The Adventurer's Guild  is an organization that handles the bureaucratic and public facing elements of adventurer work.
+Commonly known for handling the request boards, vetting the requestees, and connecting them with the adventurers themselves. The Adventurer's Guild was established to help foster new Adventurers to be able to safely handle and complete requests from the public. Their distinctive blue cloaks serve as a sign to anyone in need of assistance, that there there are people ready to help.
+The Adventurers Guild provides the request handling services in Aluèna. More experienced adventurers are able to enjoy advanced training and learn powerful combat abilities.
+
+### The Information Guild
+The Drunken Crow is a small speakeasy in the Commercial District of Aluèna run by the Proprietress, Minari. Behind the bar she operates as the leader of the Crows, an Information Guild that spans the entire continent.
+A single snowflake can cause an avalanche; Minari's agents pick up on small rumors, or fabricate them in order to monitor and manipulate the economic and political stage.
+Customers who know what to order can keep up to date with events happening across North Tyris, and even intervene in them for great rewards.
+In addition to being excellent information gatherers, agents of the Drunken Crow are also quite resourceful, taking a few pages from the Thieves Guild. Valued members of the Information Guild can make requests to find and purchase incredibly rare goods, at a premium of course.
+
+### New Request Types
+This mod adds a variety of new quests for players to undertake.
+
+Combat Operations from the Adventurer's Guild
+    - Defend position.
+    - Capture position.
+    - Rout the Enemy
+    - Defeat Enemy Leader
+    - Rescue allied forces.
+
+Covert Operations from the Information Guild.
+    - Delivering Letters or Packages.
+    - Gathering Reports from field agents.
+    - Abduction Requests
+    - Eliminate hidden agents.

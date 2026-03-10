@@ -4,7 +4,6 @@ using Cwl.Helper.Extensions;
 using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Elements.PromotionAbilities;
-using PromotionMod.Stats;
 using PromotionMod.Stats.Adventurer;
 using PromotionMod.Stats.Artificer;
 using PromotionMod.Stats.Berserker;
@@ -12,10 +11,9 @@ using PromotionMod.Stats.Dancer;
 using PromotionMod.Stats.Harbinger;
 using PromotionMod.Stats.Headhunter;
 using PromotionMod.Stats.Hermit;
-using PromotionMod.Stats.Jenei;
-using PromotionMod.Stats.Luminary;
 using PromotionMod.Stats.Machinist;
 using PromotionMod.Stats.Necromancer;
+using PromotionMod.Stats.QuestStats;
 using PromotionMod.Stats.Ranger;
 using PromotionMod.Stats.Runeknight;
 using PromotionMod.Stats.Sharpshooter;
@@ -24,12 +22,28 @@ using PromotionMod.Stats.Sovereign;
 using PromotionMod.Stats.WitchHunter;
 using PromotionMod.Trait;
 using PromotionMod.Trait.Artificer;
+using PromotionMod.Trait.Characters;
 using PromotionMod.Trait.Trickster;
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(Chara))]
 internal class CharaPatches : EClass
 {
+    /*
+    [HarmonyPatch(nameof(Chara.UseAbility), typeof(string), typeof(Card), typeof(Point), typeof(bool))]
+    [HarmonyPrefix]
+    internal static bool DebuggingPatchUseAbility(Chara __instance, string idAct, Card tc, Point pos, bool pt)
+    {
+        Msg.Say(__instance.NameSimple);
+        Msg.Say(idAct);
+        Msg.Say(tc.Name);
+        Msg.Say(pt.ToString());
+        Act elementAct = __instance.elements.GetElement(idAct)?.act;
+        Act createAct = ACT.Create(idAct);
+        return true;
+    }
+    */
+    
     [HarmonyPatch(nameof(Chara.CanAcceptGift))]
     [HarmonyPrefix]
     internal static bool CanGiftPromotionManual(Chara __instance, ref bool __result, Chara c, Thing t)
@@ -45,7 +59,25 @@ internal class CharaPatches : EClass
                 return true;
             }
 
-            if (TraitPromotionManual.CanPromote(c))
+            if (TraitPromotionManual.CanPromote(__instance))
+            {
+                __result = true;
+                return false;
+            }
+        }
+        
+        if (t is { trait: TraitDemotionManual })
+        {
+            if (__instance.things.IsFull())
+            {
+                return true;
+            }
+            if (t.c_isImportant)
+            {
+                return true;
+            }
+
+            if (__instance.GetFlagValue(Constants.PromotionFeatFlag) != 0)
             {
                 __result = true;
                 return false;
@@ -207,7 +239,7 @@ internal class CharaPatches : EClass
                 // Dread Knight - Heal on Kill
                 if (originChara.Evalue(Constants.FeatDreadKnight) > 0)
                 {
-                    int healAmount = (int)(originChara.MaxHP * .25F);
+                    int healAmount = (int)(originChara.MaxHP * .1F);
                     origin.Say("dreadknight_lifetaker".langGame(originChara.NameSimple));
                     originChara.HealHP(healAmount);
                 }
@@ -246,10 +278,18 @@ internal class CharaPatches : EClass
                 }
 
                 // Sovereign - Rout Order will replenish value on kill. Any active Intonation will also replenish value.
+                // Heal 2% life/stamina/mana on kill.
                 if (origin.isChara)
                 {
                     originChara.GetCondition<ConOrderRout>()?.Mod(1);
                     originChara.GetCondition<ConWeapon>()?.Mod(1);
+                    int lifeHeal = (int)(originChara.MaxHP * .02F);
+                    int manaHeal = (int)(originChara.mana.max * .02F);
+                    int staminaHeal = (int)(originChara.stamina.max * .02F);
+                    originChara.HealHP(lifeHeal, HealSource.HOT);
+                    originChara.mana.Mod(manaHeal);
+                    originChara.stamina.Mod(staminaHeal);
+                    
                 }
 
                 // Trickster - Phantom Trickster Ids will inflict one of the random Trickster debuffs on their killer.
@@ -259,45 +299,6 @@ internal class CharaPatches : EClass
                     Condition tricksterCondition = Condition.Create(randomCondition, target.LV);
                     originChara.AddCondition(tricksterCondition, true);
                     origin.PlayEffect("curse");
-                }
-
-                // If a Maiar makes the kill on a Harbinger.
-                if (target.trait is TraitHarbinger && originChara.Evalue(Constants.FeatMaia) > 0)
-                {
-                    // If the Maia hasn't yet ascended.
-                    if (originChara.Evalue(Constants.FeatMaiaEnlightened) == 0 && originChara.Evalue(Constants.FeatMaiaCorrupted) == 0)
-                    {
-                        // Check kills on Harbinger.
-                        // If the has already killed a Harbinger, kill the character and skip credit.
-                        switch (target.id)
-                        {
-                            case Constants.CandlebearerCharaId:
-                                if (originChara.GetFlagValue(Constants.MaiaDarkFateFlag) > 0)
-                                {
-                                    Msg.Say("maiar_forfeit".langGame(originChara.NameSimple));
-                                    originChara.Die(null, null, AttackSource.Wrath);
-                                }
-                                else
-                                {
-                                    Msg.Say("maiar_enlightened".langGame(originChara.NameSimple));
-                                    originChara.SetFlagValue(Constants.MaiaLightFateFlag);
-                                }
-                                break;
-
-                            case Constants.DarklingCharaId:
-                                if (originChara.GetFlagValue(Constants.MaiaLightFateFlag) > 0)
-                                {
-                                    Msg.Say("maiar_forfeit".langGame(originChara.NameSimple));
-                                    originChara.Die(null, null, AttackSource.Wrath);
-                                }
-                                else
-                                {
-                                    Msg.Say("maiar_corrupted".langGame(originChara.NameSimple));
-                                    originChara.SetFlagValue(Constants.MaiaDarkFateFlag);
-                                }
-                                break;
-                        }
-                    }
                 }
             }
         }
@@ -322,6 +323,9 @@ internal class CharaPatches : EClass
     [HarmonyPostfix]
     internal static void MovePostfix(Chara __instance, Point newPoint, Card.MoveType type, ref Card.MoveResult __result)
     {
+        // For Quests:
+        //if (EClass.pc.currentZone == QuestManager.)
+        
         // Ranger - If the PC is mounted with Ranger's Canto on, and there is an available target they will make a free shot at the target. Will not work if the weapon needs to be reloaded.
         // Parasites instead use Map.MoveCard or SyncRide.
         if (!_zone.IsRegion &&
@@ -347,11 +351,13 @@ internal class CharaPatches : EClass
         // Sharpshooter - If there is an enemy Sharpshooter in Overwatch Stance within range, they will make a shot at the moving character.
         if (type == Card.MoveType.Walk && __result == Card.MoveResult.Success && __instance.HasCondition<ConUnderFire>())
         {
-            foreach (Chara sharpshooter in HelperFunctions.GetCharasWithinRadius(newPoint, 6F, __instance, false, true)
+            foreach (Chara sharpshooter in HelperFunctions.GetCharasWithinRadius(newPoint, 10F, __instance, false, true)
                              .Where(sharpshooter => sharpshooter.Evalue(Constants.FeatSharpshooter) > 0 && sharpshooter.HasCondition<StanceOverwatch>()))
             {
-                Thing rangedWeapon = __instance.GetBestRangedWeapon();
-                __instance.ranged = rangedWeapon;
+                Thing rangedWeapon = sharpshooter.GetBestRangedWeapon();
+                if (rangedWeapon == null) continue;
+                Msg.Say("sharpshooter_overwatch".langGame(sharpshooter.NameSimple, __instance.NameSimple));
+                sharpshooter.ranged = rangedWeapon;
                 ACT.Ranged.Perform(sharpshooter, __instance);
             }
         }
@@ -396,79 +402,15 @@ internal class CharaPatches : EClass
             __result = 0;
         }
     }
-
-    [HarmonyPatch(nameof(Chara.TryNullifyCurse))]
-    [HarmonyPrefix]
-    internal static bool TryNullifyCurse(Chara __instance, ref bool __result)
-    {
-        // Corrupted Maias are immune to curses.
-        if (__instance.Evalue(Constants.FeatMaiaCorrupted) > 0)
-        {
-            __result = true;
-            return false;
-        }
-        return true;
-    }
-
+    
     [HarmonyPatch(nameof(Chara.MakeGene))]
     [HarmonyPrefix]
     internal static bool MakeGene(Chara __instance)
     {
-        // The Unique Characters in this mod will not drop their genes.
-        if (__instance.trait is TraitHarbinger or TraitSpiritKnight or TraitUniqueSummon or TraitLailah or TraitArtificerGolem)
+        // The Unique Summons and Golems will not drop their Genes.
+        if (__instance.trait is TraitUniqueSummon or TraitArtificerGolem)
         {
             return false;
-        }
-        return true;
-    }
-
-    [HarmonyPatch(nameof(Chara.Tick))]
-    [HarmonyPrefix]
-    internal static bool CharaTick_Patches(Chara __instance)
-    {
-        int promotionId = __instance.GetFlagValue(Constants.PromotionFeatFlag);
-        // Class-specific passives:
-        // Berserker
-        // Sniper
-        switch (promotionId)
-        {
-            case Constants.FeatBerserker:
-                if (__instance.HasCondition<ConBerserker>() == false)
-                {
-                    __instance.AddCondition<ConBerserker>();
-                }
-                break;
-            case Constants.FeatSniper:
-                // If the sniper doesn't have the condition and there are no enemies with 3 tiles.
-                if (__instance.HasCondition<ConNoDistractions>() == false && HelperFunctions.GetCharasWithinRadius(__instance.pos, 3, __instance, false, true).Count == 0)
-                {
-                    __instance.AddCondition<ConNoDistractions>();
-                }
-                break;
-        }
-
-        // Harpy Golem will attempt to add extra FOV Condition to the player.
-        if (__instance is { IsPCParty: true, IsAliveInCurrentZone: true } && __instance.Evalue(Constants.FeatHarpyGolemVision) > 0 && EClass.pc.IsAliveInCurrentZone)
-        {
-            Condition? visionBuff = EClass.pc.GetCondition<ConAerialVision>() ?? EClass.pc.AddCondition<ConAerialVision>();
-            if (visionBuff is { value: <= 1 }) visionBuff?.Mod(5);
-        }
-
-        // Siren Golems gain Adaptive Mobility when floating
-        // Siren Golems gain Liquid Cooling when Wet
-        if (__instance.IsAliveInCurrentZone)
-        {
-            if (__instance.Evalue(Constants.FeatSirenGolemSpeed) > 0 && (EClass._zone.IsUnderwater || __instance.Chara.isFloating))
-            {
-                Condition? movementBuff = EClass.pc.GetCondition<ConAdaptiveMobility>() ?? EClass.pc.AddCondition<ConAdaptiveMobility>();
-                if (movementBuff is { value: <= 1 }) movementBuff?.Mod(5);
-            }
-
-            if (__instance.HasCondition<ConWet>() && __instance.Evalue(Constants.FeatSirenGolemMagic) > 0)
-            {
-                Condition? castingBuff = EClass.pc.GetCondition<ConLiquidCooling>() ?? EClass.pc.AddCondition<ConLiquidCooling>();
-                if (castingBuff is { value: <= 1 }) castingBuff?.Mod(5);
-            }
         }
         return true;
     }
@@ -477,22 +419,116 @@ internal class CharaPatches : EClass
     [HarmonyPrefix]
     internal static bool CharaTickConditions_Patches(Chara __instance)
     {
-        // Two conditions will hasten cooldowns by 1 extra turn.
-        if (__instance.HasCondition<StanceHeavyarms>())
+        // This is used by the original function to regulate the rate of these calculations.
+        int turnMod = (__instance.turn + 1) % 50;
+        
+        // Create a Lookup Table for reducing looping.
+        ILookup<Type, Condition> activeConditions = __instance.conditions.ToLookup(c => c.GetType());
+        
+        switch (turnMod)
         {
-            if (__instance._cooldowns != null)
+            case 1:
             {
-                __instance.TickCooldown();
+                // Update class-specific passives every turn.
+                // Berserker
+                // Sniper
+                int promotionId = __instance.GetFlagValue(Constants.PromotionFeatFlag);
+                switch (promotionId)
+                {
+                    case Constants.FeatBerserker:
+                        if (__instance.HasCondition<ConBerserker>() == false)
+                        {
+                            __instance.AddCondition<ConBerserker>();
+                        }
+                        break;
+                    case Constants.FeatSniper:
+                        // If the sniper doesn't have the condition and there are no enemies with 3 tiles.
+                        if (__instance.HasCondition<ConNoDistractions>() == false && HelperFunctions.GetCharasWithinRadius(__instance.pos, 3, __instance, false, true).Count == 0)
+                        {
+                            __instance.AddCondition<ConNoDistractions>();
+                        }
+                        break;
+                }
+            
+                // Alraune - If Daylight AND wet, mod hunger 2 (in additional to the original 1, making them digest 3x as fast.
+                if (__instance.HasElement(Constants.FeatAlraune) &&
+                    __instance.pos.IsSunLit &&
+                    activeConditions.Contains(typeof(ConWet)))
+                {
+                    __instance.hunger.Mod(2);
+                }
+                break;
             }
-        }
+            case 5:
+            {
+                // Alraunes - If Daylight, self-cast Natures Embrace every 30 turns.
+                if (__instance.HasElement(Constants.FeatAlraune) &&
+                    __instance.pos.IsSunLit &&
+                    !__instance.HasCondition<ConHOT>())
+                {
+                    Element element = __instance.elements.GetElement(8450);
+                    if (element != null)
+                    {
+                        __instance.elements.ModExp(element.id, 20f);
+                        __instance.AddCondition<ConHOT>(element.GetPower(__instance));   
+                    }
+                }
+            
+                // Harpy Golem will attempt to add extra FOV Condition to the player.
+                if (__instance is { IsPCParty: true, IsAliveInCurrentZone: true } &&
+                    __instance.HasElement(Constants.FeatHarpyGolemVisionId) &&
+                    EClass.pc.IsAliveInCurrentZone)
+                {
+                    Condition? visionBuff = EClass.pc.GetCondition<ConAerialVision>() ?? EClass.pc.AddCondition<ConAerialVision>();
+                    if (visionBuff is { value: <= 1 }) visionBuff?.Mod(5);
+                }
+            
+                // Siren Golems gain Adaptive Mobility when floating
+                // Siren Golems gain Liquid Cooling when Wet
+                if (__instance.IsAliveInCurrentZone)
+                {
+                    if (__instance.HasElement(Constants.FeatSirenGolemSpeedId) &&
+                        (EClass._zone.IsUnderwater || __instance.Chara.isFloating))
+                    {
+                        if (activeConditions.Contains(typeof(ConAdaptiveMobility)))
+                        {
+                            Condition refreshCon = activeConditions[typeof(ConAdaptiveMobility)].Single();
+                            if (refreshCon is { value: <= 1 }) refreshCon?.Mod(5);
+                        } else
+                        {
+                            __instance.AddCondition<ConAdaptiveMobility>();
+                        }
+                    }
 
-        if (__instance.HasCondition<ConAcceleration>())
-        {
-            if (__instance._cooldowns != null)
-            {
-                __instance.TickCooldown();
+                    if (activeConditions.Contains(typeof(ConWet)) && __instance.HasElement(Constants.FeatSirenGolemMagicId))
+                    {
+                        if (activeConditions.Contains(typeof(ConLiquidCooling)))
+                        {
+                            Condition refreshCon = activeConditions[typeof(ConLiquidCooling)].Single();
+                            if (refreshCon is { value: <= 1 }) refreshCon?.Mod(5);
+                        } else
+                        {
+                            __instance.AddCondition<ConLiquidCooling>();
+                        }
+                    }
+                }
+                break;
             }
         }
+        
         return true;
+    }
+    
+    [HarmonyPatch(nameof(Chara.GetName))]
+    [HarmonyPostfix]
+    internal static void CharaName_PrefixSkill_Patch(Chara __instance, ref string __result, NameStyle style, int num)
+    {
+        // Do I want to make promoted enemies also have a title?
+        if (!__instance.IsPCFactionOrMinion && __instance.GetFlagValue(Constants.IsEliteEnemyFlag) != 0)
+        {
+            // If an enemy is an advanced enemy through spawn. Grant them a prefix so players know what to expect.
+            int advancedCombatSkill = __instance.GetFlagValue(Constants.AdvancedCombatSkillFlag);
+            if (advancedCombatSkill != 0) __result = $"{EClass.sources.elements.map[advancedCombatSkill].alias}_prefix".lang(__result);
+        }
     }
 }

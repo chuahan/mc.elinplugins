@@ -24,20 +24,25 @@ public class ActDiversion : Ability
     public override bool Perform()
     {
         // Create up to 3 Phantom Tricksters
-        Point summonPoint = CC.pos.GetNearestPoint(false, false);
         for (int i = 0; i < 3; i++)
         {
-            if (CC.currentZone.CountMinions(CC) >= CC.MaxSummon) return true; // Return early if we've reached max minions.
-
-            Chara phantom = CharaGen.Create(Constants.PhantomTricksterCharaId);
-            phantom.isSummon = true;
-            phantom.SetLv(CC.LV);
-            phantom.interest = 0;
-            phantom.c_summonDuration = 30;
-            CC.currentZone.AddCard(phantom, summonPoint);
-            phantom.PlayEffect("teleport");
-            phantom.MakeMinion(CC);
+            ActDiversion.SummonTrickster(CC);
         }
         return true;
+    }
+
+    public static void SummonTrickster(Chara c)
+    {
+        // Create up to 3 Phantom Tricksters
+        Point summonPoint = c.pos.GetNearestPoint(false, false);
+        if (c.currentZone.CountMinions(CC) >= c.MaxSummon) return; // Return early if we've reached max minions.
+        Chara phantom = CharaGen.Create(Constants.PhantomTricksterCharaId);
+        phantom.isSummon = true;
+        phantom.SetLv(c.LV);
+        phantom.interest = 0;
+        phantom.c_summonDuration = 30;
+        c.currentZone.AddCard(phantom, summonPoint);
+        phantom.PlayEffect("teleport");
+        phantom.MakeMinion(c);
     }
 }

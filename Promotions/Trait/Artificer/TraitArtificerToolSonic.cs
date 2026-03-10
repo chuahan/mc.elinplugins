@@ -1,13 +1,27 @@
 using System.Collections.Generic;
+using PromotionMod.Common;
 namespace PromotionMod.Trait.Artificer;
 
 public class TraitArtificerToolSonic : TraitArtificerTool
 {
     public override string ArtificerToolId => "artificer_sonicbomb";
 
+    public override float EffectRadius => 2;
+
+    public virtual void MarkMapHighlights(bool shouldHighlight, Point target)
+    {
+        EClass._map.ForeachSphere(target.x, target.z, EffectRadius, delegate(Point p)
+        {
+            if (!p.HasBlock && shouldHighlight)
+            {
+                p.SetHighlight(8);
+            }
+        });
+    }
+    
     public override bool ArtificerToolEffect(Chara cc, Point pos, int power)
     {
-        List<Chara> targets = pos.Charas;
+        List<Chara> targets = HelperFunctions.GetCharasWithinRadius(pos, EffectRadius, cc, false, false);
         pos.PlayEffect("scream");
         foreach (Chara target in targets)
         {
@@ -20,7 +34,6 @@ public class TraitArtificerToolSonic : TraitArtificerTool
                 });
             }
         }
-        owner.c_ammo--;
         return true;
     }
 }

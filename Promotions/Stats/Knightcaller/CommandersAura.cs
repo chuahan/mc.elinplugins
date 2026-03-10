@@ -1,10 +1,13 @@
+using PromotionMod.Common;
 namespace PromotionMod.Stats.Knightcaller;
 
 public class CommandersAura : ConAura
 {
     public override bool CanManualRemove => true;
     
-    public override int AuraRadius => 5;
+    public override float AuraRadius => 5;
+
+    public override int IdAbility => Constants.StCommanderAuraId;
 
     public override void ApplyFriendly(Chara target)
     {

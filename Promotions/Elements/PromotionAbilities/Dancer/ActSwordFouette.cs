@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using PromotionMod.Common;
 using PromotionMod.Stats.Dancer;
 namespace PromotionMod.Elements.PromotionAbilities.Dancer;
@@ -8,6 +9,8 @@ namespace PromotionMod.Elements.PromotionAbilities.Dancer;
 /// </summary>
 public class ActSwordFouette : Ability
 {
+    private float _effectRadius = 2F;
+    
     public override bool CanPerform()
     {
         if (CC.Evalue(Constants.FeatDancer) == 0)
@@ -24,6 +27,19 @@ public class ActSwordFouette : Ability
 
         return base.CanPerform();
     }
+    
+    public override void OnMarkMapHighlights()
+    {
+        List<Point> list = EClass._map.ListPointsInCircle(CC.pos, _effectRadius, true, true);
+        if (list.Count == 0)
+        {
+            list.Add(Act.CC.pos.Copy());
+        }
+        foreach (Point item in list)
+        {
+            item.SetHighlight(8);
+        }
+    }
 
     public override bool Perform()
     {
@@ -36,7 +52,7 @@ public class ActSwordFouette : Ability
             hasPartner = true;
         }
 
-        foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, 2F, CC, false, true))
+        foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, _effectRadius, CC, false, true))
         {
             target.PlayEffect("ab_swarm");
             target.PlaySound("ab_swarm");

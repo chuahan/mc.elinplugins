@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using PromotionMod.Common;
 using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
@@ -6,37 +7,40 @@ namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
 /// <summary>
 ///     Fire damage.
 /// </summary>
-public class ActTiamat : ActJeneiSummonSequence
+public class ActTiamat: JeneiSummonSequence
 {
     public override float SummonMultiplier => 0.12F;
 
-    public override bool Perform()
+    public override bool PerformSummonAttack(Chara cc, int power)
     {
-        CC.PlaySound("spell_breathe");
-        List<Chara> targets = HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, false, true);
-        for (int i = 0; i < targets.Count; i++)
+        cc.PlaySound("spell_breathe");
+        List<Chara> targetsHit = new List<Chara>();
+        foreach (Point tile in EClass._map.ListPointsInCircle(cc.pos, 5f, false, false))
         {
-            Point from = CC.pos;
-            ElementRef elementRef = setting.elements["eleCold"];
-            Effect spellEffect = Effect.Get("trail1");
-            spellEffect.SetParticleColor(elementRef.colorTrail, true, "_TintColor").Play(from);
-            spellEffect.sr.color = elementRef.colorSprite;
-            TrailRenderer componentInChildren = spellEffect.GetComponentInChildren<TrailRenderer>();
-            Color startColor = componentInChildren.endColor = elementRef.colorSprite;
-            componentInChildren.startColor = startColor;
-            spellEffect.Play(CC.pos, 0f, targets[i].pos);
-
-            // Do Damage.
-            int damage = CalculateDamage(GetPower(CC), targets[i].pos.Distance(CC.pos), targets[i]);
-            HelperFunctions.ProcSpellDamage(GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleFire);
-
-            // Inflict Stun. 1/5 chance to guarantee.
-            if (EClass.rnd(5) == 0 && targets[i].IsAliveInCurrentZone)
+            int distance = tile.Distance(cc.pos);
+            foreach (Chara target in tile.ListCharas().Where(target => !targetsHit.Contains(target) && target.IsHostile(cc)))
             {
-                targets[i].AddCondition<ConParalyze>(100, true);
-            }
-        }
+                // Do Damage.
+                int damage = CalculateDamage(power, target.pos.Distance(cc.pos), target);
+                HelperFunctions.ProcSpellDamage(power, damage, cc, target, ele: Constants.EleFire);
 
+                // Inflict Stun. 1/5 chance to guarantee.
+                if (EClass.rnd(5) == 0 && target.IsAliveInCurrentZone)
+                {
+                    target.AddCondition<ConParalyze>(100, true);
+                }
+
+                // Mark Target as hit.
+                targetsHit.Add(target);
+            }
+
+            // Get distance from the origin. Use that to add delay to the explosion.
+            Effect spellEffect = Effect.Get("Element/ball_Fire");
+            float delay = distance * 0.08F;
+            spellEffect.SetStartDelay(delay);
+            spellEffect.Play(tile).Flip(tile.x > cc.pos.x);
+        }
+        
         return true;
     }
 }

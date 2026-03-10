@@ -1,10 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
 using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.Spellblade;
 
-public class ActMyriadFleche : ActMelee
+public class ActMyriadFleche : ActRush
 {
     public static readonly List<int> PossibleIntonations = new List<int>
     {
@@ -16,90 +17,65 @@ public class ActMyriadFleche : ActMelee
 
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatSpellblade) == 0)
+        if (CC != null && CC.Evalue(Constants.FeatSpellblade) == 0)
         {
             Msg.Say("classlocked_ability".lang(Constants.SpellbladeId.lang()));
             return false;
         }
 
-        bool flag = CC.IsPC && !(CC.ai is GoalAutoCombat);
-        if (flag)
-        {
-            TC = scene.mouseTarget.card;
-        }
-        if (TC == null)
-        {
-            return false;
-        }
-        if (TC.isThing && !TC.trait.CanBeAttacked)
-        {
-            return false;
-        }
-        TP.Set(flag ? scene.mouseTarget.pos : TC.pos);
-        if (CC.isRestrained)
-        {
-            return false;
-        }
-        if (CC.host != null || CC.Dist(TP) <= 2)
-        {
-            return false;
-        }
-        if (Los.GetRushPoint(CC.pos, TP) == null)
-        {
-            return false;
-        }
         return base.CanPerform();
     }
-
+    
     public override Cost GetCost(Chara c)
     {
         Cost convertToMp = base.GetCost(c);
         convertToMp.type = CostType.MP;
         return convertToMp;
     }
-
+    
     // Apply Spell Enhance to this ability.
     public override int GetPower(Card c)
     {
         int power = base.GetPower(c);
         return power * Mathf.Max(100 + c.Evalue(411) - c.Evalue(93), 1) / 100;
     }
-
+    
     public override bool Perform()
     {
-        bool flag = CC.IsPC && !(CC.ai is GoalAutoCombat);
-        if (flag)
-        {
-            TC = scene.mouseTarget.card;
-        }
-        if (TC == null)
-        {
-            return false;
-        }
-
-        // Choose one of the random intonations.
+        // Choose one of the random intonations if none are active.
         ConWeapon activeIntonation = CC.GetCondition<ConWeapon>();
-        int intonationElement = activeIntonation.sourceElement.id;
+        int intonationElement = PossibleIntonations.RandomItem();
+        
         if (activeIntonation == null)
         {
             activeIntonation = new ConWeapon();
-            intonationElement = PossibleIntonations.RandomItem();
             activeIntonation.SetElement(intonationElement);
             activeIntonation.power = GetPower(CC);
             CC.AddCondition(activeIntonation);
         }
-
-        // Rush and strike the enemy. 
-        TP.Set(flag ? scene.mouseTarget.pos : TC.pos);
-        int num = CC.Dist(TP);
-        Point rushPoint = Los.GetRushPoint(CC.pos, TP);
-        CC.pos.PlayEffect("vanish");
-        CC.MoveImmediate(rushPoint, true, false);
-        CC.Say("rush", CC, TC);
-        CC.PlaySound("rush");
-        CC.pos.PlayEffect("vanish");
-        Attack(1f + 0.1f * num);
-
+        else
+        {
+            intonationElement = activeIntonation.sourceElement.id;
+        }
+        
+        // Rush and strike the enemy.
+        bool flag = Act.CC.IsPC && !(Act.CC.ai is GoalAutoCombat);
+        if (flag) Act.TC = EClass.scene.mouseTarget.card;
+        if (Act.TC == null) return false;
+        Act.TP.Set(flag ? EClass.scene.mouseTarget.pos : Act.TC.pos);
+        Point rushPoint = Los.GetRushPoint(Act.CC.pos, Act.TP);
+        Act.CC.pos.PlayEffect("vanish");
+        Act.CC.MoveImmediate(rushPoint, focus: true, cancelAI: false);
+        Act.CC.Say("rush", Act.CC, Act.TC);
+        Act.CC.PlaySound("rush");
+        Act.CC.pos.PlayEffect("vanish");
+        
+        int distance = CC.Dist(TP);
+        float distBonus = 1f + 0.1f * (float)distance;
+        distBonus *= (float)(100 + EClass.curve(Act.CC.Evalue(382), 50, 25, 65)) / 100f; // Add Momentum Bonus
+        Attack(distBonus);
+        //new ActMelee().Perform(); //Attack(distBonus);
+        
         // Proc a short-ranged breath attack on the target at point-blank to hit surrounding enemies.
         TweenUtil.Delay(0.2F, delegate
         {
@@ -109,9 +85,9 @@ public class ActMyriadFleche : ActMelee
                 Shaker.ShakeCam("breathe");
             }
         });
-        List<Point> coneRange = _map.ListPointsInArc(CC.pos, TP, 4, 35f);
-
+        
         int power = GetPower(CC);
+        List<Point> coneRange = _map.ListPointsInArc(CC.pos, TC.pos, 4, 35f);
         ActEffect.DamageEle(CC, EffectId.Breathe, power, Element.Create(intonationElement, power / 10), coneRange, new ActRef
         {
             act = this

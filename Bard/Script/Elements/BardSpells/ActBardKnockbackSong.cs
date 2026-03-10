@@ -38,10 +38,7 @@ public class ActBardKnockbackSong : ActBardSong
                     target.AddCondition<ConParalyze>(20, true);
                 }
             }
-            BardCardPatches.CachedInvoker.Invoke(
-                target,
-                new object[] { damage, Constants.EleSound, 100, AttackSource.Shockwave, bard }
-            );
+            target.DamageHP(dmg: damage, ele: Constants.EleSound, eleP: 100, attackSource: AttackSource.Shockwave, origin: bard);
         }
     }
 }

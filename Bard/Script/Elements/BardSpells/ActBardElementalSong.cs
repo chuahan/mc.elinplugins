@@ -47,10 +47,7 @@ public class ActBardElementalSong : ActBardSong
                 foreach (Chara enemy in potentialTargets)
                 {
                     enemy.PlaySound("wave_hit");
-                    BardCardPatches.CachedInvoker.Invoke(
-                        enemy,
-                        new object[] { damage, randElement, 100, AttackSource.MagicSword, bard }
-                    );
+                    enemy.DamageHP(dmg: damage, ele: randElement, eleP: 100, attackSource: AttackSource.MagicSword, origin: bard);
                 }
             }
         }

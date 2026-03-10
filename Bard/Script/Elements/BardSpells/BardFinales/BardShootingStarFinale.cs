@@ -20,7 +20,7 @@ public class BardShootingStarFinale : BardSongData
     {
         int phantomCount = (int)Math.Max(3, Math.Sqrt(rhythmStacks));
         int phantomPower = (int)HelperFunctions.SigmoidScaling(power, Constants.MaxBardPowerBuff, 1, 10, Constants.BardPowerSlope);
-        int phantomLevelCalculated = HelperFunctions.SafeMultiplier(target.LV, phantomPower + phantomCount);
+        int phantomLevelCalculated = (int)HelperFunctions.SafeMultiplier(target.LV, phantomPower + phantomCount);
         for (int i = 0; i < phantomCount; i++)
         {
             Point summonPoint = target.pos.GetNearestPoint(false, false);

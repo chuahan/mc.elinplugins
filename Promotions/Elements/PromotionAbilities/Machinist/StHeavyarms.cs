@@ -1,11 +1,17 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
+using PromotionMod.Stats.Machinist;
 namespace PromotionMod.Elements.PromotionAbilities.Machinist;
 
 public class StHeavyarms : Ability
 {
     public override bool CanPerform()
     {
+        if (CC.HasCondition<StanceHeavyarms>())
+        {
+            return true;
+        }
+        
         if (CC.Evalue(Constants.FeatMachinist) == 0)
         {
             Msg.Say("classlocked_ability".lang(Constants.MachinistId.lang()));
@@ -13,7 +19,11 @@ public class StHeavyarms : Ability
         }
         
         // Cannot be used while riding or as a parasite.
-        if (CC.ride != null) return false;
+        if (CC.ride != null)
+        {
+            if (CC.IsPC) Msg.Say("machinist_heavyarms_noride".langGame());
+            return false;
+        }
 
         // Can only be used if there are visible targets.
         List<Point> targets = new List<Point>();
@@ -26,8 +36,14 @@ public class StHeavyarms : Ability
                 break;
             }
         }
+
+        if (targets.Count == 0)
+        {
+            if (CC.IsPC) Msg.Say("machinist_heavyarms_notargets".langGame());
+            return false;
+        }
         
-        return targets.Count != 0 && base.CanPerform();
+        return base.CanPerform();
 
     }
 

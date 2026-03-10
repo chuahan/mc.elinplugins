@@ -1,18 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cwl.Helper.Extensions;
 using HarmonyLib;
 using PromotionMod.Common;
-using PromotionMod.Elements.PromotionAbilities;
-using PromotionMod.Stats.Headhunter;
+using PromotionMod.Stats.AdvCombatSkills;
 using PromotionMod.Stats.Hexer;
-using PromotionMod.Stats.Necromancer;
 using PromotionMod.Stats.Sentinel;
-using PromotionMod.Stats.Sovereign;
 using PromotionMod.Trait;
 using PromotionMod.Trait.Artificer;
-using PromotionMod.Trait.Trickster;
+using PromotionMod.Trait.Characters;
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(Card))]
@@ -20,7 +16,7 @@ public class CardPatches
 {
     [HarmonyPatch(nameof(Card.ModExp), typeof(int), typeof(int))]
     [HarmonyPrefix]
-    internal static bool AdventurerDoubleExp(Card __instance, int ele, ref int a)
+    internal static bool AdventurerExpBoost(Card __instance, int ele, ref int a)
     {
         if (__instance.isChara)
         {
@@ -107,60 +103,24 @@ public class CardPatches
     [HarmonyPrefix]
     internal static bool PromotionMod_PreventMakeEgg_Patch(Card __instance)
     {
-        // The Unique Characters in this mod will not drop their genes.
+        // The Unique Summons and Artificer Golems Should not Drop eggs.
         if (__instance.isChara &&
-            __instance.Chara.trait is TraitHarbinger or TraitSpiritKnight or TraitUniqueSummon or TraitLailah or TraitArtificerGolem)
+            __instance.Chara.trait is TraitUniqueSummon or TraitArtificerGolem)
         {
             return false;
         }
         return true;
     }
-
-    [HarmonyPatch(nameof(Card.LevelUp))]
-    [HarmonyPostfix]
-    internal static void PromotionMod_Maia_LevelUp_Patch(Card __instance)
+    
+    [HarmonyPatch(nameof(Card.ApplyProtection))]
+    [HarmonyPrefix]
+    internal static bool ApplyProtection_Patch(Card __instance, long dmg, ref int mod)
     {
-        // Unascended Maiars will have a warning at level 13, then every level past level 19.
-        if (__instance.Evalue(Constants.FeatMaia) > 0 && __instance.Evalue(Constants.FeatMaiaEnlightened) == 0 && __instance.Evalue(Constants.FeatMaiaCorrupted) == 0)
+        if (__instance.isChara && __instance.HasCondition<ConLuna>())
         {
-            // If they have not chosen their fate, throw a warning message.
-            if (__instance.GetFlagValue(Constants.MaiaLightFateFlag) == 0 && __instance.GetFlagValue(Constants.MaiaDarkFateFlag) == 0)
-            {
-                if (__instance.LV == 13)
-                {
-                    Msg.Say("maiar_fate");
-                }
-                else if (__instance.LV >= 19)
-                {
-                    Msg.Say("maiar_warning_critical".langGame(__instance.NameSimple));
-                }
-
-                // If they have not chosen their fate and have reached level 20 or higher, they will die every level.
-                if (__instance.LV >= 20)
-                {
-                    Msg.Say("maiar_forfeit".langGame(__instance.NameSimple));
-                    __instance.Die(null, null, AttackSource.Wrath);
-                }
-            }
-            else
-            {
-                // If their fate has been chosen, and they reach level 20, ascend them.
-                if (__instance.LV >= 20)
-                {
-                    Msg.Say("maiar_ascension".langGame(__instance.NameSimple));
-                    if (__instance.GetFlagValue(Constants.MaiaLightFateFlag) > 0)
-                    {
-                        // Englightened Ascension
-                        __instance.Chara.SetFeat(Constants.FeatMaiaEnlightened, 1, true);
-                    }
-
-                    if (__instance.GetFlagValue(Constants.MaiaDarkFateFlag) > 0)
-                    {
-                        // Corrupted Ascension
-                        __instance.Chara.SetFeat(Constants.FeatMaiaCorrupted, 1, true);
-                    }
-                }
-            }
+            // Luna will halve the damage reduction from defenses.
+            mod = 50;
         }
+        return true;
     }
 }

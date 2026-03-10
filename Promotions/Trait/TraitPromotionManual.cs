@@ -192,15 +192,15 @@ public class TraitPromotionManual : TraitScroll
             Constants.FeatDreadKnight, Constants.DreadKnightId
         }
     };
-
+    
     public override bool CanRead(Chara c)
     {
-        if (c.isBlind) return false;
-        return TraitPromotionManual.CanPromote(c);
+        return true;
     }
-
+    
     public override void OnRead(Chara c)
     {
+        if (!TraitPromotionManual.CanPromote(c)) return;
         List<string> characterPromotes = TraitPromotionManual.GetPromotionOptions(c);
         characterPromotes.Add("promotion_cancel");
         Dialog.List("promotion_choices".lang(c.NameSimple), characterPromotes, j => j, delegate(int idx, string option)

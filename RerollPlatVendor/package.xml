@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Meta>
+  <title>Cursed Indulgence</title>
+  <id>han.RerollPlatMerchant.mod</id>
+  <author>Han</author>
+  <loadPriority>10</loadPriority>
+  <description>
+    Allows one to reroll the Plat Merchant.
+  </description>
+  <tags>Tweak, QOL, Gameplay</tags>
+  <version>0.23.252</version>
+</Meta>

@@ -55,7 +55,7 @@ public class FeatJenei : PromotionFeat
                 break;
             case 1: // Mars
                 c.ability.Add(Constants.ActJeneiBlazeId, 50, false);
-                c.ability.Add(Constants.ActJeneiDragonPlumeId, 75, false);
+                c.ability.Add(Constants.ActJeneiDragonFumeId, 75, false);
                 c.ability.Add(50215, 75, false); // Fire Breathe
                 c.ability.Add(51000, 75, false); // Fire Sword
                 break;
@@ -73,12 +73,8 @@ public class FeatJenei : PromotionFeat
                 break;
         }
     }
-
-
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "farmer";
-    }
+    
+    public override string JobRequirement => "farmer";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
@@ -94,7 +90,7 @@ public class FeatJenei : PromotionFeat
                     break;
                 case 1: // Mars
                     owner.Chara.AddElement(Constants.ActJeneiBlazeId, 0);
-                    owner.Chara.AddElement(Constants.ActJeneiDragonPlumeId, 0);
+                    owner.Chara.AddElement(Constants.ActJeneiDragonFumeId, 0);
                     break;
                 case 2: // Jupiter
                     owner.Chara.AddElement(Constants.ActJeneiRevealId, 0);
@@ -109,6 +105,34 @@ public class FeatJenei : PromotionFeat
         base._OnApply(add,eleOwner, hint);
     }
 
+    override internal void Demote(Chara c)
+    {
+        List<int> abilityIdsWithJenei = PromotionAbilities;
+        abilityIdsWithJenei.Add(Constants.ActJeneiMoveId);
+        abilityIdsWithJenei.Add(Constants.ActJeneiMotherGaiaId);
+        abilityIdsWithJenei.Add(Constants.ActJeneiBlazeId);
+        abilityIdsWithJenei.Add(Constants.ActJeneiDragonFumeId);
+        abilityIdsWithJenei.Add(Constants.ActJeneiRevealId);
+        abilityIdsWithJenei.Add(Constants.ActJeneiShinePlasmaId);
+        abilityIdsWithJenei.Add(Constants.ActJeneiDelugeId);
+        abilityIdsWithJenei.Add(Constants.ActJeneiPlyId);
+        
+        foreach (int abilityId in abilityIdsWithJenei)
+        {
+            if (c.elements.Has(abilityId))
+            {
+                Element element = c.elements.GetElement(abilityId);
+                element.vPotential = -1;
+                c.elements.Remove(abilityId);
+                
+                // NPCs use ability.
+                if (c.ability.Has(abilityId)) { c.ability.Remove(abilityId);}
+            }
+        }
+        
+        c.SetFeat(PromotionClassFeatId, 0, false);
+    }
+    
     public class JeneiSummonCost
     {
         public JeneiSummonCost(Dictionary<int, int> cost, string summonId)
@@ -128,35 +152,35 @@ public class FeatJenei : PromotionFeat
 
     public static class JeneiSummons
     {
-        public static readonly JeneiSummonCost Cybele = new JeneiSummonCost(new Dictionary<int, int>
+        private static readonly JeneiSummonCost Cybele = new JeneiSummonCost(new Dictionary<int, int>
         {
             {
                 Constants.EleImpact, 3
             }
         }, Constants.JeneiCybeleCharaId);
 
-        public static readonly JeneiSummonCost Tiamat = new JeneiSummonCost(new Dictionary<int, int>
+        private static readonly JeneiSummonCost Tiamat = new JeneiSummonCost(new Dictionary<int, int>
         {
             {
                 Constants.EleFire, 3
             }
         }, Constants.JeneiTiamatCharaId);
 
-        public static readonly JeneiSummonCost Atlanta = new JeneiSummonCost(new Dictionary<int, int>
+        private static readonly JeneiSummonCost Atlanta = new JeneiSummonCost(new Dictionary<int, int>
         {
             {
                 Constants.EleLightning, 3
             }
         }, Constants.JeneiAtlantaCharaId);
 
-        public static readonly JeneiSummonCost Boreas = new JeneiSummonCost(new Dictionary<int, int>
+        private static readonly JeneiSummonCost Boreas = new JeneiSummonCost(new Dictionary<int, int>
         {
             {
                 Constants.EleCold, 3
             }
         }, Constants.JeneiBoreasCharaId);
 
-        public static readonly JeneiSummonCost Zagan = new JeneiSummonCost(new Dictionary<int, int>
+        private static readonly JeneiSummonCost Zagan = new JeneiSummonCost(new Dictionary<int, int>
         {
             {
                 Constants.EleFire, 1
@@ -166,7 +190,7 @@ public class FeatJenei : PromotionFeat
             }
         }, Constants.JeneiZaganCharaId);
 
-        public static readonly JeneiSummonCost Haures = new JeneiSummonCost(new Dictionary<int, int>
+        private static readonly JeneiSummonCost Haures = new JeneiSummonCost(new Dictionary<int, int>
         {
             {
                 Constants.EleImpact, 3
@@ -176,7 +200,7 @@ public class FeatJenei : PromotionFeat
             }
         }, Constants.JeneiHauresCharaId);
 
-        public static readonly JeneiSummonCost Charon = new JeneiSummonCost(new Dictionary<int, int>
+        private static readonly JeneiSummonCost Charon = new JeneiSummonCost(new Dictionary<int, int>
         {
             {
                 Constants.EleImpact, 8
@@ -186,7 +210,7 @@ public class FeatJenei : PromotionFeat
             }
         }, Constants.JeneiCharonCharaId);
 
-        public static readonly JeneiSummonCost Megaera = new JeneiSummonCost(new Dictionary<int, int>
+        private static readonly JeneiSummonCost Megaera = new JeneiSummonCost(new Dictionary<int, int>
         {
             {
                 Constants.EleFire, 1
@@ -196,7 +220,7 @@ public class FeatJenei : PromotionFeat
             }
         }, Constants.JeneiMegaeraCharaId);
 
-        public static readonly JeneiSummonCost Ulysses = new JeneiSummonCost(new Dictionary<int, int>
+        private static readonly JeneiSummonCost Ulysses = new JeneiSummonCost(new Dictionary<int, int>
         {
             {
                 Constants.EleFire, 2
@@ -206,7 +230,7 @@ public class FeatJenei : PromotionFeat
             }
         }, Constants.JeneiUlyssesCharaId);
 
-        public static readonly JeneiSummonCost Daedalus = new JeneiSummonCost(new Dictionary<int, int>
+        private static readonly JeneiSummonCost Daedalus = new JeneiSummonCost(new Dictionary<int, int>
         {
             {
                 Constants.EleImpact, 3
@@ -216,7 +240,7 @@ public class FeatJenei : PromotionFeat
             }
         }, Constants.JeneiDaedalusCharaId);
 
-        public static readonly JeneiSummonCost Iris = new JeneiSummonCost(new Dictionary<int, int>
+        private static readonly JeneiSummonCost Iris = new JeneiSummonCost(new Dictionary<int, int>
         {
             {
                 Constants.EleFire, 9
@@ -226,7 +250,7 @@ public class FeatJenei : PromotionFeat
             }
         }, Constants.JeneiIrisCharaId);
 
-        public static readonly JeneiSummonCost Flora = new JeneiSummonCost(new Dictionary<int, int>
+        private static readonly JeneiSummonCost Flora = new JeneiSummonCost(new Dictionary<int, int>
         {
             {
                 Constants.EleImpact, 1
@@ -236,7 +260,7 @@ public class FeatJenei : PromotionFeat
             }
         }, Constants.JeneiFloraCharaId);
 
-        public static readonly JeneiSummonCost Eclipse = new JeneiSummonCost(new Dictionary<int, int>
+        private static readonly JeneiSummonCost Eclipse = new JeneiSummonCost(new Dictionary<int, int>
         {
             {
                 Constants.EleLightning, 3
@@ -246,7 +270,7 @@ public class FeatJenei : PromotionFeat
             }
         }, Constants.JeneiEclipseCharaId);
 
-        public static readonly JeneiSummonCost Catastrophe = new JeneiSummonCost(new Dictionary<int, int>
+        private static readonly JeneiSummonCost Catastrophe = new JeneiSummonCost(new Dictionary<int, int>
         {
             {
                 Constants.EleFire, 3
@@ -256,7 +280,7 @@ public class FeatJenei : PromotionFeat
             }
         }, Constants.JeneiCatastropheCharaId);
 
-        public static readonly JeneiSummonCost Moloch = new JeneiSummonCost(new Dictionary<int, int>
+        private static readonly JeneiSummonCost Moloch = new JeneiSummonCost(new Dictionary<int, int>
         {
             {
                 Constants.EleLightning, 1
@@ -266,7 +290,7 @@ public class FeatJenei : PromotionFeat
             }
         }, Constants.JeneiMolochCharaId);
 
-        public static readonly JeneiSummonCost Coatlicue = new JeneiSummonCost(new Dictionary<int, int>
+        private static readonly JeneiSummonCost Coatlicue = new JeneiSummonCost(new Dictionary<int, int>
         {
             {
                 Constants.EleLightning, 3
@@ -276,7 +300,7 @@ public class FeatJenei : PromotionFeat
             }
         }, Constants.JeneiCoatlicueCharaId);
 
-        public static readonly JeneiSummonCost Azul = new JeneiSummonCost(new Dictionary<int, int>
+        private static readonly JeneiSummonCost Azul = new JeneiSummonCost(new Dictionary<int, int>
         {
             {
                 Constants.EleImpact, 3

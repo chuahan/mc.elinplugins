@@ -41,11 +41,7 @@ public class FeatSentinel : PromotionFeat
         c.ability.Add(Constants.StRestraintId, 100, false);
     }
 
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "warrior";
-    }
-    
+    public override string JobRequirement => "warrior";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

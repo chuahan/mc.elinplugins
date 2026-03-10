@@ -10,13 +10,13 @@ public class ConNullZone : BaseBuff
         // Apply Sanctuary to everyone within 3F.
         foreach (Chara chara in pc.currentZone.map.ListCharasInCircle(owner.pos, 3F))
         {
-            Condition? sanctuary = chara.GetCondition<ConNullPresence>() ?? chara.AddCondition<ConNullPresence>();
-            if (sanctuary is { value: > 1 })
+            Condition? nullZone = chara.GetCondition<ConNullPresence>() ?? chara.AddCondition<ConNullPresence>();
+            if (nullZone is { value: > 1 })
             {
                 continue;
             }
 
-            sanctuary?.Mod(1);
+            nullZone?.Mod(1);
         }
         base.Tick();
     }

@@ -7,9 +7,26 @@ public class TraitArtificerToolTime : TraitArtificerTool
 {
     public override string ArtificerToolId => "artificer_timehourglass";
 
+    public override bool IsTargetCast => false;
+    
+    public override TargetType TargetType => TargetType.Self;
+    
+    public override float EffectRadius => 3;
+
+    public virtual void MarkMapHighlights(bool shouldHighlight, Point target)
+    {
+        EClass._map.ForeachSphere(target.x, target.z, EffectRadius, delegate(Point p)
+        {
+            if (!p.HasBlock && shouldHighlight)
+            {
+                p.SetHighlight(4);
+            }
+        });
+    }
+    
     public override bool ArtificerToolEffect(Chara cc, Point pos, int power)
     {
-        (List<Chara> friendlies, List<Chara> enemies) = HelperFunctions.GetOrganizedCharasWithinRadius(cc.pos, 3F, cc, true);
+        (List<Chara> friendlies, List<Chara> enemies) = HelperFunctions.GetOrganizedCharasWithinRadius(cc.pos, EffectRadius, cc, true);
         foreach (Chara target in enemies)
         {
             ActEffect.ProcAt(EffectId.DebuffStats, power, BlessedState.Normal, Act.CC, target, target.pos, true, new ActRef
@@ -29,7 +46,6 @@ public class TraitArtificerToolTime : TraitArtificerTool
 
             target.AddCondition<ConAcceleration>();
         }
-        owner.c_ammo--;
         return true;
     }
 }

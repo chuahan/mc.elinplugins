@@ -33,14 +33,14 @@ public class FeatPhantom : PromotionFeat
     {
         Constants.ActVerbrechenId,
         Constants.ActWolkenkratzerId,
-        Constants.ActSchwarzeKatze
+        Constants.ActSchwarzeKatzeId
     };
 
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActVerbrechenId, 75, false);
         c.ability.Add(Constants.ActWolkenkratzerId, 75, false);
-        c.ability.Add(Constants.ActSchwarzeKatze, 75, false);
+        c.ability.Add(Constants.ActSchwarzeKatzeId, 75, false);
     }
 
     protected override bool Requirement()

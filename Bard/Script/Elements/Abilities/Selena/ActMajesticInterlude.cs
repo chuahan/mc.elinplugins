@@ -61,7 +61,7 @@ public class ActMajesticInterlude : Ability
         // Summon 5 Phantom Flutists
         int phantomCount = 5;
         int phantomPower = 10;
-        int phantomLevelCalculated = HelperFunctions.SafeMultiplier(CC.LV, phantomPower);
+        int phantomLevelCalculated = (int)HelperFunctions.SafeMultiplier(CC.LV, phantomPower);
         for (int i = 0; i < phantomCount; i++)
         {
             Point summonPoint = CC.pos.GetNearestPoint(false, false);

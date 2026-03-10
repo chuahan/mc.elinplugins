@@ -13,6 +13,12 @@ public class ActSpreadShot : Ability
             return false;
         }
 
+        if (CC.GetBestRangedWeapon() == null)
+        {
+            if (CC.IsPC) Msg.Say("sniper_needrangedweapon".langGame());
+            return false;
+        }
+
         return base.CanPerform() && ACT.Ranged.CanPerform();
     }
 
@@ -38,6 +44,8 @@ public class ActSpreadShot : Ability
             }
         }
 
+        Thing rangedWeapon = CC.GetBestRangedWeapon();
+        CC.ranged = rangedWeapon;
         foreach (Chara target in targets)
         {
             // Perform a Ranged attack at the target.

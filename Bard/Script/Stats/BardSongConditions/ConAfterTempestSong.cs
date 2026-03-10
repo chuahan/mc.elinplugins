@@ -29,11 +29,7 @@ public class ConAfterTempestSong : ConBardSong
         foreach (Chara target in targets)
         {
             target.AddCondition<ConLightningSunder>(power);
-            // target.DamageHP(dmg: damage, ele: Constants.EleLightning, eleP: 100, attackSource: AttackSource.Condition, origin: owner);
-            BardCardPatches.CachedInvoker.Invoke(
-                target,
-                new object[] { damage, Constants.EleLightning, 100, AttackSource.Condition, owner }
-            );
+            target.DamageHP(dmg: damage, ele: Constants.EleLightning, eleP: 100, attackSource: AttackSource.Condition, origin: owner);
 
             if (GodBlessed &&
                 !owner.IsMinion &&

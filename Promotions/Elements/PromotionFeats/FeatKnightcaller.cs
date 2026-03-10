@@ -35,11 +35,8 @@ public class FeatKnightcaller : PromotionFeat
         c.ability.Add(Constants.ActSpiritRallyId, 75, false);
         c.ability.Add(Constants.ActSummonKnightId, 80, false);
     }
-
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "pianist";
-    }
+    
+    public override string JobRequirement => "pianist";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

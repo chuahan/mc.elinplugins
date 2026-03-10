@@ -8,10 +8,12 @@ public class ActFormationOrder : ActSovereignOrder
     protected override int CooldownId => Constants.ActFormationOrderId;
     public override void AddLawCondition(Chara chara, int stacks)
     {
-        chara.AddCondition<ConOrderSword>(stacks);
+        chara.RemoveCondition<ConOrderSword>();
+        chara.AddCondition<ConOrderBarricade>(stacks);
     }
     public override void AddChaosCondition(Chara chara, int stacks)
     {
-        chara.AddCondition<ConOrderBarricade>(stacks);
+        chara.RemoveCondition<ConOrderBarricade>();
+        chara.AddCondition<ConOrderSword>(stacks);
     }
 }

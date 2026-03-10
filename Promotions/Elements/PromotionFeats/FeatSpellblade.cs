@@ -20,7 +20,7 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Any enemy struck by the followup wave loses resistances to that element.
 ///     Skill - Siphoning Blade - Executes an attack that targets Mana instead of HP, absorbing half the "damage" done as
 ///     MP.
-///     Passive - Conspectus of the Blade - Can convert Elemental Spellbooks into Magic Sword.
+///     Passive - Conspectus of the Blade - Can convert Elemental Spellbooks into Magic Sword or Intonation.
 ///     Passive - Elemental Mastery - Excel at status application. EleP is doubled.
 /// </summary>
 public class FeatSpellblade : PromotionFeat
@@ -40,12 +40,15 @@ public class FeatSpellblade : PromotionFeat
         c.ability.Add(Constants.ActCrushingStrikeId, 80, false);
         c.ability.Add(Constants.ActMyriadFlecheId, 80, false);
         c.ability.Add(Constants.ActSiphoningBladeId, 50, false);
+        
+        // Add the respective Sword spell. 510xx
+        c.ability.Add(50600 + PromotionFeat.GetAdditionalSpellElement(c), 50, false);
+                
+        // Add the respective Intonation spell. 508xx
+        c.ability.Add(50600 + PromotionFeat.GetAdditionalSpellElement(c), 50, false);
     }
-
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "swordsage";
-    }
+    
+    public override string JobRequirement => "swordsage";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

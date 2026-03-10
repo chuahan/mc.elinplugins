@@ -22,6 +22,7 @@ public class ActSowWrathSeeds : Ability
             return false;
         }
         if (CC.currentZone.CountMinions(CC) >= CC.MaxSummon) return false;
+        if (!TP.IsValid || TP.HasChara) return false;
         return base.CanPerform();
     }
 
@@ -32,6 +33,31 @@ public class ActSowWrathSeeds : Ability
         return convertToMp;
     }
 
+    public override void OnMarkMapHighlights()
+    {
+        if (!EClass.scene.mouseTarget.pos.IsValid)
+        {
+            return;
+        }
+        List<Point> list = EClass._map.ListPointsInCircle(EClass.scene.mouseTarget.pos, 3F, true, true);
+        if (list.Count == 0)
+        {
+            list.Add(Act.CC.pos.Copy());
+        }
+        foreach (Point item in list)
+        {
+            // These are slightly different. The target point is the summoning spot. The surrounding highlight is the area of effect for the aura.
+            if (object.Equals(EClass.scene.mouseTarget.pos, item))
+            {
+                item.SetHighlight(7);
+            }
+            else
+            {
+                item.SetHighlight(8);   
+            }
+        }
+    }
+    
     public override bool Perform()
     {
         // Randomly pick one of the flowers to spawn.

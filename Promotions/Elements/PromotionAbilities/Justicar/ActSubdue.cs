@@ -36,8 +36,7 @@ public class ActSubdue : Ability
             origin = CC.Chara,
             n1 = nameof(ConSupress)
         });
-
-        CC.TalkRaw("justicarIntimidate".langList().RandomItem());
+        
         return true;
     }
 }

@@ -32,11 +32,8 @@ public class FeatDruid : PromotionFeat
         c.ability.Add(Constants.SpSummonTreeEntId, 80, false);
         c.ability.Add(Constants.ActLivingArmorId, 80, true);
     }
-
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "farmer";
-    }
+    
+    public override string JobRequirement => "farmer";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

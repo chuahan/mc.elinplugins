@@ -455,7 +455,7 @@ public abstract class ActBardSong : AIAct
         if (bard.Evalue(Constants.FeatBardId) > 0) powerMultiplier += 0.5f;
 
         // Apply Multipliers
-        basePower = HelperFunctions.SafeMultiplier(basePower, powerMultiplier);
+        basePower = (int)HelperFunctions.SafeMultiplier(basePower, powerMultiplier);
 
         // Curve cause reasons.
         basePower = EClass.curve(basePower, 500, 100);

@@ -1,9 +1,14 @@
+using System.Collections.Generic;
 using PromotionMod.Common;
 using PromotionMod.Stats.Dancer;
 namespace PromotionMod.Elements.PromotionAbilities.Dancer;
 
 public class ActDaggerIllusion : Ability
 {
+    private const float EffectRadius = 5F;
+
+    private const int MaxTargets = 5;
+    
     public override bool CanPerform()
     {
         if (CC.Evalue(Constants.FeatDancer) == 0)
@@ -27,6 +32,19 @@ public class ActDaggerIllusion : Ability
         return base.CanPerform();
     }
 
+    public override void OnMarkMapHighlights()
+    {
+        List<Point> list = EClass._map.ListPointsInCircle(CC.pos, EffectRadius, true, true);
+        if (list.Count == 0)
+        {
+            list.Add(Act.CC.pos.Copy());
+        }
+        foreach (Point item in list)
+        {
+            item.SetHighlight(8);
+        }
+    }
+    
     public override bool Perform()
     {
         bool hasPartner = false;
@@ -38,8 +56,10 @@ public class ActDaggerIllusion : Ability
             hasPartner = true;
         }
 
-        foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, false, true))
+        int targetsHit = 0;
+        foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, EffectRadius, CC, false, true))
         {
+            if (targetsHit >= MaxTargets) break;
             Thing thing = ActDaggerIllusion.GetBestThrowingWeapon(CC);
             if (thing == null)
             {
@@ -81,6 +101,8 @@ public class ActDaggerIllusion : Ability
                     new ActMelee().Perform(partner, target);
                 }
             }
+
+            targetsHit++;
         }
 
         return true;

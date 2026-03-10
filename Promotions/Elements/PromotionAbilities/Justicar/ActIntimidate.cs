@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using PromotionMod.Common;
 using PromotionMod.Stats;
 namespace PromotionMod.Elements.PromotionAbilities.Justicar;
@@ -9,6 +10,8 @@ namespace PromotionMod.Elements.PromotionAbilities.Justicar;
 /// </summary>
 public class ActIntimidate : Ability
 {
+    private float _effectRadius = 3F;
+    
     public override bool CanPerform()
     {
         if (CC.Evalue(Constants.FeatJusticar) == 0)
@@ -19,12 +22,37 @@ public class ActIntimidate : Ability
         return base.CanPerform();
     }
 
+    public override void OnMarkMapHighlights()
+    {
+        if (!EClass.scene.mouseTarget.pos.IsValid)
+        {
+            return;
+        }
+        List<Point> list = EClass._map.ListPointsInCircle(EClass.scene.mouseTarget.pos, _effectRadius, true, true);
+        if (list.Count == 0)
+        {
+            list.Add(Act.CC.pos.Copy());
+        }
+        foreach (Point item in list)
+        {
+            // Highlight the target point a different color.
+            if (object.Equals(EClass.scene.mouseTarget.pos, item))
+            {
+                item.SetHighlight(7);
+            }
+            else
+            {
+                item.SetHighlight(8);   
+            }
+        }
+    }
+    
     public override bool Perform()
     {
         int breakAmount = (int)HelperFunctions.SigmoidScaling(GetPower(CC), 10, 25);
         TC.Chara.AddCondition(SubPoweredCondition.Create(nameof(ConArmorBreak), GetPower(CC), breakAmount));
 
-        foreach (Chara target in HelperFunctions.GetCharasWithinRadius(TC.pos, 5F, CC, false, false))
+        foreach (Chara target in HelperFunctions.GetCharasWithinRadius(TC.pos, _effectRadius, CC, false, false))
         {
             // Inflict AOE Bane and Fear
             ActEffect.ProcAt(EffectId.Debuff, GetPower(CC), BlessedState.Normal, CC, target, target.pos, true, new ActRef
@@ -39,8 +67,7 @@ public class ActIntimidate : Ability
                 n1 = nameof(ConFear)
             });
         }
-
-        CC.TalkRaw("justicarIntimidate".langList().RandomItem());
+        
         return true;
     }
 }

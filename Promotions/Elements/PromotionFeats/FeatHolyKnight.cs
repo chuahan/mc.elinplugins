@@ -14,7 +14,6 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Reduce damage by 100%.
 ///     Reduces the cooldown of Deflection to 0 (Recharges it instantly)
 ///     Summons a Holy Sword Bit.
-///     Skill - Blessed Armaments - Adds Shining Blade condition, which heals on melee hit.
 ///
 ///     Skill - Holy Banner - Summons an invulnerable Holy Banner minion for 10 turns on the target tile. Does not move or attack.
 ///         Every turn, it will apply effects within 3 radius.
@@ -33,7 +32,6 @@ public class FeatHolyKnight : PromotionFeat
         Constants.StVanguardId,
         Constants.ActSpearheadId,
         Constants.ActDeflectionId,
-        //Constants.ActBlessedArmamentsId, // Maybe too many abilities...
         Constants.ActHolyBannerId,
     };
 
@@ -42,14 +40,10 @@ public class FeatHolyKnight : PromotionFeat
         c.ability.Add(Constants.StVanguardId, 100, false);
         c.ability.Add(Constants.ActSpearheadId, 75, false);
         c.ability.Add(Constants.ActDeflectionId, 75, false);
-        // c.ability.Add(Constants.ActBlessedArmamentsId, 50, false);
         c.ability.Add(Constants.ActHolyBannerId, 25, false);
     }
-
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "paladin";
-    }
+    
+    public override string JobRequirement => "paladin";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

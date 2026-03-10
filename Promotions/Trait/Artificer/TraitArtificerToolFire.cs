@@ -5,7 +5,7 @@ namespace PromotionMod.Trait.Artificer;
 public class TraitArtificerToolFire : TraitArtificerTool
 {
     public override string ArtificerToolId => "artificer_firesword";
-
+    
     public override bool ArtificerToolEffect(Chara cc, Point pos, int power)
     {
         float powerMulti = 1f + (cc.Evalue(100) / 2F + cc.Evalue(101)) / 50f;
@@ -32,7 +32,6 @@ public class TraitArtificerToolFire : TraitArtificerTool
                 });
             }
         }
-        owner.c_ammo--;
         return true;
     }
 }

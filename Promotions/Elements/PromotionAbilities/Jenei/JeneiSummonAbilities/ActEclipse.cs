@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Stats;
 using UnityEngine;
@@ -7,57 +8,57 @@ namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
 /// <summary>
 ///     Lightning. Reduces enemy attack by 50%.
 /// </summary>
-public class ActEclipse : ActJeneiSummonSequence
+public class ActEclipse: JeneiSummonSequence
 {
     public override float SummonMultiplier => 0.15F;
 
 
-    public override bool Perform()
+    public override bool PerformSummonAttack(Chara cc, int power)
     {
-        // SFX: Cast holy light on self. Earthquake. Then send out lightning beams in all directions.
+        // SFX: Cast holy light on self. Earthquake. Explode out in a lightning explosion
         Effect laser = Effect.Get("aura_heaven");
-        ElementRef colorRef = setting.elements["eleChaos"];
-        laser.SetParticleColor(colorRef.colorTrail, true, "_TintColor");
-        laser.sr.color = colorRef.colorSprite;
-        laser.Play(CC.pos);
-        TweenUtil.Delay(0.7F, delegate
+        laser.Play(cc.pos);
+        
+        // Play Earthquake at the same time as the element boom. The explosion goes up around 2F delay.
+        TweenUtil.Delay(0.08F, delegate
         {
-            // Play Earthquake
             Effect effect = null;
-            Point from = CC.pos;
+            Point from = cc.pos;
             if (EClass.rnd(4) == 0 && from.IsSync) effect = Effect.Get("smoke_earthquake");
-            float num3 = 0.06f * CC.pos.Distance(from);
+            float num3 = 0.06f * cc.pos.Distance(from);
             Point pos = from.Copy();
             TweenUtil.Tween(num3, null, delegate
             {
                 pos.Animate(AnimeID.Quake, true);
             });
             if (effect != null) effect.SetStartDelay(num3);
-            CC.PlaySound("spell_earthquake");
+            cc.PlaySound("spell_earthquake");
             Shaker.ShakeCam("ball");
         });
-
-        List<Chara> targets = HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, false, true);
-        for (int i = 0; i < targets.Count; i++)
+        
+        List<Chara> targetsHit = new List<Chara>();
+        foreach (Point tile in EClass._map.ListPointsInCircle(cc.pos, 5f, false, false))
         {
-            Point from = CC.pos;
-            ElementRef elementRef = setting.elements["eleLightning"];
-            Effect spellEffect = Effect.Get("trail1");
-            spellEffect.SetParticleColor(elementRef.colorTrail, true, "_TintColor").Play(from);
-            spellEffect.sr.color = elementRef.colorSprite;
-            TrailRenderer componentInChildren = spellEffect.GetComponentInChildren<TrailRenderer>();
-            Color startColor = componentInChildren.endColor = elementRef.colorSprite;
-            componentInChildren.startColor = startColor;
-            spellEffect.Play(CC.pos, 0f, targets[i].pos);
+            int distance = tile.Distance(cc.pos);
+            foreach (Chara target in tile.ListCharas().Where(target => !targetsHit.Contains(target) && target.IsHostile(cc)))
+            {
+                // Do Damage.
+                int damage = CalculateDamage(power, target.pos.Distance(cc.pos), target);
+                HelperFunctions.ProcSpellDamage(power, damage, cc, target, ele: Constants.EleLightning);
+                
+                if (target.IsAliveInCurrentZone) target.AddCondition<ConAttackBreak>(50, true);
+                
+                // Mark Target as hit.
+                targetsHit.Add(target);
+            }
 
-            // Do Damage.
-            int damage = CalculateDamage(GetPower(CC), targets[i].pos.Distance(CC.pos), targets[i]);
-            HelperFunctions.ProcSpellDamage(GetPower(CC), damage, CC, TC.Chara, ele: Constants.EleLightning);
-
-            // Apply Attack Down.
-            if (targets[i].IsAliveInCurrentZone) targets[i].AddCondition<ConAttackBreak>(50, true);
+            // Get distance from the origin. Use that to add delay to the explosion.
+            Effect spellEffect = Effect.Get("Element/ball_Magic");
+            float delay = distance * 0.08F;
+            spellEffect.SetStartDelay(delay);
+            spellEffect.Play(tile).Flip(tile.x > cc.pos.x);
+            
         }
-
         return true;
     }
 }

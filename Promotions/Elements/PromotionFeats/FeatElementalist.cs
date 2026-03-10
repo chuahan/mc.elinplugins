@@ -51,11 +51,8 @@ public class FeatElementalist : PromotionFeat
             c.ability.Add(50500 + x, 75, false);
         }
     }
-
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "wizard";
-    }
+    
+    public override string JobRequirement => "wizard";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

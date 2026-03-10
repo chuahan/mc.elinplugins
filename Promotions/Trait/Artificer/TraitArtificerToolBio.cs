@@ -1,14 +1,29 @@
 using System.Collections.Generic;
+using PromotionMod.Common;
 namespace PromotionMod.Trait.Artificer;
 
 public class TraitArtificerToolBio : TraitArtificerTool
 {
     public override string ArtificerToolId => "artificer_biobomb";
 
+    public override float EffectRadius => 2;
+
+    public virtual void MarkMapHighlights(bool shouldHighlight, Point target)
+    {
+        EClass._map.ForeachSphere(target.x, target.z, EffectRadius, delegate(Point p)
+        {
+            if (!p.HasBlock && shouldHighlight)
+            {
+                p.SetHighlight(8);
+            }
+        });
+    }
+    
     public override bool ArtificerToolEffect(Chara cc, Point pos, int power)
     {
-        List<Chara> targets = pos.Charas;
-        pos.PlayEffect("curse");
+        List<Chara> targets = HelperFunctions.GetCharasWithinRadius(pos, EffectRadius, cc, false, false);
+        pos.PlayEffect("smoke");
+        pos.PlaySound("curse3");
         foreach (Chara target in targets)
         {
             if (target.IsHostile(cc))
@@ -20,7 +35,6 @@ public class TraitArtificerToolBio : TraitArtificerTool
                 });
             }
         }
-        owner.c_ammo--;
         return true;
     }
 }

@@ -26,11 +26,7 @@ public class ActBardScathingSong : ActBardSong
             target.AddCondition<ConScathingSong>(scaledPower);
 
             int damage = HelperFunctions.SafeDice(Constants.BardScathingSongName, power);
-            // target.DamageHP(dmg: damage, ele: Constants.EleMind, eleP: 100, attackSource: AttackSource.None, origin: bard);
-            BardCardPatches.CachedInvoker.Invoke(
-                target,
-                new object[] { damage, Constants.EleMind, 100, AttackSource.None, bard }
-            );
+            target.DamageHP(dmg: damage, ele: Constants.EleMind, eleP: 100, attackSource: AttackSource.None, origin: bard);
         }
     }
 }

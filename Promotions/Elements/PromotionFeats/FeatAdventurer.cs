@@ -34,10 +34,7 @@ public class FeatAdventurer : PromotionFeat
         // This shouldn't have anything. NPCs can't pick this class.
     }
 
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "tourist";
-    }
+    public override string JobRequirement => "tourist";
 
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

@@ -8,7 +8,7 @@ namespace BardMod.Stats.BardSongConditions;
 public class ConShimmeringDewSong : ConBardSong
 {
 
-    public int DamageAbsorbed;
+    public long DamageAbsorbed;
     public override Constants.BardSongType SongType => Constants.BardSongType.Finale;
     public override ConditionType Type => ConditionType.Buff;
 
@@ -26,14 +26,10 @@ public class ConShimmeringDewSong : ConBardSong
             // TODO: Add FX
             Msg.Say("shimmeringdew_explode".langGame(owner.NameSimple));
             List<Chara> targets = HelperFunctions.GetCharasWithinRadius(owner.pos, 5f, Caster, false, true);
-            int damageDivide = DamageAbsorbed / targets.Count;
+            long damageDivide = DamageAbsorbed / targets.Count;
             foreach (Chara victim in targets)
             {
-                // victim.DamageHP(dmg:damageDivide, ele:Constants.EleMagic, eleP:100, attackSource:AttackSource.Shockwave, origin:owner);
-                BardCardPatches.CachedInvoker.Invoke(
-                    victim,
-                    new object[] { damageDivide, Constants.EleMagic, 100, AttackSource.Shockwave, owner }
-                );
+                victim.DamageHP(dmg:damageDivide, ele:Constants.EleMagic, eleP:100, attackSource:AttackSource.Shockwave, origin:owner);
             }
         }
 

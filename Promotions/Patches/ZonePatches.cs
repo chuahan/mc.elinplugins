@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Linq;
+using Cwl.Helper.Extensions;
 using HarmonyLib;
 using PromotionMod.Common;
 namespace PromotionMod.Patches;
@@ -6,59 +8,36 @@ namespace PromotionMod.Patches;
 [HarmonyPatch(typeof(Zone))]
 public class ZonePatches
 {
-    private const float HarbingerChance = 0.02F;
+    public static List<int> T1SpawnableCombatSkills = new List<int>
+    {
+        Constants.FeatAegisId,
+        Constants.FeatPaviseId,
+        Constants.FeatAstraId,
+        Constants.FeatLunaId,
+        Constants.FeatSolId,
+        Constants.FeatGaleforceId,
+        Constants.FeatLethalityId,
+        Constants.FeatRendHeavenId,
+        Constants.FeatVengeanceId,
+        Constants.FeatDeadeyeId,
+        Constants.FeatVantageId,
+    };
+    
+    public static List<int> T2SpawnableCombatSkills = new List<int>
+    {
+        Constants.FeatNihilId,
+        Constants.FeatAegisPlusId,
+        Constants.FeatPavisePlusId,
+        Constants.FeatLunaPlusId,
+        Constants.FeatVantagePlusId,
+        Constants.FeatMetalBreakerId,
+    };
+    
 
     [HarmonyPatch(nameof(Zone.OnGenerateMap))]
     [HarmonyPostfix]
     internal static void ZoneOnGeneratePostfix(Zone __instance)
     {
-        // Maiar - Try to spawn Candlebearers and Darklings.
-        // Can only spawn in Zone_Dungeon or Zone_Field
-        if (EClass.pc.Evalue(Constants.FeatMaia) > 0 && __instance.DangerLv >= 12 && (__instance is Zone_Field || __instance is Zone_Dungeon))
-        {
-            // Try to generate a Candlebearer
-            if (HarbingerChance <= EClass.rndf(1f))
-            {
-                Chara candlebearer = CharaGen.Create(Constants.CandlebearerCharaId);
-
-                // Being Good or an Enlightened Maia will cause Candlebearers to become friendly
-                if (EClass.pc.HasElement(1270) || EClass.pc.Evalue(Constants.FeatMaiaEnlightened) > 0)
-                {
-                    candlebearer.SetHostility(Hostility.Friend);
-                }
-
-                // Being Evil or a Corrupted Maia will cause Candlebearers to become hostile
-                if (EClass.pc.HasElement(1271) || EClass.pc.Evalue(Constants.FeatMaiaCorrupted) > 0)
-                {
-                    candlebearer.SetHostility(Hostility.Enemy);
-                }
-
-                EClass._zone.AddCard(candlebearer, __instance.GetSpawnPos(SpawnPosition.Random, 10000));
-                Msg.Say("sign_candlebearer");
-            }
-
-            // Try to generate a Darkling
-            if (HarbingerChance <= EClass.rndf(1f))
-            {
-                Chara darkling = CharaGen.Create(Constants.DarklingCharaId);
-
-                // Being Evil or a Corrupted Maia will cause Darklings to become friendly.
-                if (EClass.pc.HasElement(1271) || EClass.pc.Evalue(Constants.FeatMaiaCorrupted) > 0)
-                {
-                    darkling.SetHostility(Hostility.Friend);
-                }
-
-                // Being Good or an Enlightened Maia will cause Darklings to become be hostile.
-                if (EClass.pc.HasElement(1270) || EClass.pc.Evalue(Constants.FeatMaiaEnlightened) > 0)
-                {
-                    darkling.SetHostility(Hostility.Enemy);
-                }
-
-                EClass._zone.AddCard(darkling, __instance.GetSpawnPos(SpawnPosition.Random, 10000));
-                Msg.Say("sign_darkling");
-            }
-        }
-
         // Druids - If there is a druid in the party, animals and plantlife will become friendly.
         if (EClass.pc.party.members.Any(c => c.Evalue(Constants.FeatDruid) > 0))
         {
@@ -69,4 +48,35 @@ public class ZonePatches
             }
         }
     }
+
+    [HarmonyPatch(nameof(Zone.TryGenerateEvolved))]
+    [HarmonyPostfix]
+    internal static void TryGenerateEvolved_AddCombatSkill(Zone __instance, ref Chara __result, bool force, Point p)
+    {
+        if (EClass.pc.GetFlagValue(Constants.UnlockedEliteEnemiesFlag) > 0)
+        {
+            if (__instance.DangerLv > Constants.EliteEnemiesSpawnLevel)
+            {
+                // Do I want to have two tiers of spawning this? At some point you get the +'s
+                int randomCombatSkill = T1SpawnableCombatSkills.RandomItem();
+                __result.SetFeat(randomCombatSkill);
+                __result.SetFlagValue(Constants.AdvancedCombatSkillFlag, randomCombatSkill);
+            }
+        }
+    }
+    
+    /*
+
+    [HarmonyPatch(nameof(Zone.Activate))]
+    [HarmonyPrefix]
+    internal static bool OnActivate_SpawnCustomeZones(Zone __instance)
+    {
+        if (__instance.IsRegion)
+        {
+                
+        }
+        
+        return true;
+    }
+    */
 }

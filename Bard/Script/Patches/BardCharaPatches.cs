@@ -32,11 +32,7 @@ internal class BardCharaPatches : EClass
                             ephemeralFlowers.Caster) as ConEphemeralFlowersSong;
                 target.AddCondition(recursive);
                 target.AddCondition<ConFreeze>(30, true);
-                // target.DamageHP(dmg: damage, ele: Constants.EleCold, eleP: 100, attackSource: AttackSource.Shockwave);
-                BardCardPatches.CachedInvoker.Invoke(
-                    target,
-                    new object[] { damage, Constants.EleCold, 100, AttackSource.Shockwave, null }
-                );
+                target.DamageHP(dmg: damage, ele: Constants.EleCold, eleP: 100, attackSource: AttackSource.Shockwave);
             }
 
             if (ephemeralFlowers.GodBlessed)

@@ -12,7 +12,7 @@ public class StChaosMode : Ability
             return false;
         }
         // Both Sovereign Modes share a cooldown.
-        if (CC.HasCooldown(Constants.StLawModeId)) return false;
+        if (CC.HasCooldown(Constants.StChaosModeId)) return false;
         return base.CanPerform();
     }
 
@@ -27,11 +27,11 @@ public class StChaosMode : Ability
 
     public override bool Perform()
     {
-        CC.Talk("sovereign_chaos".langList().RandomItem());
+        CC.SayRaw($"sovereign_chaos_{EClass.rnd(5)}".langGame());
         CC.RemoveCondition<StanceLawSovereign>();
         CC.AddCondition<StanceChaosSovereign>();
         CC.AddCooldown(Constants.StLawModeId, 5);
-
+        CC.AddCooldown(Constants.StChaosModeId, 5);
         return true;
     }
 }

@@ -54,11 +54,8 @@ public class FeatDreadKnight : PromotionFeat
         c.ability.Add(51006, 50, false); // Nether Sword
         c.ability.Add(50506, 50, false); // Nether Arrow
     }
-
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "warmage";
-    }
+    
+    public override string JobRequirement => "warmage";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

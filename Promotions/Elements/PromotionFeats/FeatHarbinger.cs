@@ -14,7 +14,7 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Passive - Miasma Hunter - Gains increased damage if the target has miasma on them.
 ///     Passive - Miasma Armor - Every time Miasma is applied to an enemy, you gain a stack of damage reduction.
 ///     Passive - Miasma Mastery - Absorbs nearby Miasmas from allies.
-///     Passive - Conspectus of Miasma - Can convert Elemental ATtack spells into Miasmas of the same kind. 
+///     Passive - Conspectus of Miasma - Can convert Elemental Attack spells into Miasmas of the same kind. 
 /// </summary>
 public class FeatHarbinger : PromotionFeat
 {
@@ -33,11 +33,8 @@ public class FeatHarbinger : PromotionFeat
         c.ability.Add(Constants.ActEndlessMistsId, 75, false);
         c.ability.Add(Constants.ActAccursedTouchId, 90, false);
     }
-
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "executioner";
-    }
+    
+    public override string JobRequirement => "executioner";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

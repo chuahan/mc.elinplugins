@@ -50,11 +50,8 @@ public class FeatDancer : PromotionFeat
         c.ability.Add(Constants.StHealingDanceId, 25, false);
         c.ability.Add(Constants.StSwiftDanceId, 25, false);
     }
-
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "pianist";
-    }
+    
+    public override string JobRequirement => "pianist";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

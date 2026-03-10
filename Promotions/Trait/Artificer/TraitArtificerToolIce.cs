@@ -6,6 +6,14 @@ public class TraitArtificerToolIce : TraitArtificerTool
 {
     public override string ArtificerToolId => "artificer_iceaxe";
 
+    public virtual void MarkMapHighlights(bool shouldHighlight, Point target)
+    {
+        target.ForeachNeighbor(delegate(Point p)
+        {
+            p.SetHighlight(8);
+        });
+    }
+    
     public override bool ArtificerToolEffect(Chara cc, Point pos, int power)
     {
         float powerMulti = 1f + (cc.Evalue(102) / 2F + cc.Evalue(101)) / 50f;

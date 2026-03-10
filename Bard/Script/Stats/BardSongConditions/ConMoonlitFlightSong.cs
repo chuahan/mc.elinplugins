@@ -17,11 +17,7 @@ public class ConMoonlitFlightSong : ConBardSong
         damage = HelperFunctions.SafeMultiplier(damage, Stacks);
         if (GodBlessed)
         {
-            // owner.DamageHP(dmg: damage, ele: Constants.EleNether, eleP: 100, attackSource: AttackSource.MagicSword, origin: Caster);
-            BardCardPatches.CachedInvoker.Invoke(
-                owner,
-                new object[] { damage, Constants.EleNether, 100, AttackSource.MagicSword, Caster }
-            );
+            owner.DamageHP(dmg: damage, ele: Constants.EleNether, eleP: 100, attackSource: AttackSource.MagicSword, origin: Caster);
             // Check nearest adjacent character
             Chara jumpTarget = owner.pos.GetRandomPoint(1).Charas.FirstOrDefault();
             if (jumpTarget != null)
@@ -44,11 +40,7 @@ public class ConMoonlitFlightSong : ConBardSong
         }
         else
         {
-            // owner.DamageHP(dmg: damage, ele: Constants.EleSound, eleP: 100, attackSource: AttackSource.MagicSword);
-            BardCardPatches.CachedInvoker.Invoke(
-                owner,
-                new object[] { damage, Constants.EleSound, 100, AttackSource.MagicSword, null }
-            );
+            owner.DamageHP(dmg: damage, ele: Constants.EleSound, eleP: 100, attackSource: AttackSource.MagicSword);
         }
 
         base.OnRemoved();

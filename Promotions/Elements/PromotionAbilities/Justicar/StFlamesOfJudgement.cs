@@ -1,6 +1,7 @@
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Justicar;
 
+// TODO: Need to Sprite in SFX.
 public class StFlamesOfJudgement : Ability
 {
     public override bool CanPerform()

@@ -51,7 +51,7 @@ public class BardEphemeralFlowersFinale : BardSongData
         float chunkSize = bard.MaxHP * chunkPercent;
         int missingChunks = (int)((bard.MaxHP - bard.hp) / chunkSize);
         int multiplier = missingChunks + rhythmStacks / 5;
-        int damage = HelperFunctions.SafeMultiplier(damageBase, multiplier);
+        long damage = HelperFunctions.SafeMultiplier(damageBase, multiplier);
 
         List<Chara> potentialTargets = HelperFunctions.GetCharasWithinRadius(bard.pos, SongRadius, bard, false, true);
         if (potentialTargets.Count != 0)
@@ -60,10 +60,7 @@ public class BardEphemeralFlowersFinale : BardSongData
             {
                 ConEphemeralFlowersSong bardDebuff = ConBardSong.Create(nameof(ConEphemeralFlowersSong), power, rhythmStacks, godBlessed, bard) as ConEphemeralFlowersSong;
                 enemy.AddCondition(bardDebuff);
-                BardCardPatches.CachedInvoker.Invoke(
-                    enemy,
-                    new object[] { damage, Constants.EleFire, 100, AttackSource.Shockwave, bard }
-                );
+                enemy.DamageHP(dmg: damage, ele: Constants.EleFire, eleP: 100, attackSource: AttackSource.Shockwave, origin: bard);
                 enemy.AddCondition<ConFreeze>(rhythmStacks, true);
             }
         }

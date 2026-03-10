@@ -58,18 +58,10 @@ internal class BardCardPatches : EClass
         return false;
     }
     
-    internal static MethodInfo TargetMethod()
-    {
-        return AccessTools.GetDeclaredMethods(typeof(Card))
-                .Where(mi => mi.Name == nameof(Card.DamageHP))
-                .OrderByDescending(mi => mi.GetParameters().Length)
-                .First();
-    }
-
-    public static readonly FastInvokeHandler CachedInvoker = MethodInvoker.GetHandler(TargetMethod(), true);
-    
+    [HarmonyPatch(nameof(Card.DamageHP))]
+    [HarmonyPatch(typeof(Card), nameof(Card.DamageHP), typeof(long), typeof(int), typeof(int), typeof(AttackSource), typeof(Card), typeof(bool), typeof(Thing), typeof(Chara))]
     [HarmonyPrefix]
-    internal static bool OnDamageHP(Card __instance, ref int dmg, ref int ele, ref int eleP, AttackSource attackSource, Card origin, bool showEffect, Thing weapon)
+    internal static bool OnDamageHP_Patch(Card __instance, ref long dmg, ref int ele, ref int eleP, AttackSource attackSource, Card origin, bool showEffect, Thing weapon, Chara originalTarget)
     {
         // Prismatic Bridge to Tomorrow
         // If the damage dealer is charged, double a single instance of damage dealt.
@@ -96,7 +88,7 @@ internal class BardCardPatches : EClass
                             prismaticBridge.Stacks = 5;
                         }
                     }
-                    dmg = HelperFunctions.SafeMultiplier(dmg, 2);
+                    dmg = HelperFunctions.SafeMultiplier((int)dmg, 2);
                 }
             }
 
@@ -123,7 +115,7 @@ internal class BardCardPatches : EClass
             if (origin.Chara.HasCondition<ConFarewellFlamesSong>())
             {
                 ConFarewellFlamesSong farewellFlames = origin.Chara.GetCondition<ConFarewellFlamesSong>();
-                dmg = HelperFunctions.SafeMultiplier(dmg, farewellFlames.AdditionalDamage);
+                dmg = HelperFunctions.SafeMultiplier((int)dmg, farewellFlames.AdditionalDamage);
                 ele = Constants.EleFire;
                 eleP = Math.Max(eleP, farewellFlames.power / 2);
             }
@@ -136,7 +128,7 @@ internal class BardCardPatches : EClass
             // Comatose - Take 50% more damage and remove Comatose.
             if (targetChar.HasCondition<ConComatose>())
             {
-                dmg = HelperFunctions.SafeMultiplier(dmg, 1.5F);
+                dmg = HelperFunctions.SafeMultiplier((int)dmg, 1.5F);
                 targetChar.RemoveCondition<ConComatose>();
                 targetChar.RemoveCondition<ConSleep>();
             }
@@ -144,7 +136,7 @@ internal class BardCardPatches : EClass
             // Reflection of the Abyss - Take 200% more damage and deal 70% damage.
             if (targetChar.HasCondition<ConAbyssalReflection>())
             {
-                dmg = HelperFunctions.SafeMultiplier(dmg, 2);
+                dmg = HelperFunctions.SafeMultiplier((int)dmg, 2);
             }
 
             // Damage negation only affects these damage sources.
@@ -169,11 +161,7 @@ internal class BardCardPatches : EClass
                     {
                         targetChar.PlayEffect("hit_slash").SetScale(1f);
                         CoroutineHelper.Deferred(() => targetChar.Say("blossomsong_retaliate".langGame(targetChar.NameSimple, origin.Chara.NameSimple)));
-                        // origin.Chara.DamageHP(retaliationDamage, AttackSource.Condition, targetChar);
-                        CachedInvoker.Invoke(
-                            origin.Chara,
-                            new object[] { retaliationDamage, (int)AttackSource.Condition, 0, null, targetChar, true, null }
-                        );
+                        origin.Chara.DamageHP(retaliationDamage, AttackSource.Condition, targetChar);
                     }
                     else
                     {
@@ -188,8 +176,8 @@ internal class BardCardPatches : EClass
                 if (targetChar.HasCondition<ConShimmeringDewSong>())
                 {
                     ConShimmeringDewSong shimmeringDew = targetChar.GetCondition<ConShimmeringDewSong>();
-                    int dmgAbsorbed = (int)(dmg * (shimmeringDew.GetDamageAbsorption() / 100));
-                    shimmeringDew.DamageAbsorbed = HelperFunctions.SafeAdd(shimmeringDew.DamageAbsorbed, dmgAbsorbed);
+                    long dmgAbsorbed = (long)(dmg * (shimmeringDew.GetDamageAbsorption() / 100));
+                    shimmeringDew.DamageAbsorbed = HelperFunctions.SafeAdd((int)shimmeringDew.DamageAbsorbed, (int)dmgAbsorbed);
                     dmg -= dmgAbsorbed;
                 }
 
@@ -199,7 +187,7 @@ internal class BardCardPatches : EClass
                     ConOverguard overguardCon = targetChar.GetCondition<ConOverguard>();
                     if (overguardCon.value >= dmg)
                     {
-                        overguardCon.Mod(-1 * dmg);
+                        overguardCon.Mod((int)(-1 * dmg));
                         return false;
                     }
 
@@ -214,7 +202,7 @@ internal class BardCardPatches : EClass
                 ConHeavensFallSong heavensFall = targetChar.GetCondition<ConHeavensFallSong>();
                 if (heavensFall.UndyingTurns != 0)
                 {
-                    targetChar.HealHP(dmg, HealSource.Magic);
+                    targetChar.HealHP((int)dmg, HealSource.Magic);
                     return false;
                 }
             }

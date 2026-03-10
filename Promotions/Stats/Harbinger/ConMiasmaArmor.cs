@@ -4,16 +4,16 @@ namespace PromotionMod.Stats.Harbinger;
 
 public class ConMiasmaArmor : Timebuff
 {
-    [JsonProperty(PropertyName = "S")] private int Stacks = 1;
-
+    [JsonProperty(PropertyName = "S")] private int _stacks = 1;
+    
     public override int EvaluatePower(int p)
     {
-        if (p > Stacks) Stacks = p;
+        if (p > _stacks) _stacks = p;
         return GetStacks();
     }
 
     public int GetStacks()
     {
-        return Math.Min(Stacks, 19);
+        return Math.Min(_stacks, 19);
     }
 }

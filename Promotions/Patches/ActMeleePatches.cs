@@ -33,6 +33,41 @@ public class ActMeleePatches
             StanceRage stance = Act.CC.GetCondition<StanceRage>();
             dmgMulti += stance.power / 5F;
         }
+        
+        // Vantage will allow the defender to counterattack first immediately when attacked.
+        Chara originalAttacker = Act.CC;
+        Card originalDefender = Act.TC;
+        if (originalDefender is { isChara: true, ExistsOnMap: true, IsRestrainedResident: false, IsDisabled: false} &&
+            originalDefender != originalAttacker &&
+            ACT.Melee.CanPerform(originalDefender.Chara, originalAttacker) &&
+            (!originalDefender.IsPCFactionOrMinion || !EClass._zone.isPeace) &&
+            !originalAttacker.HasCondition<ConFear>())
+        {
+            // Vantage - Triggers when 50% or lower HP.
+            if (Act.TC.HasElement(Constants.FeatVantageId) &&
+                Act.TC.hp <= Act.TC.MaxHP / 2 &&
+                Act.CC.IsHostile(Act.TC.Chara))
+            {
+                Act.TC.Say("vantage_activation".langGame(Act.TC.NameSimple));
+                Act.TC.PlaySound("parry");
+                if (!HelperFunctions.NihilActivated(Act.CC))
+                {
+                    new ActMeleeCounter().Perform(originalDefender.Chara, originalAttacker);
+                }
+            }
+
+            // Vantage+ - Triggers automatically
+            if (Act.TC.HasElement(Constants.FeatVantagePlusId) &&
+                Act.CC.IsHostile(Act.TC.Chara))
+            {
+                Act.TC.Say("vantage_activation".langGame(Act.TC.NameSimple));
+                Act.TC.PlaySound("parry");
+                if (!HelperFunctions.NihilActivated(Act.CC))
+                {
+                    new ActMeleeCounter().Perform(originalDefender.Chara, originalAttacker);
+                }
+            }
+        }
 
         return true;
     }

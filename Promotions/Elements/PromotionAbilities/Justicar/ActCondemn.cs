@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using PromotionMod.Common;
 using PromotionMod.Stats;
 namespace PromotionMod.Elements.PromotionAbilities.Justicar;
@@ -9,6 +10,8 @@ namespace PromotionMod.Elements.PromotionAbilities.Justicar;
 /// </summary>
 public class ActCondemn : Ability
 {
+    private float _effectRadius = 3F;
+    
     public override bool CanPerform()
     {
         if (CC.Evalue(Constants.FeatJusticar) == 0)
@@ -19,11 +22,28 @@ public class ActCondemn : Ability
         return base.CanPerform();
     }
 
+    public override void OnMarkMapHighlights()
+    {
+        if (!EClass.scene.mouseTarget.pos.IsValid)
+        {
+            return;
+        }
+        List<Point> list = EClass._map.ListPointsInCircle(EClass.scene.mouseTarget.pos, _effectRadius, true, true);
+        if (list.Count == 0)
+        {
+            list.Add(Act.CC.pos.Copy());
+        }
+        foreach (Point item in list)
+        {
+            item.SetHighlight(8);
+        }
+    }
+    
     public override bool Perform()
     {
         // Can I play SFX Chains here?
         int condemnedTargets = 0;
-        foreach (Chara target in HelperFunctions.GetCharasWithinRadius(TP, 3F, CC, false, true))
+        foreach (Chara target in HelperFunctions.GetCharasWithinRadius(TP, _effectRadius, CC, false, true))
         {
             ActEffect.ProcAt(EffectId.Debuff, GetPower(CC), BlessedState.Normal, CC, target, target.pos, true, new ActRef
             {

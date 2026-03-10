@@ -25,7 +25,7 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     ConNightmare
 ///     ConParanoia - Hexer Debuff. Causes them to prioritize attacking allies.
 ///     ConDespair - Prevents Healing.
-///     ConVulnerability -
+///     ConVulnerability
 /// </summary>
 public class FeatTrickster : PromotionFeat
 {
@@ -46,12 +46,8 @@ public class FeatTrickster : PromotionFeat
         c.ability.Add(Constants.ActDiversionId, 75, false);
         c.ability.Add(Constants.ActReversalId, 50, false);
     }
-
-
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "thief";
-    }
+    
+    public override string JobRequirement => "thief";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

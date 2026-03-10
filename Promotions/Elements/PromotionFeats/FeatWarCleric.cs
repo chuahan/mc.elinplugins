@@ -16,13 +16,12 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Enemies in the explosion are damaged with holy damage and inflicted with Fear.
 ///     Cooldown of a day.
 ///     Skill - Sanctuary Stance - Deploys an area that reduces damage done to all it's inhabitants by 75%, both ally and
-///     hostile.
+///     hostile. Should not be used by NPCs.
 ///     Skill - Divine Fist - Single target holy damage attack. On impact, shoots out 4 holy bolts at nearby characters.
 ///     If the character is hostile. It will act as a holy arrow.
 ///     If the character is friendly. It will instead heal the amount of damage it would have dealt.
 ///     Passive - Benevolence - War Clerics will apply any healing done to themselves to all friendlies within 3 Radius at
 ///     50% potency.
-///     Passive - Wrath - Damage done is increased by Faith.
 ///     Passive - God Protects - When you pray, you and your allies gain Protection that absorbs damage based on piety.
 ///     This will activate when the PC prays with a Saint or War Cleric ally as well.
 /// </summary>
@@ -41,14 +40,11 @@ public class FeatWarCleric : PromotionFeat
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActDivineDescentId, 50, false);
-        c.ability.Add(Constants.ActDeploySanctuaryId, 50, false);
         c.ability.Add(Constants.ActDivineFistId, 100, false);
+        c.ability.Add(Constants.ActBlessedArmamentsId, 50, false);
     }
-
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "priest";
-    }
+    
+    public override string JobRequirement => "priest";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

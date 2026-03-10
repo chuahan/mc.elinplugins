@@ -6,15 +6,27 @@ public class TraitArtificerToolEarth : TraitArtificerTool
 {
     public override string ArtificerToolId => "artificer_earthgauntlet";
 
+    public override float EffectRadius => 5;
+
+    public virtual void MarkMapHighlights(bool shouldHighlight, Point target)
+    {
+        EClass._map.ForeachSphere(target.x, target.z, EffectRadius, delegate(Point p)
+        {
+            if (!p.HasBlock && shouldHighlight)
+            {
+                p.SetHighlight(8);
+            }
+        });
+    }
+    
     public override bool ArtificerToolEffect(Chara cc, Point pos, int power)
     {
         float powerMulti = 1f + (cc.Evalue(100) / 2F + cc.Evalue(132)) / 50f;
         int scaledPower = (int)(power * powerMulti);
 
         int damage = HelperFunctions.SafeDice(ArtificerToolId, scaledPower);
-        Effect spellEffect = Effect.Get("Element/ball_Impact");
         List<Chara> targetsHit = new List<Chara>();
-        foreach (Point tile in _map.ListPointsInCircle(pos, 5f, false, false))
+        foreach (Point tile in _map.ListPointsInCircle(pos, EffectRadius, false, false))
         {
             int distance = tile.Distance(pos);
             foreach (Chara target in tile.ListCharas())
@@ -42,14 +54,11 @@ public class TraitArtificerToolEarth : TraitArtificerTool
                 targetsHit.Add(target);
             }
 
-            // Get distance from the origin. Use that to add delay to the explosion,
-            float delay = distance * 0.7F;
-            TweenUtil.Delay(delay, delegate
-            {
-                spellEffect.Play(tile, 0f, tile);
-            });
+            Effect spellEffect = Effect.Get("Element/ball_Impact");
+            float delay = distance * 0.08F;
+            spellEffect.SetStartDelay(delay);
+            spellEffect.Play(tile).Flip(tile.x > cc.pos.x);
         }
-        owner.c_ammo--;
         return true;
     }
 }

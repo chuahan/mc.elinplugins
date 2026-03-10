@@ -42,7 +42,7 @@ public class FeatJusticar : PromotionFeat
         Constants.ActIntimidateId,
         Constants.ActSubdueId,
         Constants.ActCondemnId,
-        Constants.StJudgementFlameId
+        Constants.StFlamesOfJudgementId
     };
 
     protected override void ApplyInternalNPC(Chara c)
@@ -50,13 +50,10 @@ public class FeatJusticar : PromotionFeat
         c.ability.Add(Constants.ActIntimidateId, 60, false);
         c.ability.Add(Constants.ActSubdueId, 60, false);
         c.ability.Add(Constants.ActCondemnId, 60, false);
-        c.ability.Add(Constants.StJudgementFlameId, 60, false);
+        c.ability.Add(Constants.StFlamesOfJudgementId, 60, false);
     }
-
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "inquisitor";
-    }
+    
+    public override string JobRequirement => "inquisitor";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

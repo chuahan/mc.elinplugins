@@ -51,11 +51,8 @@ public class FeatSovereign : PromotionFeat
         c.ability.Add(Constants.ActStrategyOrderId, 85, false);
         c.ability.Add(Constants.ActFormationOrderId, 85, false);
     }
-
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "paladin";
-    }
+    
+    public override string JobRequirement => "paladin";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

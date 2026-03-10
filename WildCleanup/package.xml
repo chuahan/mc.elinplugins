@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Meta>
+  <title>Wild Cleanup</title>
+  <id>han.cleanuptoaster.mod</id>
+  <author>Han</author>
+  <loadPriority>10</loadPriority>
+  <description>
+    Basic mod to help a toaster clean up their properties.
+    NOTE: THIS MOD IS NOT MEANT TO BE USED LONG TERM.
+    Load your game with this mod on. Go to the property you want cleaned up. Go into it and it should fix things. After you clean up everything (basically after you visit each property) uninstall this mod.
+  </description>
+  <tags>Tweak, QOL, Gameplay</tags>
+  <version>0.23.252</version>
+</Meta>

@@ -11,7 +11,7 @@ public class ConMiasmaPatches
     {
         foreach (Chara ally in HelperFunctions.GetCharasWithinRadius(__instance.owner.pos, 2F, __instance.owner, true, false))
         {
-            if (ally.Evalue(Constants.FeatHarbinger) > 0)
+            if (ally.HasElement(Constants.FeatHarbinger))
             {
                 // Harbinger will consume the miasma instead, regaining health.
                 int healAmount = (int)(ally.MaxHP * 0.1F);

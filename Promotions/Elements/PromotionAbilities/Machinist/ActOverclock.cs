@@ -25,10 +25,12 @@ public class ActOverclock : Ability
 
     public override bool Perform()
     {
+        int power = GetPower(CC);
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, true, true).Where(target => target.HasTag(CTAG.machine)))
         {
-            target.AddCondition<ConOverclock>();
+            target.AddCondition<ConOverclock>(power);
         }
+        CC.AddCondition<ConOverclock>(power);
 
         CC.AddCooldown(Constants.ActOverclockId, 10);
         return true;

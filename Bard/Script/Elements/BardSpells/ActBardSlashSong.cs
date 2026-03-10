@@ -22,10 +22,7 @@ public class ActBardSlashSong : ActBardSong
         {
             int damage = HelperFunctions.SafeDice(Constants.BardSlashSongName, power);
             target.PlaySound("ab_magicsword");
-            BardCardPatches.CachedInvoker.Invoke(
-                target,
-                new object[] { damage, Constants.EleSound, 100, AttackSource.Shockwave, bard }
-            );
+            target.DamageHP(dmg: damage, ele: Constants.EleSound, eleP: 100, attackSource: AttackSource.Shockwave, origin: bard);
         }
     }
 }

@@ -31,8 +31,6 @@ public class ActJeneiMotherGaia : Ability
 
     public override bool Perform()
     {
-		Msg.Say("DLL path: " + typeof(ActJeneiMotherGaia).Assembly.Location);
-        Msg.Say("START GAIA");
         int power = GetPower(CC);
 
         TC.pos.Animate(AnimeID.Quake, true);
@@ -54,8 +52,7 @@ public class ActJeneiMotherGaia : Ability
                 origin = CC,
             });
         });
-
-        Msg.Say("END GAIA");
+        
         return true;
     }
 }

@@ -43,11 +43,7 @@ internal class BardAttackProcessPatches : EClass
                         __instance.CC.PlaySound("whip");
                         int damage = HelperFunctions.SafeDice(Constants.BardFinaleLulwyStepName, conLulwyStepSong.power);
                         CoroutineHelper.Deferred(() => Msg.Say("windsong_retaliate".langGame(target.NameSimple)));
-                        // __instance.CC.DamageHP(dmg: damage, ele: Constants.EleLightning, eleP: conLulwyStepSong.GetRetaliationPower() * 10, attackSource: AttackSource.Condition);
-                        BardCardPatches.CachedInvoker.Invoke(
-                            __instance.CC,
-                            new object[] { damage, Constants.EleLightning, conLulwyStepSong.GetRetaliationPower() * 10, AttackSource.Condition }
-                        );
+                        __instance.CC.DamageHP(dmg: damage, ele: Constants.EleLightning, eleP: conLulwyStepSong.GetRetaliationPower() * 10, attackSource: AttackSource.Condition);
                         __instance.CC.AddCondition<ConParalyze>(30 + conLulwyStepSong.GetRetaliationPower());
                         return false;
                     }

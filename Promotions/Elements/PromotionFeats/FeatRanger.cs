@@ -27,22 +27,19 @@ public class FeatRanger : PromotionFeat
 
     public override List<int> PromotionAbilities => new List<int>
     {
-        Constants.StRangersCanto,
+        Constants.StRangersCantoId,
         Constants.ActGimmickCoatingId,
-        Constants.ActSetTrapId
+        Constants.ActThrowTrapId
     };
 
     protected override void ApplyInternalNPC(Chara c)
     {
-        c.ability.Add(Constants.StRangersCanto, 100, false);
+        c.ability.Add(Constants.StRangersCantoId, 100, false);
         c.ability.Add(Constants.ActGimmickCoatingId, 75, false);
-        c.ability.Add(Constants.ActSetTrapId, 75, false);
+        c.ability.Add(Constants.ActThrowTrapId, 75, false);
     }
-
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "archer";
-    }
+    
+    public override string JobRequirement => "archer";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

@@ -174,7 +174,7 @@ public static class HelperFunctions
         if (bard.Evalue(Constants.FeatBardId) > 0) powerMultiplier += 0.25f;
 
         // Apply Multipliers
-        basePower = HelperFunctions.SafeMultiplier(basePower, powerMultiplier);
+        basePower = (int)HelperFunctions.SafeMultiplier(basePower, powerMultiplier);
 
         return basePower;
     }

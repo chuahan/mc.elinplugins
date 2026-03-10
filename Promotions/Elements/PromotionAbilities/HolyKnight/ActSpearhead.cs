@@ -6,10 +6,11 @@ using PromotionMod.Stats.HolyKnight;
 using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.HolyKnight;
 
-public class ActSpearhead : Ability
+public class ActSpearhead : ActRush
 {
     public override bool CanPerform()
     {
+        if (CC == null) return false;
         if (CC.Evalue(Constants.FeatHolyKnight) == 0)
         {
             Msg.Say("classlocked_ability".lang(Constants.HolyKnightId.lang()));
@@ -17,91 +18,65 @@ public class ActSpearhead : Ability
         }
         if (CC.HasCooldown(Constants.ActSpearheadId)) return false;
 
-        if (CC.IsPC && !(CC.ai is GoalAutoCombat)) TC = scene.mouseTarget.card;
-        if (TC != null) // Can rush to a point without a target.
-        {
-            if (TC.isThing && !TC.trait.CanBeAttacked) return false;
-            TP.Set(TC.pos);
-        }
-
-        if (CC.isRestrained) return false;
-        if (CC.host != null || CC.Dist(TP) <= 6) return false;
-        if (Los.GetRushPoint(CC.pos, TP) == null) return false;
-
         return base.CanPerform();
-    }
-
-    public override void OnMarkMapHighlights()
-    {
-        if (!scene.mouseTarget.pos.IsValid || scene.mouseTarget.TargetChara == null)
-        {
-            return;
-        }
-        Point dest = scene.mouseTarget.pos;
-        Los.IsVisible(pc.pos, dest, delegate(Point p, bool blocked)
-        {
-            if (!p.Equals(pc.pos))
-            {
-                p.SetHighlight(blocked || p.IsBlocked || !p.Equals(dest) && p.HasChara ? 4 : p.Distance(pc.pos) <= 2 ? 2 : 8);
-            }
-        });
     }
 
     public override bool Perform()
     {
         bool flag = CC.IsPC && !(CC.ai is GoalAutoCombat);
-        if (flag)
-        {
-            TC = scene.mouseTarget.card;
-        }
-
-        // Can target a character or a point
-        Point rushPoint = TP;
-        if (TC != null)
-        {
-            TP.Set(flag ? scene.mouseTarget.pos : TC.pos);
-            int num = CC.Dist(TP);
-            rushPoint = Los.GetRushPoint(CC.pos, TP);
-        }
-
-        // Select all tiles between the start and the target
-        List<Point> affectedPoints = pc.currentZone.map.ListPointsInLine(CC.pos, rushPoint, 2);
-
-        // Render a Holy beam in that direction
-        Point from = CC.pos;
-        ElementRef elementRef = setting.elements["eleHoly"];
-        Effect spellEffect = Effect.Get("trail1");
-        spellEffect.SetParticleColor(elementRef.colorTrail, true, "_TintColor").Play(from);
-        spellEffect.sr.color = elementRef.colorSprite;
-        TrailRenderer componentInChildren = spellEffect.GetComponentInChildren<TrailRenderer>();
-        Color startColor = componentInChildren.endColor = elementRef.colorSprite;
-        componentInChildren.startColor = startColor;
-        spellEffect.Play(CC.pos, 0f, rushPoint);
-
+        if (flag) TC = scene.mouseTarget.card;
+        if (TC == null) return false;
+        TP.Set(flag ? EClass.scene.mouseTarget.pos : TC.pos);
+        Point rushPoint = Los.GetRushPoint(CC.pos, TP);
+        int distance = CC.Dist(TP);
+        
+        // Render Holy ball on every tile.
+        Effect spellEffect = Effect.Get("Element/ball_Holy");
+        
         // Teleport the user.
         CC.pos.PlayEffect("vanish");
         CC.MoveImmediate(rushPoint, true, false);
         CC.Say("rush", CC, TC);
         CC.PlaySound("rush");
         CC.pos.PlayEffect("vanish");
-
+        
+        // Select all tiles between the start and the target
+        List<Point> affectedPoints = pc.currentZone.map.ListPointsInLine(CC.pos, rushPoint, 2);
+        
         // Inflict Holy Damage and Summon a Holy Swordbit
-        int power = GetPower(CC);
+        int power = (int)(GetPower(CC) * (float)(100 + EClass.curve(Act.CC.Evalue(382), 50, 25, 65)) / 100f);
         ActEffect.DamageEle(CC, EffectId.Sword, power, Element.Create(Constants.EleHoly, power / 10), affectedPoints, new ActRef
         {
             act = this
         });
 
         List<Chara> impacted = new List<Chara>();
-        foreach (Chara target in from affected in affectedPoints from target in affected.ListCharas() where target.IsHostile(CC) && !impacted.Contains(target) select target)
+        foreach (Point affected in affectedPoints)
         {
-            impacted.Add(target);
-            target.TryMoveFrom(from); // Knock back targets
-            SpawnHolySwordBit(power, CC, target.pos);
+            int fxDistance = affected.Distance(CC.pos);
+            float delay = fxDistance * 0.7F;
+            TweenUtil.Delay(delay, delegate
+            {
+                spellEffect.Play(affected, 0f, affected);
+            });
+            foreach (Chara target in affected.Charas)
+            {
+                if (target.IsHostile(CC) && !impacted.Contains(target))
+                {
+                    impacted.Add(target);
+                    target.TryMoveFrom(target.pos); // Knock back targets
+                    SpawnHolySwordBit(power, CC, target.pos);
+                }
+            };
         }
+        
+        float distBonus = 1f + 0.1f * (float)distance;
+        distBonus *= (float)(100 + EClass.curve(Act.CC.Evalue(382), 50, 25, 65)) / 100f; // Add Momentum Bonus
+        Attack(distBonus);
+        SpawnHolySwordBit(power, CC, TP);
 
-        ConHeavenlyHost? luminary = CC.GetCondition<ConHeavenlyHost>() ?? CC.AddCondition<ConHeavenlyHost>() as ConHeavenlyHost;
-        luminary?.AddStacks(impacted.Count);
+        ConHeavenlyHost? heavenlyHost = CC.GetCondition<ConHeavenlyHost>() ?? CC.AddCondition<ConHeavenlyHost>() as ConHeavenlyHost;
+        heavenlyHost?.AddStacks(impacted.Count);
         CC.AddCooldown(Constants.ActSpearheadId, 5);
         return true;
     }

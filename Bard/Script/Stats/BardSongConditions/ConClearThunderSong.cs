@@ -80,11 +80,7 @@ public class ConClearThunderSong : ConBardSong
                     {
                         // The last strike will do additional Rhythm Stacks% hp damage.
                         int boostedDamage = HelperFunctions.SafeAdd(damage, target.hp * (RhythmStacks / 100));
-                        // target.DamageHP(dmg: boostedDamage, ele: Constants.EleLightning, eleP: 100, attackSource: AttackSource.Condition, origin: owner);
-                        BardCardPatches.CachedInvoker.Invoke(
-                            target,
-                            new object[] { boostedDamage, Constants.EleLightning, 100, AttackSource.Condition, owner }
-                        );
+                        target.DamageHP(dmg: boostedDamage, ele: Constants.EleLightning, eleP: 100, attackSource: AttackSource.Condition, origin: owner);
                         /*
                          * TODO: Add Greater Lightning FX
                          */
@@ -92,11 +88,7 @@ public class ConClearThunderSong : ConBardSong
                     }
                     else
                     {
-                        // target.DamageHP(dmg: damage, ele: Constants.EleLightning, eleP: 100, attackSource: AttackSource.Condition, origin: owner);
-                        BardCardPatches.CachedInvoker.Invoke(
-                            target,
-                            new object[] { damage, Constants.EleLightning, 100, AttackSource.Condition, owner }
-                        );
+                        target.DamageHP(dmg: damage, ele: Constants.EleLightning, eleP: 100, attackSource: AttackSource.Condition, origin: owner);
                         /*
                          * TODO: Add Lightning FX
                          */

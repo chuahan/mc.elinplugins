@@ -19,13 +19,9 @@ public class ActThunderousTranspositionMelee : ActMelee
     {
         // Modified Effect if Selena has enough Rhythm - Inflicts Freeze on all targets.
         // Deal Lightning damage to all nearby enemies.
-        int damage = HelperFunctions.SafeDice(Constants.ThunderousTranspositionName, GetPower(CC));
-        if (TC.HasCondition<ConFreeze>()) damage = HelperFunctions.SafeMultiplier(damage, 1.5f);
-        // TC.DamageHP(dmg: damage, ele: Constants.EleLightning, eleP: 100, attackSource: AttackSource.Melee, origin: CC);
-        BardCardPatches.CachedInvoker.Invoke(
-            TC,
-            new object[] { damage, Constants.EleLightning, 100, AttackSource.Melee, CC }
-        );
+        long damage = HelperFunctions.SafeDice(Constants.ThunderousTranspositionName, GetPower(CC));
+        if (TC.HasCondition<ConFreeze>()) damage = (long)(damage * 1.5f);
+        TC.DamageHP(dmg: damage, ele: Constants.EleLightning, eleP: 100, attackSource: AttackSource.Melee, origin: CC);
         if (SpecialActive && TC.isChara) TC.Chara.AddCondition<ConFreeze>(force: true);
         return true;
     }

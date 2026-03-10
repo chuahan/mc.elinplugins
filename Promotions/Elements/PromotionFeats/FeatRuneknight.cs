@@ -41,11 +41,8 @@ public class FeatRuneknight : PromotionFeat
         c.ability.Add(Constants.ActSpinningSlashId, 75, false);
         c.ability.Add(Constants.ActRuneEtchingId, 100, true);
     }
-
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "swordsage";
-    }
+    
+    public override string JobRequirement => "swordsage";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

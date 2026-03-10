@@ -24,6 +24,13 @@ public abstract class ClassCondition : Condition
         Stacks = Math.Min(Stacks, MaxStacks);
     }
 
+    // If the stacks need to decay.
+    protected void TickStacks()
+    {
+        Stacks--;
+        Stacks = Math.Min(0, Stacks);
+    }
+
     public override void Tick()
     {
     }

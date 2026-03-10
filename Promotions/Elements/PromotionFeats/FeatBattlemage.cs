@@ -36,13 +36,11 @@ public class FeatBattlemage : PromotionFeat
     {
         c.ability.Add(Constants.StManaShieldId, 100, false);
         c.ability.Add(Constants.StManaFocusId, 100, false);
-        c.ability.Add(50611, 50, false); // Magic Bits
+        // Add the respective Funnel spell. 506xx
+        c.ability.Add(50600 + PromotionFeat.GetAdditionalSpellElement(c), 50, false);
     }
 
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "warmage";
-    }
+    public override string JobRequirement => "warmage";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

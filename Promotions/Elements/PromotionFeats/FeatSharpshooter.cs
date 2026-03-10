@@ -36,11 +36,8 @@ public class FeatSharpshooter : PromotionFeat
         c.ability.Add(Constants.ActMarkHostilesId, 80, false);
         c.ability.Add(Constants.StOverwatchId, 100, false);
     }
-
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "gunner";
-    }
+    
+    public override string JobRequirement => "gunner";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

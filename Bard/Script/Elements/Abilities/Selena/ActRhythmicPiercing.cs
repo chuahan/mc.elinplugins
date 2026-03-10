@@ -142,11 +142,8 @@ public class ActRhythmicPiercing : ActMelee
             ConEphemeralFlowersSong bardDebuff = ConBardSong.Create(nameof(ConEphemeralFlowersSong), GetPower(CC), 30, true, CC) as ConEphemeralFlowersSong;
             TC.Chara.AddCondition(bardDebuff);
         }
-
-        BardCardPatches.CachedInvoker.Invoke(
-            TC,
-            new object[] { damage, Constants.EleCold, 100, AttackSource.MagicSword, CC }
-        );
+        
+        TC.DamageHP(dmg: damage, ele: Constants.EleCold, eleP: 100, attackSource: AttackSource.MagicSword, origin: CC);
         TC.PlaySound("ab_magicsword");
         TC.PlayEffect("hit_slash").SetScale(1f);
 

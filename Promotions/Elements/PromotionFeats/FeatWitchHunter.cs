@@ -36,12 +36,9 @@ public class FeatWitchHunter : PromotionFeat
         c.ability.Add(Constants.ActMagicReflectId, 85, false);
         c.ability.Add(Constants.ActNullZoneId, 50, false);
     }
-
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "inquisitor";
-    }
     
+    public override string JobRequirement => "inquisitor";
+
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
         base._OnApply(add,eleOwner, hint);

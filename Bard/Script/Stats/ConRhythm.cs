@@ -16,9 +16,7 @@ public class ConRhythm : Timebuff
 
     [JsonProperty(PropertyName = "M")]
     public Constants.BardMotif Motif = Constants.BardMotif.None;
-
-    public override bool WillOverride => true;
-
+    
     public override string TextDuration => "" + Stacks;
     public override bool CanStack(Condition c)
     {

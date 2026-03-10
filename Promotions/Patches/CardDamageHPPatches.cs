@@ -5,19 +5,21 @@ using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using PromotionMod.Common;
+using PromotionMod.Elements.AdvancedCombatFeats;
 using PromotionMod.Elements.PromotionAbilities.HolyKnight;
 using PromotionMod.Elements.PromotionFeats;
 using PromotionMod.Stats;
+using PromotionMod.Stats.AdvCombatSkills;
 using PromotionMod.Stats.Artificer;
 using PromotionMod.Stats.Battlemage;
 using PromotionMod.Stats.Harbinger;
+using PromotionMod.Stats.Headhunter;
 using PromotionMod.Stats.HolyKnight;
 using PromotionMod.Stats.Runeknight;
 using PromotionMod.Stats.Sniper;
 using PromotionMod.Stats.Sovereign;
 using PromotionMod.Stats.Spellblade;
 using PromotionMod.Stats.WarCleric;
-using StVanguardStance = PromotionMod.Stats.HolyKnight.StVanguardStance;
 
 namespace PromotionMod.Patches;
 
@@ -43,8 +45,6 @@ public class CardDamageHPPatches
         {
             Chara target = __instance.Chara;
             Chara? originChara = origin?.Chara;
-
-            float damageMultiplier = 1F;
             
             // Target Conditionals
             ILookup<Type, Condition> targetConditions = target.conditions.ToLookup(c => c.GetType());
@@ -53,6 +53,35 @@ public class CardDamageHPPatches
             if (originChara != null)
             {
                 ILookup<Type, Condition>? originConditions = originChara.conditions.ToLookup(c => c.GetType());
+                
+                // Metal Breaker - If target has Metal, reduce it to 0.
+                if (originChara.HasElement(Constants.FeatMetalBreakerId) && target.HasElement(1218) && !targetConditions.Contains(typeof(ConMetalBreak)))
+                {
+                    target.Say("metalbreaker_activation".langGame(target.NameSimple));
+                    target.PlaySound("parry");
+                    if (!HelperFunctions.NihilActivated(originChara))
+                    {
+                        target.AddCondition<ConMetalBreak>(target.Evalue(1218), force: true);
+                    }
+                } else if (originChara.HasElement(Constants.FeatVengeanceId))
+                {
+                    // Vengeance - Adds user's missing HP as base damage pre-multipliers.
+                    target.Say("vengeance_activation".langGame(target.NameSimple));
+                    target.PlaySound("parry");
+                    if (!HelperFunctions.NihilActivated(originChara))
+                    {
+                        dmg += (originChara.MaxHP - originChara.hp);   
+                    }
+                } else if (originChara.HasElement(Constants.FeatAstraId))
+                {
+                    // Astra - Does 250% damage. Hard to get multi attacks going so this will have to do.
+                    target.Say("astra_activation".langGame(target.NameSimple));
+                    target.PlaySound("parry");
+                    if (!HelperFunctions.NihilActivated(originChara))
+                    {
+                        dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, 2.5F);
+                    }
+                }
                 
                 // Artificer - If the target is riding a Titan Golem, divert damage to the Titan Golem instead.
                 if (target.ride is { id: Constants.TitanGolemCharaId })
@@ -66,7 +95,7 @@ public class CardDamageHPPatches
                 {
                     if (EClass.rnd(10) == 0)
                     {
-                        originChara.SayRaw("hexer_hextouch".lang());
+                        Msg.Say("hexer_hextouch".langGame(originChara.NameSimple));
                         FeatHexer.ApplyCondition(__instance.Chara, originChara, 100, true);
                     }
                 }
@@ -76,33 +105,42 @@ public class CardDamageHPPatches
                 {
                     if (EClass.rnd(10) == 0)
                     {
-                        target.SayRaw("hexer_revenge".lang(originChara.NameSimple));
+                        Msg.Say("hexer_revenge".langGame(originChara.NameSimple));
                         FeatHexer.ApplyCondition(originChara, __instance.Chara, 100, true);
                     }
-                }
-                
-                // Maia - Maias deal 50% increased damage against their opposing element(s).
-                if (originChara.Evalue(Constants.FeatMaiaEnlightened) > 0 && target.source.mainElement.Contains(Constants.ElementAliasLookup[Constants.EleDarkness].Remove(0, 3)))
-                {
-                    damageMultiplier += 0.5F;
-                }
-
-                if (originChara.Evalue(Constants.FeatMaiaCorrupted) > 0 && target.source.mainElement.Contains(Constants.ElementAliasLookup[Constants.EleHoly].Remove(0, 3)))
-                {
-                    damageMultiplier += 0.5F;
                 }
 
                 // Harbinger - Every active Miasma on the target boosts damage from Harbingers by 5%.
                 if (originChara.Evalue(Constants.FeatHarbinger) > 0 && targetConditions.Contains(typeof(ConHarbingerMiasma)))
                 {
                     int miasmaCount = target.conditions.Count(con => con is ConHarbingerMiasma);
-                    damageMultiplier += miasmaCount * 0.05F;
+                    dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, 1 + (miasmaCount * 0.05F));
                 }
 
                 // Headhunter - Damage is increased by 25% against higher quality enemies.
-                if (target.source.quality >= 3 && originChara.Evalue(Constants.FeatHeadhunter) > 0)
+                // Headhunter - Damage is increased by 3% per Headhunter stack.
+                if (originChara.HasElement(Constants.FeatHeadhunter))
                 {
-                    damageMultiplier += 0.25F;
+                    if (target.source.quality >= 3)
+                    {
+                        dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, 1.25F);
+                    }
+                    
+                    if (originConditions.Contains(typeof(ConHeadhunter)))
+                    {
+                        ConHeadhunter headhunter = (ConHeadhunter)(originConditions[typeof(ConHeadhunter)].Single());
+                        dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, headhunter.GetStacks() * .03F);
+                    }
+                }
+                
+                // Headhunter - Damage taken is decreased by 3% per Headhunter stack.
+                if (target.HasElement(Constants.FeatHeadhunter))
+                {
+                    if (targetConditions.Contains(typeof(ConHeadhunter)))
+                    {
+                        ConHeadhunter headhunter = (ConHeadhunter)(targetConditions[typeof(ConHeadhunter)].Single());
+                        dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, 1 - headhunter.GetStacks() * .03F);
+                    }
                 }
                 
                 // Saint - If the Saint and the target share the same religion, the Saint can attempt to convert the opponent.
@@ -150,7 +188,7 @@ public class CardDamageHPPatches
                 // Sovereign - Chaos Stance Increases damage by 10%.
                 if (originConditions.Contains(typeof(ConSovereignChaos)))
                 {
-                    damageMultiplier += 0.1F;
+                    dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, 1.1F);
                 }
 
             
@@ -186,18 +224,18 @@ public class CardDamageHPPatches
             if (targetConditions.Contains(typeof(ConHeavenlyEmbrace)))
             {
                 ConHeavenlyEmbrace heavenlyEmbrace = (ConHeavenlyEmbrace)targetConditions[typeof(ConHeavenlyEmbrace)].Single();
-                damageMultiplier -= 0.25F;
+                dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, 0.75F);
                 heavenlyEmbrace.Mod(-1);
             }
 
             // Holy Knight - Vanguard Stance: Redirect damage from allies to the Holy Knight in Vanguard Stance.
             // Does not redirect if the target is already the Holy Knight.
-            if (!targetConditions.Contains(typeof(StVanguardStance)))
+            if (!targetConditions.Contains(typeof(StanceVanguard)))
             {
                 List<Chara> targetAllies = HelperFunctions.GetCharasWithinRadius(target.pos, 5f, target, true, false);
-                if (targetAllies.Count(c => c.conditions.Any(cond => cond.GetType() == typeof(StVanguardStance))) > 0)
+                if (targetAllies.Count(c => c.conditions.Any(cond => cond.GetType() == typeof(StanceVanguard))) > 0)
                 {
-                    Chara holyKnightAlly = targetAllies.First(c => c.conditions.Any(cond => cond.GetType() == typeof(StVanguardStance)));
+                    Chara holyKnightAlly = targetAllies.First(c => c.conditions.Any(cond => cond.GetType() == typeof(StanceVanguard)));
                     holyKnightAlly.DamageHP(dmg, ele, eleP, attackSource, origin, showEffect, weapon, target);
                     return false;   
                 }
@@ -218,7 +256,8 @@ public class CardDamageHPPatches
             if (targetConditions.Contains(typeof(ConHeavenlyHost)))
             {
                 ConHeavenlyHost heavenlyHost = (ConHeavenlyHost)targetConditions[typeof(ConHeavenlyHost)].Single();
-                damageMultiplier -= heavenlyHost.GetStacks() * 0.02F;
+                float damageMulti = 1 - (heavenlyHost.GetStacks() * 0.02F);
+                dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, damageMulti);
 
             }
 
@@ -227,7 +266,8 @@ public class CardDamageHPPatches
             if (target.Evalue(Constants.FeatNecromancer) > 0)
             {
                 int boneArmyCount = __instance.Chara.currentZone.ListMinions(__instance.Chara).Count(c => c.HasTag(CTAG.undead));
-                damageMultiplier -= Math.Min(0.75F, boneArmyCount * 0.025F);
+                float damageMulti = Math.Min(0.75F, boneArmyCount * 0.025F);
+                dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, damageMulti);
             }
 
             // Rune Knight - Elemental Attunement. If damage received matches your attuned element, all damage is absorbed and added as stockpiled damage.
@@ -263,33 +303,29 @@ public class CardDamageHPPatches
             if (targetConditions.Contains(typeof(ConWardingRune)))
             {
                 ((ConWardingRune)targetConditions[typeof(ConWardingRune)].Single()).Mod(-1);
-                damageMultiplier -= 0.2F;
+                dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, 0.8F);
             }
             
             // Sovereign - Law Stance Reduces damage by 10%.
             if (targetConditions.Contains(typeof(ConSovereignLaw)))
             {
-                damageMultiplier -= 0.1F;
+                dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, 0.9F);
             }
 
             // Sovereign - Barricade Order: Reduces damage based on # of allies neighboring you
             // 5% damage reduced per ally in coherence.
             if (targetConditions.Contains(typeof(ConOrderBarricade)))
             {
-                float barricadeCoherence = target.pos.ListCharasInNeighbor(c => c == Act.CC || c.IsHostile(Act.CC)).Count * 0.05F;
-                damageMultiplier -= barricadeCoherence;
+                float barricadeCoherence = 1 - target.pos.ListCharasInNeighbor(c => c == Act.CC || c.IsHostile(Act.CC)).Count * 0.05F;
+                dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, barricadeCoherence);
+                
             }
             
             // War Cleric - Sanctuary reduces all damage dealt by 75%.
             if (targetConditions.Contains(typeof(ConSanctuary)))
             {
-                damageMultiplier -= 0.75F;
+                dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, 0.25F);
             }
-
-            // Floor Damage Multiplier to 0. Don't want any healing on negative multiplier shenanigans
-            damageMultiplier = Math.Max(damageMultiplier, 0);
-            // Apply Damage multiplier.
-            dmg = (long)(dmg * damageMultiplier);
 
             // Afterimage - Fully negates one instance of damage.
             if (targetConditions.Contains(typeof(ConAfterimage)) && dmg != 0)
@@ -299,7 +335,67 @@ public class CardDamageHPPatches
                 afterimage.Mod(-1);
                 if (afterimage.value <= 0) afterimage.Kill();
             }
+            
+            if (originChara != null)
+            {
+                if (target.HasElement(Constants.FeatAegisId) && target.pos.Distance(originChara.pos) > 1)
+                {
+                    // Aegis - 30% Chance to halve incoming ranged damage
+                    if (EClass.rnd(3) == 0)
+                    {
+                        target.Say("aegis_activation".langGame(target.NameSimple));
+                        target.PlaySound("parry");
+                        if (!HelperFunctions.NihilActivated(originChara))
+                        {
+                            dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, 0.5F);   
+                        }
+                    }
+                } else if (target.HasElement(Constants.FeatAegisPlusId) && target.pos.Distance(originChara.pos) > 1)
+                {
+                    // Aegis+ - 100% chance to halve incoming ranged damage. Enemy Only.
+                    target.Say("aegis_activation".langGame(target.NameSimple));
+                    target.PlaySound("parry");
+                    if (!HelperFunctions.NihilActivated(originChara))
+                    {
+                        dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, 0.5F);   
+                    }
+                } else if (target.HasElement(Constants.FeatPaviseId) && target.pos.Distance(originChara.pos) > 1)
+                {
+                    // Pavise - 30% Chance to halve incoming close ranged damage
+                    if (EClass.rnd(3) == 0)
+                    {
+                        target.Say("pavise_activation".langGame(target.NameSimple));
+                        target.PlaySound("parry");
+                        if (!HelperFunctions.NihilActivated(originChara))
+                        {
+                            dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, 0.5F);   
+                        }
+                    }
+                } else if (target.HasElement(Constants.FeatPavisePlusId) && target.pos.Distance(originChara.pos) > 1)
+                {
+                    // Pavise+ - 100% chance to halve incoming close ranged damage.
+                    target.Say("pavise_activation".langGame(target.NameSimple));
+                    target.PlaySound("parry");
+                    if (!HelperFunctions.NihilActivated(originChara))
+                    {
+                        dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, 0.5F);   
+                    }
+                }
 
+                // Sol - 30% chance to heal 50% of the damage dealt as HP.
+                if (originChara.HasElement(Constants.FeatSolId) && EClass.rnd(3) == 0)
+                {
+                    originChara.Say("sol_activation".langGame(target.NameSimple));
+                    originChara.PlaySound("warcry");
+                    if (!HelperFunctions.NihilActivated(target))
+                    {
+                        int heal = (int)(dmg * 0.5F);
+                        originChara.HealHP(heal, HealSource.Magic);   
+                    }   
+                }
+            }
+            
+            /* Moved these into the Transpiler to trigger post Damage Reduction.
             // Protection - Protects flat amount of damage.
             if (targetConditions.Contains(typeof(ConProtection)))
             {
@@ -332,6 +428,7 @@ public class CardDamageHPPatches
                 int manaDamage = (int)(dmg * 0.1F) * -1;
                 target.mana.Mod(manaDamage);
             }
+            */
         }
         return true;
     }
@@ -340,11 +437,22 @@ public class CardDamageHPPatches
     [HarmonyTranspiler]
     internal static IEnumerable<CodeInstruction> OnDamageHP_TranspilePatch(IEnumerable<CodeInstruction> instructions, ILGenerator il)
     {
-        // Helper: static int BattleMageDamagePierce(Card)
-        MethodInfo battleMageDamagePierce = AccessTools.Method(
+        Type? displayClassType = typeof(Card)
+            .GetNestedTypes(BindingFlags.NonPublic | BindingFlags.Public)
+            .FirstOrDefault(t => t.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                    .Any(f => f.Name == "dmg" && f.FieldType == typeof(long)));
+        if (displayClassType == null) throw new Exception("Why was this removed?");
+        FieldInfo? dmgField = displayClassType.GetField("dmg", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        
+        MethodInfo secondaryDamageReduction = AccessTools.Method(
             typeof(CardDamageHPPatches),
-            nameof(CardDamageHPPatches.BattleMageDamagePierce),
-            new[] { typeof(Card) }
+            nameof(CardDamageHPPatches.ApplyDamageReduction),
+            new[] { typeof(Card), typeof(Card), typeof(long), typeof(AttackSource) });
+        
+        MethodInfo additonalResistancePierce = AccessTools.Method(
+            typeof(CardDamageHPPatches),
+            nameof(CardDamageHPPatches.CalculateAdditionalResistancePierce),
+            new[] { typeof(Card), typeof(Card) }
         );
         
         MethodInfo getResistDamage = AccessTools.Method(
@@ -355,29 +463,106 @@ public class CardDamageHPPatches
         // We'll add this to the piercing power after.
         LocalBuilder pierceLocal = il.DeclareLocal(typeof(int));
 
-        CodeMatcher m = new CodeMatcher(instructions, il)
-                .MatchForward(true, new CodeMatch(OpCodes.Call, getResistDamage))
-                .ThrowIfInvalid("GetResistDamage call not found")
+        CodeMatcher matcher = new CodeMatcher(instructions, il)
+                // Apply Battlemage Pierce if needed.
+                .MatchForward(false, new CodeMatch(OpCodes.Call, getResistDamage))
                 .Advance(-1)
                 .Insert(
-                    new CodeInstruction(OpCodes.Ldarg, 5),
-                    new CodeInstruction(OpCodes.Call, battleMageDamagePierce),
+                    new CodeInstruction(OpCodes.Ldarg, 5), // origin card
+                    new CodeInstruction(OpCodes.Ldarg_0), // __instance
+                    new CodeInstruction(OpCodes.Call, additonalResistancePierce),
                     new CodeInstruction(OpCodes.Stloc, pierceLocal),
                     new CodeInstruction(OpCodes.Ldloc, pierceLocal),
                     new CodeInstruction(OpCodes.Add)
+                )
+                // Apply Secondary Damage Reduction
+                .MatchForward(false,
+                    new CodeMatch(OpCodes.Ldloc_0),
+                    new CodeMatch(OpCodes.Ldfld, dmgField),
+                    new CodeMatch(OpCodes.Ldc_I4, 99999999),
+                    new CodeMatch(OpCodes.Conv_I8),
+                    new CodeMatch(ci => ci.opcode == OpCodes.Ble || ci.opcode == OpCodes.Ble_S))
+                .Advance(1)
+                .Insert(
+                    new CodeInstruction(OpCodes.Ldloc_0),
+                    new CodeInstruction(OpCodes.Ldarg_S, 5),
+                    new CodeInstruction(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Ldloc_0),
+                    new CodeInstruction(OpCodes.Ldfld, dmgField),
+                    new CodeInstruction(OpCodes.Ldarg_S, 4),
+                    new CodeInstruction(OpCodes.Call, secondaryDamageReduction),
+                    new CodeInstruction(OpCodes.Stfld, dmgField)
                 );
-
-        return m.InstructionEnumeration();
-
+        return matcher.InstructionEnumeration();
     }
 
-    internal static int BattleMageDamagePierce(Card origin)
+    internal static int CalculateAdditionalResistancePierce(Card origin, Card target)
     {
         // Battlemages in Focus Stance with mana remaining will pierce one tier.
+        int additionalPierce = 0;
         if (origin != null && origin.Evalue(Constants.FeatBattlemage) > 0 && origin.HasCondition<StanceManaFocus>() && origin.Chara.mana.value > 0)
         {
-            return 1;
+            additionalPierce++;
         }
-        return 0;
+
+        // Luna will pierce an additional tier of resistances.
+        if (target.HasCondition<ConLuna>())
+        {
+            additionalPierce++;
+        }
+        return additionalPierce;
+    }
+
+    internal static long ApplyDamageReduction(Card origin, Card target, long damage, AttackSource source)
+    {
+        Chara targetChara = target.Chara;
+        ILookup<Type, Condition> targetConditions = targetChara.conditions.ToLookup(c => c.GetType());
+        Chara? originChara = origin?.Chara;
+
+        long damageWithMods = damage;
+
+        if ((uint)(source - 3) > 2u && (uint)(source - 13) > 4u)
+        {
+            if (targetConditions.Contains(typeof(ConProtection)))
+            {
+                ConProtection protection = (ConProtection)targetConditions[typeof(ConProtection)].Single();
+                if (protection.value >= damage)
+                {
+                    protection.Mod((int)(0 - damage));
+                    damageWithMods = 0;
+                }
+                else
+                {
+                    damageWithMods -= protection.value;
+                    protection.Kill();
+                }
+            }
+
+            // Mana Shield - Protects a flat amount of damage with shield gating.
+            // Taking any hit will reset the cooldown delay though.
+            if (targetConditions.Contains(typeof(StanceManaShield)))
+            {
+                StanceManaShield manaShield = (StanceManaShield)targetConditions[typeof(StanceManaShield)].Single();
+                if (manaShield.Stacks > 0)
+                {
+                    manaShield.ModShield((int)(0 - damage));
+                    damageWithMods = 0;
+                }
+            }
+            
+            // Witch Hunter - When HP damage is done as a Witch Hunter with Melee/Ranged, they will also inflict 10% of the damage as mana.
+            if (originChara != null && originChara.Evalue(Constants.FeatWitchHunter) > 0 && source is AttackSource.Melee or AttackSource.Range && damageWithMods > 0)
+            {
+                int manaDamage = (int)(damageWithMods * 0.1F) * -1;
+                targetChara.mana.Mod(manaDamage);
+            }
+        }
+        
+        return damageWithMods;
+    }
+
+    private static long ApplyDamageMultiplier(long damage, float multiplier)
+    {
+        return (long)(damage * multiplier);
     }
 }

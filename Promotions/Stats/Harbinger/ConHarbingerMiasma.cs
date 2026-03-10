@@ -29,7 +29,7 @@ public class ConHarbingerMiasma : TimeDebuff
                     {
                         if (!chara.HasCondition<ConMiasma>())
                         {
-                            if (chara.Evalue(Constants.FeatHarbinger) > 0)
+                            if (chara.HasElement(Constants.FeatHarbinger))
                             {
                                 // Harbinger allies will consume the miasma instead, regaining health.
                                 int healAmount = (int)(chara.MaxHP * 0.1F);

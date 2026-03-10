@@ -3,7 +3,6 @@ namespace BardMod.Stats;
 
 public class ConOverguard : BaseBuff
 {
-    public override bool WillOverride => false;
 
     public static int CalcOverguardAmount(int power)
     {

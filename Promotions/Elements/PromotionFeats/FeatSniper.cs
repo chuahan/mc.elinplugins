@@ -35,11 +35,8 @@ public class FeatSniper : PromotionFeat
         c.ability.Add(Constants.ActTargetLegsId, 85, false);
         c.ability.Add(Constants.ActSpreadShotId, 70, false);
     }
-
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "archer";
-    }
+    
+    public override string JobRequirement => "archer";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

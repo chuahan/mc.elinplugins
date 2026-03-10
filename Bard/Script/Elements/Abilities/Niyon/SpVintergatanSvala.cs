@@ -50,12 +50,8 @@ public class SpVintergatanSvala : Spell
         //Effect spellEffect = Effect.Get("Element/ball_Cold");
         //spellEffect.Play(CC.pos);
         //CC.PlaySound("spell_ball");
-        int damage = HelperFunctions.SafeDice(Constants.VintergatanSvalaName, GetPower(CC));
-        // TC.DamageHP(dmg: damage, ele: Constants.EleCold, eleP: 100, attackSource: AttackSource.MagicSword, origin: CC);
-        BardCardPatches.CachedInvoker.Invoke(
-            TC,
-            new object[] { damage, Constants.EleCold, 100, AttackSource.MagicSword, CC }
-        );
+        long damage = HelperFunctions.SafeDice(Constants.VintergatanSvalaName, GetPower(CC));
+        TC.DamageHP(dmg: damage, ele: Constants.EleCold, eleP: 100, attackSource: AttackSource.MagicSword, origin: CC);
         TC.PlaySound("ab_magicsword");
         TC.PlayEffect("hit_slash").SetScale(1f);
 

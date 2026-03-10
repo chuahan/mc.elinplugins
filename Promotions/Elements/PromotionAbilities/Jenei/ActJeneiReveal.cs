@@ -43,12 +43,13 @@ public class ActJeneiReveal : Ability
                     Msg.Say("noteFav", target);
                     target.knowFav = true;
                 }
-                ui.AddLayer<LayerChara>().SetChara(target);
             }
-            else
-            {
-                TC.Chara.AddCondition(SubPoweredCondition.Create(nameof(ConMagicBreak), GetPower(CC), 5));
-            }
+            ui.AddLayer<LayerChara>().SetChara(target);
+        }
+        
+        if (target.IsHostile(CC))
+        {
+            TC.Chara.AddCondition(SubPoweredCondition.Create(nameof(ConMagicBreak), GetPower(CC), 5));
         }
         return true;
     }

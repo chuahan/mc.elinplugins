@@ -76,6 +76,9 @@ public class ActLoadUp : Ability
 
                 ammo.SetEncLv(Math.Min(CC.LV, GetPower(CC) / 100));
                 rangedWeapon.ammoData = ammo;
+                if (target == CC) LayerInventory.SetDirty(rangedWeapon);
+                CC.PlayEffect("intonation");
+                Msg.Say("machinist_loadup".langGame(target.NameSimple));
             }
         }
 

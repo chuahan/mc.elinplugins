@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Meta>
+  <title>Cease thy shenanigans scarab</title>
+  <id>han.stopscarab.mod</id>
+  <author>Han</author>
+  <loadPriority>10</loadPriority>
+  <description>
+    Basic mod to stop scarabs from multiplying.
+  </description>
+  <tags>Tweak, QOL, Gameplay</tags>
+  <version>0.23.269</version>
+</Meta>

@@ -44,6 +44,7 @@ public class StanceHeavyarms : BaseStance
         }
         if (targets.Count != 0)
         {
+            if (CC.IsPC) Msg.Say("machinist_heavyarms_exiting".langGame());
             Kill();
         }
         else
@@ -54,5 +55,8 @@ public class StanceHeavyarms : BaseStance
             // Every turn consumes 5% of max mana.
             owner.mana.Mod((int)(owner.mana.max * -0.05F));
         }
+
+        // Having this condition ticks cooldowns faster.
+        owner.TickCooldown();
     }
 }

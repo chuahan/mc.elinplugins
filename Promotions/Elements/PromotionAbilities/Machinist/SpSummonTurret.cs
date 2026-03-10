@@ -33,7 +33,7 @@ public class SpSummonTurret : Spell
         if (CC.IsPC) levelOverride = Math.Max(player.stats.deepest, levelOverride);
         summon.SetLv(levelOverride);
         summon.interest = 0;
-        CC.currentZone.AddCard(summon, TP);
+        CC.currentZone.AddCard(summon, Act.TP);
         summon.PlayEffect("curse");
         summon.MakeMinion(CC);
 

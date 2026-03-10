@@ -20,9 +20,12 @@ public abstract class ConAura : BaseBuff
 
     public override bool TimeBased => true;
 
-    public virtual int AuraRadius => 3;
+    public virtual float AuraRadius => 3F;
+    
     public virtual AuraType AuraTarget => AuraType.Friendly;
 
+    public virtual int IdAbility => -1;
+    
     public virtual bool TimedAura => false;
 
     public virtual int TriggerDelay => 0;
@@ -37,7 +40,7 @@ public abstract class ConAura : BaseBuff
         
     }
 
-public override void Tick()
+    public override void Tick()
     {
         if (_zone.IsRegion)
         {
@@ -53,6 +56,15 @@ public override void Tick()
 
         // Reset to 0 and trigger effects.
         TriggerTick = 0;
+        
+        // If there's an ability attached, level up the related skill.
+        Element element = owner.elements.GetElement(IdAbility);
+        if (element != null)
+        {
+            owner.elements.ModExp(element.id, 20f);
+            this.power = element.GetPower(owner); // Refresh the live power from the ability
+        }
+        
         (List<Chara> friendlies, List<Chara> enemies) = HelperFunctions.GetOrganizedCharasWithinRadius(CC.pos, AuraRadius, CC, true);
         switch (AuraTarget)
         {

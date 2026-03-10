@@ -44,6 +44,8 @@ public class ActHolyBanner : Ability
         bannerMob.MakeMinion(CC);
         // Add the Aura.
         bannerMob.AddCondition<RadiantAura>(power);
+        // The Banner should be Immortal, but will only last for 10 turns.
+        bannerMob.AddCondition<ConInvulnerable>(300);
         return true;
     }
 }

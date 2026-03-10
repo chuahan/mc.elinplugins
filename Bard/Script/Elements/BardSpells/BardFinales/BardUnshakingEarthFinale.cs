@@ -66,11 +66,7 @@ public class BardUnshakingEarthFinale : BardSongData
             if (target.HasCondition<ConGravity>()) damage *= 2;
             if (target.IsLevitating) damage /= 2;
 
-            // target.DamageHP(dmg: damageWithModifier, ele: Constants.EleImpact, eleP: 100, attackSource: AttackSource.None, origin: caster);
-            BardCardPatches.CachedInvoker?.Invoke(
-                target,
-                new object[] { damageWithModifier, Constants.EleImpact, 100, AttackSource.None, caster }
-            );
+            target.DamageHP(dmg: damageWithModifier, ele: Constants.EleImpact, eleP: 100, attackSource: AttackSource.None, origin: caster);
 
             float newRadius = radius / 2.0f;
             int newDamage = damage / 2;

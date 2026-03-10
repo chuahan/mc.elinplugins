@@ -263,4 +263,16 @@ public static class HelperFunctions
                 return;
         }
     }
+
+    // Nihil can deny combat abilities.
+    public static bool NihilActivated(Chara target)
+    {
+        if (target.HasElement(Constants.FeatNihilId))
+        {
+            target.Say("nihil_activation".langGame(Act.TC.NameSimple));
+            target.PlaySound("shield_bash");
+            return true;
+        }
+        return false;
+    }
 }

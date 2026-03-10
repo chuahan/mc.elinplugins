@@ -154,7 +154,7 @@ public class NecromancerSpellbookConversion : SpellbookConversion
 
     public override void ConvertSpellbook(ref TraitSpellbook spellbook)
     {
-        spellbook.owner.refVal = Constants.SpSummonSkeleton;
+        spellbook.owner.refVal = Constants.SpSummonSkeletonId;
         spellbook.owner.elements.SetBase(759, 10);
     }
 }

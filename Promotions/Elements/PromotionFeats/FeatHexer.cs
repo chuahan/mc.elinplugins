@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 using PromotionMod.Stats.Hexer;
 namespace PromotionMod.Elements.PromotionFeats;
@@ -9,15 +10,13 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Practitioners of the forbidden arts. Hexers have learned creative new ways to cause pain and suffering.
 ///     Hexers focus on weakening the enemies with curses and damage over time effects.
 ///     They specialize in applying debuffs, then exploiting those debuffs to deal damage.
-///     Skill - Traumatize - Does Mind Damage equivalent to how many negative conditions are on the enemy. 10 turn
-///     cooldown. 20% Mana cost.
+///     Skill - Traumatize - Does Mind Damage equivalent to how many negative conditions are on the enemy. 20% Mana cost.
 ///     Skill - Blood Curse - Force applies one of the curses randomly at the cost of 10% life. Will prioritize curses you
 ///     have not applied of the same tier that you roll.
 ///     Skill - Revenge - Consumes a debuff on the Hexer and does damage based on its power against a target.
 ///     Must have a debuff on yourself to use.
 ///     Passive - Hexmaster - When applying spell damage or taking damage, there is a chance to apply a hex out of a pool.
-///     Passive - Do not cite the deep magic to me - If you have active Debuffs on you, your curses apply at double power
-///     and consumes one of the debuffs.
+///     Passive - Hex Maniac: When you are afflicted with a debuff, your Debuff power is increased by 50%.
 /// </summary>
 public class FeatHexer : PromotionFeat
 {
@@ -45,7 +44,6 @@ public class FeatHexer : PromotionFeat
     {
         nameof(ConParanoia),
         nameof(ConReapersCall),
-        nameof(ConMalaise),
         nameof(ConCorruption)
     };
 
@@ -66,10 +64,7 @@ public class FeatHexer : PromotionFeat
         c.ability.Add(Constants.ActRevengeId, 50, false);
     }
 
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "witch";
-    }
+    public override string JobRequirement => "witch";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
@@ -95,7 +90,8 @@ public class FeatHexer : PromotionFeat
             inactiveConditions = UncommonConditions.Except(activeConditions).ToList();
             if (inactiveConditions.Count == 0) inactiveConditions = UncommonConditions;
         }
-        else if (EClass.rnd(10) != 0)
+        // Don't use Death Sentense on bosses.
+        else if (EClass.rnd(10) != 0 || target.IsBoss())
         {
             gachaString = "hexer_rare_gacha";
             inactiveConditions = RareConditions.Except(activeConditions).ToList();
@@ -103,14 +99,15 @@ public class FeatHexer : PromotionFeat
         }
         else
         {
-            caster.Talk("hexer_legendary_gacha".langGame());
-            target.AddCondition<ConDeathSentense>(100, true);
+            caster.Talk("hexer_legendary_gacha".langGame(caster.NameSimple));
+            ConDeathSentense? deathSentence = target.AddCondition<ConDeathSentense>(100, true) as ConDeathSentense;
+            deathSentence?.SetChara(caster);
             return;
         }
 
         if (inactiveConditions.Count == 0)
         {
-            caster.Talk("hexer_failed_gacha".langGame());
+            caster.Talk("hexer_failed_gacha".langGame(caster.NameSimple));
             return;
         }
         bool doublePower = false;
@@ -119,7 +116,7 @@ public class FeatHexer : PromotionFeat
             casterDebuff.Kill();
             doublePower = true;
         }
-        caster.Talk(gachaString.langGame());
+        caster.Talk(gachaString.langGame(caster.NameSimple));
         Condition hex = Condition.Create(inactiveConditions[rng.Next(inactiveConditions.Count)], doublePower ? power * 2 : power);
 
         if (!force)

@@ -20,7 +20,6 @@ public class ConBardSong : Timebuff
     public int Stacks;
 
     public override bool CanManualRemove => false;
-    public override bool WillOverride => true;
 
     public override int P2 => Math.Max(1, RhythmStacks / 10);
 

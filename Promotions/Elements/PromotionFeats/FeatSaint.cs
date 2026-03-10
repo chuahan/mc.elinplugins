@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionFeats;
 
@@ -7,9 +8,9 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Saints focus on healing allies while casting holy magic at the enemies.
 ///     They specialize in casting advanced curative magic and applying disabling debuffs, as well as empowered Holy Magic.
 ///     Skill - Hand of God - A large scale healing spell is cast on all allies and minions, healing 35% HP immediately.
-///     All affected characters also gain a % healing over time.
-///     30 Turn Cooldown.
-///     Skill - Blessing - Applies a buff to the target that boosts their faith. Up to 50% boost scaling off your own
+///     All affected characters also gain a % healing over time. 30 Turn Cooldown. //TODO: Do I change this to 30% of max mana and remove cooldown?
+///     Skill - Holy Invigorate - Applies a buff to the target that boosts their HP. Up to 50% boost, scales off of Faith. 
+///     Skill - Blessing - Applies a buff to the target that boosts their faith.
 ///     faith.
 ///     Passive - God Protects - When you pray, you and your allies gain Protection that absorbs damage based on piety.
 ///     This will activate when the PC prays with a Saint or War Cleric ally as well.
@@ -25,24 +26,22 @@ public class FeatSaint : PromotionFeat
     public override List<int> PromotionAbilities => new List<int>
     {
         Constants.ActHandOfGodId,
-        Constants.ActBlessingId
+        Constants.ActBlessingId,
+        Constants.ActInvigorateId,
     };
 
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActHandOfGodId, 75, false);
         c.ability.Add(Constants.ActBlessingId, 75, true);
+        c.ability.Add(Constants.ActInvigorateId, 75, true);
         c.ability.Add(50509, 75, false); // Holy Arrow
         c.ability.Add(51209, 75, false); // Holy Flare
         c.ability.Add(8403, 75, true); // Healing
-        // Add Healing Instinct?
-        
+        c.AddElement(1422, 1); // Add Healing Instinct
     }
 
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "priest";
-    }
+    public override string JobRequirement => "priest";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

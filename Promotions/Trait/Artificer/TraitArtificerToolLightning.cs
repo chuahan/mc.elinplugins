@@ -9,6 +9,23 @@ public class TraitArtificerToolLightning : TraitArtificerTool
 {
     public override string ArtificerToolId => "artificer_lightningspear";
 
+    public virtual void MarkMapHighlights(bool shouldHighlight, Point target)
+    {
+        if (!EClass.scene.mouseTarget.pos.IsValid)
+        {
+            return;
+        }
+        List<Point> list = EClass._map.ListPointsInLine(EClass.pc.pos, EClass.scene.mouseTarget.pos, 10);
+        if (list.Count == 0)
+        {
+            list.Add(Act.CC.pos.Copy());
+        }
+        foreach (Point item in list)
+        {
+            item.SetHighlight(8);
+        }
+    }
+    
     public override bool ArtificerToolEffect(Chara cc, Point pos, int power)
     {
         float powerMulti = 1f + (cc.Evalue(106) / 2F + cc.Evalue(133)) / 50f;

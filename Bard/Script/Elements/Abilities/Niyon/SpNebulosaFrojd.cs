@@ -99,11 +99,7 @@ public class SpNebulosaFrojd : Spell
         // Deal Impact damage
         // Apply Charmed
         int damage = HelperFunctions.SafeDice(Constants.NebulosaFrojdName, GetPower(CC));
-        // TC.DamageHP(dmg: damage, ele: Constants.EleImpact, eleP: 100, attackSource: AttackSource.None, origin: CC);
-        BardCardPatches.CachedInvoker.Invoke(
-            TC,
-            new object[] { damage, Constants.EleImpact, 100, AttackSource.None, CC }
-        );
+         TC.DamageHP(dmg: damage, ele: Constants.EleImpact, eleP: 100, attackSource: AttackSource.None, origin: CC);
         if (TC.isChara) TC.Chara.AddCondition<ConCharmed>(force: true);
         return true;
     }

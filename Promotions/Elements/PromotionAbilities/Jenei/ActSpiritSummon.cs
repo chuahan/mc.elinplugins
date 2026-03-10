@@ -34,7 +34,7 @@ public class ActSpiritSummon : Ability
         };
     }
 
-    public static Dictionary<string, Ability> SummonAbility = new Dictionary<string, Ability>
+    public static Dictionary<string, JeneiSummonSequence> SummonAbility = new Dictionary<string, JeneiSummonSequence>
     {
         {
             Constants.JeneiAtlantaCharaId, new ActAtalanta()
@@ -94,11 +94,11 @@ public class ActSpiritSummon : Ability
         // NPCs can summon a random summon with higher cooldown.
         ConJenei djinnStockpile = CC.GetCondition<ConJenei>();
         string? summon = FeatJenei.JeneiSummons.GetSummon(djinnStockpile.GetElementalStockpile());
+        if (summon == null) return false;
         if (!CC.IsPC) summon = FeatJenei.JeneiSummons.AllSummons.Select(x => x.SummonId).ToList().RandomItem();
-
+/*
         // If the zone already has this summon active, fizzle.
         if (CC.currentZone.FindChara(summon) != null) return false;
-        if (summon == null) return false;
 
         // Summon - For PCs summons can scale to your deepest achieved depth instead.
         Chara jeneiSummon = CharaGen.Create(summon);
@@ -111,7 +111,7 @@ public class ActSpiritSummon : Ability
         CC.currentZone.AddCard(jeneiSummon, TP);
         jeneiSummon.PlayEffect("aura_heaven");
         jeneiSummon.MakeMinion(CC);
-
+*/
         // Get Text
         string summonName = summon + "_formalname";
         CC.TalkRaw("jenei_summonphrase".langGame(summonName.langGame()));
@@ -121,13 +121,13 @@ public class ActSpiritSummon : Ability
         if (CC.IsPC)
         {
             djinnStockpile.EmptyStockpile();
-            CC.AddCooldown(Constants.ActSpiritSummonId, 1);
+            CC.AddCooldown(Constants.ActSpiritSummonId, 10);
         }
         else
         {
             CC.AddCooldown(Constants.ActSpiritSummonId, 30);
         }
-        SummonAbility[summon].Perform(jeneiSummon, null, jeneiSummon.pos);
+        SummonAbility[summon].PerformSummonAttack(CC, this.GetPower(CC));
         return true;
     }
 }

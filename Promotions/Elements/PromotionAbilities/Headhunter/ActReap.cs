@@ -33,7 +33,7 @@ public class ActReap : Ability
         if (CC != null && CC.HasCondition<ConHeadhunter>())
         {
             int reduction = (int)(cost.cost * 0.1);
-            cost.cost -= CC.GetCondition<ConHeadhunter>().power * reduction;
+            cost.cost -= CC.GetCondition<ConHeadhunter>().value * reduction;
         }
         return cost;
     }

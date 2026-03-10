@@ -14,7 +14,6 @@ public class StLawMode : Ability
         // Both Sovereign Modes share a cooldown.
         if (CC.HasCooldown(Constants.StLawModeId)) return false;
         return base.CanPerform();
-        return base.CanPerform();
     }
 
     public override Cost GetCost(Chara c)
@@ -28,11 +27,11 @@ public class StLawMode : Ability
 
     public override bool Perform()
     {
-        CC.Talk("sovereign_law".langList().RandomItem());
+        CC.SayRaw($"sovereign_law_{EClass.rnd(5)}".langGame());
         CC.RemoveCondition<StanceChaosSovereign>();
         CC.AddCondition<StanceLawSovereign>();
         CC.AddCooldown(Constants.StLawModeId, 5);
-
+        CC.AddCooldown(Constants.StChaosModeId, 5);
         return true;
     }
 }

@@ -8,10 +8,12 @@ public class ActMoraleOrder : ActSovereignOrder
     protected override int CooldownId => Constants.ActMoraleOrderId;
     public override void AddLawCondition(Chara chara, int stacks)
     {
+        chara.RemoveCondition<ConOrderDeath>();
         chara.AddCondition<ConOrderVictory>(stacks);
     }
     public override void AddChaosCondition(Chara chara, int stacks)
     {
+        chara.RemoveCondition<ConOrderVictory>();
         chara.AddCondition<ConOrderDeath>(stacks);
     }
 }

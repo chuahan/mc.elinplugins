@@ -23,7 +23,7 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Reloads will be Instant during this mode.
 ///     When making ranged attacks (non sub), this will automatically fire a follow-up missile at the target's location.
 ///     Machinists are automatically afflicted with Gravity while in this state.
-///     Machinists lose the ability to move (even if mounted.) TODO Implement
+///     Machinists lose the ability to move (even if mounted.)
 ///     Machinists will lose 5% of their mana every turn they remain in this mode.
 ///     Spell - Summon Turret - Deploys one of four different gun turrets. They come with a gun. They have Duration.
 ///     Passive - Conspectus of Machinery - Converts Summon Spellbooks into Summon Auto Turret
@@ -36,20 +36,19 @@ public class FeatMachinist : PromotionFeat
     public override List<int> PromotionAbilities => new List<int>
     {
         Constants.ActLoadUpId,
-        Constants.ActOverclockId
+        Constants.ActOverclockId,
+        Constants.StHeavyarmsId,
     };
 
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActLoadUpId, 75, false);
         c.ability.Add(Constants.ActOverclockId, 50, false);
+        c.ability.Add(Constants.StHeavyarmsId, 25, false);
         c.ability.Add(Constants.SpSummonTurretId, 50, false);
     }
-
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "gunner";
-    }
+    
+    public override string JobRequirement => "gunner";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

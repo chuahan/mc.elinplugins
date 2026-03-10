@@ -25,7 +25,6 @@ public class TraitArtificerToolTrinity : TraitArtificerTool
             aliasEle = Constants.ElementAliasLookup[Constants.EleLightning],
             origin = cc
         });
-        owner.c_ammo--;
         return false;
     }
 }

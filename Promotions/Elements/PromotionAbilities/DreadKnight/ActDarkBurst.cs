@@ -7,6 +7,8 @@ namespace PromotionMod.Elements.PromotionAbilities.DreadKnight;
 
 public class ActDarkBurst : Ability
 {
+    private float _effectRadius = 3F;
+    
     public override bool CanPerform()
     {
         if (CC.Evalue(Constants.FeatDreadKnight) == 0)
@@ -53,6 +55,25 @@ public class ActDarkBurst : Ability
         return (int)(c.MaxHP * hpCost);
     }
     
+    public override void OnMarkMapHighlights()
+    {
+        float adjustedEffectRadius = _effectRadius;
+        ConDarkTraces darkTrace = CC.GetCondition<ConDarkTraces>();
+        if (darkTrace != null)
+        {
+            adjustedEffectRadius += darkTrace.GetStacks();
+        }
+        List<Point> list = EClass._map.ListPointsInCircle(CC.pos, adjustedEffectRadius, true, true);
+        if (list.Count == 0)
+        {
+            list.Add(Act.CC.pos.Copy());
+        }
+        foreach (Point item in list)
+        {
+            item.SetHighlight(8);
+        }
+    }
+    
     public override bool Perform()
     {
         ConDarkTraces darkTrace = CC.GetCondition<ConDarkTraces>();
@@ -72,12 +93,12 @@ public class ActDarkBurst : Ability
         CC.DamageHP(cost, AttackSource.Condition);
 
         int power = HelperFunctions.SafeAdd(this.GetPower(CC), HelperFunctions.SafeMultiplier(cost, 2));
-        float damageRadius = 3F;
-        damageRadius += darkTrace.GetStacks();
+        float adjustedEffectRadius = _effectRadius;
+        adjustedEffectRadius += darkTrace.GetStacks();
         
         Effect spellEffect = Effect.Get("Element/ball_Nether");
         List<Chara> targetsHit = new List<Chara>();
-        foreach (Point tile in _map.ListPointsInCircle(CC.pos, damageRadius, false, false))
+        foreach (Point tile in _map.ListPointsInCircle(CC.pos, adjustedEffectRadius, false, false))
         {
             int distance = tile.Distance(CC.pos);
 

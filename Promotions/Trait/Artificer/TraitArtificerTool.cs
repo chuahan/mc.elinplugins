@@ -1,3 +1,4 @@
+using PromotionMod.Elements.PromotionAbilities.Artificer;
 namespace PromotionMod.Trait.Artificer;
 
 /// <summary>
@@ -21,7 +22,33 @@ namespace PromotionMod.Trait.Artificer;
 /// </summary>
 public class TraitArtificerTool : TraitTool
 {
+    public override bool InvertHeldSprite => true;
+    
+    public override bool IsNoShop
+    {
+        get
+        {
+            if (source != null)
+            {
+                return source.tag.Contains("noShop");
+            }
+            return false;
+        }
+    }
+
+    public virtual SourceElement.Row source => null;
+    
     public virtual string ArtificerToolId => "";
+
+    public string ArtificerToolName => EClass.sources.things.map[this.ArtificerToolId].GetName();
+    public string ArtificerToolAction => $"{this.ArtificerToolId}_action";
+
+    public virtual bool IsTargetCast => true;
+
+    public virtual TargetType TargetType => TargetType.Ground;
+
+    public virtual float EffectRadius => 1F;
+    
     public virtual int MaxCharges => 12;
 
     public virtual int ChargesConsumed => 1;
@@ -55,17 +82,19 @@ public class TraitArtificerTool : TraitTool
 
     public override void TrySetHeldAct(ActPlan p)
     {
-        if (p.cc.CanSeeLos(p.pos) == false && owner.c_ammo > 0) return;
-        p.TrySetAct(ArtificerToolId.lang(), delegate
+        p.TrySetAct(new ActArtificerTool
         {
-            // The enchant level of the artificer tool is the power factor.
-            ArtificerToolEffect(p.cc, p.pos, owner.encLV);
-            return false;
-        }, owner, CursorSystem.IconRange);
+            trait = this,
+        }, owner);
     }
 
     public virtual bool ArtificerToolEffect(Chara cc, Point pos, int power)
     {
         return false;
+    }
+
+    public virtual void MarkMapHighlights(Point target)
+    {
+        target.SetHighlight(8);
     }
 }

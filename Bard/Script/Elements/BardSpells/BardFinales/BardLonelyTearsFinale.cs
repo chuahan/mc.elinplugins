@@ -72,10 +72,6 @@ public class BardLonelyTearsFinale : BardSongData
         if (!godBlessed) return;
         int damage = HelperFunctions.SafeDice(Constants.BardFinaleLonelyTearsName, power);
         if (target.race.IsUndead) damage = HelperFunctions.SafeMultiplier(damage, 2);
-        // target.DamageHP(dmg: damage, ele: Constants.EleHoly, eleP: 100, attackSource: AttackSource.None, origin: bard);
-        BardCardPatches.CachedInvoker.Invoke(
-            target,
-            new object[] { damage, Constants.EleHoly, 100, AttackSource.None, bard }
-        );
+        target.DamageHP(dmg: damage, ele: Constants.EleHoly, eleP: 100, attackSource: AttackSource.None, origin: bard);
     }
 }

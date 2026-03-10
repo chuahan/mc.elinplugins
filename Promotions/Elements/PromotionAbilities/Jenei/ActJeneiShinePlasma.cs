@@ -32,7 +32,12 @@ public class ActJeneiShinePlasma : Ability
     public override bool Perform()
     {
         int power = GetPower(CC);
-        TC.pos.PlayEffect("attack_lightning");
+        Effect lightning = Effect.Get("attack_lightning");
+        ElementRef colorRef = EClass.setting.elements["eleChaos"];
+        lightning.SetParticleColor(colorRef.colorTrail, true, "_TintColor");
+        lightning.sr.color = colorRef.colorSprite;
+        lightning.Play(TP);
+        
         ActEffect.DamageEle(CC, EffectId.None, power, Element.Create(Constants.EleLightning, power / 10), new List<Point>
         {
             TP

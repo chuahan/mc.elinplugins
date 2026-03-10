@@ -35,13 +35,10 @@ public class FeatNecromancer : PromotionFeat
         c.ability.Add(Constants.ActBeckonOfTheDeadId, 75, false);
         c.ability.Add(Constants.ActBlessingOfTheDeadId, 50, false);
         c.ability.Add(Constants.ActCorpseExplosionId, 50, false);
-        c.ability.Add(Constants.SpSummonSkeleton, 90, false);
+        c.ability.Add(Constants.SpSummonSkeletonId, 90, false);
     }
-
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "wizard";
-    }
+    
+    public override string JobRequirement => "wizard";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

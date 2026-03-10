@@ -39,10 +39,7 @@ public class FeatHeadhunter : PromotionFeat
         c.ability.Add(Constants.ActReapId, 75, false);
     }
 
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "executioner";
-    }
+    public override string JobRequirement => "executioner";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

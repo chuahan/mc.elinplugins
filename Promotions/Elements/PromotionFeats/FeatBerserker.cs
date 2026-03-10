@@ -34,10 +34,7 @@ public class FeatBerserker : PromotionFeat
         c.ability.Add(Constants.ActLifebreakId, 30, false);
     }
 
-    protected override bool Requirement()
-    {
-        return owner.Chara?.c_idJob == "warrior";
-    }
+    public override string JobRequirement => "warrior";
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {

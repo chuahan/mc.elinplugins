@@ -26,7 +26,7 @@ public class ActExecute : Ability
         if (CC != null && CC.HasCondition<ConHeadhunter>())
         {
             int reduction = (int)(cost.cost * 0.1);
-            cost.cost -= CC.GetCondition<ConHeadhunter>().power * reduction;
+            cost.cost -= CC.GetCondition<ConHeadhunter>().GetStacks() * reduction;
         }
         return cost;
     }
@@ -55,8 +55,8 @@ public class ActExecute : Ability
             }
             return true;
         }
-
-        CC.AddCooldown(Constants.ActExecuteId, 10);
+        
+        CC.AddCooldown(Constants.ActExecuteId, 10 - CC.GetCondition<ConHeadhunter>()?.GetStacks() ?? 0);
         return true;
     }
 }

@@ -27,7 +27,7 @@ public class StanceFlamesOfJudgement : BaseStance
         {
             // For PC Faction, use PC's Karma.
             positiveKarma = player.karma >= 0;
-            negativeKarma = player.karma <= 0;
+            negativeKarma = player.karma < 0;
         }
 
         int firePower = (int)(owner.MaxHP * 0.3F);
@@ -48,7 +48,7 @@ public class StanceFlamesOfJudgement : BaseStance
         {
             foreach (Chara target in friendlies.Where(target => target != owner))
             {
-                target.HealHP(firePower, HealSource.Magic);
+                target.HealHP(firePower / 2, HealSource.Magic);
             }
         }
     }

@@ -13,7 +13,7 @@ public class ActRidePatches
     [HarmonyPostfix]
     public static void RidePostfix_TitanGolemPatch(ActRide __instance, Chara host, Chara t, bool parasite = false, bool talk = true)
     {
-        if (!parasite && t.Evalue(Constants.FeatTitanGolem) > 0)
+        if (!parasite && t.Evalue(Constants.FeatTitanGolemId) > 0)
         {
             t.AddCondition<ConTitanProtocol>();
         }

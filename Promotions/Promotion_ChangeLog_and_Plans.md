@@ -1,8 +1,19 @@
 # Changelog and Roadmap
 
 ## Changelog
-### March 10th, 2026 - Initial release
-Includes the base Promotions, Lailah, and the Quiet Cottage Map.
+### March 11th, 2026 1.00 - Initial release
+- Includes the base Promotions, Lailah, and the Quiet Cottage Map.
+
+### March 11th, 2026 1.01
+- Updated documentation to fix typoes and include more numbers for the number inclined.
+- Reworked the Evaluation system for Promos to an extension method. Technically this means that Sub-classing shouldn't be that hard to implement, but not what I want to deal with.  
+- Hermit: Opportunist and Shadow Shroud now apply the increased damage to spells as well. Spells unfortunately can't crit though.  
+- Sentinel: Adds a cap to how much damage Rage can do cause Holy Shield Stacking Shenanigans. For now it has been capped at 200% damage and 1000 PV lost.  
+- Necromancer: Lord of the Dead Passive: Provides passive boosts to all allied undead (minions or charas.) Basically Hardware Upgrade for Undead instead of Machines.  
+- Druid: Plant: Speaker for Nature Passive: Provides passive boosts to all allied undead (minions or charas.) Basically Hardware Upgrade for Plants instead of Machines.  
+- Dread Knight - Healing recieved reduced by 75% with Life Ignition. Lifetaker is now true healing (does not get reduced.)  
+- Berserker - Healing recieved from revel now is true healing (does not get reduced.)  
+- Hexer - Fixed Paranoia.
 
 ## To Do
 - Need to add Condition icons for... everything really.
@@ -44,13 +55,6 @@ With class promotions unlocking levels of power for the players, it is only natu
 This mod adds a variety of new enemy types for you to face. 
 Upon reaching specific Void Depth, enemies can also potentially be a promoted class. They can also randomly possess Advanced Combat Skills, so be careful!
 Monsters that are promoted or possess combat skills with have a visual indicator of their increased strength, so tread with caution!
-
-### The Economy System
-This mod adds another layer to the in game economy. Supply/Demand/Events. I cannot sugar coat this, this is a direct hit to most people doing ELOB or Doormaxing.
-Every month the North Tyris Market will have reset it's supply/demand for all categories of goods. As the player ships goods and fulfills supply, demand will fall, reducing the value of these goods.
-Additionally, every city can potentially have economic events that can further impact these prices. For example, a violent demon incursion would drive up prices of equipment, while the discovery of an ancient armory would drive it down.
-There is an option in the configs to turn this feature off if you don't want to deal with the price changes.
-WIP: Not sure how easy it is to code this, having to store a lot. I'll see what I can do...
 
 ### Aluèna City
 Aluèna is a large bustling city located to the west of the Quiet Cottage, south of the Little Garden. A thriving commercial Hub, this city houses two new guilds that provide unique services to help the player.

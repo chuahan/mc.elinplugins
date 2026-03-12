@@ -4,6 +4,7 @@ using System.Linq;
 using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Stats.AdvCombatSkills;
+using PromotionMod.Stats.DreadKnight;
 using PromotionMod.Stats.Hexer;
 using PromotionMod.Stats.Sentinel;
 using PromotionMod.Trait;
@@ -20,7 +21,8 @@ public class CardPatches
     {
         if (__instance.isChara)
         {
-            if (__instance.Chara.IsPCFaction && EClass.pc.Evalue(Constants.FeatAdventurer) > 0)
+            if (__instance.Chara.IsPCFaction &&
+                EClass.pc.MatchesPromotion(Constants.FeatAdventurer))
             {
                 // Adventurers increase the exp gain by 50%
                 a = (int)(a * 1.5F);
@@ -37,14 +39,14 @@ public class CardPatches
         if (__instance.isChara)
         {
             Chara chara = __instance.Chara;
-            if (chara.Evalue(Constants.FeatBattlemage) > 0)
+            if (chara.MatchesPromotion(Constants.FeatBattlemage))
             {
                 int manaValue = chara.mana.value / 5;
                 __result += manaValue;
             }
 
             // Sentinel - Increased PV for Heavy Armor and/or Shield.
-            if (chara.Evalue(Constants.FeatSentinel) > 0)
+            if (chara.MatchesPromotion(Constants.FeatSentinel))
             {
                 // Increase PV by 50% if wearing Heavy Armor
                 if (chara.GetArmorSkill() == 122)
@@ -69,7 +71,7 @@ public class CardPatches
 
     [HarmonyPatch(nameof(Card.HealHP))]
     [HarmonyPrefix]
-    internal static bool OnHealHP(Card __instance, int a, HealSource origin)
+    internal static bool OnHealHP(Card __instance, ref int a, HealSource origin)
     {
         // Trickster - Despair Debuff prevents healing.
         if (__instance.isChara)
@@ -86,13 +88,19 @@ public class CardPatches
 
             // War Cleric - Healing is copied to nearby allies with 50% efficacy.
             // Does not trigger on HealSource.None, which is Regen, or duplicated healing, or mods who don't actually add a HealSource.
-            if (__instance.Chara.Evalue(Constants.FeatWarCleric) > 0 && origin != HealSource.None)
+            if (__instance.Chara.MatchesPromotion(Constants.FeatWarCleric) && origin != HealSource.None)
             {
                 chara.Say("warcleric_healshare".lang());
                 foreach (Chara ally in HelperFunctions.GetCharasWithinRadius(__instance.pos, 3F, __instance.Chara, true, false))
                 {
                     ally.HealHP(a / 2);
                 }
+            }
+
+            // Dread Knight - Life Ignition reduces healing by 75%.
+            if (targetConditions.ContainsKey(typeof(StanceLifeIgnition)))
+            {
+                a = (int)(a * 0.5F);
             }
         }
 

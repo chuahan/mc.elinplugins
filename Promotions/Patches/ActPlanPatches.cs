@@ -8,6 +8,7 @@ namespace PromotionMod.Patches;
 [HarmonyPatch(typeof(ActPlan))]
 public class ActPlanPatches
 {
+    /*
     [HarmonyPatch(nameof(ActPlan._Update))]
     [HarmonyPostfix]
     internal static void ActPlanUpdatePatch(ActPlan __instance, PointTarget target)
@@ -44,4 +45,5 @@ public class ActPlanPatches
             }
         }
     }
+    */
 }

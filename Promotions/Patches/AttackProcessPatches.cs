@@ -33,7 +33,7 @@ public class AttackProcessPatches
             return false;
         }
 
-        if (__instance.CC.Evalue(Constants.FeatHermit) > 0 &&
+        if (__instance.CC.MatchesPromotion(Constants.FeatHermit) &&
             __instance.TC != null &&
             (__instance.TC.isChara && __instance.TC.Chara.HasCondition<ConSleep>() || __instance.TC.Chara.HasCondition<ConParalyze>() || __instance.TC.Chara.HasCondition<ConFaint>()))
         {
@@ -62,7 +62,8 @@ public class AttackProcessPatches
     [HarmonyPrefix]
     internal static bool PerformPrefixPatch(AttackProcess __instance, int count, ref bool hasHit, ref float dmgMulti, ref bool maxRoll, bool subAttack)
     {
-        if (Act.TC != null && Act.TC.isChara && Act.CC != null && Act.CC.Evalue(Constants.FeatHermit) > 0)
+        /*
+        if (Act.TC != null && Act.TC.isChara && Act.CC != null && Act.CC.MatchesPromotion(Constants.FeatHermit)
         {
             // Hermits - When the target is afflicted with Sleep/Paralyze/Faint Conditions, guarantees crits.
             if (Act.TC.Chara.HasCondition<ConSleep>() || Act.TC.Chara.HasCondition<ConParalyze>() || Act.TC.Chara.HasCondition<ConFaint>())
@@ -79,10 +80,12 @@ public class AttackProcessPatches
                 dmgMulti += .25F;
             }
         }
+        */
 
         // Sharpshooter - Charged Chamber applies the mana consumed (power) as a damage multiplier. Caps at 5x damage.
         // BALANCE: This might... be a little too strong later?
-        if (Act.CC != null && Act.CC.Chara.Evalue(Constants.FeatSharpshooter) > 0 && Act.CC.HasCondition<ConChargedChamber>() && __instance.IsRanged)
+        if (Act.CC != null &&
+            Act.CC.HasCondition<ConChargedChamber>() && __instance.IsRanged)
         {
             ConChargedChamber charge = Act.CC.GetCondition<ConChargedChamber>();
             dmgMulti += Math.Max(charge.power / 100F, 5F);
@@ -209,7 +212,6 @@ public class AttackProcessPatches
             __instance is { IsRanged: true, toolRange: not null })
         {
             Condition heavyArms = originConditions[typeof(StanceHeavyarms)].Single();
-            // TODO: Text
             __instance.CC.Say("machinist_heavyarms_followup".langGame(), Act.CC);
             __instance.CC.PlaySound("missile");
             ActEffect.ProcAt(EffectId.Rocket, (heavyArms.power / 4), BlessedState.Normal, __instance.CC, null, __instance.TC.pos, true, new ActRef
@@ -314,7 +316,9 @@ public class AttackProcessPatches
         }
 
         // Sharpshooter - Ranged Attacks will automatically apply the Suppress effect, regardless of hitting or not
-        if (__instance.TC is { isChara: true } && originChara.Evalue(Constants.FeatSharpshooter) > 0 && __instance.IsRanged)
+        if (__instance.TC is { isChara: true } &&
+            originChara.MatchesPromotion(Constants.FeatSharpshooter) &&
+            __instance.IsRanged)
         {
             target.Chara.AddCondition<ConSupress>();
         }

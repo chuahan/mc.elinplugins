@@ -39,7 +39,7 @@ public class ZonePatches
     internal static void ZoneOnGeneratePostfix(Zone __instance)
     {
         // Druids - If there is a druid in the party, animals and plantlife will become friendly.
-        if (EClass.pc.party.members.Any(c => c.Evalue(Constants.FeatDruid) > 0))
+        if (EClass.pc.party.members.Any(c => c.MatchesPromotion(Constants.FeatDruid)))
         {
             foreach (Chara chara in EClass._map.charas.Where(chara => !chara.IsGlobal && chara is { hostility: < Hostility.Neutral, OriginalHostility: < Hostility.Friend })
                              .Where(chara => chara.IsAnimal || chara.IsPlant))

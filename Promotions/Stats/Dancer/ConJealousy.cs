@@ -15,5 +15,7 @@ public class ConJealousy : Timebuff
                 }
             }
         }
+        
+        base.Tick();
     }
 }

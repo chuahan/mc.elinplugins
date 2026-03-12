@@ -9,10 +9,12 @@ public class StatsManaPatch
     [HarmonyPrefix]
     internal static bool ManaMod_CostReduction_Patch(ref int a)
     {
-        // Energy Dance reduces mana costs by a flat 15%. Cannot reduce it to 0.
+        // Energy Dance reduces mana costs by a flat 10%, 20% if partner. Cannot reduce it to 0.
         if (BaseStats.CC.HasCondition<ConEnergyDance>() && a < 0 && a > 1)
         {
-            a = (int)(a * .85F);
+            ConEnergyDance dance = BaseStats.CC.GetCondition<ConEnergyDance>();
+            float reduction = (float)(1 - dance.power * 0.1);
+            a = (int)(a * reduction);
         }
         return true;
     }

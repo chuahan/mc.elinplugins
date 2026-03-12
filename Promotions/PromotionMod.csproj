@@ -103,6 +103,7 @@
     <ItemGroup>
         <Compile Include="Common\Constants.cs"/>
         <Compile Include="Common\HelperFunctions.cs"/>
+        <Compile Include="Common\PromoCharaExtensions.cs" />
         <Compile Include="Common\SpellbookConversionManager.cs"/>
         <Compile Include="Elements\AdvancedCombatFeats\FeatAegis.cs" />
         <Compile Include="Elements\AdvancedCombatFeats\FeatAegisPlus.cs" />
@@ -320,6 +321,7 @@
         <Compile Include="Patches\CharaPatches.cs" />
         <Compile Include="Patches\ConMiasmaPatches.cs" />
         <Compile Include="Patches\CoreDebugPatches.cs" />
+        <Compile Include="Patches\ElementContainerCardPatches.cs" />
         <Compile Include="Patches\ElementPatches.cs" />
         <Compile Include="Patches\GameDatePatches.cs" />
         <Compile Include="Patches\FactionManagerPatch.cs" />

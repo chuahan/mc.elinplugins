@@ -155,7 +155,7 @@ internal class CharaPatches : EClass
         {
             foreach (Chara target in pc.currentZone.map.ListCharasInCircle(__instance.pos, 5f))
             {
-                if (target.Evalue(Constants.FeatHarbinger) > 0)
+                if (target.MatchesPromotion(Constants.FeatHarbinger))
                 {
                     if (!target.HasCondition<ConMiasmaArmor>())
                     {
@@ -171,7 +171,9 @@ internal class CharaPatches : EClass
         }
 
         // Adventurer - Auto Medicate.
-        if (__result != null && __result.Type == ConditionType.Bad && __instance.IsPCParty && pc.Evalue(Constants.FeatAdventurer) > 0)
+        if (__result is { Type: ConditionType.Bad } &&
+            __instance.IsPCParty &&
+            pc.MatchesPromotion(Constants.FeatAdventurer))
         {
             // Adventurer will automatically try to medicate, 1/4 chance of free medication.
             if (EClass.rnd(4) == 0)
@@ -218,7 +220,7 @@ internal class CharaPatches : EClass
         if (__instance.isChara)
         {
             // Adventurer - Double Loot.
-            if (!__instance.IsPC && !(__instance.IsPCParty || __instance.IsPCFactionMinion) && __instance.IsInActiveZone && EClass.pc.Evalue(Constants.FeatAdventurer) > 0)
+            if (!__instance.IsPC && !(__instance.IsPCParty || __instance.IsPCFactionMinion) && __instance.IsInActiveZone && EClass.pc.MatchesPromotion(Constants.FeatAdventurer))
             {
                 __instance.SpawnLoot(origin);
             }
@@ -227,25 +229,26 @@ internal class CharaPatches : EClass
 
             if (origin is { Chara: not null, isChara: true })
             {
+                // Heal on kill does not get impacted by reduced healing effects.
                 Chara originChara = origin.Chara;
                 // Berserker - Heal on Kill
-                if (originChara.Evalue(Constants.FeatBerserker) > 0)
+                if (originChara.MatchesPromotion(Constants.FeatBerserker))
                 {
                     int healAmount = (int)(originChara.MaxHP * .25F);
                     origin.Say("berserker_revel".langGame(originChara.NameSimple));
-                    originChara.HealHP(healAmount);
+                    HealHpDirect(originChara, healAmount);
                 }
                 
                 // Dread Knight - Heal on Kill
-                if (originChara.Evalue(Constants.FeatDreadKnight) > 0)
+                if (originChara.MatchesPromotion(Constants.FeatDreadKnight))
                 {
                     int healAmount = (int)(originChara.MaxHP * .1F);
                     origin.Say("dreadknight_lifetaker".langGame(originChara.NameSimple));
-                    originChara.HealHP(healAmount);
+                    HealHpDirect(originChara, healAmount);
                 }
 
                 // Headhunter - Gain Headhunter stacks on Kill.
-                if (originChara.Evalue(Constants.FeatHeadhunter) > 0)
+                if (originChara.MatchesPromotion(Constants.FeatHeadhunter))
                 {
                     if (!originChara.HasCondition<ConHeadhunter>())
                     {
@@ -259,7 +262,7 @@ internal class CharaPatches : EClass
                 }
                 
                 // Headhunter - Steal a buff on kill.
-                if (origin.isChara && originChara.Evalue(Constants.FeatHeadhunter) > 0)
+                if (origin.isChara && originChara.MatchesPromotion(Constants.FeatHeadhunter))
                 {
                     Condition? buff = target.conditions.FirstOrDefault(x => x.Type == ConditionType.Buff);
                     if (buff != null)
@@ -303,6 +306,16 @@ internal class CharaPatches : EClass
             }
         }
         return true;
+    }
+
+    internal static void HealHpDirect(Chara c, long amount)
+    {
+        // Cap Healing to big number.
+        if (amount > 100000000L) amount = 100000000L;
+        c.hp += (int) amount;
+        if (c.hp > c.MaxHP) c.hp = c.MaxHP;
+        c.PlaySound("heal");
+        c.PlayEffect("heal");
     }
 
     [HarmonyPatch(nameof(Chara._Move))]
@@ -352,7 +365,7 @@ internal class CharaPatches : EClass
         if (type == Card.MoveType.Walk && __result == Card.MoveResult.Success && __instance.HasCondition<ConUnderFire>())
         {
             foreach (Chara sharpshooter in HelperFunctions.GetCharasWithinRadius(newPoint, 10F, __instance, false, true)
-                             .Where(sharpshooter => sharpshooter.Evalue(Constants.FeatSharpshooter) > 0 && sharpshooter.HasCondition<StanceOverwatch>()))
+                             .Where(sharpshooter => sharpshooter.MatchesPromotion(Constants.FeatSharpshooter) && sharpshooter.HasCondition<StanceOverwatch>()))
             {
                 Thing rangedWeapon = sharpshooter.GetBestRangedWeapon();
                 if (rangedWeapon == null) continue;

@@ -1,3 +1,4 @@
+using Cwl.Helper.Extensions;
 using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Stats.Battlemage;
@@ -11,7 +12,9 @@ public class AbilityPatches
     [HarmonyPostfix]
     internal static void GetPowerPatch(Ability __instance, ref int __result, Card c)
     {
-        if (c is { isChara: true } && c.Evalue(Constants.FeatBattlemage) > 0 && __instance is Spell)
+        if (c is { isChara: true } &&
+            c.Chara.MatchesPromotion(Constants.FeatBattlemage) &&
+            __instance is Spell)
         {
             Chara mage = c.Chara;
             StanceManaFocus focusCon = mage.GetCondition<StanceManaFocus>();

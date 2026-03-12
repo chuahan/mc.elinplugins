@@ -5,6 +5,7 @@ namespace PromotionMod.Stats.DreadKnight;
 
 public class StanceLifeIgnition : BaseStance
 {
+    public override bool TimeBased => true;
     public override void Tick()
     {
         // If the users HP falls below 10%, automatically exit Life Ignition Stance and add a cooldown.

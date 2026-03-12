@@ -10,22 +10,12 @@ internal static class ModInfo
 }
 
 /// <summary>
-///     TODO LIST (Excluding the ones in each Promotion Class)
-///     TODO (P1) Implement acquisition method for Promotion Manuals. This likely includes Lailah's quest.
-///     TODO (P2) Add SFX and animations for abilities. This is gonna be a lot...
-///     TODO: Weapons. Do I want these in this mod? These are mostly weapons for each of the Knights + Lailah.
-///     TODO (P4) Implement Rapiers: Flurry and Pursuit inherent.
-///     TODO (P4) Implement Lances: Unique Weapon Mod that increases damage based on speed.
-///     TODO (P4) Implement Sniper Rifles: Increased Crit / Accuracy. Low Mag size. High Effective Range.
-///     TODO (P4) Implement other Melee Weapons: Chakrams, Daggers, more Lances, Axes.
-///     TODO (P4) Implement Brave Weapons: Come with High Flurry
-///     TODO (P4) Implement Killer Weapons: Come with Chance to Triple Damage.
 /// </summary>
 [BepInPlugin(ModInfo.Guid, ModInfo.Name, ModInfo.Version)]
 internal class PromotionMod : BaseUnityPlugin
 {
 
-    internal const bool Debug = true;
+    internal const bool Debug = false;
     internal static PromotionMod? Instance { get; private set; }
 
     private void Awake()

@@ -25,23 +25,23 @@ Shout: Taunts nearby enemies, causing them to prioritize targetting you.
 
 Shield Smite: Smashes the target with your shield, dealing damage and attempting to stun the target.  
 
-Restraint Stance: Boosts your PV and Magic Resistance at the cost of your damage.
+Restraint Stance: Boosts your PV (+50%) and Magic Resistance (10) at the cost of your damage (-20%).
 
-Rage Stance: Removes all your PV at the cost of increasing your melee damage.
+Rage Stance: Removes all your PV at the cost of increasing your melee damage. For every 5 PV lost, you will gain 1% damage. This effect caps at 200% damage increase with 1000 PV Lost.
 
 ### Passives
-Sentinel: Increases your PV by 50% when using Heavy Armor. Increases your PV by 50% when using a Shield. These can stack.  
+Sentinel: Increases your PV by 50% when using Heavy Armor. Increases your PV by 50% when using a Shield. These can stack.
 
-Block: When equipped with a Shield, you have a chance to block up to 85% of incoming melee damage. The % are based off your shield skill.
+Block: When equipped with a Shield, you have a chance to block up to 85% of incoming melee damage. Both the chance to block and the % damage mitigation is based off your shield skill.
 
 ## Berserker - A cornered beast.
 The Berserker is an offensive Warrior promotion that flourishes at the front lines. They grow stronger both defensively and offensively the more damage they take, living life on the edge to maximize their damage output.
 Berserkers abilities cost life instead of mana or stamina to use.
 
 ### Skills
-Bloodlust: Applies a Condition where you are silenced, but you will rapidly regenerate % HP every turn and will counterattack when hit with melee attacks.  
+Bloodlust: A self buff that costs 25% of your max HP to use. Applies a time based condition to yourself where you are silenced, but you will rapidly regenerate 10% HP of your max HP every turn and will counterattack when hit with melee attacks.  
 
-Sunder: Steals % HP from a target while swapping your debuffs with theirs.  
+Sunder: A melee attack that costs 25% of your max HP to use, but steals 12% of the target's current HP, dealing damage while swapping your debuffs with theirs.  
 
 Lifebreak: Deals a heavy blow based on how much HP you are missing.
 
@@ -52,7 +52,7 @@ Berserk: Gains buffs when they are missing HP or afflicted with debuffs.
 - When missing at least 50% HP, they will increase their melee attack damage and accuracy.  
 - When missing at least 75% HP, they will gain a speed boost.  
 
-Revel: The Berserker will heal 25% of their maximum HP when they kill a target.
+Revel: The Berserker will heal 25% of their maximum HP when they kill a target. This amount is not impacted by reduced healing.
 
 # Thief
 ## Hermit - The Assassin
@@ -60,8 +60,10 @@ The Hermit is an offensive Thief promotion that works from the shadows to assass
 
 ### Skills
 Mark for Death: Marks a target for assassination. Remaining close to the target will increase your stalking power.
-Shadow Shroud: Conceals yourself with greater invisibilty. While hidden, your physical attacks will deal an additional 25% damage.
-Assassinate: Inflicts a grievous wound against a target that is marked for death. This attack cannot miss, be parried, or countered.  
+
+Shadow Shroud: Conceals yourself with greater invisibilty. While hidden, your attacks will deal an additional 25% damage.
+
+Assassinate: A melee attack that inflicts a grievous wound against a target that is marked for death. This attack cannot miss, be parried, or countered.  
 - If you have at least 20 stalk on the target, your hit will deal an additional 25% damage.
 - If you have at least 30 stalk on the target, your hit will deal 2x damage and be a guaranteed critical hit.
 
@@ -77,7 +79,7 @@ Arcane Trap: Set an arcane trap onto the ground that is triggerable by enemies. 
 
 Detonate Trap: Detonates the target arcane trap, causing it to explode.
 
-Diversion: Creates three phantom trickster minions. They are incredibly fragile, but will inflict a Trickster debuff on their killer when they die.
+Diversion: Creates three phantom trickster minions. They are incredibly fragile, but will inflict a Trickster hex on their killer when they die.
 
 Reversal: Targets an enemy and removes all debuffs on them. Protection will be applied to the Trickster's party based on how many debuffs were removed. Protection will absorb flat damage done to the target prior to damage reductions.
 
@@ -96,7 +98,7 @@ Elemental Extinction: Wide range elemental ultimate spell. Every elemental orb c
 ### Passives
 Elemental Stockpile: When elementalists cast attack spells, they will gain orbs of that element and stockpile them. Gaining a new type elemental orb will grant a stack of Spell Tempo as well as reduce the target's resistance to that element. You can only have 3 orbs of each element. When you haven't gained elemental orbs for 5 turns, you will lose a random orb every turn.
 
-Spell Tempo: Elementalists will gain speed, mana regeneration, and spell enhance for every stack of Spell Tempo they have.
+Spell Tempo: Elementalists will gain speed, mana regeneration, and spell enhance for every stack of Spell Tempo they have. 2% Speed, 2 Spell Enhance, and 2% Mana Regeneration per stack, up to 10 Stacks.
 
 Elemental Mastery: Elementalists have double the Elemental Power, improving their ability to apply statuses.
 
@@ -112,7 +114,7 @@ Beckon of the Dead: Marks an enemy. If a target dies while under the effect of B
 
 Blessing of the Dead: Sacrifices an undead minion to heal nearby allies based on how much HP they had left. Overhealing will be converted into Protection.
 
-Corpse Explosion: Sacrifies an undead minion to cause a nether explosion at their position.
+Corpse Explosion: Sacrifies an undead minion to cause a nether explosion at their position based on how much HP they had left.
 
 Summon Skeleton: Necromancer's signature spell. Summons a skeleton minion for the Necromancer.
 - Skeleton Warriors
@@ -136,21 +138,24 @@ Spirit Summon: The main power of the Jenei. By using all of their elemental spir
 Move: Pushes the target object one tile if possible. This can be used on installed objects.
 
 Mother Gaia: Causes an earthen spire to erupt at the target location, dealing localized impact damage.
+
 #### Mars
 Blaze: Does fire damage to a tile, setting the tile ablaze.
 
 Dragon Fume: Breathes dragonfire in the target direction, causing severe burns.
+
 #### Jupiter
 Reveal: Reveals the secrets of the target, allowing you to see their character sheet. When used against enemies, this will also inflict Magic Break, which reduces their magic resistance. When used against neutral targets, it will reveal their favored items.
 
 Shine Plasma: Drops a lightning bolt on the target.
+
 #### Mercury
 Deluge: Drops a deluge of water on the target, guaranteed to inflict wet and leave a puddle.
 
 Ply: Heals the target for a large amount (Equivalent to Heal spell)
 
 ### Passives 
-Adept Conspectus: Jenei can convert elemental attack spellbooks into the four elements they prefer, Impact, Fire, Lightning, and Ice.
+Adept Conspectus: Jenei can convert elemental attack spellbooks into the four elements they prefer, Impact, Fire, Lightning, and Ice. (For Example: Chaos Arrow can be randomly converted into Impact, Fire, Lightning, or Cold Arrow.)
 
 ## Druid
 The Druid is a support and summoning type Farmer promotion that brings forth nature's vitality to the battlefield. They can summon various kinds of plantlife to strengthen their allies or weaken their enemies.
@@ -162,10 +167,10 @@ Sow Warmth Seeds: Summons a stationary invulnerable minion that spreads a variet
 
 Living Armor: Wraps an ally with living vines, increasing PV and healing them over time.
 
-Summon Tree Ent Warrior: Summons a tree ent warrior to assist you in combat. Has a small chance of summoning an aspect of nature.
+Summon Tree Ent Warrior: Summons a tree ent warrior to assist you in combat. Has a small chance of summoning an aspect of nature (Wrath or Warmth.)
 
 ### Passives 
-Nature Conspectus: Druids can convert other summoning spells into Summon Tree Ent Warrior.
+Nature Conspectus: Druids can convert other summoning spells into Summon Tree Ent Warrior. For example, Summon Shadow can be converted into Summon Tree Ent Warrior.
 
 Friend of Nature: Wild Plants and Animal life are friendly to you.
 
@@ -183,7 +188,7 @@ Target Legs: Makes a ranged attack that can slow the target.
 Spread Shot: Makes ranged attacks against all targets in a cone.
 
 ### Passives
-No Distractions: When there are no enemies within 3 tiles of you, you will have increased crit, accuracy, and rapid fire.
+No Distractions: When there are no enemies within 3 tiles of you, you will have increased crit, accuracy, and rapid fire. 30% Increased Hit Rate, up to 15% increased Critical Hit chance, Rapid Arrow 1.
 
 ## Ranger
 The Ranger is a control-type Archer promotion that rides through the battlefield. They use special munitions and traps to debuff enemies.
@@ -216,23 +221,32 @@ When Battlemages summon elemental funnels, they will be summoned as defensive fo
 Battlemages possess two unique different stances. Both stances will reserve a portion of the mana to boost either their defensive or offensive capabilities. These stances can be used at the same time.
 
 ### Skills
+Mana Shield Stance: Reserves 25% of your maximum mana. Applies a regenerating shield that absorbs incoming combat damage and must be reduced to 0 before you can take life damage.
 
-### Passives 
+Mana Focus Stance: Enters a stance that consumes more mana to increase spellpower. Increases spellcosts of all spells by 15% while increasing the spellpower of all spells by 15% of your current mana. While in this stance, your spells will pierce 1 additional tier of enemy elemental resistances.
+
+### Passives
+Magic Armor - Increases your PV by 20% of your current mana.
+
+Shield Funnels - Battlemages will summon Shield Funnels, which possess Taunt, Rush, and Wall of Flesh.
 
 ## Dreadknight
 The Dread Knight is an offensive Warmage promotion that believes life is merely a resource to be used in their pursuit of magic. They dominate the battlefield with relentless offensive capabilities whilst they walk the thin line between life and death, using their own health to empower their spells.
 
 ### Skills
-Life Ignition Stance: A stance that increases your melee and magical damage output by 50% at the cost of 10% of your life per turn. You will recieve reduced healing in this stance.
+Life Ignition Stance: A stance that increases your melee and magical damage output by 50% at the cost of 10% of your life per turn. You will recieve reduced healing in this stance (Any incoming healing is cut down to 25%.)
 
-Mana Starter: Sacrifices a percent of your HP to replenish your own mana. Costs more HP based on Dark Traces.
+Mana Starter: Sacrifices a percent of your HP to replenish your own mana. Recovers mana equal to 2x the health consumed. Costs more HP based on Dark Traces.
 
-Dark Burst: Sacrifies a percent of your HP to cause a explosion that deals dark damage to nearby enemies. Gains range based on Dark Traces.
+Dark Burst: Sacrifices a percent of your HP to cause a explosion that deals dark damage to nearby enemies. Gains range based on Dark Traces.
+
+Dark Barrier: Consumes your current Dark Traces to apply Protection to yourself. Every stack of Dark Trace consumed will grant 5% of your maximum life as Protection.
 
 ### Passives 
-Dark Traces: When using abilities, Dreadknights will generate Dark Traces. These will increase outgoing spell and melee damage and augment their abilities.
+Dark Traces: When using abilities, Dreadknights will generate Dark Traces. These will increase outgoing spell and melee damage and augment their abilities. Caps at 10 stacks.
 
-Lifetaker: Dreadknights will recover 10% of their life on kill.
+Lifetaker: Dreadknights will recover 10% of their life on kill. This amount is not impacted by reduced healing.
+
 Nether Conspectus: Dreadknights can convert elemental attack spellbooks into the Nether element.
 
 # Tourist
@@ -245,7 +259,7 @@ The Adventurer is a PC only support-type Tourist promotion that is focused on ex
 ### Skills
 This Way: Only usable in nefia. Teleports the player to the entrance stairs, or as close to it.
 
-Sense Danger: Increases your DV. Allows you to see any hostiles and all traps on the current floor while active.
+Sense Danger: Increases your DV by 15%. Allows you to see any hostiles and all traps on the current floor while active.
 
 ### Passives 
 Loot Goblin: Adventurers cause enemies to drop double loot.
@@ -260,18 +274,18 @@ The Dancer is a support-type Pianist promotion that spreads buffs and debuffs ac
 Dancers can also choose to support a single ally with the Partner Stance, focusing the buffs on their single ally and themselves.
 
 ### Skills
-Dance Partner: Designates a party member as a dance partner. Your dances will instead apply at 150% power only to you and your dance partner.
+Dance Partner: Designates a party member as a dance partner. Your dances will instead apply at increased power only to you and your dance partner.
 
-#### Dances: The dancer can only perform once dance at a time as a stance.
-Energizing Tango: A dance that reduces stamina and mana usage by 15%.
+#### Dances: The dancer can only perform once dance at a time as a stance. All dances will reserve 25% of mana.
+Energizing Tango: A dance that reduces stamina and mana usage by 10%, or 20% to a partner.
 
 Liberating Foxtrot: A dance that will remove a debuff each turn.
 
-Soothing Samba: A dance that heals every turn.
+Soothing Samba: A dance that 10% heals every turn (15% to Partners.)
 
 Obscuring Kagura: A dance that increases the PV and DV.
 
-Swift Salsa: A dance that increases speed.
+Swift Salsa: A dance that increases speed by 10% (15% to Partners.)
 
 #### Flourishes: The Dancer can perform flourish attacks while dancing. Dance Partners will automatically perform follow up attacks if they are in melee range of the targets.
 
@@ -279,7 +293,7 @@ Dagger Illusion: Fling throwing weapons at up to 5 nearby targets mid dance, inf
 
 Sword Fouette: A sword dance that will perform a melee attack against all nearby enemies within 2 tiles.
 
-Wild Pirouette: An enchanting confusing dance that inflicts debuffs against nearby enemies.
+Wild Pirouette: An enchanting yet confusing dance that inflicts debuffs against nearby enemies.
 
 ### Passives
 None
@@ -289,9 +303,9 @@ The Knightcaller is a summoner-type Pianist promotion that commands a ghostly Kn
 Whenever the Knightcaller summons a knight, they will suffer from summoning sickness, which will temporarily reduce their maximum mana for a short time.
 
 ### Skills
-Enrage Spirits: Enrages your minions, buffing their offenses.
+Enrage Spirits: Enrages your minions, buffing their offenses, granting them Damage, Speed, and Spell Enhance.
 
-Rally Spirits: Recalls all minions within 20 tiles to your side, healing them and buffing their defenses.
+Rally Spirits: Recalls all minions within 20 tiles to your side, healing them and buffing their defenses, granting them PV, DV, and Magic Resistance.
 
 Mobilize Spirits: Teleports all minions within 10 tiles to the target location.
 
@@ -324,9 +338,9 @@ Light Conspectus: Saints can convert elemental attack spellbooks into the Holy e
 The War Cleric is an defensive Priest promotion that is welcome on any front line. They can save allies from dangerous situations, capable of protecting, healing, or harming as needed.
 
 ### Skills
-Divine Descent: A powerful skill that invokes godly powers. Deals holy damage around you while inflicting fear, heals allies to full HP and purges any debuffs on them. Massively boosts your own attributes for the duration of the skill. Only usable once a day.
+Divine Descent: A powerful skill that invokes godly powers. Deals holy damage around you while inflicting fear, heals allies to full HP and purges any debuffs on them. Boosts your own attributes by 25% for the duration of the skill. Only usable once a day.
 
-Deploy Sanctuary: A skill that creates a protective field around you. Any character within the field (enemy or ally) will take 75% reduced damage.
+Deploy Sanctuary: A skill that creates a protective field around you with a radius of 3 tiles. Any character within the field (enemy or ally) will take 75% reduced damage.
 
 Divine Fist: Strike a target with a holy fist that creates four holy bolts on hit, which will pick out the closest 4 targets and fly at them. Enemies hit will take holy damage while allies will be healed.
 
@@ -341,11 +355,11 @@ The Sharpshooter is a defensive Gunner promotion which flourish on the backlines
 Sharpshooters possess the Overwatch Stance, which will reduce their speed, but allows them to establish a killzone. Any enemy that moves within this killzone will cause the Sharpshooter to open fire.
 
 ### Skills
-Overwatch Stance: A stance that lowers your speed by 15%. In exchange, it increases your hit chance, critical chance, critical range, vision range. Any enemies within your field of vision will have Overwatched applied to them and you will automatically fire your ranged weapon at them whenever they move.
+Overwatch Stance: A stance that lowers your speed by 15%. In exchange, it increases your hit chance (25%), critical chance (30), critical range, vision range. Any enemies within your field of vision will have Overwatched applied to them and you will automatically fire your ranged weapon at them whenever they move.
 
-Charged Shot: A buff that consumes a percent of your mana to add it as flat damage to your next ranged attack.
+Charged Shot: A buff that consumes 25% percent of your maximum mana to add it as flat damage to your next ranged attack.
 
-Mark Hostiles: Marks all enemies in an area, reducing their DV. Every target you mark will restore 5% of your MP.
+Mark Hostiles: Marks all enemies in an area, reducing their DV by 5%. Every target you mark will restore 5% of your MP.
 
 ### Passives 
 Suppressive Fire: Ranged attacks will always apply Suppression against the targets.
@@ -396,7 +410,7 @@ Subdue: Inflicts Suppress and Attack Break, reducing the Attack of the target.
 
 Condemn: Inflicts Entangle in the area. Every enemy impacted will apply Protection to allies.
 
-Flames of Judgement: Surrounds yourself with magical flames, dealing a % of your maximum life as fire damage to yourself as well as nearby enemies every turn.
+Flames of Judgement: Surrounds yourself with magical flames, dealing 30% of your maximum life as fire damage to yourself as well as nearby enemies every turn.
 - If the Justicar is Good aligned (0 or Greater Karma as the Player. Party Members will use the PC's Karma), this will also heal allies for 1/2 the damage that would have been dealt.
 - If the Justicar is Evil aligned (Less than 0 Karma as the Player. Party Members will use the PC's Karma), this will also inflict Fire Break on any enemies, reducing their fire resistances.
 
@@ -435,6 +449,7 @@ The Holy Knight is a defensive Paladin promotion that rushes the enemy with a ho
 Vanguard Stance: Activates a stance that redirects all damage that would be done to nearby non-summon allies to you.
 
 Spearhead Charge: Charges to a specific point. Can go through enemies, knocking them away. Every enemy you charge through will summon a Holy Sword Funnel minion.
+- Sword Funnels are a Sword variation of elemental funnels that attack with the Magical Sword spell in their own element.
 
 Deflection: Enter Deflection state for a single turn. Taking damage while in this state will reduce the damage by 100%, reduce the cooldown, and summon a Holy Sword Funnel minion.
 Plant Holy Banner: Summon and plant an invulnerable Holy Banner minion on the target tile. While it does not move or attack, it will apply effects to characters within 3 tiles.
@@ -448,8 +463,14 @@ Heavenly Host: Whenever you summon a Holy Sword Funnel minion, you will gain a s
 ## Hexer
 The Hexer is a debuff oriented Witch promotion that capitalizes on applying a variety of ailments. Capable of hexing their enemies with both physical and mental conditions, Hexers pile on the ailments, becoming more and more dangerous as they stack up.
 
+Hexers have access to new Hexes
+- Uncommon Hex: Malaise reduces the target's Strength and Will.
+- Rare Hex: Paranoia causes the target to prioritize attacking their own allies.
+- Rare Hex: Reaper's call periodically does 10% of the target's maximum life as damage.
+- Rare Hex: Corruption: Causes the target to be unable to heal.
+
 ### Skills
-Blood Curse: Uses 10% of your life to apply a curse to the target.
+Blood Curse: Uses 10% of your life to apply a curse to the target. 
 
 Revenge: Consumes a debuff on yourself and uses the power to deal mind damage against the target.
 
@@ -462,7 +483,6 @@ Hex Maniac: When you are afflicted with a debuff, your Debuff power is increased
 
 ## Artificer
 The Artificer is a creation based Witch promotion that creates all kinds of magical devices for combat. The tools produced by an Artificer have a wide variety of effects for both friend and foe. Artificers can also produce their own golem ally, a heavily customizable partner that can come in various configurations.
-
 
 ### Skills
 Simple Synthesis: Reloads Artificer Tools and any guns in your party. Ammo reloaded is Ether Ammo based off your current spell power.
@@ -478,7 +498,7 @@ Artificer: Artificers gain access to the Artificer's Altar. Here they can craft 
 The Headhunter is an offensive Executioner promotion that thrives on momentum. They grow stronger with kills, gaining temporary buffs with each enemy slain in a single battle. They are also capable of executing low health enemies to further increase their own power.
 
 ### Skills
-Execute: A strong melee attack that has a 100% chance to cull any target at or below 25% HP. If the cull was successful, grants the Momentum buff to you and your allies, which increases PV and Speed.
+Execute: A strong melee attack that has a 100% chance to cull any target at or below 25% HP. If the cull was successful, grants the Momentum buff to you and your allies, which increases PV and Speed by 10%.
 
 Reap: A cleaving melee attack that does does increased damage against full health enemies or enemies with Bad conditions. Also inflicts Armor Break to reduce their PV.
 
@@ -519,7 +539,7 @@ Runic Guard: Adopt a defensive stance that allows you to absorb and attune to th
 
 Spinning Slash: Requires you to have attuned to an Element. The stored elemental damage is consumed and used to fuel a powerful spinning slash, striking all enemies within a 3 tile radius with an elemental sword made from your attunement. Afterwards, you will lose the Elemental Attunement condition.
 
-Rune Etching: Applies a protective talisman with a set amount of charges to the target. When taking damage, these talismans will activate and reduce the damage taken, as well as knock back the aggressor. When there is an incoming debuff, this talisman will also activate and negate the debuff.
+Rune Etching: Applies a protective talisman with a set amount of charges to the target. When taking damage, these talismans will activate and reduce the damage taken by 20%, as well as knock back the aggressor. When there is an incoming debuff, this talisman will also activate and negate the debuff.
 
 ### Passives 
 None

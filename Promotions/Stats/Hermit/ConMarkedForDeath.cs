@@ -10,7 +10,7 @@ public class ConMarkedForDeath : Condition
         bool isStalked = false;
         foreach (Chara chara in HelperFunctions.GetCharasWithinRadius(owner.pos, 5F, owner, false, false))
         {
-            if (chara.Evalue(Constants.FeatHermit) > 0)
+            if (chara.MatchesPromotion(Constants.FeatHermit))
             {
                 isStalked = true;
                 break;

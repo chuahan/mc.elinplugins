@@ -9,11 +9,11 @@ public class TraitArtificerWorkbench : TraitWorkbench
 {
     public override bool CanUse(Chara c)
     {
-        //if (c.GetFlagValue(Constants.PromotionFeatFlag) == Constants.FeatArtificer)
+        //if (c.MatchesPromotion(Constants.FeatArtificer)
         //{
         //Msg.Say("artificerlocked_table".lang());
         //}
-        return c.GetFlagValue(Constants.PromotionFeatFlag) == Constants.FeatArtificer && base.CanUse(c);
+        return c.MatchesPromotion(Constants.FeatArtificer) && base.CanUse(c);
     }
 
     private static HashSet<string> _validArtificerTools = new HashSet<string>(StringComparer.InvariantCulture)

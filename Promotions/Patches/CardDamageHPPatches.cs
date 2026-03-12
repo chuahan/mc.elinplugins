@@ -14,6 +14,7 @@ using PromotionMod.Stats.Artificer;
 using PromotionMod.Stats.Battlemage;
 using PromotionMod.Stats.Harbinger;
 using PromotionMod.Stats.Headhunter;
+using PromotionMod.Stats.Hermit;
 using PromotionMod.Stats.HolyKnight;
 using PromotionMod.Stats.Runeknight;
 using PromotionMod.Stats.Sniper;
@@ -90,8 +91,26 @@ public class CardDamageHPPatches
                     return false;
                 }
                 
+                // Hermits - When the target is afflicted with Sleep/Paralyze/Faint Conditions, 10% damage increase. Spells can't crit though.
+                if (targetConditions.Contains(typeof(ConSleep)) ||
+                    targetConditions.Contains(typeof(ConParalyze)) ||
+                    targetConditions.Contains(typeof(ConFaint)))
+                {
+                    dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, 1.1F);
+                }
+                
+                // Hermits - If you have Shadow Shroud on, your attacks has a 25% chance of revealing you, but you also gain a 25% damage increase.
+                if (originConditions.Contains(typeof(ConShadowShroud)))
+                {
+                    dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, 1.25F);
+                    if (EClass.rnd(4) == 0)
+                    {
+                        originConditions[typeof(ConShadowShroud)].Single().Kill();
+                    }
+                }
+                
                 // Hexer - When applying spell damage, there is a 10% chance to apply a hex out of a pool.
-                if (originChara.Evalue(Constants.FeatHexer) > 0 && MagicAttackSources.Contains(attackSource))
+                if (originChara.MatchesPromotion(Constants.FeatHexer) && MagicAttackSources.Contains(attackSource))
                 {
                     if (EClass.rnd(10) == 0)
                     {
@@ -101,7 +120,7 @@ public class CardDamageHPPatches
                 }
 
                 // Hexer - When taking damage, there is a 10% chance to force-apply a hex out of a pool in retaliation.
-                if (target.Evalue(Constants.FeatHexer) > 0)
+                if (target.MatchesPromotion(Constants.FeatHexer))
                 {
                     if (EClass.rnd(10) == 0)
                     {
@@ -111,7 +130,7 @@ public class CardDamageHPPatches
                 }
 
                 // Harbinger - Every active Miasma on the target boosts damage from Harbingers by 5%.
-                if (originChara.Evalue(Constants.FeatHarbinger) > 0 && targetConditions.Contains(typeof(ConHarbingerMiasma)))
+                if (originChara.MatchesPromotion(Constants.FeatHarbinger) && targetConditions.Contains(typeof(ConHarbingerMiasma)))
                 {
                     int miasmaCount = target.conditions.Count(con => con is ConHarbingerMiasma);
                     dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, 1 + (miasmaCount * 0.05F));
@@ -144,7 +163,7 @@ public class CardDamageHPPatches
                 }
                 
                 // Saint - If the Saint and the target share the same religion, the Saint can attempt to convert the opponent.
-                if (originChara.Evalue(Constants.FeatSaint) > 0 && originChara.faith.id == target.faith.id)
+                if (originChara.MatchesPromotion(Constants.FeatSaint) && originChara.faith.id == target.faith.id)
                 {
                     if (Math.Max(originChara.Evalue(85), originChara.Evalue(Constants.FaithId)) > target.Evalue(Constants.FaithId) &&
                         !target.IsMinion &&
@@ -193,7 +212,7 @@ public class CardDamageHPPatches
 
             
                 // Spellblade - If the Spellblade is using Siphoning Blade. Do no damage and instead deal the 50% damage as MP instead, absorbing it.
-                if (originChara.Evalue(Constants.FeatSpellblade) > 0)
+                if (originChara.MatchesPromotion(Constants.FeatSpellblade))
                 {
                     if (originConditions.Contains(typeof(ConSiphoningBlade)))
                     {
@@ -214,7 +233,8 @@ public class CardDamageHPPatches
                 }
                 
                 // Spellblade and Elementalist - Excel at applying status effects. eleP doubled.
-                if (originChara.Evalue(Constants.FeatSpellblade) > 0 || originChara.Evalue(Constants.FeatElementalist) > 0)
+                if (originChara.MatchesPromotion(Constants.FeatSpellblade) ||
+                    originChara.MatchesPromotion(Constants.FeatElementalist))
                 {
                     eleP = HelperFunctions.SafeMultiplier(eleP, 2);
                 }
@@ -263,7 +283,7 @@ public class CardDamageHPPatches
 
             // Necromancer - Bone Armor. Reduces damage based on how many Skeleton Minions you have.
             // Caps at 75% damage reduction
-            if (target.Evalue(Constants.FeatNecromancer) > 0)
+            if (target.MatchesPromotion(Constants.FeatNecromancer))
             {
                 int boneArmyCount = __instance.Chara.currentZone.ListMinions(__instance.Chara).Count(c => c.HasTag(CTAG.undead));
                 float damageMulti = Math.Min(0.75F, boneArmyCount * 0.025F);
@@ -423,7 +443,7 @@ public class CardDamageHPPatches
             }
             
             // Witch Hunter - When HP damage is done as a Witch Hunter with Melee/Ranged, they will also inflict 10% of the damage as mana.
-            if (originChara != null && originChara.Evalue(Constants.FeatWitchHunter) > 0 && attackSource is AttackSource.Melee or AttackSource.Range && dmg > 0)
+            if (originChara != null && originChara.MatchesPromotion(Constants.FeatWitchHunter && attackSource is AttackSource.Melee or AttackSource.Range && dmg > 0)
             {
                 int manaDamage = (int)(dmg * 0.1F) * -1;
                 target.mana.Mod(manaDamage);
@@ -500,7 +520,7 @@ public class CardDamageHPPatches
     {
         // Battlemages in Focus Stance with mana remaining will pierce one tier.
         int additionalPierce = 0;
-        if (origin != null && origin.Evalue(Constants.FeatBattlemage) > 0 && origin.HasCondition<StanceManaFocus>() && origin.Chara.mana.value > 0)
+        if (origin != null && origin.Chara.MatchesPromotion(Constants.FeatBattlemage) && origin.HasCondition<StanceManaFocus>() && origin.Chara.mana.value > 0)
         {
             additionalPierce++;
         }
@@ -516,6 +536,7 @@ public class CardDamageHPPatches
     internal static long ApplyDamageReduction(Card origin, Card target, long damage, AttackSource source)
     {
         Chara targetChara = target.Chara;
+        if (target.Chara == null) return damage;
         ILookup<Type, Condition> targetConditions = targetChara.conditions.ToLookup(c => c.GetType());
         Chara? originChara = origin?.Chara;
 
@@ -551,7 +572,10 @@ public class CardDamageHPPatches
             }
             
             // Witch Hunter - When HP damage is done as a Witch Hunter with Melee/Ranged, they will also inflict 10% of the damage as mana.
-            if (originChara != null && originChara.Evalue(Constants.FeatWitchHunter) > 0 && source is AttackSource.Melee or AttackSource.Range && damageWithMods > 0)
+            if (originChara != null &&
+                originChara.MatchesPromotion(Constants.FeatWitchHunter) &&
+                source is AttackSource.Melee or AttackSource.Range &&
+                damageWithMods > 0)
             {
                 int manaDamage = (int)(damageWithMods * 0.1F) * -1;
                 targetChara.mana.Mod(manaDamage);

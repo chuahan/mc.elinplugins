@@ -11,7 +11,8 @@ public class TraitBaseSpellbookPatches
     internal static bool OnReadPatch(TraitBaseSpellbook __instance, Chara c)
     {
         // Elementalist - If the player is an elementalist reading an elemental spellbook, they will gain charges of spells in two alternate elements of the same spell type.
-        if (c.IsPC && c.Evalue(Constants.FeatElementalist) > 0 && (__instance.BookType == TraitBaseSpellbook.Type.Spell || __instance.BookType == TraitBaseSpellbook.Type.RandomSpell))
+        if (c.IsPC && c.MatchesPromotion(Constants.FeatElementalist) &&
+            __instance.BookType is TraitBaseSpellbook.Type.Spell or TraitBaseSpellbook.Type.RandomSpell)
         {
             // If it's one of the elemental combat spells, add charges of two other elements.
             if (__instance.source.id is > 50100 and < 50999)

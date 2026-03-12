@@ -14,7 +14,9 @@ public class ActMeleePatches
     public static bool AttackPrefixPatch(ActMelee __instance, ref float dmgMulti)
     {
         // Sentinel - If the target is a Sentinel with a Shield, they have a chance to block the blow, reducing the damage.
-        if (Act.TC.Chara.Evalue(Constants.FeatSentinel) > 0 && Act.TC.Chara.body.GetAttackStyle() == AttackStyle.Shield && !Act.TC.IsDisabled && !Act.TC.IsRestrainedResident)
+        if (Act.TC.Chara.MatchesPromotion(Constants.FeatSentinel) &&
+            Act.TC.Chara.body.GetAttackStyle() == AttackStyle.Shield &&
+            !Act.TC.IsDisabled && !Act.TC.IsRestrainedResident)
         {
             // Shield Skill * 2 + 50
             int blockChance = Act.TC.Evalue(123) * 2 + 50;
@@ -27,7 +29,7 @@ public class ActMeleePatches
         }
 
         // Sentinel - If the attacker is a Sentinel in Rage Stance, add a multiplier of damage based off of their PV difference.
-        if (Act.CC.Evalue(Constants.FeatSentinel) > 0 && Act.CC.HasCondition<StanceRage>())
+        if (Act.CC.MatchesPromotion(Constants.FeatSentinel) && Act.CC.HasCondition<StanceRage>())
         {
             // Every 5 PV adds 1% more damage.
             StanceRage stance = Act.CC.GetCondition<StanceRage>();

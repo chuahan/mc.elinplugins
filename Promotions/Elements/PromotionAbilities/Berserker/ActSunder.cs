@@ -38,7 +38,7 @@ public class ActSunder : Ability
     public override bool Perform()
     {
         int heal = (int)(CC.MaxHP * HealthCost);
-        int damage = (int)(TC.Chara.MaxHP * HealthCost);
+        int damage = (int)(TC.Chara.hp * (HealthCost / 2));
         List<Condition> casterDebuffs = CC.Chara.conditions.Where(x =>
                 x.Type is ConditionType.Debuff or ConditionType.Bad && x is not ConDeathSentense && x is not ConWrath && x is not ConAnorexia && x is not ConSuspend).ToList();
         List<Condition> targetDebuffs = TC.Chara.conditions.Where(x =>
@@ -55,7 +55,7 @@ public class ActSunder : Ability
         }
 
         TC.DamageHP(damage, AttackSource.Melee, CC);
-        CC.HealHP(heal, HealSource.Magic);
+        CC.HealHP(damage, HealSource.Magic);
         CC.AddCooldown(Constants.ActSunderId, 10);
         return true;
     }

@@ -10,6 +10,12 @@ namespace PromotionMod.Stats.Harbinger;
 public class ConHarbingerMiasma : TimeDebuff
 {
     public virtual int Element { get; }
+    
+    public override Sprite GetSprite()
+    {
+        return SpriteSheet.Get(source.alias);
+    }
+    
     public virtual void ApplyCondition(Chara c)
     {
     }

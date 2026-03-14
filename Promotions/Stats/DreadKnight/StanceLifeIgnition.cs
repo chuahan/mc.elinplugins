@@ -1,11 +1,18 @@
 using PromotionMod.Common;
 using PromotionMod.Elements.PromotionAbilities.DreadKnight;
+using UnityEngine;
 
 namespace PromotionMod.Stats.DreadKnight;
 
 public class StanceLifeIgnition : BaseStance
 {
     public override bool TimeBased => true;
+    
+    public override Sprite GetSprite()
+    {
+        return SpriteSheet.Get(source.alias);
+    }
+    
     public override void Tick()
     {
         // If the users HP falls below 10%, automatically exit Life Ignition Stance and add a cooldown.

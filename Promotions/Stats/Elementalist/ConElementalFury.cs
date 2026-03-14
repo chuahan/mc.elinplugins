@@ -3,12 +3,18 @@ using System.Linq;
 using Newtonsoft.Json;
 using PromotionMod.Common;
 using PromotionMod.Elements.PromotionAbilities.Elementalist;
+using UnityEngine;
 namespace PromotionMod.Stats;
 
 public class ConElementalFury : BaseBuff
 {
     [JsonProperty(PropertyName = "E")] public Dictionary<int, int> ElementalStockpile = new Dictionary<int, int>();
 
+    public override Sprite GetSprite()
+    {
+        return SpriteSheet.Get(source.alias);
+    }
+    
     public override void Tick()
     {
         // Will not persist in regions.

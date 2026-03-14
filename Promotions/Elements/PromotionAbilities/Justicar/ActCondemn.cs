@@ -14,9 +14,9 @@ public class ActCondemn : Ability
     
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatJusticar) == 0)
+        if (CC.MatchesPromotion(Constants.FeatJusticar))
         {
-            Msg.Say("classlocked_ability".lang(Constants.JusticarId.lang()));
+            if (CC.IsPC) Msg.Say("classlocked_ability".lang(Constants.JusticarId.lang()));
             return false;
         }
         return base.CanPerform();
@@ -66,7 +66,8 @@ public class ActCondemn : Ability
         int protectionAmount = condemnedTargets * GetPower(CC);
         foreach (Chara ally in HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, true, true))
         {
-            ally.AddCondition<ConProtection>(protectionAmount);
+            ConProtection? protection = (ConProtection)(ally.GetCondition<ConProtection>() ?? ally.AddCondition<ConProtection>());
+            protection?.AddProtection(protectionAmount);
         }
 
         return true;

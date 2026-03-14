@@ -2,10 +2,16 @@ using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Stats.Spellblade;
+using UnityEngine;
 namespace PromotionMod.Stats.Justicar;
 
 public class StanceFlamesOfJudgement : BaseStance
 {
+    public override Sprite GetSprite()
+    {
+        return SpriteSheet.Get(source.alias);
+    }
+    
     public override void Tick()
     {
         if (_zone.IsRegion)

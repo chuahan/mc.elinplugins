@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using PromotionMod.Common;
+using UnityEngine;
 namespace PromotionMod.Stats;
 
 /// <summary>
@@ -30,6 +31,11 @@ public abstract class ConAura : BaseBuff
 
     public virtual int TriggerDelay => 0;
 
+    public override Sprite GetSprite()
+    {
+        return SpriteSheet.Get(source.alias);
+    }
+    
     public virtual void ApplyFriendly(Chara target)
     {
 

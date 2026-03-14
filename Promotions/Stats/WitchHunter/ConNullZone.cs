@@ -1,10 +1,11 @@
+using UnityEngine;
 namespace PromotionMod.Stats.WitchHunter;
 
 public class ConNullZone : BaseBuff
 {
     public override bool TimeBased => true;
     public override bool CanManualRemove => true;
-
+    public override Sprite GetSprite() => SpriteSheet.Get(source.alias);
     public override void Tick()
     {
         // Apply Sanctuary to everyone within 3F.

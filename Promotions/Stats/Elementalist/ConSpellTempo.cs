@@ -1,3 +1,4 @@
+using UnityEngine;
 namespace PromotionMod.Stats;
 
 /// <summary>
@@ -10,6 +11,11 @@ namespace PromotionMod.Stats;
 /// </summary>
 public class ConSpellTempo : Timebuff
 {
+    public override Sprite GetSprite()
+    {
+        return SpriteSheet.Get(source.alias);
+    }
+    
     public override void Tick()
     {
         // Recover 2% mana per stack, topping at 20% a turn mana at max stacks.

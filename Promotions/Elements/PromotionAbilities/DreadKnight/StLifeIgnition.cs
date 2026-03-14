@@ -41,7 +41,15 @@ public class StLifeIgnition : Ability
     
     public override bool Perform()
     {
-        CC.AddCondition<StanceLifeIgnition>();
+        StanceLifeIgnition existingStance = CC.GetCondition<StanceLifeIgnition>();
+        if (existingStance != null)
+        {
+            existingStance.Kill();
+        }
+        else
+        {
+            CC.AddCondition<StanceLifeIgnition>();   
+        }
         return true;
     }
 }

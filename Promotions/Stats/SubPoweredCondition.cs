@@ -1,5 +1,6 @@
 using System;
 using Newtonsoft.Json;
+using UnityEngine;
 namespace PromotionMod.Stats;
 
 public class SubPoweredCondition : BaseBuff
@@ -16,6 +17,8 @@ public class SubPoweredCondition : BaseBuff
     {
         return 0;
     }
+    
+    public override Sprite GetSprite() => SpriteSheet.Get(source.alias);
 
     public static SubPoweredCondition Create(string alias, int power, int powerOverride, Action<Condition> onCreate = null)
     {

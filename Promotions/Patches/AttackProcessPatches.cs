@@ -228,7 +228,7 @@ public class AttackProcessPatches
               __instance.weapon.trait is not TraitToolRangeCane)
         {
             ConGimmickCoating coating = (ConGimmickCoating)originConditions[typeof(ConGimmickCoating)].Single();
-            if (__instance.hit && __instance.TC.isChara)
+            if (__instance is { hit: true, TC.isChara: true })
             {
                 if (Enum.TryParse(coating.GimmickType, out Constants.RangerCoatings coatingType))
                 {

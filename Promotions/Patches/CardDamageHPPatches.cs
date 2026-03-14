@@ -228,7 +228,7 @@ public class CardDamageHPPatches
                 {
                     int heal = (int)(dmg * 0.3F);
                     originChara.HealHP(heal, HealSource.Magic);
-                    ConShiningBlade shiningBlade = (ConShiningBlade)targetConditions[typeof(ConHeavenlyEmbrace)].Single();
+                    ConShiningBlade shiningBlade = (ConShiningBlade)originConditions[typeof(ConShiningBlade)].Single();
                     shiningBlade.Mod(-1);
                 }
                 

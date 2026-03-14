@@ -1,9 +1,15 @@
 using Newtonsoft.Json;
 using PromotionMod.Common;
+using UnityEngine;
 namespace PromotionMod.Stats.Hermit;
 
 public class ConMarkedForDeath : Condition
 {
+    public override Sprite GetSprite()
+    {
+        return SpriteSheet.Get(source.alias);
+    }
+    
     public override void Tick()
     {
         // If there is no enemy Hermits within range, rapidly decays.

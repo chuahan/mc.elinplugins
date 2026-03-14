@@ -61,10 +61,11 @@ public class ActBlessingOfTheDead : Ability
                             target.HealHP(healthValue, HealSource.Magic);
                             continue;
                         }
-                        // Overheal is converted into Protection
+                        // Half of Overheal is converted into Protection.
                         target.HealHP(missingHP);
-                        int protection = healthValue - missingHP;
-                        target.AddCondition<ConProtection>(protection);
+                        int protectionAmount = (healthValue - missingHP) / 2;
+                        ConProtection? protection = (ConProtection)(target.GetCondition<ConProtection>() ?? target.AddCondition<ConProtection>());
+                        protection?.AddProtection(protectionAmount, true);
                     }
                 }
                 targetsHit.Add(target);

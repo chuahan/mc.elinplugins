@@ -33,7 +33,8 @@ public class ActDarkBarrier : Ability
     {
         ConDarkTraces darkTrace = CC.GetCondition<ConDarkTraces>();
         int protectionAmount = (int)(CC.MaxHP * (darkTrace.GetStacks() * .05F));
-        CC.AddCondition<ConProtection>(protectionAmount);
+        ConProtection? protection = (ConProtection)(EClass.pc.GetCondition<ConProtection>() ?? EClass.pc.AddCondition<ConProtection>());
+        protection?.AddProtection(protectionAmount, true); // This Protection scales power off of HP.
         darkTrace.Kill();
         return true;
     }

@@ -78,6 +78,7 @@ public class FeatJenei : PromotionFeat
     
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
+        if (hint) return;
         // For PCs, depending on which element they attuned to, add their two abilities.
         if (owner.Chara.IsPC)
         {

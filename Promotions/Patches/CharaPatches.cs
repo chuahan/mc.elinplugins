@@ -130,23 +130,6 @@ internal class CharaPatches : EClass
     }
     
     [HarmonyPatch(nameof(Chara.AddCondition), typeof(Condition), typeof(bool))]
-    [HarmonyPrefix]
-    internal static bool AddConditionPrefixPatches(Chara __instance, ref Condition __result, Condition c, bool force)
-    {
-        // Rune Knight - Warding runes will negate incoming Debuffs.
-        ConWardingRune ward = __instance.GetCondition<ConWardingRune>();
-        if (ward != null && c.Type == ConditionType.Debuff)
-        {
-            ward.Mod(-1);
-            __result = null;
-            return false;
-        }
-
-        return true;
-    }
-
-
-    [HarmonyPatch(nameof(Chara.AddCondition), typeof(Condition), typeof(bool))]
     [HarmonyPostfix]
     internal static void AddConditionPostfixPatches(Chara __instance, ref Condition __result, Condition c, bool force)
     {
@@ -210,6 +193,14 @@ internal class CharaPatches : EClass
                     }
                 }
             }
+        }
+        
+        // Rune Knight - Warding runes will negate incoming Debuffs.
+        ConWardingRune ward = __instance.GetCondition<ConWardingRune>();
+        if (ward != null && c.Type == ConditionType.Debuff)
+        {
+            ward.Mod(-1);
+            c.Kill();
         }
     }
 

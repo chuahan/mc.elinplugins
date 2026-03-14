@@ -102,8 +102,8 @@ public class ActSowWarmSeeds : Ability
         plant.PlayEffect("mutation");
         plant.MakeMinion(CC);
 
-        // Flowers are not killable.
-        if (flowerSummoned) plant.AddCondition<ConInvulnerable>(30000);
+        // Flowers are not killable. Blood Bond Exists.
+        // if (flowerSummoned) plant.AddCondition<ConInvulnerable>(30000);
 
         // Apply the Aura Buff
         switch (toSummon)

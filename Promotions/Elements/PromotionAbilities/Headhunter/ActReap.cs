@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using PromotionMod.Common;
 using PromotionMod.Stats;
@@ -34,6 +35,7 @@ public class ActReap : Ability
         {
             int reduction = (int)(cost.cost * 0.1);
             cost.cost -= CC.GetCondition<ConHeadhunter>().value * reduction;
+            cost.cost = Math.Min(1, cost.cost);
         }
         return cost;
     }

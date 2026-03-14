@@ -1,6 +1,9 @@
+using PromotionMod.Common;
 namespace PromotionMod.Trait.Characters;
 
-public class TraitMitsune : TraitDialogRecruitableChara
+public class TraitMitsune : TraitPromotionUniqueCharacter
 {
-    public override bool IsBefriendedThroughDialog => player.dialogFlags.TryGetValue("louiseRecruited") > 0;
+    public override bool IsBefriendedThroughDialog => player.dialogFlags.TryGetValue("mitsuneRecruited") > 0;
+    
+    public override int Prepromotion => Constants.FeatDreadKnight;
 }

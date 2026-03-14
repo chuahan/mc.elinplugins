@@ -1,9 +1,12 @@
+using UnityEngine;
 namespace PromotionMod.Stats.Artificer;
 
 public class ConAerialVision : BaseBuff
 {
     public const int FOVBuffAmount = 2;
 
+    public override string TextDuration => "";
+    
     public override void OnStartOrStack()
     {
         owner.RecalculateFOV();
@@ -17,5 +20,10 @@ public class ConAerialVision : BaseBuff
     public override void OnRemoved()
     {
         owner.RecalculateFOV();
+    }
+    
+    public override Sprite GetSprite()
+    {
+        return SpriteSheet.Get(source.alias);
     }
 }

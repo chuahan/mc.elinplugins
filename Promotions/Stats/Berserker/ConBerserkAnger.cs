@@ -1,3 +1,4 @@
+using UnityEngine;
 namespace PromotionMod.Stats.Berserker;
 
 public class ConBerserkAnger : Timebuff
@@ -10,5 +11,10 @@ public class ConBerserkAnger : Timebuff
     public void Refresh()
     {
         value = 5;
+    }
+    
+    public override Sprite GetSprite()
+    {
+        return SpriteSheet.Get(source.alias);
     }
 }

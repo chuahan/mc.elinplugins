@@ -1,11 +1,19 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
+using UnityEngine;
 namespace PromotionMod.Stats.Dancer;
 
 public class StanceDance : BaseStance
 {
     public float DanceRange = 4f; // SUBJECT TO CHANGE.
 
+    public override string TextDuration => "";
+    
+    public override Sprite GetSprite()
+    {
+        return SpriteSheet.Get(source.alias);
+    }
+    
     public override void OnStart()
     {
         owner.ShowEmo(Emo.happy);

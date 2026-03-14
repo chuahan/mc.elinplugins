@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using PromotionMod.Common;
 using PromotionMod.Stats.Headhunter;
@@ -27,6 +28,7 @@ public class ActExecute : Ability
         {
             int reduction = (int)(cost.cost * 0.1);
             cost.cost -= CC.GetCondition<ConHeadhunter>().GetStacks() * reduction;
+            cost.cost = Math.Min(1, cost.cost);
         }
         return cost;
     }
@@ -37,7 +39,7 @@ public class ActExecute : Ability
         new ActMelee().Perform(CC, TC);
 
         // Cull enemy if possible.
-        if (TC.MaxHP * CullThreshold > TC.hp)
+        if (TC.MaxHP * CullThreshold >= TC.hp)
         {
             CC.PlaySound("hit_finish");
             CC.Say("finish");

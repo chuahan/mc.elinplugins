@@ -1,7 +1,9 @@
+using UnityEngine;
 namespace PromotionMod.Stats.Sovereign;
 
 public class ConOrderRally : BaseBuff
 {
+    public override Sprite GetSprite() => SpriteSheet.Get(source.alias);
     public override bool TimeBased => true;
 
     public override void Tick()

@@ -1,9 +1,12 @@
+using PromotionMod.Common;
 using PromotionMod.Source;
 namespace PromotionMod.Trait.Characters;
 
-public class TraitVyers : TraitUniqueCharaNoJoin
+public class TraitVyers : TraitPromotionUniqueCharacter
 {
     public override bool CanGiveRandomQuest => false;
+    
+    public override int Prepromotion => Constants.FeatWitchHunter;
     
     public override int RestockDay => 7;
 

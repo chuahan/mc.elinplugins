@@ -8,17 +8,32 @@
 - Updated documentation to fix typoes and include more numbers for the number inclined.
 - Reworked the Evaluation system for Promos to an extension method. Technically this means that Sub-classing shouldn't be that hard to implement, but not what I want to deal with.  
 - Hermit: Opportunist and Shadow Shroud now apply the increased damage to spells as well. Spells unfortunately can't crit though.  
-- Sentinel: Adds a cap to how much damage Rage can do cause Holy Shield Stacking Shenanigans. For now it has been capped at 200% damage and 1000 PV lost.  
+- Sentinel: Adds a cap to how much damage Rage can do cause Holy Shield Stacking Shenanigans. For now it has been capped at 200% damage and 1000 PV lost. Thanks Ascalon  
 - Necromancer: Lord of the Dead Passive: Provides passive boosts to all allied undead (minions or charas.) Basically Hardware Upgrade for Undead instead of Machines.  
 - Druid: Plant: Speaker for Nature Passive: Provides passive boosts to all allied undead (minions or charas.) Basically Hardware Upgrade for Plants instead of Machines.  
 - Dread Knight - Healing recieved reduced by 75% with Life Ignition. Lifetaker is now true healing (does not get reduced.)  
 - Berserker - Healing recieved from revel now is true healing (does not get reduced.)  
-- Hexer - Fixed Paranoia.
+- Hexer - Fixed Paranoia.  
+- Artificer - Fixed null ref exception on Quickcraft. Thanks Ruair.  
+
+### March 12th, 2026 1.02
+- Elementalist - Spell Tempo now also grants 2 Mana Consumption Reduction per stack, and the speed has been reduced down to 1% per stack.
+- Added CN and JP Translations to Lailah's Letter, hopefully that fixes that bug.
+- Fixes Jenei Feat Sheet crashing. Thanks Shu.
+- Removed Invulnerability from some of the summons (Flowers and Holy Banner), ran into some issues with Blood Bond.
+- Removed Vantage functionality while I figure out why it breaks things. Thanks 1z
+- Added the missing throwing knife sprite. Thanks 1z
+
+### March 14th, 2026 1.03
+- Refactored and fixed Dancer. Thanks Rombus.
+- Turns out I forgot to add ability costs for... everything. Added rudimentary costs for most abilities. Heavily subject to change. Thanks Rombus.
+- Tweaked the scaling of Protection across the board. Shouldn't be super inflated now. However, it's scaling like Light Healing, so will need to see if it remains relevant in the higher levels.
+- Fixed a few bugs with War Cleric and Headhunter. Minimized cost to 1 SP for Headhunter abilities, even with Headhunter reduction.
+- Added all the Condition Icons!
+- Added missing Ability Icon for Headhunter: Reap
 
 ## To Do
-- Need to add Condition icons for... everything really.
 - Need to add targetting highlights for... everything really.
-- Need to add Ability icons for Alraune (Sweet Scent and Wild Growth)
 - Need to add SFX and FX for a lot of stuff. I'll probably go through 1 by 1 and figure out what needs work.
 - Balance things. Need user feedback.
 

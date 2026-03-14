@@ -1,5 +1,7 @@
+using System;
 using Newtonsoft.Json;
 using PromotionMod.Common;
+using UnityEngine;
 namespace PromotionMod.Stats;
 
 public class ConProtection : BaseBuff
@@ -11,13 +13,20 @@ public class ConProtection : BaseBuff
     /// </summary>
     [JsonProperty(PropertyName = "S")] private int _maxShield = 1;
     
+    public override Sprite GetSprite() => SpriteSheet.Get(source.alias);
+    
+    public static int CalcAmount(int power)
+    {
+        return HelperFunctions.SafeMultiplier(4, 10 + (power/45) + (power/30));
+    }
+    
     public override ConditionType Type => ConditionType.Buff;
 
-    public override void OnStartOrStack()
+    public override void OnStart()
     {
-        value = power;
+        value = HelperFunctions.SafeAdd(value, ConProtection.CalcAmount(power));
         _maxShield = value;
-        base.OnStartOrStack();
+        base.OnStart();
     }
 
     public override void Tick()
@@ -28,9 +37,9 @@ public class ConProtection : BaseBuff
         }
     }
 
-    public void AddProtection(int amount)
+    public void AddProtection(int amount, bool scale=false) 
     {
-        value = HelperFunctions.SafeAdd(value, amount);
+        value = Math.Min(_maxShield, scale ? HelperFunctions.SafeAdd(value, ConProtection.CalcAmount(amount)) : HelperFunctions.SafeAdd(value, amount));
         OnValueChanged();
     }
 
@@ -48,7 +57,7 @@ public class ConProtection : BaseBuff
         }
         else
         {
-            value = HelperFunctions.SafeAdd(value, p);   
+            value = Math.Min(_maxShield, HelperFunctions.SafeAdd(value, ConProtection.CalcAmount(p)));
         }
 
         SetPhase();

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using PromotionMod.Common;
+using UnityEngine;
 namespace PromotionMod.Stats.Battlemage;
 
 /// <summary>
@@ -27,6 +28,11 @@ public class StanceManaShield : BaseStance
         Stacks = power;
     }
 
+    public override Sprite GetSprite()
+    {
+        return SpriteSheet.Get(source.alias);
+    }
+    
     public void ModShield(int amount)
     {
         // Taking any hit, even a 0 damage hit, will incur shield delay.

@@ -4,6 +4,11 @@ namespace PromotionMod.Stats.Hermit;
 
 public class ConShadowShroud : BaseBuff
 {
+    public override Sprite GetSprite()
+    {
+        return SpriteSheet.Get(source.alias);
+    }
+    
     public override void Tick()
     {
         // Spawn Mist of Darkness on yourself while shrouded.

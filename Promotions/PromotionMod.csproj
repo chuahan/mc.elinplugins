@@ -340,6 +340,7 @@
         <Compile Include="Source\GolemDramaExpansion.cs" />
         <Compile Include="Source\GuildAdventurer.cs" />
         <Compile Include="Source\GuildInformation.cs" />
+        <Compile Include="Source\PostLoadPatching.cs" />
         <Compile Include="Source\PromoDramaExpansion.cs" />
         <Compile Include="Source\CustomGuild.cs" />
         <Compile Include="Source\QuestEventSystem\MonthlyEvent.cs" />
@@ -399,7 +400,6 @@
         <Compile Include="Stats\ConCritBoost.cs" />
         <Compile Include="Stats\ConDisable.cs" />
         <Compile Include="Stats\ConGreaterRegen.cs" />
-        <Compile Include="Stats\ConLifeBoost.cs" />
         <Compile Include="Stats\ConProtection.cs" />
         <Compile Include="Stats\ConSpeedBreak.cs" />
         <Compile Include="Stats\ConStatBreak.cs" />
@@ -539,8 +539,9 @@
         <Compile Include="Trait\Artificer\TraitArtificerToolTrinity.cs" />
         <Compile Include="Trait\Artificer\TraitArtificerWorkbench.cs" />
         <Compile Include="Trait\Characters\TraitCrowAgent.cs" />
-        <Compile Include="Trait\Characters\TraitDialogRecruitableChara.cs" />
+        <Compile Include="Trait\Characters\TraitPromotionUniqueCharacter.cs" />
         <Compile Include="Trait\Characters\TraitLailah.cs" />
+        <Compile Include="Trait\Characters\TraitLailahGolem.cs" />
         <Compile Include="Trait\Characters\TraitLouise.cs" />
         <Compile Include="Trait\Characters\TraitMinari.cs" />
         <Compile Include="Trait\Characters\TraitMitsune.cs" />

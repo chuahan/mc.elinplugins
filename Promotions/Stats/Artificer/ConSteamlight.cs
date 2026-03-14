@@ -1,3 +1,4 @@
+using UnityEngine;
 namespace PromotionMod.Stats.Artificer;
 
 public class ConSteamlight : BaseBuff
@@ -6,5 +7,10 @@ public class ConSteamlight : BaseBuff
     {
         CC.AddCondition<ConBurnout>();
         base.OnRemoved();
+    }
+    
+    public override Sprite GetSprite()
+    {
+        return SpriteSheet.Get(source.alias);
     }
 }

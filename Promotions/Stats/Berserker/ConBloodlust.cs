@@ -1,3 +1,4 @@
+using UnityEngine;
 namespace PromotionMod.Stats.Berserker;
 
 /// <summary>
@@ -20,5 +21,10 @@ public class ConBloodlust : Timebuff
         {
             owner.AddCondition<ConSilence>(10, true);
         }
+    }
+    
+    public override Sprite GetSprite()
+    {
+        return SpriteSheet.Get(source.alias);
     }
 }

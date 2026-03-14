@@ -28,6 +28,7 @@ public class ActDivineFist : ActMelee
 
     public override bool Perform()
     {
+        Point originalPunched = TC.pos;
         bool divineDescentActive = CC.HasCondition<ConDivineDescent>();
         // Divine Descent Removes cooldown from this ability and increases damage from the melee attack by 30%.
         Condition solBlade = CC.AddCondition<ConShiningBlade>(1);
@@ -38,15 +39,9 @@ public class ActDivineFist : ActMelee
         solBlade.Kill();
         // Render Holy Arrows flying at nearby targets
         int boltCount = 4;
-        ElementRef elementRef = setting.elements["eleHoly"];
-        Effect arrowEffect = Effect.Get("spell_arrow");
-        arrowEffect.sr.color = elementRef.colorSprite;
-        TrailRenderer componentInChildren = arrowEffect.GetComponentInChildren<TrailRenderer>();
-        Color startColor = componentInChildren.endColor = elementRef.colorSprite;
-        componentInChildren.startColor = startColor;
 
         int power = GetPower(CC);
-        int healAmount = HelperFunctions.SafeDice("warcleric_divine_fist", power);
+        int healAmount = HelperFunctions.SafeDice("ActDivineFist", power);
         foreach (Chara target in pc.currentZone.map.ListCharasInCircle(TC.pos, 3F))
         {
             if (boltCount <= 0) break;
@@ -66,7 +61,13 @@ public class ActDivineFist : ActMelee
             {
                 target.HealHP(healAmount, HealSource.Magic);
             }
-            arrowEffect.Play(CC.pos, 0f, target.pos);
+            ElementRef elementRef = setting.elements["eleHoly"];
+            Effect arrowEffect = Effect.Get("spell_arrow");
+            arrowEffect.sr.color = elementRef.colorSprite;
+            TrailRenderer componentInChildren = arrowEffect.GetComponentInChildren<TrailRenderer>();
+            Color startColor = componentInChildren.endColor = elementRef.colorSprite;
+            componentInChildren.startColor = startColor;
+            arrowEffect.Play(originalPunched, 0f, target.pos);
             boltCount--;
         }
 

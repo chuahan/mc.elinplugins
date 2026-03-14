@@ -13,7 +13,7 @@ public class RecipeManagerPatches
     [HarmonyPostfix]
     public static void RidePostfix_TitanGolemPatch(RecipeManager __instance, ref List<RecipeSource> __result, Thing factory, List<RecipeSource> newRecipes)
     {
-        if (factory.id.Equals("artificer_workbench", StringComparison.InvariantCulture))
+        if (factory != null && factory.id.Equals("artificer_workbench", StringComparison.InvariantCulture))
         {
             // If a golem has been crafted, remove this recipe from the craftable list.
             // Do I want to remove the golem parts too?

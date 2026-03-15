@@ -5,7 +5,7 @@ namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
 /// <summary>
 ///     Lightning. Inflicts Sleep. Petal Rain.
 /// </summary>
-public class ActFlora: JeneiSummonSequence
+public class ActFlora : JeneiSummonSequence
 {
     public override float SummonMultiplier => 0.09F;
 

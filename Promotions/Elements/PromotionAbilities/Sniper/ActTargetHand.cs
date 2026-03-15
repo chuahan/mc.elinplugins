@@ -17,7 +17,7 @@ public class ActTargetHand : Ability
             if (CC.IsPC) Msg.Say("sniper_needrangedweapon".langGame());
             return false;
         }
-        
+
         return base.CanPerform() && ACT.Ranged.CanPerform();
     }
 

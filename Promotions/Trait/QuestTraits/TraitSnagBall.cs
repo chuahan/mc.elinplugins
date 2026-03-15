@@ -7,8 +7,8 @@ public class TraitSnagBall : global::Trait
         get => owner.GetObj<Chara>(8);
         set => owner.SetObj(8, value);
     }
-    
-    public override bool IsThrowMainAction => (this.CapturedTarget == null);
+
+    public override bool IsThrowMainAction => CapturedTarget == null;
 
     public override ThrowType ThrowType => ThrowType.MonsterBall;
 
@@ -26,6 +26,6 @@ public class TraitSnagBall : global::Trait
 
     public override void SetName(ref string text)
     {
-        text = (CapturedTarget == null) ? "snagball_empty".lang() : "snagball_full".lang();
+        text = CapturedTarget == null ? "snagball_empty".lang() : "snagball_full".lang();
     }
 }

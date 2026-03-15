@@ -1,4 +1,3 @@
-using Cwl.Helper.Extensions;
 using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Stats.Battlemage;

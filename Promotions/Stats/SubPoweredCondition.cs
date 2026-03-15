@@ -17,8 +17,11 @@ public class SubPoweredCondition : BaseBuff
     {
         return 0;
     }
-    
-    public override Sprite GetSprite() => SpriteSheet.Get(source.alias);
+
+    public override Sprite GetSprite()
+    {
+        return SpriteSheet.Get(source.alias);
+    }
 
     public static SubPoweredCondition Create(string alias, int power, int powerOverride, Action<Condition> onCreate = null)
     {

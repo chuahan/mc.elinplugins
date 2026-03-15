@@ -8,13 +8,16 @@ public class TraitFactionTrap : TraitTrap
 
     public override bool CanDisarmTrap => false;
     public override bool IsJammed => false;
-    
+
     public override bool IsNegativeEffect => true;
 
     public override int radius => 1;
 
-    public override bool IgnoreWhenLevitating() => true;
-    
+    public override bool IgnoreWhenLevitating()
+    {
+        return true;
+    }
+
     public override void OnInstall(bool byPlayer)
     {
         owner.SetHidden(false); // Faction Traps are always visible.
@@ -27,7 +30,7 @@ public class TraitFactionTrap : TraitTrap
 
     public virtual void ActivateTrapInternal(Chara c)
     {
-        
+
     }
 
     public bool IsPCFactionTrap()
@@ -40,20 +43,20 @@ public class TraitFactionTrap : TraitTrap
         if (!_zone.IsPCFaction && !_zone.IsUserZone)
         {
             bool isPCTrap = IsPCFactionTrap();
-            if ((isPCTrap && c.IsHostile(pc)) || (!isPCTrap && !c.IsHostile(pc)))
+            if (isPCTrap && c.IsHostile(pc) || !isPCTrap && !c.IsHostile(pc))
             {
                 if (IgnoreWhenLevitating() && c.IsLevitating)
                 {
                     owner.Say("levitating");
                 }
-                else if (!CanDisarmTrap || (!isPCTrap && !TryDisarmTrap(c) && pc.Evalue(1656) < 3))
+                else if (!CanDisarmTrap || !isPCTrap && !TryDisarmTrap(c) && pc.Evalue(1656) < 3)
                 {
                     ActivateTrap(c);
                 }
             }
         }
     }
-    
+
     public override void OnActivateTrap(Chara c)
     {
         c.PlaySound("trap");

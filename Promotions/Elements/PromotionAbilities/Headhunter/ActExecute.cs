@@ -49,7 +49,7 @@ public class ActExecute : Ability
             // If the cull was successful, do not add a cooldown and refund stamina cost.
             // Apply Momentum to all allies.
             CC.stamina.Mod(GetCost(CC).cost);
-            
+
             List<Chara> affectedAllies = HelperFunctions.GetCharasWithinRadius(CC.pos, 3, CC, true, true);
             foreach (Chara target in affectedAllies)
             {
@@ -57,7 +57,7 @@ public class ActExecute : Ability
             }
             return true;
         }
-        
+
         CC.AddCooldown(Constants.ActExecuteId, 10 - CC.GetCondition<ConHeadhunter>()?.GetStacks() ?? 0);
         return true;
     }

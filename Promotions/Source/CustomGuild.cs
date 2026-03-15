@@ -1,11 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using Cwl.API;
-using Cwl.API.Attributes;
-using Cwl.API.Custom;
-using Cwl.API.Processors;
-using Newtonsoft.Json;
-
 namespace PromotionMod.Source;
 /*
 public class CustomGuild : Guild, IChunkable
@@ -13,10 +5,10 @@ public class CustomGuild : Guild, IChunkable
     internal static readonly Dictionary<string, CustomGuild> Managed = [];
 
     [JsonProperty] private string _id = "";
-    
+
     private const string SaveDataChunkName = "PromotionModSaveData.Guild";
-    
-    
+
+
     [CwlPostSave]
     internal static void SaveCustomGuild(GameIOProcessor.GameIOContext context)
     {
@@ -25,7 +17,7 @@ public class CustomGuild : Guild, IChunkable
                 .ToDictionary(r => r.id);
         context.Save(guilds, "customGuilds");
     }
-    
+
     [CwlPostLoad]
     internal static void LoadCustomReligion(GameIOProcessor.GameIOContext context)
     {

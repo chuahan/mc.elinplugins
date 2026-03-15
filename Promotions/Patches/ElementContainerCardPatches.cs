@@ -1,9 +1,5 @@
-using System.Collections.Generic;
-using Cwl.Helper.Extensions;
 using HarmonyLib;
 using PromotionMod.Common;
-using PromotionMod.Stats.Battlemage;
-using UnityEngine;
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(ElementContainerCard))]
@@ -24,14 +20,14 @@ public class ElementContainerCardPatches
         // 64 is DV
         // 65 is PV
         // 79 is Speed
-        
+
         // Boost these three evalues only.
         if (e.id is 64 or 65 or 79 &&
-            __instance.owner.isChara && 
+            __instance.owner.isChara &&
             (__instance.owner.Chara.IsUndead || __instance.owner.Chara.IsPlant))
         {
             bool isEnemy = __instance.owner.Chara.IsHostile(EClass.pc);
-            
+
             int undeadBoost = 0;
             int plantBoost = 0;
             // Check for all characters on the map for any Necromancers or Druids.
@@ -42,15 +38,16 @@ public class ElementContainerCardPatches
                     if (member.MatchesPromotion(Constants.FeatNecromancer))
                     {
                         undeadBoost++;
-                    }    
-                } else if (!isEnemy && !member.IsHostile(EClass.pc))
+                    }
+                }
+                else if (!isEnemy && !member.IsHostile(EClass.pc))
                 {
                     if (member.MatchesPromotion(Constants.FeatDruid))
                     {
                         plantBoost++;
                     }
                 }
-                
+
             }
 
             if (undeadBoost > 0 && __instance.Chara.IsUndead)

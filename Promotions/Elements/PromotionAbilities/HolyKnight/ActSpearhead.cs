@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Stats.HolyKnight;
-using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.HolyKnight;
 
 public class ActSpearhead : ActRush
@@ -26,25 +24,25 @@ public class ActSpearhead : ActRush
         bool flag = CC.IsPC && !(CC.ai is GoalAutoCombat);
         if (flag) TC = scene.mouseTarget.card;
         if (TC == null) return false;
-        TP.Set(flag ? EClass.scene.mouseTarget.pos : TC.pos);
+        TP.Set(flag ? scene.mouseTarget.pos : TC.pos);
         Point rushPoint = Los.GetRushPoint(CC.pos, TP);
         int distance = CC.Dist(TP);
-        
+
         // Render Holy ball on every tile.
         Effect spellEffect = Effect.Get("Element/ball_Holy");
-        
+
         // Teleport the user.
         CC.pos.PlayEffect("vanish");
         CC.MoveImmediate(rushPoint, true, false);
         CC.Say("rush", CC, TC);
         CC.PlaySound("rush");
         CC.pos.PlayEffect("vanish");
-        
+
         // Select all tiles between the start and the target
         List<Point> affectedPoints = pc.currentZone.map.ListPointsInLine(CC.pos, rushPoint, 2);
-        
+
         // Inflict Holy Damage and Summon a Holy Swordbit
-        int power = (int)(GetPower(CC) * (float)(100 + EClass.curve(Act.CC.Evalue(382), 50, 25, 65)) / 100f);
+        int power = (int)(GetPower(CC) * (float)(100 + EClass.curve(CC.Evalue(382), 50, 25, 65)) / 100f);
         ActEffect.DamageEle(CC, EffectId.Sword, power, Element.Create(Constants.EleHoly, power / 10), affectedPoints, new ActRef
         {
             act = this
@@ -65,15 +63,16 @@ public class ActSpearhead : ActRush
                 {
                     impacted.Add(target);
                     target.TryMoveFrom(target.pos); // Knock back targets
-                    SpawnHolySwordBit(power, CC, target.pos);
+                    ActSpearhead.SpawnHolySwordBit(power, CC, target.pos);
                 }
-            };
+            }
+            ;
         }
-        
-        float distBonus = 1f + 0.1f * (float)distance;
-        distBonus *= (float)(100 + EClass.curve(Act.CC.Evalue(382), 50, 25, 65)) / 100f; // Add Momentum Bonus
+
+        float distBonus = 1f + 0.1f * distance;
+        distBonus *= (100 + EClass.curve(CC.Evalue(382), 50, 25, 65)) / 100f; // Add Momentum Bonus
         Attack(distBonus);
-        SpawnHolySwordBit(power, CC, TP);
+        ActSpearhead.SpawnHolySwordBit(power, CC, TP);
 
         ConHeavenlyHost? heavenlyHost = CC.GetCondition<ConHeavenlyHost>() ?? CC.AddCondition<ConHeavenlyHost>() as ConHeavenlyHost;
         heavenlyHost?.AddStacks(impacted.Count);

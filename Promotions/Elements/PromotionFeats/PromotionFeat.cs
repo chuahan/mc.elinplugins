@@ -13,13 +13,13 @@ public abstract class PromotionFeat : Feat
 
     // Tourists are able to Promote into any of these classes.
     public bool IsTourist => owner.Chara.job.id.Equals("tourist", StringComparison.InvariantCultureIgnoreCase);
+
+    public virtual string JobRequirement => "tourist";
     public override Sprite GetIcon(string suffix = "")
     {
         return SpriteSheet.Get(source.alias);
     }
 
-    public virtual string JobRequirement => "tourist";
-    
     // Promotions require specific base classes.
     protected virtual bool Requirement()
     {
@@ -29,7 +29,7 @@ public abstract class PromotionFeat : Feat
 
     // Add NPC Specific Class applications. This involves picking which abilities to add with weights.
     protected abstract void ApplyInternalNPC(Chara c);
-    
+
     virtual internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
         if (!hint)
@@ -64,13 +64,16 @@ public abstract class PromotionFeat : Feat
 
     virtual internal void Demote(Chara c)
     {
-        c.SetFeat(PromotionClassFeatId, 0, false);
-        
+        c.SetFeat(PromotionClassFeatId, 0);
+
         foreach (int abilityId in PromotionAbilities)
         {
             // This should handle NPC abilities.
-            if (c.ability.Has(abilityId)) { c.ability.Remove(abilityId);}
-            
+            if (c.ability.Has(abilityId))
+            {
+                c.ability.Remove(abilityId);
+            }
+
             // PC Abilities are a bit more stubborn.
             if (c.IsPC)
             {
@@ -89,14 +92,15 @@ public abstract class PromotionFeat : Feat
         // If no main element but has domain, take the first element in the domain list.
         // The element Ids need to be set to 0 Index to map them to the spells. 0 is fire to void as 26.
         int eleCode = 11; // Defaults to Magic
-        if (c.MainElement != Element.Void)
+        if (c.MainElement != Void)
         {
             eleCode = c.MainElement.id - 910;
-        } else if (c.job.domain.Length != 0)
+        }
+        else if (c.job.domain.Length != 0)
         {
             eleCode = c.job.domain[0] - 910;
         }
-        
+
         return eleCode;
     }
 }

@@ -8,7 +8,7 @@ public class ConReapersCall : Timebuff
     {
         return SpriteSheet.Get(source.alias);
     }
-    
+
     public override void Tick()
     {
         owner.DamageHP((long)(owner.MaxHP * 0.1F), AttackSource.Condition);

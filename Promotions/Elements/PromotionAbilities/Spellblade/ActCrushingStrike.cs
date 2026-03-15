@@ -23,7 +23,7 @@ public class ActCrushingStrike : Ability
 
     public override bool Perform()
     {
-        CC.AddCondition<ConCrushingStrikeAttack>(this.GetPower(CC), true);
+        CC.AddCondition<ConCrushingStrikeAttack>(GetPower(CC), true);
         return new ActMeleeCrushingStrike().Perform(CC, TC);
     }
 }

@@ -30,7 +30,7 @@ public class ActJeneiPly : Ability
 
     public override bool Perform()
     {
-        float healMultiplier = HelperFunctions.SigmoidScaling(this.GetPower(CC), 0.08F, 0.4F, 4600);
+        float healMultiplier = HelperFunctions.SigmoidScaling(GetPower(CC), 0.08F, 0.4F, 4600);
         int healAmount = (int)(TC.MaxHP * healMultiplier);
         TC.HealHP(healAmount, HealSource.Magic);
         return true;

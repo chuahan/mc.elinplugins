@@ -10,26 +10,26 @@ public class ActWildGrowth : Ability
         convertToMp.type = CostType.MP;
         return convertToMp;
     }
-    
+
     public override bool Perform()
     {
-        ElementRef colorRef = EClass.setting.elements["elePoison"];
+        ElementRef colorRef = setting.elements["elePoison"];
         CC.PlaySound("whip");
         List<Chara> targetsHit = new List<Chara>();
-        foreach (Point tile in EClass._map.ListPointsInCircle(CC.pos, 3F, false, false))
+        foreach (Point tile in _map.ListPointsInCircle(CC.pos, 3F, false, false))
         {
             int distance = tile.Distance(CC.pos);
             foreach (Chara target in tile.ListCharas().Where(target => !targetsHit.Contains(target) && target.IsHostile(CC)))
             {
                 // Apply Entangle
-                ActEffect.ProcAt(EffectId.Debuff, this.GetPower(CC), BlessedState.Normal, CC, target, target.pos, true, new ActRef
+                ActEffect.ProcAt(EffectId.Debuff, GetPower(CC), BlessedState.Normal, CC, target, target.pos, true, new ActRef
                 {
                     origin = CC,
                     n1 = nameof(ConEntangle)
                 });
-                
+
                 // Apply Poison
-                ActEffect.ProcAt(EffectId.Debuff, this.GetPower(CC), BlessedState.Normal, CC, target, target.pos, true, new ActRef
+                ActEffect.ProcAt(EffectId.Debuff, GetPower(CC), BlessedState.Normal, CC, target, target.pos, true, new ActRef
                 {
                     origin = CC,
                     n1 = nameof(ConPoison)

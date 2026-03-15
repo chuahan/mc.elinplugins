@@ -1,8 +1,4 @@
-using System.Linq;
-using Cwl.Helper;
 using HarmonyLib;
-using PromotionMod.Common;
-using PromotionMod.Source;
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(GameDate))]
@@ -23,7 +19,7 @@ public class GameDatePatches
                 letter.SetStr(53, "lailah_decipheringcomplete_letter");
                 EClass.world.SendPackage(letter);
                 EClass.player.dialogFlags["lailahSentLetter"] = 1;
-            }   
+            }
         }
     }
 }

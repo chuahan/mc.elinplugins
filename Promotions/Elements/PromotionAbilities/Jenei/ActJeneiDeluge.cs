@@ -39,7 +39,7 @@ public class ActJeneiDeluge : Ability
         {
             act = this,
             aliasEle = Constants.ElementAliasLookup[Constants.EleCold],
-            origin = CC,
+            origin = CC
         });
         _map.ModLiquid(TC.pos.x, TC.pos.z, 10);
         return true;

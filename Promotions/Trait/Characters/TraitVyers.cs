@@ -5,9 +5,9 @@ namespace PromotionMod.Trait.Characters;
 public class TraitVyers : TraitPromotionUniqueCharacter
 {
     public override bool CanGiveRandomQuest => false;
-    
+
     public override int Prepromotion => Constants.FeatWitchHunter;
-    
+
     public override int RestockDay => 7;
 
     public void _OnBarter()
@@ -27,7 +27,7 @@ public class TraitVyers : TraitPromotionUniqueCharacter
             oldStock.invX = -1;
         }
 
-        GuildAdventurer advGuild = EClass.game.factions.Find<GuildAdventurer>("guild_adventurer_aluena");
+        GuildAdventurer advGuild = game.factions.Find<GuildAdventurer>("guild_adventurer_aluena");
         // At Max Rank. Player can buy Advanced Combat Skillbooks from Vyers.
         if (advGuild.IsMember && advGuild.relation.rank >= 6)
         {

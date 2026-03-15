@@ -1,5 +1,3 @@
-using PromotionMod.Common;
-using PromotionMod.Stats.Hermit;
 namespace PromotionMod.Elements.PromotionAbilities.Spellblade;
 
 public class ActMeleeCrushingStrike : ActMelee

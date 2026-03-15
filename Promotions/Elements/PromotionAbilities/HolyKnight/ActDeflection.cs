@@ -43,7 +43,7 @@ public class ActDeflection : AIAct
             showProgress = true,
             onProgressBegin = delegate
             {
-                CC.AddCondition<ConDeflection>(this.GetPower(CC));
+                CC.AddCondition<ConDeflection>(GetPower(CC));
                 CC.AddCooldown(Constants.ActDeflectionId, 3);
             }
         }.SetDuration(2);

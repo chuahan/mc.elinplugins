@@ -11,13 +11,13 @@ public class StHeavyarms : Ability
         {
             return true;
         }
-        
+
         if (CC.Evalue(Constants.FeatMachinist) == 0)
         {
             Msg.Say("classlocked_ability".lang(Constants.MachinistId.lang()));
             return false;
         }
-        
+
         // Cannot be used while riding or as a parasite.
         if (CC.ride != null)
         {
@@ -42,7 +42,7 @@ public class StHeavyarms : Ability
             if (CC.IsPC) Msg.Say("machinist_heavyarms_notargets".langGame());
             return false;
         }
-        
+
         return base.CanPerform();
 
     }

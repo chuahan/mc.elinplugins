@@ -3,9 +3,10 @@ using PromotionMod.Common;
 namespace PromotionMod.Elements.Alraune;
 
 /// <summary>
-/// Alraune Feat
-/// During the Day, the character will automatically cast Nature's Embrace on themselves for free.
-/// While the Alraune is wet and in the sunlight, they will undergo photosynthesis which increases their rate of hunger gain.
+///     Alraune Feat
+///     During the Day, the character will automatically cast Nature's Embrace on themselves for free.
+///     While the Alraune is wet and in the sunlight, they will undergo photosynthesis which increases their rate of hunger
+///     gain.
 /// </summary>
 public class FeatAlraune : Feat
 {

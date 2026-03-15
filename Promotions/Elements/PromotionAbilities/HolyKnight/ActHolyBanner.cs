@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Stats.HolyKnight;
-using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.HolyKnight;
 
 public class ActHolyBanner : Ability
@@ -29,10 +26,10 @@ public class ActHolyBanner : Ability
         convertToMp.type = CostType.MP;
         return convertToMp;
     }
-    
+
     public override bool Perform()
     {
-        int power = this.GetPower(CC);
+        int power = GetPower(CC);
         int levelOverride = power / 15;
         if (CC.IsPCFaction) levelOverride = Math.Max(player.stats.deepest, levelOverride);
         Chara bannerMob = CharaGen.Create(Constants.HolyBannerCharaId);

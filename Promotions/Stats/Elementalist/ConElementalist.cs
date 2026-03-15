@@ -10,8 +10,6 @@ public class ConElementalist : ClassCondition
 
     // When you haven't gained elemental orbs in the past 5 turns, you will lose one random stockpiled orb a turn.
     private const int DecayDelayMax = 5;
-    
-    public override bool TimeBased => true;
 
     [JsonProperty(PropertyName = "R")] private int _decayDelay;
 
@@ -66,6 +64,8 @@ public class ConElementalist : ClassCondition
             Constants.EleImpact, 0
         }
     };
+
+    public override bool TimeBased => true;
 
     public int GetPower(Chara cc)
     {
@@ -147,13 +147,13 @@ public class ConElementalist : ClassCondition
             _decayDelay++;
         }
     }
-    
+
     public override void OnWriteNote(List<string> list)
     {
         list.Add("hintElementalist".lang());
         foreach (int elementId in ElementalStockpile.Keys)
         {
-            if (ElementalStockpile[elementId] > 0) list.Add("elementalistOrbCount".lang(EClass.sources.elements.map[elementId].GetName(), ElementalStockpile[elementId].ToString()));
+            if (ElementalStockpile[elementId] > 0) list.Add("elementalistOrbCount".lang(sources.elements.map[elementId].GetName(), ElementalStockpile[elementId].ToString()));
         }
     }
 }

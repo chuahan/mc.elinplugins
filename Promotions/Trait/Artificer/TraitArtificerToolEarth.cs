@@ -10,7 +10,7 @@ public class TraitArtificerToolEarth : TraitArtificerTool
 
     public virtual void MarkMapHighlights(bool shouldHighlight, Point target)
     {
-        EClass._map.ForeachSphere(target.x, target.z, EffectRadius, delegate(Point p)
+        _map.ForeachSphere(target.x, target.z, EffectRadius, delegate(Point p)
         {
             if (!p.HasBlock && shouldHighlight)
             {
@@ -18,7 +18,7 @@ public class TraitArtificerToolEarth : TraitArtificerTool
             }
         });
     }
-    
+
     public override bool ArtificerToolEffect(Chara cc, Point pos, int power)
     {
         float powerMulti = 1f + (cc.Evalue(100) / 2F + cc.Evalue(132)) / 50f;
@@ -42,7 +42,7 @@ public class TraitArtificerToolEarth : TraitArtificerTool
                             origin = Act.CC.Chara,
                             n1 = nameof(ConGravity)
                         });
-                        
+
                         ActEffect.ProcAt(EffectId.DebuffStats, power, BlessedState.Normal, Act.CC, target, target.pos, true, new ActRef
                         {
                             origin = Act.CC.Chara,

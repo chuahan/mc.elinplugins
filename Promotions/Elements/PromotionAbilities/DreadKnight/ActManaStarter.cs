@@ -1,9 +1,5 @@
-using System.Collections.Generic;
-using System.Linq;
 using PromotionMod.Common;
-using PromotionMod.Stats;
 using PromotionMod.Stats.DreadKnight;
-using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.DreadKnight;
 
 public class ActManaStarter : Ability
@@ -46,7 +42,7 @@ public class ActManaStarter : Ability
 
         return (int)(c.MaxHP * hpCost);
     }
-    
+
     public override bool Perform()
     {
         ConDarkTraces darkTrace = CC.GetCondition<ConDarkTraces>();
@@ -65,7 +61,7 @@ public class ActManaStarter : Ability
         int cost = (int)(CC.MaxHP * hpCost);
         CC.DamageHP(cost, AttackSource.Condition);
         CC.mana.Mod(cost * 2);
-        
+
         darkTrace.AddStacks(1);
         return true;
     }

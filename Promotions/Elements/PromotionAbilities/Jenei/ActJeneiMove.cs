@@ -10,17 +10,17 @@ public class ActJeneiMove : AI_TargetCard
             Msg.Say("classlocked_ability".lang(Constants.JeneiId.lang()));
             return false;
         }
-        if (Act.TC == null) return false;
-        return this.IsValidTC(Act.TC);
+        if (TC == null) return false;
+        return IsValidTC(TC);
     }
-    
+
     public override bool IsValidTC(Card c)
     {
-        if (EClass._zone.IsUserZone)
+        if (_zone.IsUserZone)
         {
             return false;
         }
-        if (c.isThing & (EClass._zone is Zone_LittleGarden))
+        if (c.isThing & _zone is Zone_LittleGarden)
         {
             return false;
         }
@@ -71,7 +71,7 @@ public class ActJeneiMove : AI_TargetCard
         if (newPoint is { IsValid: true, HasChara: false, IsBlocked: false, IsInBounds: true })
         {
             return target._Move(newPoint, Card.MoveType.Force);
-        } 
+        }
         return Card.MoveResult.Fail;
     }
 }

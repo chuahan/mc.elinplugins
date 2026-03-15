@@ -9,7 +9,7 @@ public class ConRunicGuard : BaseBuff
     {
         return SpriteSheet.Get(source.alias);
     }
-    
+
     // Does nothing but activate for Elemental Attunement.
     public override void Tick()
     {

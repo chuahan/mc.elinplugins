@@ -33,11 +33,11 @@ public class ActJeneiShinePlasma : Ability
     {
         int power = GetPower(CC);
         Effect lightning = Effect.Get("attack_lightning");
-        ElementRef colorRef = EClass.setting.elements["eleChaos"];
+        ElementRef colorRef = setting.elements["eleChaos"];
         lightning.SetParticleColor(colorRef.colorTrail, true, "_TintColor");
         lightning.sr.color = colorRef.colorSprite;
         lightning.Play(TP);
-        
+
         ActEffect.DamageEle(CC, EffectId.None, power, Element.Create(Constants.EleLightning, power / 10), new List<Point>
         {
             TP
@@ -45,7 +45,7 @@ public class ActJeneiShinePlasma : Ability
         {
             act = this,
             aliasEle = Constants.ElementAliasLookup[Constants.EleLightning],
-            origin = CC,
+            origin = CC
         });
         return true;
     }

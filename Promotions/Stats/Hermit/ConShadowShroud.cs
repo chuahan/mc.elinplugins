@@ -8,7 +8,7 @@ public class ConShadowShroud : BaseBuff
     {
         return SpriteSheet.Get(source.alias);
     }
-    
+
     public override void Tick()
     {
         // Spawn Mist of Darkness on yourself while shrouded.

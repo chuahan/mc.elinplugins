@@ -6,25 +6,26 @@ namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
 /// <summary>
 ///     Fire. Massive solar explosion that does full damage. Revives all allies. Restores all allies to full health.
 /// </summary>
-public class ActIris: JeneiSummonSequence
+public class ActIris : JeneiSummonSequence
 {
     public override float SummonMultiplier => 0.4F;
 
     public override bool PerformSummonAttack(Chara cc, int power)
     {
         ElementRef colorRef = EClass.setting.elements["eleLightning"];
-        
+
         // Revive all fallen allies if Iris is allied to PC.
         if (cc.IsPCPartyMinion)
         {
-            List<KeyValuePair<int, Chara>> deadAllies = EClass.game.cards.globalCharas.Where(c => c.Value.isDead && c.Value.faction == EClass.pc.faction && !c.Value.isSummon && c.Value.c_wasInPcParty)
+            List<KeyValuePair<int, Chara>> deadAllies = EClass.game.cards.globalCharas
+                    .Where(c => c.Value.isDead && c.Value.faction == EClass.pc.faction && !c.Value.isSummon && c.Value.c_wasInPcParty)
                     .ToList();
             foreach (KeyValuePair<int, Chara> c in deadAllies)
             {
                 c.Value.Chara.GetRevived();
             }
         }
-        
+
         List<Chara> targetsHit = new List<Chara>();
         foreach (Point tile in EClass._map.ListPointsInCircle(cc.pos, 5f, false, false))
         {

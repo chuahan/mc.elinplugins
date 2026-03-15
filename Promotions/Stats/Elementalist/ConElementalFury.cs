@@ -14,7 +14,7 @@ public class ConElementalFury : BaseBuff
     {
         return SpriteSheet.Get(source.alias);
     }
-    
+
     public override void Tick()
     {
         // Will not persist in regions.
@@ -43,10 +43,10 @@ public class ConElementalFury : BaseBuff
                 actRef.origin = owner;
                 actRef.aliasEle = Constants.ElementAliasLookup[element];
                 Element eleObj = Element.Create(actRef.aliasEle, powerAmped / 10);
-                
+
                 foreach (Chara target in potentialTargets.OfType<Chara>())
                 {
-                    ActEffect.DamageEle(owner, EffectId.Sword, powerAmped, eleObj, new List<Point>()
+                    ActEffect.DamageEle(owner, EffectId.Sword, powerAmped, eleObj, new List<Point>
                     {
                         target.pos
                     }, actRef, nameof(ActElementalFury)); // TODO: Text for Elemental Fury

@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 using PromotionMod.Elements.PromotionFeats;
@@ -9,18 +6,6 @@ namespace PromotionMod.Trait;
 
 public class TraitDemotionManual : TraitScroll
 {
-    public override bool CanRead(Chara c)
-    {
-        return true;
-    }
-
-    public override void OnRead(Chara c)
-    {
-        Dialog.YesNo("demotion_confirmation".lang(c.NameSimple), delegate
-        {
-            Demote(c);   
-        });
-    }
 
 
     private static readonly Dictionary<int, PromotionFeat?> DemotionMap = new Dictionary<int, PromotionFeat?>
@@ -29,7 +14,7 @@ public class TraitDemotionManual : TraitScroll
             Constants.FeatSentinel, new FeatSentinel()
         },
         {
-            Constants.FeatBerserker, new FeatBerserker() 
+            Constants.FeatBerserker, new FeatBerserker()
         },
         {
             Constants.FeatHermit, new FeatHermit()
@@ -89,7 +74,7 @@ public class TraitDemotionManual : TraitScroll
             Constants.FeatJusticar, new FeatJusticar()
         },
         {
-            Constants.FeatSovereign,new FeatSovereign()
+            Constants.FeatSovereign, new FeatSovereign()
         },
         {
             Constants.FeatHolyKnight, new FeatHolyKnight()
@@ -104,15 +89,28 @@ public class TraitDemotionManual : TraitScroll
             Constants.FeatSpellblade, new FeatSpellblade()
         },
         {
-            Constants.FeatHexer,new FeatHexer()
+            Constants.FeatHexer, new FeatHexer()
         },
         {
-            Constants.FeatArtificer,new FeatArtificer()
+            Constants.FeatArtificer, new FeatArtificer()
         },
         {
-            Constants.FeatDreadKnight,new FeatDreadKnight()
+            Constants.FeatDreadKnight, new FeatDreadKnight()
         }
     };
+
+    public override bool CanRead(Chara c)
+    {
+        return true;
+    }
+
+    public override void OnRead(Chara c)
+    {
+        Dialog.YesNo("demotion_confirmation".lang(c.NameSimple), delegate
+        {
+            Demote(c);
+        });
+    }
 
     public void Demote(Chara c)
     {
@@ -121,7 +119,7 @@ public class TraitDemotionManual : TraitScroll
         DemotionMap[promotionFeatId]!.Demote(c);
         c.SetFlagValue(Constants.PromotionFeatFlag, 0);
         Msg.Say("promotion_demoted".langGame(c.NameSimple, TraitPromotionManual.PromotionIdToPromotionNameMap[promotionFeatId].lang()));
-        
+
         c.PlaySound("curse");
         c.PlayEffect("aura_heaven");
         c.Say("spellbookCrumble", owner.Duplicate(1));

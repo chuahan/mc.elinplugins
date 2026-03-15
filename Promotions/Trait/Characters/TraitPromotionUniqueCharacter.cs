@@ -17,7 +17,7 @@ public class TraitPromotionUniqueCharacter : TraitUniqueChara
     public override void OnAddedToZone()
     {
         base.OnAddedToZone();
-        if (this.Prepromotion != -1)
+        if (Prepromotion != -1)
         {
             if (owner.GetFlagValue(Constants.PromotionFeatFlag) == 0 && owner.HasElement(Prepromotion))
             {

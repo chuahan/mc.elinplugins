@@ -11,7 +11,7 @@ namespace PromotionMod.Elements.PromotionAbilities.Justicar;
 public class ActCondemn : Ability
 {
     private float _effectRadius = 3F;
-    
+
     public override bool CanPerform()
     {
         if (CC.MatchesPromotion(Constants.FeatJusticar))
@@ -24,21 +24,21 @@ public class ActCondemn : Ability
 
     public override void OnMarkMapHighlights()
     {
-        if (!EClass.scene.mouseTarget.pos.IsValid)
+        if (!scene.mouseTarget.pos.IsValid)
         {
             return;
         }
-        List<Point> list = EClass._map.ListPointsInCircle(EClass.scene.mouseTarget.pos, _effectRadius, true, true);
+        List<Point> list = _map.ListPointsInCircle(scene.mouseTarget.pos, _effectRadius);
         if (list.Count == 0)
         {
-            list.Add(Act.CC.pos.Copy());
+            list.Add(CC.pos.Copy());
         }
         foreach (Point item in list)
         {
             item.SetHighlight(8);
         }
     }
-    
+
     public override bool Perform()
     {
         // Can I play SFX Chains here?

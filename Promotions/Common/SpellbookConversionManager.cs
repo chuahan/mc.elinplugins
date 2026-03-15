@@ -6,7 +6,8 @@ namespace PromotionMod.Common;
 ///     Some Promotion classes can convert spellbooks into spells specific for their class.
 ///     Druids can convert any summoning book into Summon Tree Ent.
 ///     Holy Knights can convert any intonation spell into Holy Intonation.
-///     Battlemage can convert any elemental books into Flare spells of the same element // TODO (P4) NOT WORKING. THINK OF SOMETHING ELSE
+///     Battlemage can convert any elemental books into Flare spells of the same element // TODO (P4) NOT WORKING. THINK OF
+///     SOMETHING ELSE
 ///     Dread Knights can convert any elemental books into the Nether Element.
 ///     Necromancers can convert any summoning books into Summon Skeleton.
 ///     Jenei can convert summon any basic elemental books into Fire/Cold/Lightning/Impact.
@@ -25,7 +26,7 @@ public static class SpellbookConversionManager
             Constants.FeatHolyKnight, new HolyKnightSpellbookConversion()
         },
         //{
-            //Constants.FeatBattlemage, new BattlemageSpellbookConversion()
+        //Constants.FeatBattlemage, new BattlemageSpellbookConversion()
         //},
         {
             Constants.FeatDreadKnight, new DreadKnightSpellbookConversion()

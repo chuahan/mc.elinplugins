@@ -28,6 +28,8 @@ public class FeatSniper : PromotionFeat
         Constants.ActSpreadShotId
     };
 
+    public override string JobRequirement => "archer";
+
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActChargedShotId, 85, false);
@@ -35,11 +37,9 @@ public class FeatSniper : PromotionFeat
         c.ability.Add(Constants.ActTargetLegsId, 85, false);
         c.ability.Add(Constants.ActSpreadShotId, 70, false);
     }
-    
-    public override string JobRequirement => "archer";
-    
+
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 }

@@ -9,7 +9,6 @@ using PromotionMod.Stats.Hexer;
 using PromotionMod.Stats.Sentinel;
 using PromotionMod.Trait;
 using PromotionMod.Trait.Artificer;
-using PromotionMod.Trait.Characters;
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(Card))]
@@ -119,7 +118,7 @@ public class CardPatches
         }
         return true;
     }
-    
+
     [HarmonyPatch(nameof(Card.ApplyProtection))]
     [HarmonyPrefix]
     internal static bool ApplyProtection_Patch(Card __instance, long dmg, ref int mod)

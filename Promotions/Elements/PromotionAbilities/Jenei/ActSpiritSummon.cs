@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
@@ -9,30 +8,6 @@ namespace PromotionMod.Elements.PromotionAbilities.Jenei;
 
 public class ActSpiritSummon : Ability
 {
-    public override bool CanPerform()
-    {
-        if (CC.Evalue(Constants.FeatJenei) == 0)
-        {
-            Msg.Say("classlocked_ability".lang(Constants.JeneiId.lang()));
-            return false;
-        }
-        if (CC.HasCooldown(Constants.ActSpiritSummonId)) return false;
-
-        // NPCs can summon a random summon every 30 turns.
-        if (CC.IsPC && !CC.HasCondition<ConJenei>()) return false;
-        if (CC.currentZone.CountMinions(CC) >= CC.MaxSummon) return false;
-        return base.CanPerform();
-    }
-
-    // Spirit Summon Costs nothing.
-    public override Cost GetCost(Chara c)
-    {
-        return new Cost
-        {
-            cost = 0,
-            type = CostType.None
-        };
-    }
 
     public static Dictionary<string, JeneiSummonSequence> SummonAbility = new Dictionary<string, JeneiSummonSequence>
     {
@@ -86,8 +61,33 @@ public class ActSpiritSummon : Ability
         },
         {
             Constants.JeneiZaganCharaId, new ActZagan()
-        },
+        }
     };
+
+    public override bool CanPerform()
+    {
+        if (CC.Evalue(Constants.FeatJenei) == 0)
+        {
+            Msg.Say("classlocked_ability".lang(Constants.JeneiId.lang()));
+            return false;
+        }
+        if (CC.HasCooldown(Constants.ActSpiritSummonId)) return false;
+
+        // NPCs can summon a random summon every 30 turns.
+        if (CC.IsPC && !CC.HasCondition<ConJenei>()) return false;
+        if (CC.currentZone.CountMinions(CC) >= CC.MaxSummon) return false;
+        return base.CanPerform();
+    }
+
+    // Spirit Summon Costs nothing.
+    public override Cost GetCost(Chara c)
+    {
+        return new Cost
+        {
+            cost = 0,
+            type = CostType.None
+        };
+    }
 
     public override bool Perform()
     {
@@ -127,7 +127,7 @@ public class ActSpiritSummon : Ability
         {
             CC.AddCooldown(Constants.ActSpiritSummonId, 30);
         }
-        SummonAbility[summon].PerformSummonAttack(CC, this.GetPower(CC));
+        SummonAbility[summon].PerformSummonAttack(CC, GetPower(CC));
         return true;
     }
 }

@@ -5,12 +5,12 @@ namespace PromotionMod.Elements.PromotionAbilities.Sovereign;
 
 public abstract class ActSovereignOrder : Ability
 {
+
+    private float _effectRadius = 5F;
     protected abstract string OrderType { get; }
     protected abstract int CooldownId { get; }
     public abstract void AddLawCondition(Chara chara, int stacks);
     public abstract void AddChaosCondition(Chara chara, int stacks);
-
-    private float _effectRadius = 5F;
 
     public override bool CanPerform()
     {
@@ -27,21 +27,21 @@ public abstract class ActSovereignOrder : Ability
         }
         return base.CanPerform();
     }
-    
+
     public override void OnMarkMapHighlights()
     {
-        if (!EClass.scene.mouseTarget.pos.IsValid)
+        if (!scene.mouseTarget.pos.IsValid)
         {
             return;
         }
-        List<Point> list = EClass._map.ListPointsInCircle(EClass.scene.mouseTarget.pos, _effectRadius, true, true);
+        List<Point> list = _map.ListPointsInCircle(scene.mouseTarget.pos, _effectRadius);
         if (list.Count == 0)
         {
-            list.Add(Act.CC.pos.Copy());
+            list.Add(CC.pos.Copy());
         }
         foreach (Point item in list)
         {
-            item.SetHighlight(8);   
+            item.SetHighlight(8);
         }
     }
 
@@ -82,7 +82,7 @@ public abstract class ActSovereignOrder : Ability
                 AddLawCondition(ally, stacks);
             else
                 AddChaosCondition(ally, stacks);
-            
+
             if (EClass.rnd(2) == 0) ally.Talk(actionString.langGame());
         }
 

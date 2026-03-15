@@ -6,7 +6,7 @@ namespace PromotionMod.Trait.Artificer;
 public class TraitArtificerToolHeaven : TraitArtificerTool
 {
     public override string ArtificerToolId => "artificier_heavenpearl";
-    
+
     public override int MaxCharges => 10;
 
     public override bool IsTargetCast => false;
@@ -16,7 +16,7 @@ public class TraitArtificerToolHeaven : TraitArtificerTool
 
     public virtual void MarkMapHighlights(bool shouldHighlight, Point target)
     {
-        EClass._map.ForeachSphere(target.x, target.z, EffectRadius, delegate(Point p)
+        _map.ForeachSphere(target.x, target.z, EffectRadius, delegate(Point p)
         {
             if (!p.HasBlock && shouldHighlight)
             {
@@ -24,7 +24,7 @@ public class TraitArtificerToolHeaven : TraitArtificerTool
             }
         });
     }
-    
+
     public override bool ArtificerToolEffect(Chara cc, Point pos, int power)
     {
         List<Chara> targets = HelperFunctions.GetCharasWithinRadius(cc.pos, EffectRadius, cc, true, true);

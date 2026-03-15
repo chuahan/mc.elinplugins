@@ -6,7 +6,7 @@ namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
 /// <summary>
 ///     Cold Damage.
 /// </summary>
-public class ActBoreas: JeneiSummonSequence
+public class ActBoreas : JeneiSummonSequence
 {
     public override float SummonMultiplier => 0.12F;
 

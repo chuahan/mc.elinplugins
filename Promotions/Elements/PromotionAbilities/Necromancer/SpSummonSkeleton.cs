@@ -11,11 +11,12 @@ public class SpSummonSkeleton : Spell
         Constants.NecromancerSkeletonMageCharaId
     };
 
-    public static readonly List<int> MageElements = new List<int>{
+    public static readonly List<int> MageElements = new List<int>
+    {
         Constants.EleFire,
         Constants.EleCold,
         Constants.EleLightning,
-        Constants.ElePoison,
+        Constants.ElePoison
     };
 
     public override bool CanPerform()
@@ -64,7 +65,7 @@ public class SpSummonSkeleton : Spell
         {
             case Constants.NecromancerSkeletonMageCharaId:
                 // Skeleton Mages will have a random element between Fire, Cold, Lightning, and Poison
-                summon.SetMainElement(Constants.ElementAliasLookup[MageElements.RandomItem()], 50, elemental: true);
+                summon.SetMainElement(Constants.ElementAliasLookup[MageElements.RandomItem()], 50, true);
                 summon.AddThing(ThingGen.Create("staff", 40, summon.LV));
                 break;
             case Constants.NecromancerSkeletonWarriorCharaId:

@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using Cwl.Helper.Extensions;
 using HarmonyLib;
 using PromotionMod.Common;
 namespace PromotionMod.Patches;
@@ -15,20 +13,21 @@ internal class InvOwnerPatches : EClass
         global::Trait trait = t.trait;
         if (context)
         {
-            if (trait is TraitSpellbook && __instance.owner.IsPC && SpellbookConversionManager.CanConvertSpellbook(EClass.pc, (TraitSpellbook)trait))
+            if (trait is TraitSpellbook && __instance.owner.IsPC && SpellbookConversionManager.CanConvertSpellbook(pc, (TraitSpellbook)trait))
             {
                 __result.Add("convertSpellbook".lang(), 299, delegate
                 {
-                    if (SpellbookConversionManager.TryConvert(EClass.pc, (TraitSpellbook)trait))
+                    if (SpellbookConversionManager.TryConvert(pc, (TraitSpellbook)trait))
                     {
                         pc.Say("convertedSpellbook".langGame(pc.NameSimple, sources.elements.map[trait.owner.refVal].name));
                         LayerInventory.SetDirty(t);
-                        SE.ClickOk();    
+                        SE.ClickOk();
                     }
                     else
                     {
                         pc.Say("convertSpellbookFailed".langGame());
-                    };
+                    }
+                    ;
                 });
             }
         }

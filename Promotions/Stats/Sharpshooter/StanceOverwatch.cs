@@ -7,8 +7,11 @@ public class StanceOverwatch : BaseStance
 {
     public const int FOVBuffAmount = 5;
 
-    public override Sprite GetSprite() => SpriteSheet.Get(source.alias);
-    
+    public override Sprite GetSprite()
+    {
+        return SpriteSheet.Get(source.alias);
+    }
+
     public override void OnStartOrStack()
     {
         owner.RecalculateFOV();

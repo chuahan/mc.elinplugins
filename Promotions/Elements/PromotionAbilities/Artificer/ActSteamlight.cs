@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Stats.Artificer;
 namespace PromotionMod.Elements.PromotionAbilities.Artificer;
@@ -20,7 +18,7 @@ public class ActSteamlight : Ability
         if (!CC.HasTag(CTAG.machine)) return false;
         if (CC.HasCondition<ConBurnout>()) return false;
         if (CC.things.Find(Constants.ArtificerSteamlightItem) == null) return false;
-        
+
         return base.CanPerform();
     }
 

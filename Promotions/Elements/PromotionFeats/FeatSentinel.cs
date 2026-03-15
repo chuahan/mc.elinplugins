@@ -34,6 +34,8 @@ public class FeatSentinel : PromotionFeat
         Constants.StRestraintId
     };
 
+    public override string JobRequirement => "warrior";
+
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActShoutId, 100, false);
@@ -41,13 +43,11 @@ public class FeatSentinel : PromotionFeat
         c.ability.Add(Constants.StRestraintId, 100, false);
     }
 
-    public override string JobRequirement => "warrior";
-    
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
-    
+
     public static long GetShieldPower(Chara cc)
     {
         int totalShield = 0;

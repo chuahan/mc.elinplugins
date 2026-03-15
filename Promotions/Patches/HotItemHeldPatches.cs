@@ -1,7 +1,6 @@
 using HarmonyLib;
 using PromotionMod.Elements.PromotionAbilities.Artificer;
 using PromotionMod.Trait.Artificer;
-using UnityEngine;
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(HotItemHeld))]

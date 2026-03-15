@@ -1,5 +1,4 @@
 using Cwl.Helper.Extensions;
-
 namespace PromotionMod.Common;
 
 public static class PromoCharaExtensions

@@ -17,28 +17,28 @@ public class FactionManagerPatch
             SourceFaction.Row factionRow = EClass.sources.factions.GetRow(Constants.AluenaFactionId);
             Faction.Create(factionRow);
         }
-        
+
         if (__instance.Find(Constants.AdvGuildFactionId) == null)
         {
             SourceFaction.Row factionRow = EClass.sources.factions.GetRow(Constants.AdvGuildFactionId);
             Faction faction = new GuildAdventurer
             {
-              id = factionRow.id,
-              _source = factionRow,
-              
+                id = factionRow.id,
+                _source = factionRow
+
             };
             faction.Init();
 
         }
-        
+
         if (__instance.Find(Constants.InfoGuildFactionId) == null)
         {
             SourceFaction.Row factionRow = EClass.sources.factions.GetRow(Constants.InfoGuildFactionId);
             Faction faction = new GuildInformation
             {
                 id = factionRow.id,
-                _source = factionRow,
-              
+                _source = factionRow
+
             };
             faction.Init();
         }

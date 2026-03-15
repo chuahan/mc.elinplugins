@@ -10,7 +10,7 @@ public class RadiantAura : ConAura
         // Apply Protection Allies
         target.AddCondition<ConProtection>(power);
     }
-    
+
     public override void ApplyFoe(Chara target)
     {
         // Deal Holy Damage + Stun. Double on Undead.
@@ -18,9 +18,9 @@ public class RadiantAura : ConAura
         ActEffect.ProcAt(EffectId.Arrow, powerOverride, BlessedState.Normal, CC, target, target.pos, true, new ActRef
         {
             aliasEle = Constants.ElementAliasLookup[Constants.EleHoly],
-            origin = owner.master,
+            origin = owner.master
         });
-        
+
         ActEffect.ProcAt(EffectId.Debuff, powerOverride, BlessedState.Normal, CC, target, target.pos, true, new ActRef
         {
             origin = owner.master,

@@ -8,26 +8,26 @@ namespace PromotionMod.Stats;
 ///     This is basically to add a ton of information and calculation options for a
 ///     promotion class to be used in patching to apply effects.
 /// </summary>
-public abstract class ClassCondition : Condition
+public abstract class ClassCondition : Timebuff
 {
-    [JsonProperty(PropertyName = "S")] private int Stacks = 1;
+
+    [JsonProperty(PropertyName = "R")] public int DecayDelay;
+    [JsonProperty(PropertyName = "S")] private int Stacks = 0;
 
     public virtual int MaxStacks => 30;
 
     public override string TextDuration => "";
-    
-    [JsonProperty(PropertyName = "R")] public int DecayDelay;
-    
+
     public virtual int DecayDelayMax => -1;
-    
+
     public override Sprite GetSprite()
     {
         return SpriteSheet.Get(source.alias);
     }
-    
+
     public int GetStacks()
     {
-        return Math.Max(Stacks, MaxStacks);
+        return Math.Min(Stacks, MaxStacks);
     }
 
     public void AddStacks(int stacks)
@@ -43,7 +43,7 @@ public abstract class ClassCondition : Condition
         Stacks--;
         Stacks = Math.Max(0, Stacks);
     }
-    
+
     public override void Tick()
     {
         if (DecayDelayMax != -1)

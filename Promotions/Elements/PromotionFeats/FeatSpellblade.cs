@@ -35,23 +35,23 @@ public class FeatSpellblade : PromotionFeat
         Constants.ActSiphoningBladeId
     };
 
+    public override string JobRequirement => "swordsage";
+
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActCrushingStrikeId, 80, false);
         c.ability.Add(Constants.ActMyriadFlecheId, 80, false);
         c.ability.Add(Constants.ActSiphoningBladeId, 50, false);
-        
+
         // Add the respective Sword spell. 510xx
         c.ability.Add(50600 + PromotionFeat.GetAdditionalSpellElement(c), 50, false);
-                
+
         // Add the respective Intonation spell. 508xx
         c.ability.Add(50600 + PromotionFeat.GetAdditionalSpellElement(c), 50, false);
     }
-    
-    public override string JobRequirement => "swordsage";
-    
+
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 }

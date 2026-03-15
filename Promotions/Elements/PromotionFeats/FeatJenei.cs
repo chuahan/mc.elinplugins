@@ -41,6 +41,8 @@ public class FeatJenei : PromotionFeat
         Constants.ActSpiritSummonId
     };
 
+    public override string JobRequirement => "farmer";
+
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActSpiritSummonId, 30, false);
@@ -73,9 +75,7 @@ public class FeatJenei : PromotionFeat
                 break;
         }
     }
-    
-    public override string JobRequirement => "farmer";
-    
+
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
         if (hint) return;
@@ -103,7 +103,7 @@ public class FeatJenei : PromotionFeat
                     break;
             }
         }
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 
     override internal void Demote(Chara c)
@@ -117,7 +117,7 @@ public class FeatJenei : PromotionFeat
         abilityIdsWithJenei.Add(Constants.ActJeneiShinePlasmaId);
         abilityIdsWithJenei.Add(Constants.ActJeneiDelugeId);
         abilityIdsWithJenei.Add(Constants.ActJeneiPlyId);
-        
+
         foreach (int abilityId in abilityIdsWithJenei)
         {
             if (c.elements.Has(abilityId))
@@ -125,15 +125,18 @@ public class FeatJenei : PromotionFeat
                 Element element = c.elements.GetElement(abilityId);
                 element.vPotential = -1;
                 c.elements.Remove(abilityId);
-                
+
                 // NPCs use ability.
-                if (c.ability.Has(abilityId)) { c.ability.Remove(abilityId);}
+                if (c.ability.Has(abilityId))
+                {
+                    c.ability.Remove(abilityId);
+                }
             }
         }
-        
-        c.SetFeat(PromotionClassFeatId, 0, false);
+
+        c.SetFeat(PromotionClassFeatId, 0);
     }
-    
+
     public class JeneiSummonCost
     {
         public JeneiSummonCost(Dictionary<int, int> cost, string summonId)

@@ -9,7 +9,7 @@ public class ActArtificerTool : Act
 
     public override int PerformDistance => 99;
 
-    public override TargetType TargetType => this.trait.TargetType;
+    public override TargetType TargetType => trait.TargetType;
 
     public override string GetHintText(string str = "")
     {
@@ -29,53 +29,53 @@ public class ActArtificerTool : Act
         }
         return c.Name + c.GetExtraName();
     }
-    
+
     public override bool CanPerform()
     {
-        if (trait.IsTargetCast && !Act.CC.CanSeeLos(Act.TP)) return false;
+        if (trait.IsTargetCast && !CC.CanSeeLos(TP)) return false;
         return base.CanPerform();
     }
 
     public override void OnMarkMapHighlights()
     {
-        if (!EClass.scene.mouseTarget.pos.IsValid)
+        if (!scene.mouseTarget.pos.IsValid)
         {
             return;
         }
-        if (this.trait != null)
+        if (trait != null)
         {
-            this.trait.MarkMapHighlights(EClass.scene.mouseTarget.pos);
+            trait.MarkMapHighlights(scene.mouseTarget.pos);
         }
     }
-    
+
     public override bool Perform()
     {
-        if (this.trait.owner.c_ammo > 0)
+        if (trait.owner.c_ammo > 0)
         {
-            string toolUseString = $"{this.trait.ArtificerToolId}_use";
-            Act.CC.Say(toolUseString.langGame(CC.NameSimple, this.trait.ArtificerToolName));
+            string toolUseString = $"{trait.ArtificerToolId}_use";
+            CC.Say(toolUseString.langGame(CC.NameSimple, trait.ArtificerToolName));
             trait.owner.c_ammo--;
-           
-            Act.CC.PlayEffect("rod");
-            Act.CC.PlaySound("rod");
-            Act.CC.RemoveCondition<ConInvisibility>();
+
+            CC.PlayEffect("rod");
+            CC.PlaySound("rod");
+            CC.RemoveCondition<ConInvisibility>();
 
             // The enchant level of the artificer tool is the power factor.
-            if (this.trait.IsTargetCast)
+            if (trait.IsTargetCast)
             {
-                this.trait.ArtificerToolEffect(Act.CC, Act.TP, trait.owner.encLV);    
+                trait.ArtificerToolEffect(CC, TP, trait.owner.encLV);
             }
             else
             {
-                this.trait.ArtificerToolEffect(Act.CC, CC.pos, trait.owner.encLV);
+                trait.ArtificerToolEffect(CC, CC.pos, trait.owner.encLV);
             }
-            
-            Act.CC.ModExp(305, 50);
+
+            CC.ModExp(305, 50);
         }
         else
         {
-            Act.CC.Say("artificertool_empty".langGame());
-            Act.CC.PlaySound("rod_empty");   
+            CC.Say("artificertool_empty".langGame());
+            CC.PlaySound("rod_empty");
         }
         return true;
     }

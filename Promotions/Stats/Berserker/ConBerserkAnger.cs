@@ -12,7 +12,7 @@ public class ConBerserkAnger : Timebuff
     {
         value = 5;
     }
-    
+
     public override Sprite GetSprite()
     {
         return SpriteSheet.Get(source.alias);

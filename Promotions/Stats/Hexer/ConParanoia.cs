@@ -9,7 +9,7 @@ public class ConParanoia : Timebuff
     {
         return SpriteSheet.Get(source.alias);
     }
-    
+
     public override void Tick()
     {
         foreach (Chara chara in HelperFunctions.GetCharasWithinRadius(Owner.pos, 4F, Owner, true, true))

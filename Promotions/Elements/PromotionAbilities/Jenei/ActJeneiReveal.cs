@@ -46,7 +46,7 @@ public class ActJeneiReveal : Ability
             }
             ui.AddLayer<LayerChara>().SetChara(target);
         }
-        
+
         if (target.IsHostile(CC))
         {
             TC.Chara.AddCondition(SubPoweredCondition.Create(nameof(ConMagicBreak), GetPower(CC), 5));

@@ -7,7 +7,7 @@ namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
 /// <summary>
 ///     Impact. 5% chance of instantly killing target.
 /// </summary>
-public class ActCharon: JeneiSummonSequence
+public class ActCharon : JeneiSummonSequence
 {
     public override float SummonMultiplier => 0.3F;
 
@@ -30,7 +30,7 @@ public class ActCharon: JeneiSummonSequence
                 {
                     target.DamageHP(target.MaxHP, AttackSource.Finish, cc);
                 }
-                
+
                 // Mark Target as hit.
                 targetsHit.Add(target);
             }

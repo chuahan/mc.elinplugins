@@ -28,12 +28,12 @@ public class ActDarkBarrier : Ability
         convertToMp.type = CostType.MP;
         return convertToMp;
     }
-    
+
     public override bool Perform()
     {
         ConDarkTraces darkTrace = CC.GetCondition<ConDarkTraces>();
         int protectionAmount = (int)(CC.MaxHP * (darkTrace.GetStacks() * .05F));
-        ConProtection? protection = (ConProtection)(EClass.pc.GetCondition<ConProtection>() ?? EClass.pc.AddCondition<ConProtection>());
+        ConProtection? protection = (ConProtection)(pc.GetCondition<ConProtection>() ?? pc.AddCondition<ConProtection>());
         protection?.AddProtection(protectionAmount, true); // This Protection scales power off of HP.
         darkTrace.Kill();
         return true;

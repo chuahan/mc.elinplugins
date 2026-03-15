@@ -29,15 +29,15 @@ public class FeatAdventurer : PromotionFeat
         Constants.ActSenseDangerId
     };
 
+    public override string JobRequirement => "tourist";
+
     protected override void ApplyInternalNPC(Chara c)
     {
         // This shouldn't have anything. NPCs can't pick this class.
     }
 
-    public override string JobRequirement => "tourist";
-
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 }

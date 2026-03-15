@@ -22,7 +22,7 @@ public class StatsManaPatch
         {
             // Elementalist - Spell Tempo reduces mana costs by 5% per stack, capping at 50% mana reduction.
             ConSpellTempo tempo = BaseStats.CC.GetCondition<ConSpellTempo>();
-            float reduction = (float)(1 - tempo.power * 0.05F);
+            float reduction = 1 - tempo.power * 0.05F;
             a = (int)(a * reduction);
         }
         return true;

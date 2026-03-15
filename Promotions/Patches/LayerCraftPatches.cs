@@ -1,7 +1,7 @@
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using PromotionMod.Common;
-using UnityEngine;
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(LayerCraft))]
@@ -12,7 +12,7 @@ public class LayerCraftPatches
     internal static bool OnClickCraftPatch(LayerCraft __instance)
     {
         Dictionary<Thing, int> dictionary = new Dictionary<Thing, int>();
-        if (string.Equals(__instance.recipe.id, "artificer_golem", System.StringComparison.InvariantCulture))
+        if (string.Equals(__instance.recipe.id, "artificer_golem", StringComparison.InvariantCulture))
         {
             // Validate Materials
             foreach (Recipe.Ingredient ingredient in __instance.recipe.ingredients)
@@ -35,14 +35,14 @@ public class LayerCraftPatches
                     return false;
                 }
             }
-            
+
             // Can only craft 1 Golem at a Time.
             if (__instance.inputNum.Num != 1)
             {
                 SE.Beep();
                 return false;
             }
-            
+
             // If you made it this far, craft the golem.
             Dialog.YesNo("artificer_golem_warning".lang(), delegate
             {
@@ -67,10 +67,11 @@ public class LayerCraftPatches
                         break;
                     default:
                         return;
-                };
-                
+                }
+                ;
+
                 Chara newGolem = CharaGen.Create(golemToCreate);
-                
+
                 // Add appropriate skills from Precepts.
                 switch (precept.id)
                 {
@@ -95,29 +96,28 @@ public class LayerCraftPatches
                         newGolem.Chara.elements.ModPotential(134, 30); // Eye of Mind
                         break;
                 }
-                
+
                 newGolem.interest = 0;
                 EClass.pc.currentZone.AddCard(newGolem, EClass.pc.pos);
                 EClass._zone.branch.AddMemeber(newGolem);
                 EClass.pc.party.AddMemeber(newGolem);
                 Msg.Say("artificer_golem_created".langGame());
                 EClass.pc.PlaySound("revive");
-                
+
                 // Consume ingredients.
                 __instance.recipe.ingredients[0].thing.Destroy(); // Golem Core.
                 frame.Destroy();
                 precept.Destroy();
-                
+
                 // Close Crafting UI.
                 __instance.Close();
                 //__instance.OnEndCraft();
             });
-            
+
             // We'll bypass the original craft UI.
             return false;
         }
 
         return true;
     }
-
 }

@@ -31,7 +31,6 @@ public class ActThrowPatches
         // If it's a Snagball and is an abduction target, you can throw it; else don't allow it.
         if (abductionQuests.Any(abductionQuest => target.uid == abductionQuest.targetCharaUID && target.hp <= target.MaxHP / 10))
         {
-            return;
         }
         else
         {

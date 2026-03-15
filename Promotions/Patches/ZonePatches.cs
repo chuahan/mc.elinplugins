@@ -20,9 +20,9 @@ public class ZonePatches
         Constants.FeatRendHeavenId,
         Constants.FeatVengeanceId,
         Constants.FeatDeadeyeId,
-        Constants.FeatVantageId,
+        Constants.FeatVantageId
     };
-    
+
     public static List<int> T2SpawnableCombatSkills = new List<int>
     {
         Constants.FeatNihilId,
@@ -30,9 +30,9 @@ public class ZonePatches
         Constants.FeatPavisePlusId,
         Constants.FeatLunaPlusId,
         Constants.FeatVantagePlusId,
-        Constants.FeatMetalBreakerId,
+        Constants.FeatMetalBreakerId
     };
-    
+
 
     [HarmonyPatch(nameof(Zone.OnGenerateMap))]
     [HarmonyPostfix]
@@ -64,7 +64,7 @@ public class ZonePatches
             }
         }
     }
-    
+
     /*
 
     [HarmonyPatch(nameof(Zone.Activate))]
@@ -73,9 +73,9 @@ public class ZonePatches
     {
         if (__instance.IsRegion)
         {
-                
+
         }
-        
+
         return true;
     }
     */

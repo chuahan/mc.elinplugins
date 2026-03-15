@@ -11,7 +11,8 @@ public class ElementPatches
     internal static void GetCostPatch(Element __instance, ref Act.Cost __result, Chara c)
     {
         if (c.MatchesPromotion(Constants.FeatBattlemage) &&
-            __instance is Spell && __result.type == Act.CostType.MP)
+            __instance is Spell &&
+            __result.type == Act.CostType.MP)
         {
             // Focus Stance increases costs based on current mana.
             StanceManaFocus focusCon = c.GetCondition<StanceManaFocus>();

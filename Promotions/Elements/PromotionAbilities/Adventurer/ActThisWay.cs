@@ -1,4 +1,3 @@
-using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Adventurer;
 
@@ -19,10 +18,10 @@ public class ActThisWay : Ability
         // Unusable by NPCs.
         if (!CC.IsPC) return false;
         if (CC.HasCooldown(Constants.ActThisWayId)) return false;
-        
+
         // Not usable outside of dungeons.
         if (CC.currentZone.IsPCFactionOrTent || CC.currentZone is not Zone_Dungeon) return false;
-        
+
         return base.CanPerform();
     }
 

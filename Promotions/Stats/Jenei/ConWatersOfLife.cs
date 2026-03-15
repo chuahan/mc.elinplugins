@@ -7,7 +7,7 @@ public class ConWatersOfLife : Timebuff
     {
         return SpriteSheet.Get(source.alias);
     }
-    
+
     // Applies healing over time doing 60%, 50%, 40%, 30%, and 20%.
     public override void Tick()
     {

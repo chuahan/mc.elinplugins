@@ -32,17 +32,17 @@ public class FeatRanger : PromotionFeat
         Constants.ActThrowTrapId
     };
 
+    public override string JobRequirement => "archer";
+
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.StRangersCantoId, 100, false);
         c.ability.Add(Constants.ActGimmickCoatingId, 75, false);
         c.ability.Add(Constants.ActThrowTrapId, 75, false);
     }
-    
-    public override string JobRequirement => "archer";
-    
+
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 }

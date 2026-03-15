@@ -23,7 +23,7 @@ namespace PromotionMod.Trait.Artificer;
 public class TraitArtificerTool : TraitTool
 {
     public override bool InvertHeldSprite => true;
-    
+
     public override bool IsNoShop
     {
         get
@@ -37,18 +37,18 @@ public class TraitArtificerTool : TraitTool
     }
 
     public virtual SourceElement.Row source => null;
-    
+
     public virtual string ArtificerToolId => "";
 
-    public string ArtificerToolName => EClass.sources.things.map[this.ArtificerToolId].GetName();
-    public string ArtificerToolAction => $"{this.ArtificerToolId}_action";
+    public string ArtificerToolName => sources.things.map[ArtificerToolId].GetName();
+    public string ArtificerToolAction => $"{ArtificerToolId}_action";
 
     public virtual bool IsTargetCast => true;
 
     public virtual TargetType TargetType => TargetType.Ground;
 
     public virtual float EffectRadius => 1F;
-    
+
     public virtual int MaxCharges => 12;
 
     public virtual int ChargesConsumed => 1;
@@ -84,7 +84,7 @@ public class TraitArtificerTool : TraitTool
     {
         p.TrySetAct(new ActArtificerTool
         {
-            trait = this,
+            trait = this
         }, owner);
     }
 

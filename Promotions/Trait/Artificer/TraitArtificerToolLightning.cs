@@ -11,11 +11,11 @@ public class TraitArtificerToolLightning : TraitArtificerTool
 
     public virtual void MarkMapHighlights(bool shouldHighlight, Point target)
     {
-        if (!EClass.scene.mouseTarget.pos.IsValid)
+        if (!scene.mouseTarget.pos.IsValid)
         {
             return;
         }
-        List<Point> list = EClass._map.ListPointsInLine(EClass.pc.pos, EClass.scene.mouseTarget.pos, 10);
+        List<Point> list = _map.ListPointsInLine(pc.pos, scene.mouseTarget.pos, 10);
         if (list.Count == 0)
         {
             list.Add(Act.CC.pos.Copy());
@@ -25,7 +25,7 @@ public class TraitArtificerToolLightning : TraitArtificerTool
             item.SetHighlight(8);
         }
     }
-    
+
     public override bool ArtificerToolEffect(Chara cc, Point pos, int power)
     {
         float powerMulti = 1f + (cc.Evalue(106) / 2F + cc.Evalue(133)) / 50f;

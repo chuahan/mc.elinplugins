@@ -23,12 +23,15 @@ public class TraitTricksterArcaneTrap : TraitFactionTrap
         nameof(ConMagicBreak) // Spellblade - Reduces Magic Resistance
     };
 
-    public override bool IgnoreWhenLevitating() => false;
-    
     public override int radius => 2;
 
     public override string TrapName => Constants.TricksterArcaneTrapAlias;
-    
+
+    public override bool IgnoreWhenLevitating()
+    {
+        return false;
+    }
+
     public override void ActivateTrapInternal(Chara c)
     {
         DetonateTrap();
@@ -40,9 +43,9 @@ public class TraitTricksterArcaneTrap : TraitFactionTrap
         string randomCondition = TricksterDebuffs.RandomItem();
         bool isPcTrap = IsPCFactionTrap();
         int power = GetPower();
-        foreach (Point pos in EClass.pc.currentZone.map.ListPointsInCircle(owner.pos, radius, true, true))
+        foreach (Point pos in pc.currentZone.map.ListPointsInCircle(owner.pos, radius))
         {
-            foreach (Chara target in pos.Charas.Where(target => target.IsAliveInCurrentZone && ((isPcTrap && target.IsHostile(EClass.pc)) || !isPcTrap && !target.IsHostile(EClass.pc))))
+            foreach (Chara target in pos.Charas.Where(target => target.IsAliveInCurrentZone && (isPcTrap && target.IsHostile(pc) || !isPcTrap && !target.IsHostile(pc))))
             {
                 if (randomCondition == nameof(ConMagicBreak))
                 {

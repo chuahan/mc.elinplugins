@@ -9,7 +9,7 @@ public class ConWardingRune : BaseBuff
     {
         return SpriteSheet.Get(source.alias);
     }
-    
+
     // Stack based Condition instead.
     public override void Tick()
     {

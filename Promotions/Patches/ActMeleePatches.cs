@@ -49,7 +49,7 @@ public class ActMeleePatches
 
         return true;
     }
-    
+
     [HarmonyPatch(nameof(ActMelee.Attack), typeof(float))]
     [HarmonyPrefix]
     public static bool AttackPrefixPatch(ActMelee __instance, ref float dmgMulti)
@@ -57,7 +57,8 @@ public class ActMeleePatches
         // Sentinel - If the target is a Sentinel with a Shield, they have a chance to block the blow, reducing the damage.
         if (Act.TC.Chara.MatchesPromotion(Constants.FeatSentinel) &&
             Act.TC.Chara.body.GetAttackStyle() == AttackStyle.Shield &&
-            !Act.TC.IsDisabled && !Act.TC.IsRestrainedResident)
+            !Act.TC.IsDisabled &&
+            !Act.TC.IsRestrainedResident)
         {
             // Shield Skill * 2 + 50
             int blockChance = Act.TC.Evalue(123) * 2 + 50;
@@ -78,7 +79,7 @@ public class ActMeleePatches
         }
         return true;
     }
-    
+
     [HarmonyPatch(nameof(ActMelee.CanPerform))]
     [HarmonyPrefix]
     public static bool CanPerformPatch(ref bool __result)

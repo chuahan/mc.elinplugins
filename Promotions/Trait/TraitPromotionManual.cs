@@ -192,12 +192,12 @@ public class TraitPromotionManual : TraitScroll
             Constants.FeatDreadKnight, Constants.DreadKnightId
         }
     };
-    
+
     public override bool CanRead(Chara c)
     {
         return true;
     }
-    
+
     public override void OnRead(Chara c)
     {
         if (!TraitPromotionManual.CanPromote(c)) return;
@@ -225,7 +225,7 @@ public class TraitPromotionManual : TraitScroll
             }
             else
             {
-                Promote(promotionId, c);   
+                Promote(promotionId, c);
             }
         });
     }

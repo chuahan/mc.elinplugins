@@ -29,7 +29,7 @@ public class ActLifebreak : Ability
 
     public override bool Perform()
     {
-        CC.AddCondition<ConLifebreakAttack>(this.GetPower(CC), true);
+        CC.AddCondition<ConLifebreakAttack>(GetPower(CC), true);
         new ActMelee().Perform(CC, TC);
         CC.AddCooldown(Constants.ActLifebreakId, 10);
         return true;

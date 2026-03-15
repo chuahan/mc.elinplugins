@@ -1,5 +1,3 @@
-using System.Linq;
-using Cwl.Helper;
 using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Source;
@@ -20,25 +18,25 @@ public class FactionPatch
             Faction faction = new GuildAdventurer
             {
                 id = r.id,
-                _source = r,
+                _source = r
             };
             faction.Init();
             __result = faction;
             return false;
         }
-        
+
         if (r.id is Constants.InfoGuildFactionId)
         {
             Faction faction = new GuildInformation
             {
                 id = r.id,
-                _source = r,
+                _source = r
             };
             faction.Init();
             __result = faction;
             return false;
         }
-        
+
         return true;
     }
 }

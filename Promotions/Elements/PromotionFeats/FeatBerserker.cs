@@ -27,6 +27,8 @@ public class FeatBerserker : PromotionFeat
         Constants.ActLifebreakId
     };
 
+    public override string JobRequirement => "warrior";
+
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActBloodlustId, 70, false);
@@ -34,10 +36,8 @@ public class FeatBerserker : PromotionFeat
         c.ability.Add(Constants.ActLifebreakId, 30, false);
     }
 
-    public override string JobRequirement => "warrior";
-    
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 }

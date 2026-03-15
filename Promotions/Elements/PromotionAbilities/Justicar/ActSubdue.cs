@@ -36,7 +36,7 @@ public class ActSubdue : Ability
             origin = CC.Chara,
             n1 = nameof(ConSupress)
         });
-        
+
         return true;
     }
 }

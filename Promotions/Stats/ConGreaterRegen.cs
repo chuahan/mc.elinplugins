@@ -12,7 +12,7 @@ public class ConGreaterRegen : Timebuff
     {
         return SpriteSheet.Get(source.alias);
     }
-    
+
     public float GetHealingPercentage()
     {
         return HelperFunctions.SigmoidScaling(power, MinHealing, MaxHealing);

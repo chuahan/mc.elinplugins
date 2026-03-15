@@ -13,7 +13,7 @@ public class TraitArtificerToolIce : TraitArtificerTool
             p.SetHighlight(8);
         });
     }
-    
+
     public override bool ArtificerToolEffect(Chara cc, Point pos, int power)
     {
         float powerMulti = 1f + (cc.Evalue(102) / 2F + cc.Evalue(101)) / 50f;

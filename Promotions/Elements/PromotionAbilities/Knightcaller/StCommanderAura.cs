@@ -11,7 +11,7 @@ public class StCommanderAura : Ability
             type = CostType.None
         };
     }
-    
+
     public override bool Perform()
     {
         if (CC.HasCondition<CommandersAura>())
@@ -20,7 +20,7 @@ public class StCommanderAura : Ability
         }
         else
         {
-            CC.AddCondition<CommandersAura>();   
+            CC.AddCondition<CommandersAura>();
         }
         return true;
     }

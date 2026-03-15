@@ -1,21 +1,21 @@
 using System.Collections.Generic;
-using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 namespace PromotionMod.Trait.Characters;
 
 public class TraitLailah : TraitPromotionUniqueCharacter
 {
-    public override bool IsBefriendedThroughDialog => player.dialogFlags.TryGetValue("lailahRecruited") > 0;
-
-    public override int Prepromotion => Constants.FeatSharpshooter;
-    public override int RestockDay => 7;
 
     private static readonly List<int> RareScrollStock = new List<int>
     {
         8280, // Flying
         8288, // Reconstruction
-        8281, // Faith
+        8281 // Faith
     };
+
+    public override bool IsBefriendedThroughDialog => player.dialogFlags.TryGetValue("lailahRecruited") > 0;
+
+    public override int Prepromotion => Constants.FeatSharpshooter;
+    public override int RestockDay => 7;
 
     public void _OnBarter()
     {
@@ -41,16 +41,16 @@ public class TraitLailah : TraitPromotionUniqueCharacter
         {
             merchantInventory.Add("promotion_manual", 1, 0);
             merchantInventory.Add("demotion_manual", 5, 0);
-            
+
             // Completing her first friendship dialog will add a two randomized specialized skill books into her inventory.
             if (lailahShopT2 > 0)
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    merchantInventory.AddCard(ThingGen.Create("book_skill", -1, owner.LV));    
+                    merchantInventory.AddCard(ThingGen.Create("book_skill", -1, owner.LV));
                 }
             }
-            
+
             // Completing her final dialog will add two more randomized specialized skill books.
             // A random scroll out of Flying, Reconstruction, and Faith.
             // One of each Greater Enchant Armor and Greater Enchant Weapon
@@ -59,7 +59,7 @@ public class TraitLailah : TraitPromotionUniqueCharacter
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    merchantInventory.AddCard(ThingGen.Create("book_skill", -1, owner.LV));    
+                    merchantInventory.AddCard(ThingGen.Create("book_skill", -1, owner.LV));
                 }
 
                 merchantInventory.AddCard(ThingGen.CreateScroll(RareScrollStock.RandomItem()));

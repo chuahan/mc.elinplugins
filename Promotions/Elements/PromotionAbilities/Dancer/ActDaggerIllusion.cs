@@ -8,7 +8,7 @@ public class ActDaggerIllusion : Ability
     private const float EffectRadius = 5F;
 
     private const int MaxTargets = 5;
-    
+
     public override bool CanPerform()
     {
         if (CC.Evalue(Constants.FeatDancer) == 0)
@@ -16,7 +16,7 @@ public class ActDaggerIllusion : Ability
             Msg.Say("classlocked_ability".lang(Constants.DancerId.lang()));
             return false;
         }
-        Thing thing = GetBestThrowingWeapon(CC);
+        Thing thing = ActDaggerIllusion.GetBestThrowingWeapon(CC);
         if (thing == null)
         {
             if (CC.IsPC) Msg.Say("daggerillusion_nothrowingweapon".lang());
@@ -34,17 +34,17 @@ public class ActDaggerIllusion : Ability
 
     public override void OnMarkMapHighlights()
     {
-        List<Point> list = EClass._map.ListPointsInCircle(CC.pos, EffectRadius, true, true);
+        List<Point> list = _map.ListPointsInCircle(CC.pos, EffectRadius);
         if (list.Count == 0)
         {
-            list.Add(Act.CC.pos.Copy());
+            list.Add(CC.pos.Copy());
         }
         foreach (Point item in list)
         {
             item.SetHighlight(8);
         }
     }
-    
+
     public override bool Perform()
     {
         bool hasPartner = false;
@@ -113,7 +113,7 @@ public class ActDaggerIllusion : Ability
         Thing result = null;
         int equipPower = 0;
         bool returningThrowable = false;
-        
+
         foreach (Thing thing in cc.things)
         {
             if (thing.HasTag(CTAG.throwWeapon))
@@ -123,17 +123,17 @@ public class ActDaggerIllusion : Ability
                 {
                     continue;
                 }
-                
+
                 // Higher equip power
                 if (thing.GetEquipValue() > equipPower)
                 {
                     result = thing;
                     equipPower = thing.GetEquipValue();
-                    returningThrowable = thing.HasElement(410);   
+                    returningThrowable = thing.HasElement(410);
                 }
             }
         }
-        
+
         return result;
     }
 }

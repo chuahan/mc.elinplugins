@@ -30,17 +30,17 @@ public class FeatWitchHunter : PromotionFeat
         Constants.ActNullZoneId
     };
 
+    public override string JobRequirement => "inquisitor";
+
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActManaBreakId, 20, false);
         c.ability.Add(Constants.ActMagicReflectId, 85, false);
         c.ability.Add(Constants.ActNullZoneId, 50, false);
     }
-    
-    public override string JobRequirement => "inquisitor";
 
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 }

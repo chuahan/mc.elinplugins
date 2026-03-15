@@ -1,7 +1,4 @@
-using System.Collections.Generic;
 using HarmonyLib;
-using PromotionMod.Common;
-using UnityEngine;
 namespace PromotionMod.Patches;
 
 // TODO: Delete move this to my own building mod.
@@ -18,7 +15,7 @@ public class ActPlanPatches
             Point targetPoint = target.pos;
             foreach (Chara c in targetPoint.Charas)
             {
-                if (c is { IsPCFaction: false })    
+                if (c is { IsPCFaction: false })
                 {
                     __instance.TrySetAct($"Make NPC {c.NameSimple}", delegate
                     {
@@ -31,7 +28,7 @@ public class ActPlanPatches
                 }
             }
         }
-        
+
         if (__instance.input == ActInput.AllAction)
         {
             Point targetPoint = target.pos;

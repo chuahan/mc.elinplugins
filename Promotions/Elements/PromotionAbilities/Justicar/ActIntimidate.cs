@@ -11,7 +11,7 @@ namespace PromotionMod.Elements.PromotionAbilities.Justicar;
 public class ActIntimidate : Ability
 {
     private float _effectRadius = 3F;
-    
+
     public override bool CanPerform()
     {
         if (CC.Evalue(Constants.FeatJusticar) == 0)
@@ -24,29 +24,29 @@ public class ActIntimidate : Ability
 
     public override void OnMarkMapHighlights()
     {
-        if (!EClass.scene.mouseTarget.pos.IsValid)
+        if (!scene.mouseTarget.pos.IsValid)
         {
             return;
         }
-        List<Point> list = EClass._map.ListPointsInCircle(EClass.scene.mouseTarget.pos, _effectRadius, true, true);
+        List<Point> list = _map.ListPointsInCircle(scene.mouseTarget.pos, _effectRadius);
         if (list.Count == 0)
         {
-            list.Add(Act.CC.pos.Copy());
+            list.Add(CC.pos.Copy());
         }
         foreach (Point item in list)
         {
             // Highlight the target point a different color.
-            if (object.Equals(EClass.scene.mouseTarget.pos, item))
+            if (Equals(scene.mouseTarget.pos, item))
             {
                 item.SetHighlight(7);
             }
             else
             {
-                item.SetHighlight(8);   
+                item.SetHighlight(8);
             }
         }
     }
-    
+
     public override bool Perform()
     {
         int breakAmount = (int)HelperFunctions.SigmoidScaling(GetPower(CC), 10, 25);
@@ -67,7 +67,7 @@ public class ActIntimidate : Ability
                 n1 = nameof(ConFear)
             });
         }
-        
+
         return true;
     }
 }

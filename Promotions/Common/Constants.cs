@@ -15,7 +15,7 @@ public class Constants
     public const string PromotionFeatFlag = "promo";
     public const string IsPlayerFactionTrapFlag = "pcTrap";
     public const string JeneiAttunementFlag = "jeAtt";
-    
+
     public const string PhantomPromotionUnlockedFlag = "phUL";
     public const string EtoilePromotionUnlockedFlag = "etUL";
     public const string HeroPromotionUnlockedFlag = "heUL";
@@ -25,7 +25,7 @@ public class Constants
     public const string AdvancedCombatSkillFlag = "advSkill";
     public const string UnlockedEliteEnemiesFlag = "eliteEnemiesUL";
     public const string IsEliteEnemyFlag = "eliteEnemy";
-    
+
     #endregion
 
     #region Element Ids
@@ -141,7 +141,7 @@ public class Constants
     public const int FeatRuneKnight = 891026;
     public const int FeatHexer = 891027;
     public const int FeatArtificer = 891028;
-    
+
     // Unimplemented. Future update
     public const int FeatPhantom = 1;
     public const int FeatEtoile = 1;
@@ -182,6 +182,7 @@ public class Constants
     public const string EtoileId = "etoile";
     public const string HeroId = "hero";
     public const string LusterId = "luster";
+
     #endregion
 
     #region Unique charas
@@ -192,7 +193,7 @@ public class Constants
     public const string RurasCharaId = "ruras";
     public const string SenaCharaId = "sena";
     public const string AzaleaCharaId = "azalea";
-    
+
     // Quest Characters
     public const string WatcherKnightCharaId = "watcher_knight";
     public const string EscortWagonCharaId = "escort_wagon";
@@ -276,13 +277,13 @@ public class Constants
     public const string ShieldBitCharaId = "shield_funnel";
     public const string SwordBitCharaId = "sword_funnel";
     public const string PhantomBitCharaId = "phantom_funnel";
-    
+
     public const string HolyBannerCharaId = "holy_banner";
 
     #endregion
 
     #region Spells/Abilities Element Ids
-    
+
     public const int ActSenseDangerId = 891034;
     public const int ActThisWayId = 891035;
     public const int ActImprovisedBrewId = 891036;
@@ -398,9 +399,8 @@ public class Constants
     public const int ActInvigorateId = 891167;
 
 
-
     public const string ActTrampleAlias = "ActTrample";
- 
+
     public const string TraumatizeAlias = "ActTraumatize";
 
     public const string CondemnAlias = "ActCondemn";
@@ -423,7 +423,7 @@ public class Constants
     public const string TricksterArcaneTrapAlias = "trickster_arcane_trap";
     public const string TricksterReversalAlias = "ActReversal";
     public const string WarClericDivineDescentAlias = "ActDivineDescent";
-    
+
     #endregion
 
     #region Artificer Stuff
@@ -433,7 +433,7 @@ public class Constants
     public const int FeatSirenGolemMagicId = 891031;
     public const int FeatTitanGolemId = 891032;
     public const int FeatArtificerGolemUpgradeId = 891033;
-    
+
     public const string ArtificerGolem_MemoryChipId = "artificer_golem_memorychip";
     public const string ArtificerGolem_ComponentChipId = "artificer_golem_componentchip";
     public const string MimGolemCharaId = "golem_mim";
@@ -444,11 +444,11 @@ public class Constants
     public const string ArtificerSteamlightItem = "artificer_steamlight";
 
     #endregion
-    
+
     #region Adv Combat Skills
 
     public const int EliteEnemiesSpawnLevel = 200;
-    
+
     public const int FeatAegisId = 891147;
     public const int FeatPaviseId = 891148;
     public const int FeatAstraId = 891149;
@@ -461,7 +461,7 @@ public class Constants
     public const int FeatVengeanceId = 891156;
     public const int FeatDeadeyeId = 891157;
     public const int FeatVantageId = 891158;
-    
+
     // Enemy Only
     public const int FeatAegisPlusId = 891159;
     public const int FeatPavisePlusId = 891160;
@@ -470,7 +470,7 @@ public class Constants
     public const int FeatMetalBreakerId = 891163;
 
     #endregion
-    
+
     #region Alraune
 
     public const int FeatAlraune = 891164;
@@ -480,9 +480,11 @@ public class Constants
     #endregion
 
     #region Guild Stuff
+
     public const string AluenaFactionId = "promotionmod_aluena";
     public const string AdvGuildFactionId = "promotionmod_guild_adv";
     public const string InfoGuildFactionId = "promotionmod_guild_info";
+
     #endregion
 
 }

@@ -8,7 +8,7 @@ namespace PromotionMod.Elements.PromotionAbilities.DreadKnight;
 public class ActDarkBurst : Ability
 {
     private float _effectRadius = 3F;
-    
+
     public override bool CanPerform()
     {
         if (CC.Evalue(Constants.FeatDreadKnight) == 0)
@@ -34,7 +34,7 @@ public class ActDarkBurst : Ability
             type = CostType.None
         };
     }
-    
+
     // Apply Spell Enhance to this ability.
     public override int GetPower(Card c)
     {
@@ -54,7 +54,7 @@ public class ActDarkBurst : Ability
 
         return (int)(c.MaxHP * hpCost);
     }
-    
+
     public override void OnMarkMapHighlights()
     {
         float adjustedEffectRadius = _effectRadius;
@@ -63,17 +63,17 @@ public class ActDarkBurst : Ability
         {
             adjustedEffectRadius += darkTrace.GetStacks();
         }
-        List<Point> list = EClass._map.ListPointsInCircle(CC.pos, adjustedEffectRadius, true, true);
+        List<Point> list = _map.ListPointsInCircle(CC.pos, adjustedEffectRadius);
         if (list.Count == 0)
         {
-            list.Add(Act.CC.pos.Copy());
+            list.Add(CC.pos.Copy());
         }
         foreach (Point item in list)
         {
             item.SetHighlight(8);
         }
     }
-    
+
     public override bool Perform()
     {
         ConDarkTraces darkTrace = CC.GetCondition<ConDarkTraces>();
@@ -92,10 +92,10 @@ public class ActDarkBurst : Ability
         int cost = (int)(CC.MaxHP * hpCost);
         CC.DamageHP(cost, AttackSource.Condition);
 
-        int power = HelperFunctions.SafeAdd(this.GetPower(CC), HelperFunctions.SafeMultiplier(cost, 2));
+        int power = HelperFunctions.SafeAdd(GetPower(CC), HelperFunctions.SafeMultiplier(cost, 2));
         float adjustedEffectRadius = _effectRadius;
         adjustedEffectRadius += darkTrace.GetStacks();
-        
+
         Effect spellEffect = Effect.Get("Element/ball_Nether");
         List<Chara> targetsHit = new List<Chara>();
         foreach (Point tile in _map.ListPointsInCircle(CC.pos, adjustedEffectRadius, false, false))
@@ -104,7 +104,10 @@ public class ActDarkBurst : Ability
 
             foreach (Chara target in tile.ListCharas().Where(target => !targetsHit.Contains(target) && target.IsHostile(CC)))
             {
-                ActEffect.DamageEle(CC, EffectId.Ball, power, Element.Create(Constants.EleNether, power / 10), new List<Point>{target.pos}, new ActRef
+                ActEffect.DamageEle(CC, EffectId.Ball, power, Element.Create(Constants.EleNether, power / 10), new List<Point>
+                {
+                    target.pos
+                }, new ActRef
                 {
                     act = this
                 });
@@ -120,7 +123,7 @@ public class ActDarkBurst : Ability
                 spellEffect.Play(tile, 0f, tile);
             });
         }
-        
+
         darkTrace.AddStacks(1);
         return true;
     }

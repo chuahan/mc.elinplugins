@@ -25,6 +25,8 @@ public class FeatHermit : PromotionFeat
         Constants.ActAssassinateId
     };
 
+    public override string JobRequirement => "thief";
+
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActMarkForDeathId, 75, false);
@@ -32,10 +34,8 @@ public class FeatHermit : PromotionFeat
         c.ability.Add(Constants.ActAssassinateId, 50, false);
     }
 
-    public override string JobRequirement => "thief";
-    
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 }

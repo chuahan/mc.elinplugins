@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using PromotionMod.Common;
 using UnityEngine;
 namespace PromotionMod.Stats.Battlemage;
 
@@ -20,7 +19,7 @@ public class StanceManaShield : BaseStance
     [JsonProperty(PropertyName = "S")] public int Stacks;
 
     public override bool TimeBased => true;
-    
+
     public override string TextDuration => "" + Stacks;
 
     public override void OnStart()
@@ -32,7 +31,7 @@ public class StanceManaShield : BaseStance
     {
         return SpriteSheet.Get(source.alias);
     }
-    
+
     public void ModShield(int amount)
     {
         // Taking any hit, even a 0 damage hit, will incur shield delay.
@@ -55,13 +54,13 @@ public class StanceManaShield : BaseStance
             _rechargeDelay--;
         }
     }
-    
+
     public override void OnWriteNote(List<string> list)
     {
-        list.Add("hintManaShield".lang(this.Stacks.ToString(), power.ToString()));
+        list.Add("hintManaShield".lang(Stacks.ToString(), power.ToString()));
         if (_rechargeDelay > 0)
         {
-            list.Add("hintManaShieldDelay".lang(this._rechargeDelay.ToString()));
+            list.Add("hintManaShieldDelay".lang(_rechargeDelay.ToString()));
         }
     }
 }

@@ -35,17 +35,17 @@ public class FeatRuneknight : PromotionFeat
         Constants.ActRuneEtchingId
     };
 
+    public override string JobRequirement => "swordsage";
+
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActRunicGuardId, 75, false);
         c.ability.Add(Constants.ActSpinningSlashId, 75, false);
         c.ability.Add(Constants.ActRuneEtchingId, 100, true);
     }
-    
-    public override string JobRequirement => "swordsage";
-    
+
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 }

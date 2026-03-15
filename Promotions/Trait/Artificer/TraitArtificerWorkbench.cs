@@ -1,20 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 using UnityEngine;
 namespace PromotionMod.Trait.Artificer;
 
 public class TraitArtificerWorkbench : TraitWorkbench
 {
-    public override bool CanUse(Chara c)
-    {
-        //if (c.MatchesPromotion(Constants.FeatArtificer)
-        //{
-        //Msg.Say("artificerlocked_table".lang());
-        //}
-        return c.MatchesPromotion(Constants.FeatArtificer) && base.CanUse(c);
-    }
 
     private static HashSet<string> _validArtificerTools = new HashSet<string>(StringComparer.InvariantCulture)
     {
@@ -29,12 +20,20 @@ public class TraitArtificerWorkbench : TraitWorkbench
         "artificer_elementalbow",
         "artificer_sonicbomb",
         "artificer_biobomb",
-        "artificer_flashbomb",
+        "artificer_flashbomb"
     };
 
     public override bool IsFactory => true;
 
     public override string idSoundProgress => "craft_sculpt";
+    public override bool CanUse(Chara c)
+    {
+        //if (c.MatchesPromotion(Constants.FeatArtificer)
+        //{
+        //Msg.Say("artificerlocked_table".lang());
+        //}
+        return c.MatchesPromotion(Constants.FeatArtificer) && base.CanUse(c);
+    }
 
     public override int GetActDuration(Chara c)
     {

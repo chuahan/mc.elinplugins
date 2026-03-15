@@ -37,8 +37,10 @@ public class FeatMachinist : PromotionFeat
     {
         Constants.ActLoadUpId,
         Constants.ActOverclockId,
-        Constants.StHeavyarmsId,
+        Constants.StHeavyarmsId
     };
+
+    public override string JobRequirement => "gunner";
 
     protected override void ApplyInternalNPC(Chara c)
     {
@@ -47,11 +49,9 @@ public class FeatMachinist : PromotionFeat
         c.ability.Add(Constants.StHeavyarmsId, 25, false);
         c.ability.Add(Constants.SpSummonTurretId, 50, false);
     }
-    
-    public override string JobRequirement => "gunner";
-    
+
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 }

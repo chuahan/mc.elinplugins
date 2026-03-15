@@ -37,17 +37,17 @@ public class FeatWarCleric : PromotionFeat
         Constants.ActDivineFistId
     };
 
+    public override string JobRequirement => "priest";
+
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActDivineDescentId, 50, false);
         c.ability.Add(Constants.ActDivineFistId, 100, false);
         c.ability.Add(Constants.ActBlessedArmamentsId, 50, false);
     }
-    
-    public override string JobRequirement => "priest";
-    
+
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 }

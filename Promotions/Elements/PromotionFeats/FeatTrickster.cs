@@ -40,17 +40,17 @@ public class FeatTrickster : PromotionFeat
         Constants.ActReversalId
     };
 
+    public override string JobRequirement => "thief";
+
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActArcaneTrapId, 80, false);
         c.ability.Add(Constants.ActDiversionId, 75, false);
         c.ability.Add(Constants.ActReversalId, 50, false);
     }
-    
-    public override string JobRequirement => "thief";
-    
+
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 }

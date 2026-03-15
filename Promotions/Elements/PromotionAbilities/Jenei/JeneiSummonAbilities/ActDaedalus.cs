@@ -5,7 +5,7 @@ namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
 /// <summary>
 ///     Fire. Fires missiles at all targets. Count as min distance always.
 /// </summary>
-public class ActDaedalus: JeneiSummonSequence
+public class ActDaedalus : JeneiSummonSequence
 {
     public override float SummonMultiplier => 0.15F;
 

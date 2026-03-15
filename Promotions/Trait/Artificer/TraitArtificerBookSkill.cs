@@ -13,5 +13,5 @@ public class TraitArtificerBookSkill : TraitScroll
     public override void OnRead(Chara c)
     {
         c.ability.Add(Constants.ActSteamlightId, 75, false);
-    }   
+    }
 }

@@ -36,23 +36,29 @@ public class ActJeneiMotherGaia : Ability
         TC.pos.Animate(AnimeID.Quake, true);
         CC.PlaySound("spell_earthquake");
         Shaker.ShakeCam("ball");
-        ActEffect.DamageEle(CC, EffectId.Earthquake, power, Element.Create(Constants.EleImpact, power / 10), new List<Point> {TC.pos}, new ActRef
+        ActEffect.DamageEle(CC, EffectId.Earthquake, power, Element.Create(Constants.EleImpact, power / 10), new List<Point>
+        {
+            TC.pos
+        }, new ActRef
         {
             act = this,
             aliasEle = Constants.ElementAliasLookup[Constants.EleImpact],
-            origin = CC,
+            origin = CC
         });
-        
+
         TC.pos.ForeachNeighbor(delegate(Point point)
         {
-            ActEffect.DamageEle(CC, EffectId.Earthquake, power, Element.Create(Constants.EleImpact, power / 10), new List<Point> {point}, new ActRef
+            ActEffect.DamageEle(CC, EffectId.Earthquake, power, Element.Create(Constants.EleImpact, power / 10), new List<Point>
+            {
+                point
+            }, new ActRef
             {
                 act = this,
                 aliasEle = Constants.ElementAliasLookup[Constants.EleImpact],
-                origin = CC,
+                origin = CC
             });
         });
-        
+
         return true;
     }
 }

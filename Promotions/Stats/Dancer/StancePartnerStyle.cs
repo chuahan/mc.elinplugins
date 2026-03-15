@@ -10,7 +10,7 @@ public class StancePartnerStyle : BaseStance
     {
         if (_map.FindChara(PartnerUID) == null) Kill();
     }
-    
+
     public override void OnWriteNote(List<string> list)
     {
         Chara partner = _map.FindChara(PartnerUID);

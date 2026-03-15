@@ -6,7 +6,7 @@ namespace PromotionMod.Elements.PromotionAbilities.Dancer;
 public class ActWildPirouette : Ability
 {
     private float _effectRadius = 5F;
-    
+
     public override bool CanPerform()
     {
         if (CC.Evalue(Constants.FeatDancer) == 0)
@@ -14,7 +14,7 @@ public class ActWildPirouette : Ability
             Msg.Say("classlocked_ability".lang(Constants.DancerId.lang()));
             return false;
         }
-        
+
         if (owner?.Chara?.conditions.Exists(x => x is StanceDance) == false)
         {
             if (CC.IsPC) Msg.Say("dancer_mustbedancing".lang());
@@ -23,13 +23,13 @@ public class ActWildPirouette : Ability
 
         return base.CanPerform();
     }
-    
+
     public override void OnMarkMapHighlights()
     {
-        List<Point> list = EClass._map.ListPointsInCircle(CC.pos, _effectRadius, true, true);
+        List<Point> list = _map.ListPointsInCircle(CC.pos, _effectRadius);
         if (list.Count == 0)
         {
-            list.Add(Act.CC.pos.Copy());
+            list.Add(CC.pos.Copy());
         }
         foreach (Point item in list)
         {

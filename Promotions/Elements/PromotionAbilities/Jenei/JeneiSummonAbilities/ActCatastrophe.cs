@@ -6,7 +6,7 @@ namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
 /// <summary>
 ///     Lightning. Reduces their mana and stamina by 10%.
 /// </summary>
-public class ActCatastrophe: JeneiSummonSequence
+public class ActCatastrophe : JeneiSummonSequence
 {
     public override float SummonMultiplier => 0.24F;
 
@@ -35,7 +35,7 @@ public class ActCatastrophe: JeneiSummonSequence
             cc.PlaySound("spell_earthquake");
             Shaker.ShakeCam("ball");
         });
-        
+
         List<Chara> targetsHit = new List<Chara>();
         foreach (Point tile in EClass._map.ListPointsInCircle(cc.pos, 5f, false, false))
         {

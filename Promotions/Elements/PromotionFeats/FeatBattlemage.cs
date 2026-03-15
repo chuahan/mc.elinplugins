@@ -7,7 +7,6 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Pen in one hand, sword in the other. The Battlemages are frontline mages tempered by the fires of war.
 ///     Battlemages focus on not merely being on the frontline, but becoming the frontline itself.
 ///     They specialize in heavy area damage, knocking enemies into disarray.
-/// 
 ///     Skill - Mana Shield Stance
 ///     At the cost of reserving your mana (-25% max mana), you will gain a regenerating shield that will take damage
 ///     before your HP does.
@@ -32,6 +31,8 @@ public class FeatBattlemage : PromotionFeat
         Constants.StManaFocusId
     };
 
+    public override string JobRequirement => "warmage";
+
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.StManaShieldId, 100, false);
@@ -40,10 +41,8 @@ public class FeatBattlemage : PromotionFeat
         c.ability.Add(50600 + PromotionFeat.GetAdditionalSpellElement(c), 50, false);
     }
 
-    public override string JobRequirement => "warmage";
-    
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 }

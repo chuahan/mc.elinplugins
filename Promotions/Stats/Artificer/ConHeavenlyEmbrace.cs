@@ -7,7 +7,7 @@ public class ConHeavenlyEmbrace : BaseBuff
     {
         // Do not tick.
     }
-    
+
     public override Sprite GetSprite()
     {
         return SpriteSheet.Get(source.alias);

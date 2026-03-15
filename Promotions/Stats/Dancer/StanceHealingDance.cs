@@ -8,7 +8,7 @@ public class StanceHealingDance : StanceDance
         // Heals 10% HP a turn.
         if (isPartner)
         {
-            owner.HealHP((int)(target.MaxHP * 0.15F), HealSource.HOT);   
+            owner.HealHP((int)(target.MaxHP * 0.15F), HealSource.HOT);
         }
         else
         {

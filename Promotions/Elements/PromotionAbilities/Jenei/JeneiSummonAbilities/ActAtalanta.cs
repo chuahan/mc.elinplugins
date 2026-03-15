@@ -14,7 +14,7 @@ public class ActAtalanta : JeneiSummonSequence
     public override bool PerformSummonAttack(Chara cc, int power)
     {
         List<Chara> targets = HelperFunctions.GetCharasWithinRadius(cc.pos, 5F, cc, false, true);
-        
+
         // Acid Arrow for Green.
         ElementRef elementRef = EClass.setting.elements["eleAcid"];
         Effect arrowEffect = Effect.Get("spell_arrow");
@@ -22,7 +22,7 @@ public class ActAtalanta : JeneiSummonSequence
         TrailRenderer componentInChildren = arrowEffect.GetComponentInChildren<TrailRenderer>();
         Color startColor = componentInChildren.endColor = elementRef.colorSprite;
         componentInChildren.startColor = startColor;
-        
+
         for (int i = 0; i < targets.Count; i++)
         {
             arrowEffect.Play(cc.pos, 0f, targets[i].pos);

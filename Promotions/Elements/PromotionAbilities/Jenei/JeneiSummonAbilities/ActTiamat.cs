@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
-using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
 
 /// <summary>
 ///     Fire damage.
 /// </summary>
-public class ActTiamat: JeneiSummonSequence
+public class ActTiamat : JeneiSummonSequence
 {
     public override float SummonMultiplier => 0.12F;
 
@@ -40,7 +39,7 @@ public class ActTiamat: JeneiSummonSequence
             spellEffect.SetStartDelay(delay);
             spellEffect.Play(tile).Flip(tile.x > cc.pos.x);
         }
-        
+
         return true;
     }
 }

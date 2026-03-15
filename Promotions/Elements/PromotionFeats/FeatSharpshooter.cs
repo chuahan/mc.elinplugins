@@ -30,17 +30,17 @@ public class FeatSharpshooter : PromotionFeat
         Constants.ActMarkHostilesId
     };
 
+    public override string JobRequirement => "gunner";
+
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActChargedShotId, 60, false);
         c.ability.Add(Constants.ActMarkHostilesId, 80, false);
         c.ability.Add(Constants.StOverwatchId, 100, false);
     }
-    
-    public override string JobRequirement => "gunner";
-    
+
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 }

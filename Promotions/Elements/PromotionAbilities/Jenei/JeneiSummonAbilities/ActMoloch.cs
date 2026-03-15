@@ -6,7 +6,7 @@ namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
 /// <summary>
 ///     Cold breath. Inflicts -50% speed multiplier and -50% DV Multiplier.
 /// </summary>
-public class ActMoloch: JeneiSummonSequence
+public class ActMoloch : JeneiSummonSequence
 {
     public override float SummonMultiplier => 0.09F;
 

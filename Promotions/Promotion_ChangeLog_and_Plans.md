@@ -4,7 +4,7 @@
 ### March 11th, 2026 1.00 - Initial release
 - Includes the base Promotions, Lailah, and the Quiet Cottage Map.
 
-### March 11th, 2026 1.01
+### March 11th, 2026 1.01 - Goddamnit Ascalon Patch
 - Updated documentation to fix typoes and include more numbers for the number inclined.
 - Reworked the Evaluation system for Promos to an extension method. Technically this means that Sub-classing shouldn't be that hard to implement, but not what I want to deal with.  
 - Hermit: Opportunist and Shadow Shroud now apply the increased damage to spells as well. Spells unfortunately can't crit though.  
@@ -16,7 +16,7 @@
 - Hexer - Fixed Paranoia.  
 - Artificer - Fixed null ref exception on Quickcraft. Thanks Ruair.  
 
-### March 12th, 2026 1.02
+### March 12th, 2026 1.02 - Goddamnit Rotty and Ascalon Patch 2.
 - Elementalist - Spell Tempo now also grants 2 Mana Consumption Reduction per stack, and the speed has been reduced down to 1% per stack.
 - Added CN and JP Translations to Lailah's Letter, hopefully that fixes that bug.
 - Fixes Jenei Feat Sheet crashing. Thanks Shu.
@@ -24,9 +24,9 @@
 - Removed Vantage functionality while I figure out why it breaks things. Thanks 1z
 - Added the missing throwing knife sprite. Thanks 1z
 
-### March 14th, 2026 1.03
-- Refactored and fixed Dancer. Thanks Rombus.
-- Turns out I forgot to add ability costs for... everything. Added rudimentary costs for most abilities. Heavily subject to change. Thanks Rombus.
+### March 14th, 2026 1.03 - Thanks Rombus Patch
+- Refactored and fixed Dancer.
+- Turns out I forgot to add ability costs for... everything. Added rudimentary costs for most abilities. Heavily subject to change.
 - Tweaked the scaling of Protection across the board. Shouldn't be super inflated now. However, it's scaling like Light Healing, so will need to see if it remains relevant in the higher levels.
 - Fixed a few bugs with War Cleric and Headhunter. Minimized cost to 1 SP for Headhunter abilities, even with Headhunter reduction.
 - Added all the Condition Icons!
@@ -36,6 +36,7 @@
 - Need to add targetting highlights for... everything really.
 - Need to add SFX and FX for a lot of stuff. I'll probably go through 1 by 1 and figure out what needs work.
 - Balance things. Need user feedback.
+- Move the Promotion Docs into the game as Hover. It's a bit much, but I will need to abbreviate it a bit.
 
 ## Potential Balance Changes
 - Adventurer probably needs work.

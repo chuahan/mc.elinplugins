@@ -83,7 +83,7 @@ public class ActDivineDescent : Ability
                 spellEffect.Play(tile, 0f, tile);
             });
         }
-        
+
         // 1 day cooldown.
         CC.AddCooldown(Constants.ActDivineDescentId, 1440);
         return true;

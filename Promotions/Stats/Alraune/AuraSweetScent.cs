@@ -5,26 +5,26 @@ using UnityEngine;
 namespace PromotionMod.Elements.Alraune;
 
 /// <summary>
-/// Alraune stance that applies  and Drunkeness to targets repeatedly.
+///     Alraune stance that applies  and Drunkeness to targets repeatedly.
 /// </summary>
 public class AuraSweetScent : ConAura
 {
+
+    public override string TextDuration => "";
+
+    public override bool CanManualRemove => false;
+    public override AuraType AuraTarget => AuraType.Foe;
+
+    public override int IdAbility => Constants.StSweetScentId;
     public override void OnStart()
     {
         owner.ShowEmo(Emo.love);
     }
-    
-    public override string TextDuration => "";
-    
-    public override bool CanManualRemove => false;
-    
+
     public override Sprite GetSprite()
     {
         return SpriteSheet.Get(source.alias);
     }
-    public override AuraType AuraTarget => AuraType.Foe;
-
-    public override int IdAbility => Constants.StSweetScentId;
 
     public override void ApplyFoe(Chara target)
     {

@@ -35,29 +35,29 @@ public class ActSowWrathSeeds : Ability
 
     public override void OnMarkMapHighlights()
     {
-        if (!EClass.scene.mouseTarget.pos.IsValid)
+        if (!scene.mouseTarget.pos.IsValid)
         {
             return;
         }
-        List<Point> list = EClass._map.ListPointsInCircle(EClass.scene.mouseTarget.pos, 3F, true, true);
+        List<Point> list = _map.ListPointsInCircle(scene.mouseTarget.pos, 3F);
         if (list.Count == 0)
         {
-            list.Add(Act.CC.pos.Copy());
+            list.Add(CC.pos.Copy());
         }
         foreach (Point item in list)
         {
             // These are slightly different. The target point is the summoning spot. The surrounding highlight is the area of effect for the aura.
-            if (object.Equals(EClass.scene.mouseTarget.pos, item))
+            if (Equals(scene.mouseTarget.pos, item))
             {
                 item.SetHighlight(7);
             }
             else
             {
-                item.SetHighlight(8);   
+                item.SetHighlight(8);
             }
         }
     }
-    
+
     public override bool Perform()
     {
         // Randomly pick one of the flowers to spawn.

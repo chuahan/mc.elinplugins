@@ -10,16 +10,16 @@ public class StSweetScent : Ability
             type = CostType.None
         };
     }
-    
+
     public override bool Perform()
     {
         if (CC.HasCondition<AuraSweetScent>())
         {
-             CC.RemoveCondition<AuraSweetScent>();
+            CC.RemoveCondition<AuraSweetScent>();
         }
         else
         {
-            CC.AddCondition<AuraSweetScent>();   
+            CC.AddCondition<AuraSweetScent>();
         }
         return true;
     }

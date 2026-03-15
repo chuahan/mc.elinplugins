@@ -39,6 +39,8 @@ public class FeatDancer : PromotionFeat
         Constants.StSwiftDanceId
     };
 
+    public override string JobRequirement => "pianist";
+
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActDaggerIllusionId, 35, false);
@@ -50,11 +52,9 @@ public class FeatDancer : PromotionFeat
         c.ability.Add(Constants.StHealingDanceId, 25, false);
         c.ability.Add(Constants.StSwiftDanceId, 25, false);
     }
-    
-    public override string JobRequirement => "pianist";
-    
+
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 }

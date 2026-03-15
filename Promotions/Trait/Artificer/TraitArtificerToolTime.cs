@@ -8,14 +8,14 @@ public class TraitArtificerToolTime : TraitArtificerTool
     public override string ArtificerToolId => "artificer_timehourglass";
 
     public override bool IsTargetCast => false;
-    
+
     public override TargetType TargetType => TargetType.Self;
-    
+
     public override float EffectRadius => 3;
 
     public virtual void MarkMapHighlights(bool shouldHighlight, Point target)
     {
-        EClass._map.ForeachSphere(target.x, target.z, EffectRadius, delegate(Point p)
+        _map.ForeachSphere(target.x, target.z, EffectRadius, delegate(Point p)
         {
             if (!p.HasBlock && shouldHighlight)
             {
@@ -23,7 +23,7 @@ public class TraitArtificerToolTime : TraitArtificerTool
             }
         });
     }
-    
+
     public override bool ArtificerToolEffect(Chara cc, Point pos, int power)
     {
         (List<Chara> friendlies, List<Chara> enemies) = HelperFunctions.GetOrganizedCharasWithinRadius(cc.pos, EffectRadius, cc, true);

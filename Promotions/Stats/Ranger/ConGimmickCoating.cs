@@ -12,7 +12,7 @@ public class ConGimmickCoating : BaseBuff
     {
         return SpriteSheet.Get(source.alias);
     }
-    
+
     // When starting up, apply random Gimmick Type.
     public override void OnStart()
     {

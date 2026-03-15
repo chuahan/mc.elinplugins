@@ -1,9 +1,5 @@
-using System.Collections.Generic;
-using System.Linq;
 using PromotionMod.Common;
-using PromotionMod.Stats;
 using PromotionMod.Stats.DreadKnight;
-using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.DreadKnight;
 
 public class StLifeIgnition : Ability
@@ -15,7 +11,7 @@ public class StLifeIgnition : Ability
             Msg.Say("classlocked_ability".lang(Constants.DreadKnightId.lang()));
             return false;
         }
-        
+
         if (CC != null)
         {
             int hpCost = (int)(CC.MaxHP * 0.1F);
@@ -38,7 +34,7 @@ public class StLifeIgnition : Ability
             type = CostType.None
         };
     }
-    
+
     public override bool Perform()
     {
         StanceLifeIgnition existingStance = CC.GetCondition<StanceLifeIgnition>();
@@ -48,7 +44,7 @@ public class StLifeIgnition : Ability
         }
         else
         {
-            CC.AddCondition<StanceLifeIgnition>();   
+            CC.AddCondition<StanceLifeIgnition>();
         }
         return true;
     }

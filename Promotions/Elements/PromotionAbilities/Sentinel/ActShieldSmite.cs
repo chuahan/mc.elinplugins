@@ -29,7 +29,7 @@ public class ActShieldSmite : Ability
 
     public override bool Perform()
     {
-        CC.AddCondition<ConShieldSmiteAttack>(this.GetPower(CC), true);
+        CC.AddCondition<ConShieldSmiteAttack>(GetPower(CC), true);
         CC.PlaySound("shield_bash");
         return new ActMelee().Perform(CC, TC);
     }

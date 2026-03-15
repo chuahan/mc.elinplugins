@@ -30,6 +30,8 @@ public class FeatNecromancer : PromotionFeat
         Constants.ActCorpseExplosionId
     };
 
+    public override string JobRequirement => "wizard";
+
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActBeckonOfTheDeadId, 75, false);
@@ -37,11 +39,9 @@ public class FeatNecromancer : PromotionFeat
         c.ability.Add(Constants.ActCorpseExplosionId, 50, false);
         c.ability.Add(Constants.SpSummonSkeletonId, 90, false);
     }
-    
-    public override string JobRequirement => "wizard";
-    
+
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 }

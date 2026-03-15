@@ -6,7 +6,7 @@ namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
 /// <summary>
 ///     Fire. Guaranteed unconscious affliction.
 /// </summary>
-public class ActUlysses: JeneiSummonSequence
+public class ActUlysses : JeneiSummonSequence
 {
     public override float SummonMultiplier => 0.12F;
 
@@ -15,7 +15,7 @@ public class ActUlysses: JeneiSummonSequence
         cc.PlaySound("curse");
         ElementRef colorRef = EClass.setting.elements["eleNether"];
         List<Chara> targetsHit = new List<Chara>();
-        foreach (Point tile in EClass._map.ListPointsInCircle(cc.pos, 5f, false, true))
+        foreach (Point tile in EClass._map.ListPointsInCircle(cc.pos, 5f, false))
         {
             int distance = tile.Distance(cc.pos);
             foreach (Chara target in tile.ListCharas().Where(target => !targetsHit.Contains(target) && target.IsHostile(cc)))
@@ -38,7 +38,7 @@ public class ActUlysses: JeneiSummonSequence
             spellEffect.SetStartDelay(delay);
             spellEffect.Play(tile).Flip(tile.x > cc.pos.x);
         }
-        
+
         return true;
     }
 }

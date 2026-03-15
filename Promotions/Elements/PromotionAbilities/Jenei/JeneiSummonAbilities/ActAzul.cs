@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using PromotionMod.Common;
 using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
@@ -14,7 +13,7 @@ public class ActAzul : JeneiSummonSequence
     public override bool PerformSummonAttack(Chara cc, int power)
     {
         List<Chara> targets = HelperFunctions.GetCharasWithinRadius(cc.pos, 5F, cc, false, true);
-        
+
         // SFX: Water beams at all targets.
         Point from = cc.pos;
         ElementRef elementRef = EClass.setting.elements["eleCold"];
@@ -24,7 +23,7 @@ public class ActAzul : JeneiSummonSequence
         TrailRenderer componentInChildren = spellEffect.GetComponentInChildren<TrailRenderer>();
         Color startColor = componentInChildren.endColor = elementRef.colorSprite;
         componentInChildren.startColor = startColor;
-        
+
         for (int i = 0; i < targets.Count; i++)
         {
             spellEffect.Play(cc.pos, 0f, targets[i].pos);
@@ -32,8 +31,8 @@ public class ActAzul : JeneiSummonSequence
             HelperFunctions.ProcSpellDamage(
                 power,
                 CalculateDamage(
-                    power, 
-                    targets[i].pos.Distance(cc.pos), 
+                    power,
+                    targets[i].pos.Distance(cc.pos),
                     targets[i]),
                 cc, targets[i], ele: Constants.EleCold);
 
@@ -52,7 +51,7 @@ public class ActAzul : JeneiSummonSequence
                     }
                 }
             }
-            
+
         }
 
         return true;

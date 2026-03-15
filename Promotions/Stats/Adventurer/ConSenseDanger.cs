@@ -5,7 +5,7 @@ namespace PromotionMod.Stats.Adventurer;
 public class ConSenseDanger : Timebuff
 {
     public override ConditionType Type => ConditionType.Buff;
-    
+
     public override bool ShouldRefresh => true;
 
     public override void OnRefresh()
@@ -17,7 +17,7 @@ public class ConSenseDanger : Timebuff
     {
         return SpriteSheet.Get(source.alias);
     }
-    
+
     public override void Tick()
     {
         foreach (Card card in owner.currentZone.map.Cards.Where(card => card.trait is TraitSwitch))

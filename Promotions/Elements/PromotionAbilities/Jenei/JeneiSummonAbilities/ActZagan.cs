@@ -6,7 +6,7 @@ namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
 /// <summary>
 ///     Impact. Explosive axe strike. Applies PV Break of 50% to all enemies.
 /// </summary>
-public class ActZagan: JeneiSummonSequence
+public class ActZagan : JeneiSummonSequence
 {
     public override float SummonMultiplier => 0.06F;
 

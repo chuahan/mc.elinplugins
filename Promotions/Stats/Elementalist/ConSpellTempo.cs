@@ -15,7 +15,7 @@ public class ConSpellTempo : Timebuff
     {
         return SpriteSheet.Get(source.alias);
     }
-    
+
     public override void Tick()
     {
         // Recover 2% mana per stack, topping at 20% a turn mana at max stacks.

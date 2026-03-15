@@ -5,7 +5,6 @@ using Cwl.Helper.Extensions;
 using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Elements.PromotionAbilities.Elementalist;
-using PromotionMod.Elements.PromotionFeats;
 using PromotionMod.Stats;
 using PromotionMod.Stats.AdvCombatSkills;
 using PromotionMod.Stats.Jenei;
@@ -48,17 +47,17 @@ public class ActEffectPatches
                     bool isPowerful = tc.IsPowerful;
                     string conditionAlias = actRef.n1;
                     if (conditionAlias == "ConSuffocation") power = power * 2 / 3;
-                    
+
                     int debuffResist = tc.WIL * (isPowerful ? 20 : 5);
                     ConHolyVeil holyVeil = targetChara.GetCondition<ConHolyVeil>();
                     if (holyVeil != null) debuffResist += holyVeil.power * 5;
-                    
+
                     if (EClass.rnd(power) < debuffResist / EClass.sources.stats.alias[conditionAlias].hexPower && EClass.rnd(10) != 0)
                     {
                         if (EClass.rnd(10) != 0) // This is a somewhat stripped down version of the original Debuff with this extra if statement.
                         {
                             tc.Say("debuff_resist", tc);
-                            return false;   
+                            return false;
                         }
                     }
                     targetChara.AddCondition(Condition.Create(conditionAlias, power, delegate(Condition con)
@@ -78,7 +77,11 @@ public class ActEffectPatches
             }
 
             // Elementalist - Track Spellcasts
-            if (chara.HasElement(Constants.FeatElementalist) && actRef.aliasEle != null && !actRef.aliasEle.IsEmpty() && (actRef.act is not ActElementalFury && actRef.act is not ActElementalExtinction))
+            if (chara.HasElement(Constants.FeatElementalist) &&
+                actRef.aliasEle != null &&
+                !actRef.aliasEle.IsEmpty() &&
+                actRef.act is not ActElementalFury &&
+                actRef.act is not ActElementalExtinction)
             {
                 int element = Constants.ElementIdLookup[actRef.aliasEle];
                 ConElementalist? elementalist = chara.GetCondition<ConElementalist>() ?? chara.AddCondition<ConElementalist>() as ConElementalist;
@@ -194,12 +197,20 @@ public class ActEffectPatches
                                     Msg.Nerun($"Starting Power: {power}");
                                     power += actRef.act.GetPower(Act.TC) / 2;
                                     // If Rend Heaven was activated, snapshot the opponents stats, average it and apply it as power.
-                                    int attributesBorrowed = (Act.TC.Evalue(70) + Act.TC.Evalue(71) + Act.TC.Evalue(72) + Act.TC.Evalue(73) + Act.TC.Evalue(74) + Act.TC.Evalue(75) + Act.TC.Evalue(76) + Act.TC.Evalue(77)) / 8;
+                                    int attributesBorrowed = (Act.TC.Evalue(70) +
+                                                              Act.TC.Evalue(71) +
+                                                              Act.TC.Evalue(72) +
+                                                              Act.TC.Evalue(73) +
+                                                              Act.TC.Evalue(74) +
+                                                              Act.TC.Evalue(75) +
+                                                              Act.TC.Evalue(76) +
+                                                              Act.TC.Evalue(77)) /
+                                                             8;
                                     Act.CC.AddCondition<ConRendHeaven>(attributesBorrowed);
                                     Msg.Nerun($"Stole Power: {power}");
                                 }
                             }
-                        }   
+                        }
                     }
                 }
             }

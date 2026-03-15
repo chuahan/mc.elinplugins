@@ -10,23 +10,23 @@ namespace PromotionMod.Stats;
 public abstract class ConAura : BaseBuff
 {
 
-    [JsonProperty(PropertyName = "T")] public int TriggerTick;
-
     public enum AuraType
     {
         Friendly,
         Foe,
-        Both,
+        Both
     }
+
+    [JsonProperty(PropertyName = "T")] public int TriggerTick;
 
     public override bool TimeBased => true;
 
     public virtual float AuraRadius => 3F;
-    
+
     public virtual AuraType AuraTarget => AuraType.Friendly;
 
     public virtual int IdAbility => -1;
-    
+
     public virtual bool TimedAura => false;
 
     public virtual int TriggerDelay => 0;
@@ -35,15 +35,15 @@ public abstract class ConAura : BaseBuff
     {
         return SpriteSheet.Get(source.alias);
     }
-    
+
     public virtual void ApplyFriendly(Chara target)
     {
 
     }
-    
+
     public virtual void ApplyFoe(Chara target)
     {
-        
+
     }
 
     public override void Tick()
@@ -62,15 +62,15 @@ public abstract class ConAura : BaseBuff
 
         // Reset to 0 and trigger effects.
         TriggerTick = 0;
-        
+
         // If there's an ability attached, level up the related skill.
         Element element = owner.elements.GetElement(IdAbility);
         if (element != null)
         {
             owner.elements.ModExp(element.id, 20f);
-            this.power = element.GetPower(owner); // Refresh the live power from the ability
+            power = element.GetPower(owner); // Refresh the live power from the ability
         }
-        
+
         (List<Chara> friendlies, List<Chara> enemies) = HelperFunctions.GetOrganizedCharasWithinRadius(CC.pos, AuraRadius, CC, true);
         switch (AuraTarget)
         {

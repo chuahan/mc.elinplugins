@@ -23,7 +23,7 @@ public class TraitArtificerToolCurse : TraitArtificerTool
 
     public virtual void MarkMapHighlights(bool shouldHighlight, Point target)
     {
-        EClass._map.ForeachSphere(target.x, target.z, EffectRadius, delegate(Point p)
+        _map.ForeachSphere(target.x, target.z, EffectRadius, delegate(Point p)
         {
             if (!p.HasBlock && shouldHighlight)
             {
@@ -31,7 +31,7 @@ public class TraitArtificerToolCurse : TraitArtificerTool
             }
         });
     }
-    
+
     public override bool ArtificerToolEffect(Chara cc, Point pos, int power)
     {
         List<Chara> targets = HelperFunctions.GetCharasWithinRadius(pos, EffectRadius, cc, false, false);

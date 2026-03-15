@@ -8,7 +8,7 @@ public class ConJealousy : Timebuff
     {
         return SpriteSheet.Get(source.alias);
     }
-    
+
     public override void Tick()
     {
         foreach (Chara chara in HelperFunctions.GetCharasWithinRadius(Owner.pos, 4F, Owner, true, true))
@@ -21,7 +21,7 @@ public class ConJealousy : Timebuff
                 }
             }
         }
-        
+
         base.Tick();
     }
 }

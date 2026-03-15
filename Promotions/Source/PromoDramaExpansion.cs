@@ -8,7 +8,7 @@ namespace PromotionMod.Source;
 internal class PromoDramaExpansion : DramaOutcome
 {
     private const int KumiBookPoints = 50;
-    
+
     private static bool SetPromoFlag(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
         // Set Affinity Flags
@@ -18,7 +18,7 @@ internal class PromoDramaExpansion : DramaOutcome
 
         // Set Deciphering Status
         PromoDramaExpansion.SetDecipheringStatus();
-        
+
         // Set Lailah Quest Requirements:
         //EClass.player.dialogFlags["lailahFriendship1Available"];
         //EClass.player.dialogFlags["lailahFriendship2Available"];
@@ -28,21 +28,21 @@ internal class PromoDramaExpansion : DramaOutcome
         //EClass.player.dialogFlags["lailahFriendship2Complete"];
         //EClass.player.dialogFlags["lailahFriendship3Complete"];
         //EClass.player.dialogFlags["lailahFriendship4Complete"];
-                
+
         // Lailah Friendship Quests
         // Reach Friendship 50 To Trigger lailahFriendship1.
         // Wait 1 day
         // Trigger lailahFriendship1Followup.
-        
+
         // Reach Friendship 50 to trigger lailahFriendship2.
-        
+
         // Complete Minari's Questline.
         // Trigger Minari's Golem Search Questline.
         // Talk to Vyers
         // Reach Friendship 75 To trigger lailahFriendship3.
-        
+
         // Talk to either Minari OR Vyers to trigger the laliahFriendship4
-        
+
         return true;
     }
 
@@ -53,33 +53,33 @@ internal class PromoDramaExpansion : DramaOutcome
         if (!manualDeciphered)
         {
             EClass.player.dialogFlags.TryGetValue("lailahDeciphering", out int decipheringProgress);
-            EClass.player.dialogFlags[$"lailahDecipherStatus1"] = 0;
-            EClass.player.dialogFlags[$"lailahDecipherStatus2"] = 0;
-            EClass.player.dialogFlags[$"lailahDecipherStatus3"] = 0;
-            EClass.player.dialogFlags[$"lailahDecipherStatus4"] = 0;
+            EClass.player.dialogFlags["lailahDecipherStatus1"] = 0;
+            EClass.player.dialogFlags["lailahDecipherStatus2"] = 0;
+            EClass.player.dialogFlags["lailahDecipherStatus3"] = 0;
+            EClass.player.dialogFlags["lailahDecipherStatus4"] = 0;
             switch (decipheringProgress)
             {
                 case >= 75:
-                    EClass.player.dialogFlags[$"lailahDecipherStatus4"] = 1;
+                    EClass.player.dialogFlags["lailahDecipherStatus4"] = 1;
                     break;
                 case >= 50:
-                    EClass.player.dialogFlags[$"lailahDecipherStatus3"] = 1;
+                    EClass.player.dialogFlags["lailahDecipherStatus3"] = 1;
                     break;
                 case >= 25:
-                    EClass.player.dialogFlags[$"lailahDecipherStatus2"] = 1;
+                    EClass.player.dialogFlags["lailahDecipherStatus2"] = 1;
                     break;
                 default:
-                    EClass.player.dialogFlags[$"lailahDecipherStatus1"] = 1;
+                    EClass.player.dialogFlags["lailahDecipherStatus1"] = 1;
                     break;
             }
         }
         else
         {
-            EClass.player.dialogFlags[$"lailahDecipherStatus1"] = 0;
-            EClass.player.dialogFlags[$"lailahDecipherStatus2"] = 0;
-            EClass.player.dialogFlags[$"lailahDecipherStatus3"] = 0;
-            EClass.player.dialogFlags[$"lailahDecipherStatus4"] = 0;
-            
+            EClass.player.dialogFlags["lailahDecipherStatus1"] = 0;
+            EClass.player.dialogFlags["lailahDecipherStatus2"] = 0;
+            EClass.player.dialogFlags["lailahDecipherStatus3"] = 0;
+            EClass.player.dialogFlags["lailahDecipherStatus4"] = 0;
+
             EClass.player.dialogFlags.TryGetValue("lailahWorking", out int lailahWorking);
             if (lailahWorking == 1)
             {
@@ -87,11 +87,11 @@ internal class PromoDramaExpansion : DramaOutcome
                 if (lailahDecipheringTimer >= 1 && EClass.world.date.GetRaw() > lailahDecipheringTimer)
                 {
                     EClass.player.dialogFlags["lailahManualReady"] = 1;
-                }   
+                }
             }
         }
     }
-    
+
     private static void SetAffinityFlags(string charaId)
     {
         Chara dramaCharacter = game.cards.globalCharas.Values.FirstOrDefault(gc => gc.id == charaId);
@@ -107,11 +107,11 @@ internal class PromoDramaExpansion : DramaOutcome
             };
         }
     }
-    
+
     private static bool CheckManualMaterials(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
         EClass.player.dialogFlags.TryGetValue("lailahDeciphering", out int decipheringProgress);
-                
+
         // Search in Inventory
         List<Thing> allStorage = new List<Thing>();
         allStorage.AddRange(EClass.pc.things);
@@ -133,7 +133,7 @@ internal class PromoDramaExpansion : DramaOutcome
         {
             allStorage.AddRange(toolBeltContainer.things);
         }
-        
+
         for (int i = 0; i < allStorage.Count; i++)
         {
             Thing currentItem = allStorage[i];
@@ -154,7 +154,7 @@ internal class PromoDramaExpansion : DramaOutcome
                     decipheringProgress++;
                 }
             }
-            
+
             // Kumi books are worth 50 each.
             if (currentItem is { id: "book_kumiromi", IsIdentified: true })
             {
@@ -172,19 +172,19 @@ internal class PromoDramaExpansion : DramaOutcome
                     decipheringProgress += 50;
                 }
             }
-            
+
             if (decipheringProgress >= 100) break;
         }
 
-        EClass.player.dialogFlags[$"lailahDeciphering"] = decipheringProgress;
+        EClass.player.dialogFlags["lailahDeciphering"] = decipheringProgress;
         PromoDramaExpansion.SetDecipheringStatus();
         return decipheringProgress >= 100;
     }
-    
+
     private static bool SetEventTimer(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
         // Store the current time onto the player.
-        parameters.Requires(out var timerName, out var timerLength);
+        parameters.Requires(out string timerName, out string timerLength);
         EClass.player.dialogFlags[timerName] = EClass.world.date.GetRaw() + timerLength.AsInt(4320); // 3 Days, 1440 turns a day.
         return false;
     }
@@ -212,7 +212,7 @@ internal class PromoDramaExpansion : DramaOutcome
         {
             allStorage.AddRange(toolBeltContainer.things);
         }
-        
+
         bool hasBookMaterial = !allStorage.Any(thing => thing.id is "book_ancient" or "book_kumiromi");
         return hasBookMaterial;
     }

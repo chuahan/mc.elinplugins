@@ -57,6 +57,8 @@ public class FeatHexer : PromotionFeat
         Constants.ActRevengeId
     };
 
+    public override string JobRequirement => "witch";
+
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActTraumatizeId, 50, false);
@@ -64,11 +66,9 @@ public class FeatHexer : PromotionFeat
         c.ability.Add(Constants.ActRevengeId, 50, false);
     }
 
-    public override string JobRequirement => "witch";
-    
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 
     public static void ApplyCondition(Chara target, Chara caster, int power, bool force)

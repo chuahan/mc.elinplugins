@@ -5,7 +5,7 @@ namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
 /// <summary>
 ///     Impact. Inflicts heavy poison.
 /// </summary>
-public class ActHaures: JeneiSummonSequence
+public class ActHaures : JeneiSummonSequence
 {
     public override float SummonMultiplier => 0.15F;
 

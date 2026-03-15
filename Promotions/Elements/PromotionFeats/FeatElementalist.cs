@@ -42,6 +42,8 @@ public class FeatElementalist : PromotionFeat
         Constants.ActElementalExtinctionId
     };
 
+    public override string JobRequirement => "wizard";
+
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActElementalFuryId, 50, false);
@@ -51,11 +53,9 @@ public class FeatElementalist : PromotionFeat
             c.ability.Add(50500 + x, 75, false);
         }
     }
-    
-    public override string JobRequirement => "wizard";
-    
+
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 }

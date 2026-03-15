@@ -1,9 +1,6 @@
 using HarmonyLib;
 using PromotionMod.Common;
-using PromotionMod.Stats;
 using PromotionMod.Stats.Artificer;
-using PromotionMod.Stats.Machinist;
-using PromotionMod.Stats.Sharpshooter;
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(ActRide))]

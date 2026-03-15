@@ -17,7 +17,7 @@ public class ConElementalAttunement : BaseBuff
     {
         return SpriteSheet.Get(source.alias);
     }
-    
+
     public override void OnStart()
     {
         StoredDamage = 0;
@@ -29,10 +29,10 @@ public class ConElementalAttunement : BaseBuff
     {
         if (StoredDamage > 0) StoredDamage = (int)(StoredDamage * 0.95F);
     }
-    
+
     public override void OnWriteNote(List<string> list)
     {
-        list.Add("hintElementalAttunementElement".lang(EClass.sources.elements.map[AttunedElement].GetName()));
+        list.Add("hintElementalAttunementElement".lang(sources.elements.map[AttunedElement].GetName()));
         list.Add("hintElementalAttunementPower".lang(StoredDamage.ToString()));
     }
 }

@@ -5,8 +5,11 @@ public class ConAfterimage : BaseBuff
 {
     public override ConditionType Type => ConditionType.Buff;
 
-    public override Sprite GetSprite() => SpriteSheet.Get(source.alias);
-    
+    public override Sprite GetSprite()
+    {
+        return SpriteSheet.Get(source.alias);
+    }
+
     public override void Tick()
     {
         if (value <= 0)

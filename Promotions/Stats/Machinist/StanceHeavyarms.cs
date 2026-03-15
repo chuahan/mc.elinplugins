@@ -12,7 +12,7 @@ public class StanceHeavyarms : BaseStance
     {
         return SpriteSheet.Get(source.alias);
     }
-    
+
     public override void OnStartOrStack()
     {
         owner.RecalculateFOV();

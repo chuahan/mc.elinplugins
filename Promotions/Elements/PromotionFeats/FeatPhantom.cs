@@ -20,9 +20,7 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     You can trigger multiple Phantom Finishers in a single skill proc.
 ///     Phantom Finishers will add additional effects to the Skill.
 ///     Phantom Finishers will restore stamina and MP.
-///
 ///     TODO: Bench for now. We'll leave the Scion Classes as a secret unlock later or something.
-///  
 /// </summary>
 public class FeatPhantom : PromotionFeat
 {
@@ -45,12 +43,12 @@ public class FeatPhantom : PromotionFeat
 
     protected override bool Requirement()
     {
-        return (EClass.pc != null && EClass.pc.GetFlagValue(Constants.PhantomPromotionUnlockedFlag) > 0);
+        return pc != null && pc.GetFlagValue(Constants.PhantomPromotionUnlockedFlag) > 0;
     }
-    
+
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 
     public static void AddPhantomMarks(Chara target, int count)

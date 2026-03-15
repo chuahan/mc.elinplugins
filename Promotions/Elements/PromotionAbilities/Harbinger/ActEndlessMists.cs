@@ -10,10 +10,10 @@ namespace PromotionMod.Elements.PromotionAbilities.Harbinger;
 /// </summary>
 public class ActEndlessMists : Ability
 {
-    public override bool ShowMapHighlight => true;
-    
+
     private float _effectRadius = 5F;
-    
+    public override bool ShowMapHighlight => true;
+
     public override bool CanPerform()
     {
         if (CC.Evalue(Constants.FeatHarbinger) == 0)
@@ -35,27 +35,27 @@ public class ActEndlessMists : Ability
             }
             foreach (Point item in list)
             {
-                item.SetHighlight(8);   
+                item.SetHighlight(8);
             }
         }
         */
         return basePerform;
     }
-    
+
     public override void OnMarkMapHighlights()
     {
-        if (!EClass.scene.mouseTarget.pos.IsValid)
+        if (!scene.mouseTarget.pos.IsValid)
         {
             return;
         }
-        List<Point> list = EClass._map.ListPointsInCircle(EClass.scene.mouseTarget.pos, _effectRadius, true, true);
+        List<Point> list = _map.ListPointsInCircle(scene.mouseTarget.pos, _effectRadius);
         if (list.Count == 0)
         {
-            list.Add(Act.CC.pos.Copy());
+            list.Add(CC.pos.Copy());
         }
         foreach (Point item in list)
         {
-            item.SetHighlight(8);   
+            item.SetHighlight(8);
         }
     }
 

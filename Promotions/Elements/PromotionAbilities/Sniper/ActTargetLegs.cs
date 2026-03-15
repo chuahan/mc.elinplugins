@@ -17,7 +17,7 @@ public class ActTargetLegs : Ability
             if (CC.IsPC) Msg.Say("sniper_needrangedweapon".langGame());
             return false;
         }
-        
+
         return base.CanPerform() && ACT.Ranged.CanPerform();
     }
 
@@ -26,7 +26,7 @@ public class ActTargetLegs : Ability
         Cost convertToMp = base.GetCost(c);
         convertToMp.type = CostType.MP;
         return convertToMp;
-    } 
+    }
 
     public override bool Perform()
     {

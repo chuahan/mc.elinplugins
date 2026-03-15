@@ -45,7 +45,7 @@ public class AttackProcessPatches
 
         return true;
     }
-    
+
     [HarmonyPatch(nameof(AttackProcess.CalcHit))]
     [HarmonyPostfix]
     internal static void CalcHitPostfixPatch(AttackProcess __instance, ref bool __result)
@@ -85,12 +85,13 @@ public class AttackProcessPatches
         // Sharpshooter - Charged Chamber applies the mana consumed (power) as a damage multiplier. Caps at 5x damage.
         // BALANCE: This might... be a little too strong later?
         if (Act.CC != null &&
-            Act.CC.HasCondition<ConChargedChamber>() && __instance.IsRanged)
+            Act.CC.HasCondition<ConChargedChamber>() &&
+            __instance.IsRanged)
         {
             ConChargedChamber charge = Act.CC.GetCondition<ConChargedChamber>();
             dmgMulti += Math.Max(charge.power / 100F, 5F);
         }
-        
+
         // Combat Skill Activations:
         if (Act.TC != null && Act.TC.isChara && Act.CC != null)
         {
@@ -107,7 +108,8 @@ public class AttackProcessPatches
                         dmgMulti *= 3;
                     }
                 }
-            } else if (Act.CC.HasElement(Constants.FeatLunaId))
+            }
+            else if (Act.CC.HasElement(Constants.FeatLunaId))
             {
                 // Luna - 25%
                 if (EClass.rnd(4) == 0)
@@ -126,7 +128,8 @@ public class AttackProcessPatches
                         Act.TC.Chara.AddCondition<ConLuna>(force: true);
                     }
                 }
-            } else if (Act.CC.HasElement(Constants.FeatLunaPlusId))
+            }
+            else if (Act.CC.HasElement(Constants.FeatLunaPlusId))
             {
                 // Luna+ - 100% Chance
                 Act.CC.Say("luna_activation".langGame(Act.CC.NameSimple));
@@ -141,7 +144,8 @@ public class AttackProcessPatches
                     // Luna is applied to the enemy to halve their PV.
                     Act.TC.Chara.AddCondition<ConLuna>(force: true);
                 }
-            } else if (Act.CC.HasElement(Constants.FeatSolId))
+            }
+            else if (Act.CC.HasElement(Constants.FeatSolId))
             {
                 // Sol - 30%
                 if (EClass.rnd(3) == 0)
@@ -158,7 +162,8 @@ public class AttackProcessPatches
                         Act.CC.AddCondition<ConSol>();
                     }
                 }
-            } else if (Act.CC.HasElement(Constants.FeatRendHeavenId))
+            }
+            else if (Act.CC.HasElement(Constants.FeatRendHeavenId))
             {
                 // Rend Heaven - 50%
                 if (EClass.rnd(2) == 0)
@@ -173,7 +178,15 @@ public class AttackProcessPatches
                     else
                     {
                         // If Rend Heaven was activated, snapshot the opponents stats, average it and apply it as power.
-                        int attributesBorrowed = (Act.TC.Evalue(70) + Act.TC.Evalue(71) + Act.TC.Evalue(72) + Act.TC.Evalue(73) + Act.TC.Evalue(74) + Act.TC.Evalue(75) + Act.TC.Evalue(76) + Act.TC.Evalue(77)) / 8;
+                        int attributesBorrowed = (Act.TC.Evalue(70) +
+                                                  Act.TC.Evalue(71) +
+                                                  Act.TC.Evalue(72) +
+                                                  Act.TC.Evalue(73) +
+                                                  Act.TC.Evalue(74) +
+                                                  Act.TC.Evalue(75) +
+                                                  Act.TC.Evalue(76) +
+                                                  Act.TC.Evalue(77)) /
+                                                 8;
                         Act.CC.AddCondition<ConRendHeaven>(attributesBorrowed);
                     }
                 }
@@ -188,9 +201,9 @@ public class AttackProcessPatches
     {
         Card target = __instance.TC;
         Chara originChara = __instance.CC;
-        
+
         ILookup<Type, Condition> originConditions = originChara.conditions.ToLookup(c => c.GetType());
-        
+
         // Berserker - Lifebreak - On hit, inflict additional damage based on missing HP of the user.
         if (originConditions.Contains(typeof(ConLifebreakAttack)) &&
             !subAttack &&
@@ -200,11 +213,11 @@ public class AttackProcessPatches
             {
                 int damage = originChara.Chara.MaxHP - originChara.Chara.hp;
                 damage = HelperFunctions.SafeMultiplier(damage, 1.3F);
-                target.Chara.DamageHP(damage, AttackSource.Melee, originChara);   
+                target.Chara.DamageHP(damage, AttackSource.Melee, originChara);
             }
             originConditions[typeof(ConLifebreakAttack)].Single().Kill();
         }
-        
+
         // Machinist - Heavyarms mode followup rockets.
         if (originConditions.Contains(typeof(StanceHeavyarms)) &&
             !subAttack &&
@@ -214,7 +227,7 @@ public class AttackProcessPatches
             Condition heavyArms = originConditions[typeof(StanceHeavyarms)].Single();
             __instance.CC.Say("machinist_heavyarms_followup".langGame(), Act.CC);
             __instance.CC.PlaySound("missile");
-            ActEffect.ProcAt(EffectId.Rocket, (heavyArms.power / 4), BlessedState.Normal, __instance.CC, null, __instance.TC.pos, true, new ActRef
+            ActEffect.ProcAt(EffectId.Rocket, heavyArms.power / 4, BlessedState.Normal, __instance.CC, null, __instance.TC.pos, true, new ActRef
             {
                 origin = __instance.CC.Chara,
                 aliasEle = "eleImpact"
@@ -224,8 +237,8 @@ public class AttackProcessPatches
         // Ranger - Gimmick Coatings. Does not work on Canes
         if (originConditions.Contains(typeof(ConGimmickCoating)) &&
             !subAttack &&
-              __instance is { IsRanged: true, toolRange: not null } &&
-              __instance.weapon.trait is not TraitToolRangeCane)
+            __instance is { IsRanged: true, toolRange: not null } &&
+            __instance.weapon.trait is not TraitToolRangeCane)
         {
             ConGimmickCoating coating = (ConGimmickCoating)originConditions[typeof(ConGimmickCoating)].Single();
             if (__instance is { hit: true, TC.isChara: true })
@@ -290,7 +303,7 @@ public class AttackProcessPatches
             }
             coating.Mod(-1);
         }
-        
+
         // Sentinel - Shield Bash
         if (originConditions.Contains(typeof(ConShieldSmiteAttack)) &&
             !subAttack &&
@@ -365,7 +378,7 @@ public class AttackProcessPatches
                 orderSword.FollowUpAvailable = !followUpPerformed;
             }
         }
-        
+
         // Spellblade - Crushing Strike will attack a random body part.
         // Get the body parts of the target.
         if (originConditions.Contains(typeof(ConCrushingStrikeAttack)) &&
@@ -377,7 +390,7 @@ public class AttackProcessPatches
                 int power = originConditions[typeof(ConCrushingStrikeAttack)].Single().power;
                 BodySlot partTarget = target.Chara.body.slots.RandomItem();
                 int breakAmount = (int)HelperFunctions.SigmoidScaling(power, 10, 25);
-                
+
                 // Depending on the Body Part, attempt to inflict different condition(s).
                 // TODO Text: Actually add this.
                 originChara.Say("spellblade_crushing_strike".langGame(originChara.NameSimple, target.Chara.NameSimple, partTarget.name));
@@ -427,22 +440,22 @@ public class AttackProcessPatches
                         break;
                 }
             }
-            
+
             originConditions[typeof(ConCrushingStrikeAttack)].Single().Kill();
         }
 
         // Lethality - 50% chance to instant kill non boss targets.
-        if (Act.TC != null
-            && Act.TC.isChara
-            && Act.CC != null
-            && !Act.TC.Chara.IsBoss()
-            && __instance is { crit: true }
-            && Act.CC.HasElement(Constants.FeatLethalityId)
-            && EClass.rnd(2) == 0 )
+        if (Act.TC != null &&
+            Act.TC.isChara &&
+            Act.CC != null &&
+            !Act.TC.Chara.IsBoss() &&
+            __instance is { crit: true } &&
+            Act.CC.HasElement(Constants.FeatLethalityId) &&
+            EClass.rnd(2) == 0)
         {
             Act.CC.Say("lethality_activation".langGame(Act.CC.NameSimple));
             Act.CC.PlaySound("rush");
-            
+
             // Nihil can deny this ability
             if (!HelperFunctions.NihilActivated(originChara))
             {

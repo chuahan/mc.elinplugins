@@ -17,15 +17,15 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Reduces the cooldown of Parry to 0 (Recharges it instantly)
 ///     Refunds the Mana cost.
 ///     Summons a Holy Sword Bit.
-///     Passive - Wake of the Trailblazer - Every time Light wave hits an enemy, or an attack is parried, gain stacks of Class condition
+///     Passive - Wake of the Trailblazer - Every time Light wave hits an enemy, or an attack is parried, gain stacks of
+///     Class condition
 ///     Etoile takes reduced damage per stack.
-///
 ///     TODO: Rename to Holy Knight
-///         Vanguard Remains the Same
-///         Light Wave -> Spearhead
-///         Rename Parry -> Deflection
-///         Add Sol -> Add condition to heal 30% damage as life.
-///         Add Aegis as a passive - Reduce incoming damage by 50% with a chance.
+///     Vanguard Remains the Same
+///     Light Wave -> Spearhead
+///     Rename Parry -> Deflection
+///     Add Sol -> Add condition to heal 30% damage as life.
+///     Add Aegis as a passive - Reduce incoming damage by 50% with a chance.
 /// </summary>
 public class FeatEtoile : PromotionFeat
 {
@@ -48,11 +48,11 @@ public class FeatEtoile : PromotionFeat
 
     protected override bool Requirement()
     {
-        return (EClass.pc != null && EClass.pc.GetFlagValue(Constants.EtoilePromotionUnlockedFlag) > 0);
+        return pc != null && pc.GetFlagValue(Constants.EtoilePromotionUnlockedFlag) > 0;
     }
-    
+
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 }

@@ -4,23 +4,25 @@ namespace PromotionMod.Elements.PromotionFeats;
 
 /// <summary>
 ///     The Holy Knight is a defensive Paladin promotion that rushes the enemy with a host of Holy attacks.
-///     Boasting impressive survivability, they can deflect attacks while rushing down the enemy, making space between allies and their enemies.
-/// 
+///     Boasting impressive survivability, they can deflect attacks while rushing down the enemy, making space between
+///     allies and their enemies.
 ///     Skill - Vanguard Stance - A stance that redirects all damage done to nearby non-summon allies to you. Basically a
 ///     stance wall of flesh.
-///     Skill - Spearhead Charge - Charges through all enemies to a specific point. Knocks them away. For every enemy in the
+///     Skill - Spearhead Charge - Charges through all enemies to a specific point. Knocks them away. For every enemy in
+///     the
 ///     path, does damage and summons a Holy Sword Bit.
 ///     Skill - Deflection - Enter a Deflection state for one turn. If you take damage while you are Deflecting:
 ///     Reduce damage by 100%.
 ///     Reduces the cooldown of Deflection to 0 (Recharges it instantly)
 ///     Summons a Holy Sword Bit.
-///
-///     Skill - Holy Banner - Summons an invulnerable Holy Banner minion for 10 turns on the target tile. Does not move or attack.
-///         Every turn, it will apply effects within 3 radius.
-///         Any Enemies within range will be hit with Holy Damage with a chance to stun. This power is doubled if they are Undead or Demons
-///         Any allies within range (Including the Holy Knight) will be granted Protection.
-/// 
-///     Passive - Heavenly Host - Every time you summon a Holy Sword Bit, you will gain a stack of 2% damage reduction capping at 10 stacks.
+///     Skill - Holy Banner - Summons an invulnerable Holy Banner minion for 10 turns on the target tile. Does not move or
+///     attack.
+///     Every turn, it will apply effects within 3 radius.
+///     Any Enemies within range will be hit with Holy Damage with a chance to stun. This power is doubled if they are
+///     Undead or Demons
+///     Any allies within range (Including the Holy Knight) will be granted Protection.
+///     Passive - Heavenly Host - Every time you summon a Holy Sword Bit, you will gain a stack of 2% damage reduction
+///     capping at 10 stacks.
 /// </summary>
 public class FeatHolyKnight : PromotionFeat
 {
@@ -32,8 +34,10 @@ public class FeatHolyKnight : PromotionFeat
         Constants.StVanguardId,
         Constants.ActSpearheadId,
         Constants.ActDeflectionId,
-        Constants.ActHolyBannerId,
+        Constants.ActHolyBannerId
     };
+
+    public override string JobRequirement => "paladin";
 
     protected override void ApplyInternalNPC(Chara c)
     {
@@ -42,11 +46,9 @@ public class FeatHolyKnight : PromotionFeat
         c.ability.Add(Constants.ActDeflectionId, 75, false);
         c.ability.Add(Constants.ActHolyBannerId, 25, false);
     }
-    
-    public override string JobRequirement => "paladin";
-    
+
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 }

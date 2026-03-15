@@ -25,6 +25,8 @@ public class FeatDruid : PromotionFeat
         Constants.ActLivingArmorId
     };
 
+    public override string JobRequirement => "farmer";
+
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActSowWarmSeedsId, 60, false);
@@ -32,11 +34,9 @@ public class FeatDruid : PromotionFeat
         c.ability.Add(Constants.SpSummonTreeEntId, 80, false);
         c.ability.Add(Constants.ActLivingArmorId, 80, true);
     }
-    
-    public override string JobRequirement => "farmer";
-    
+
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 }

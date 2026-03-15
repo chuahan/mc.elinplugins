@@ -86,7 +86,10 @@ public class ActElementalExtinction : Ability
                 Shaker.ShakeCam("ball");
             }
             EClass.Wait(1f, CC);
-            ActEffect.DamageEle(CC, EffectId.Meteor, power, eleObj, new List<Point>{TC.pos}, actRef, nameof(ActElementalExtinction));
+            ActEffect.DamageEle(CC, EffectId.Meteor, power, eleObj, new List<Point>
+            {
+                TC.pos
+            }, actRef, nameof(ActElementalExtinction));
             //ActEffect.ProcAt(EffectId.Meteor, power, BlessedState.Normal, CC, TC, TC.pos, true, actRef);
 
             // Consume an orb.

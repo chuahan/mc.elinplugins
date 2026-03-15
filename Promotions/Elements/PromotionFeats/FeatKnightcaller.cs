@@ -29,17 +29,17 @@ public class FeatKnightcaller : PromotionFeat
         Constants.ActSummonKnightId
     };
 
+    public override string JobRequirement => "pianist";
+
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActSpiritRageId, 75, false);
         c.ability.Add(Constants.ActSpiritRallyId, 75, false);
         c.ability.Add(Constants.ActSummonKnightId, 80, false);
     }
-    
-    public override string JobRequirement => "pianist";
-    
+
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 }

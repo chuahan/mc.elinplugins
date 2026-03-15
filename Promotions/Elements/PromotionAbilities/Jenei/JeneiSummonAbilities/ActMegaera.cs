@@ -6,7 +6,7 @@ namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
 /// <summary>
 ///     Fire. Sword Rain. Boosts all allies attack power by 12.5%
 /// </summary>
-public class ActMegaera: JeneiSummonSequence
+public class ActMegaera : JeneiSummonSequence
 {
     public override float SummonMultiplier => 0.06F;
 

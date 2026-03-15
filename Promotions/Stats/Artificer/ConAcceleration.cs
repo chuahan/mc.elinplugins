@@ -7,7 +7,7 @@ public class ConAcceleration : BaseBuff
     {
         return SpriteSheet.Get(source.alias);
     }
-    
+
     public override void Tick()
     {
         // Having this condition ticks cooldowns faster.

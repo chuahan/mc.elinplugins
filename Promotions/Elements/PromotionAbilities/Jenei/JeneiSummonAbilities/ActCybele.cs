@@ -5,7 +5,7 @@ namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
 /// <summary>
 ///     Impact damage.
 /// </summary>
-public class ActCybele: JeneiSummonSequence
+public class ActCybele : JeneiSummonSequence
 {
     public override float SummonMultiplier => 0.12F;
 

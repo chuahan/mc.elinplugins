@@ -44,7 +44,7 @@ public class ActJeneiDragonFume : Ability
         {
             act = this,
             aliasEle = Constants.ElementAliasLookup[Constants.EleFire],
-            origin = CC,
+            origin = CC
         });
         return true;
     }

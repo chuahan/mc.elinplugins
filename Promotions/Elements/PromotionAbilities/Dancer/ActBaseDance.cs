@@ -2,8 +2,8 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Dancer;
 namespace PromotionMod.Elements.PromotionAbilities.Dancer;
 
-public abstract class ActBaseDance<TStance> : Act 
-        where TStance: StanceDance, new()
+public abstract class ActBaseDance<TStance> : Act
+        where TStance : StanceDance, new()
 {
     public override bool CanPerform()
     {
@@ -16,11 +16,11 @@ public abstract class ActBaseDance<TStance> : Act
         if (CC.isRestrained || CC.IsDisabled) return false;
         return base.CanPerform();
     }
-    
+
     public override bool Perform()
     {
         bool danceStopped = false;
-        
+
         // Remove any other dances currently being performed.
         for (int i = CC.conditions.Count - 1; i >= 0; i--)
         {

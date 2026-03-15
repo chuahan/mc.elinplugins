@@ -13,15 +13,15 @@ public class TraitBookForgetCombat : TraitScroll
     {
         ForgetCombatSkill(c);
     }
-    
-    
+
+
     public void ForgetCombatSkill(Chara c)
     {
         // Get the Adv Combat Skill Feat from the Feat Flag.
         int combatSkillFeat = c.GetFlagValue(Constants.AdvancedCombatSkillFlag);
         c.SetFeat(combatSkillFeat, 0, true);
         c.SetFlagValue(Constants.AdvancedCombatSkillFlag, 0);
-        Msg.Say("combatskillforgotten".lang(c.NameSimple, EClass.sources.elements.map[combatSkillFeat].GetName()));
+        Msg.Say("combatskillforgotten".lang(c.NameSimple, sources.elements.map[combatSkillFeat].GetName()));
 
         c.PlaySound("curse");
         c.PlayEffect("aura_heaven");

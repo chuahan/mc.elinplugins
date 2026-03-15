@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using PromotionMod.Common;
 using PromotionMod.Stats.WarCleric;
-using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.WarCleric;
 
 public class ActBlessedArmaments : ActMelee
@@ -26,7 +24,7 @@ public class ActBlessedArmaments : ActMelee
 
     public override bool Perform()
     {
-        CC.AddCondition<ConShiningBlade>(this.GetPower(CC));
+        CC.AddCondition<ConShiningBlade>(GetPower(CC));
         return true;
     }
 }

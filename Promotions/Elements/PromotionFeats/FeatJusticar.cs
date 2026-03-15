@@ -6,31 +6,29 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     The iron fist of judgement. To see a Justicar is to see fear, and to pity the one who broke it.
 ///     Justicars focus on shifting momentum through intimidation and execution.
 ///     They specialize in singling out targets and bringing them down, and breaking enemy morale in the process.
-///
 ///     Justicars will balance between Law (26 to 100) / Neutrality (-25 to 25) / Chaos (-26 to -100)
 ///     Based on their alignment, their abilities will perform differently.
-///         Lawful Justicars tend to be more supportive.
-///         Chaos Justicars strike fear into the hearts of all.
-///         Neutral Justicars will randomly apply one of the two effects.
-/// 
+///     Lawful Justicars tend to be more supportive.
+///     Chaos Justicars strike fear into the hearts of all.
+///     Neutral Justicars will randomly apply one of the two effects.
 ///     Ability - Intimidate - Inflicts Armor break on the target. Also inflicts excommunicate. Inflicts fear on other
 ///     enemies near the target.
-///         Law - Also inflicts armor boost on nearby allies.
-///         Chaos - 
+///     Law - Also inflicts armor boost on nearby allies.
+///     Chaos -
 ///     Ability - Subdue - Inflicts Suppress, and Attack Break on the target. Also inflicts excommunicate.
-///         Law - 
-///         Chaos - 
+///     Law -
+///     Chaos -
 ///     Ability - Condemn - Inflicts Entangle on nearby enemies. For every enemy impacted, Justicar grants their team
 ///     Protection.
-///         Law - 
-///         Chaos - 
+///     Law -
+///     Chaos -
 ///     Flames of Judgement - Justicars will reserve a part of their mana to activate a flaming aura around themselves.
 ///     Justicar gains Regeneration that scales with the spellpower.
 ///     Every turn, the Justicar will take 30% of their maximum health as fire damage. This same damage is also dealt to
 ///     nearby enemies.
 ///     Fire Resistance affects both outgoing and self-damage.
-///         Law - Heals allies in the range for half the outgoing damage.
-///         Chaos - Inflicts Fire Break on enemies.
+///     Law - Heals allies in the range for half the outgoing damage.
+///     Chaos - Inflicts Fire Break on enemies.
 /// </summary>
 public class FeatJusticar : PromotionFeat
 {
@@ -45,6 +43,8 @@ public class FeatJusticar : PromotionFeat
         Constants.StFlamesOfJudgementId
     };
 
+    public override string JobRequirement => "inquisitor";
+
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActIntimidateId, 60, false);
@@ -52,11 +52,9 @@ public class FeatJusticar : PromotionFeat
         c.ability.Add(Constants.ActCondemnId, 60, false);
         c.ability.Add(Constants.StFlamesOfJudgementId, 60, false);
     }
-    
-    public override string JobRequirement => "inquisitor";
-    
+
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 }

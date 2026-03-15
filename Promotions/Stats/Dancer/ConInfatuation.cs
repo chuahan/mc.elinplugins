@@ -8,7 +8,7 @@ public class ConInfatuation : Timebuff
     {
         return SpriteSheet.Get(source.alias);
     }
-    
+
     public override void Tick()
     {
         if (!Owner.IsPC)

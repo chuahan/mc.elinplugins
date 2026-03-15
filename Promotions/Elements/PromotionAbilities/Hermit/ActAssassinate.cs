@@ -13,7 +13,7 @@ public class ActAssassinate : Ability
         }
         // Must have a Target. Target must be marked for death with at least 10 value.
         if (TC == null) return false;
-        
+
         ConMarkedForDeath deathMark = TC.Chara.GetCondition<ConMarkedForDeath>();
         if (deathMark == null || deathMark.value < 10) return false;
         return base.CanPerform();

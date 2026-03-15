@@ -13,7 +13,6 @@ using PromotionMod.Stats.Headhunter;
 using PromotionMod.Stats.Hermit;
 using PromotionMod.Stats.Machinist;
 using PromotionMod.Stats.Necromancer;
-using PromotionMod.Stats.QuestStats;
 using PromotionMod.Stats.Ranger;
 using PromotionMod.Stats.Runeknight;
 using PromotionMod.Stats.Sharpshooter;
@@ -22,7 +21,6 @@ using PromotionMod.Stats.Sovereign;
 using PromotionMod.Stats.WitchHunter;
 using PromotionMod.Trait;
 using PromotionMod.Trait.Artificer;
-using PromotionMod.Trait.Characters;
 using PromotionMod.Trait.Trickster;
 namespace PromotionMod.Patches;
 
@@ -43,7 +41,7 @@ internal class CharaPatches : EClass
         return true;
     }
     */
-    
+
     [HarmonyPatch(nameof(Chara.CanAcceptGift))]
     [HarmonyPrefix]
     internal static bool CanGiftPromotionManual(Chara __instance, ref bool __result, Chara c, Thing t)
@@ -65,7 +63,7 @@ internal class CharaPatches : EClass
                 return false;
             }
         }
-        
+
         if (t is { trait: TraitDemotionManual })
         {
             if (__instance.things.IsFull())
@@ -120,7 +118,7 @@ internal class CharaPatches : EClass
         {
             try
             {
-                __instance.visibleWithTelepathy |= (EClass.pc.HasCondition<ConSenseDanger>() && __instance.IsHostile(EClass.pc));
+                __instance.visibleWithTelepathy |= pc.HasCondition<ConSenseDanger>() && __instance.IsHostile(pc);
             }
             catch (Exception e)
             {
@@ -128,7 +126,7 @@ internal class CharaPatches : EClass
             }
         }
     }
-    
+
     [HarmonyPatch(nameof(Chara.AddCondition), typeof(Condition), typeof(bool))]
     [HarmonyPostfix]
     internal static void AddConditionPostfixPatches(Chara __instance, ref Condition __result, Condition c, bool force)
@@ -194,7 +192,7 @@ internal class CharaPatches : EClass
                 }
             }
         }
-        
+
         // Rune Knight - Warding runes will negate incoming Debuffs.
         ConWardingRune ward = __instance.GetCondition<ConWardingRune>();
         if (ward != null && c.Type == ConditionType.Debuff)
@@ -211,11 +209,11 @@ internal class CharaPatches : EClass
         if (__instance.isChara)
         {
             // Adventurer - Double Loot.
-            if (!__instance.IsPC && !(__instance.IsPCParty || __instance.IsPCFactionMinion) && __instance.IsInActiveZone && EClass.pc.MatchesPromotion(Constants.FeatAdventurer))
+            if (!__instance.IsPC && !(__instance.IsPCParty || __instance.IsPCFactionMinion) && __instance.IsInActiveZone && pc.MatchesPromotion(Constants.FeatAdventurer))
             {
                 __instance.SpawnLoot(origin);
             }
-            
+
             Chara target = __instance.Chara;
 
             if (origin is { Chara: not null, isChara: true })
@@ -227,31 +225,24 @@ internal class CharaPatches : EClass
                 {
                     int healAmount = (int)(originChara.MaxHP * .25F);
                     origin.Say("berserker_revel".langGame(originChara.NameSimple));
-                    HealHpDirect(originChara, healAmount);
+                    CharaPatches.HealHpDirect(originChara, healAmount);
                 }
-                
+
                 // Dread Knight - Heal on Kill
                 if (originChara.MatchesPromotion(Constants.FeatDreadKnight))
                 {
                     int healAmount = (int)(originChara.MaxHP * .1F);
                     origin.Say("dreadknight_lifetaker".langGame(originChara.NameSimple));
-                    HealHpDirect(originChara, healAmount);
+                    CharaPatches.HealHpDirect(originChara, healAmount);
                 }
 
                 // Headhunter - Gain Headhunter stacks on Kill.
                 if (originChara.MatchesPromotion(Constants.FeatHeadhunter))
                 {
-                    if (!originChara.HasCondition<ConHeadhunter>())
-                    {
-                        originChara.AddCondition<ConHeadhunter>(1);
-                    }
-                    else
-                    {
-                        int newStacks = originChara.GetCondition<ConHeadhunter>().power + 1;
-                        originChara.AddCondition<ConHeadhunter>(newStacks);
-                    }
+                    ConHeadhunter headHunter = (ConHeadhunter)(originChara.GetCondition<ConHeadhunter>() ?? originChara.AddCondition<ConHeadhunter>());
+                    headHunter.AddStacks(1);
                 }
-                
+
                 // Headhunter - Steal a buff on kill.
                 if (origin.isChara && originChara.MatchesPromotion(Constants.FeatHeadhunter))
                 {
@@ -266,7 +257,7 @@ internal class CharaPatches : EClass
                 if (target.HasCondition<ConDeadBeckon>())
                 {
                     ConDeadBeckon deadBeckon = target.GetCondition<ConDeadBeckon>();
-                    Chara necromancer = EClass._map.zone.FindChara(deadBeckon.NecromancerUID);
+                    Chara necromancer = _map.zone.FindChara(deadBeckon.NecromancerUID);
 
                     if (necromancer != null) SpSummonSkeleton.SummonSkeleton(necromancer, target.pos, target.LV, 10, target.LV);
                 }
@@ -283,7 +274,7 @@ internal class CharaPatches : EClass
                     originChara.HealHP(lifeHeal, HealSource.HOT);
                     originChara.mana.Mod(manaHeal);
                     originChara.stamina.Mod(staminaHeal);
-                    
+
                 }
 
                 // Trickster - Phantom Trickster Ids will inflict one of the random Trickster debuffs on their killer.
@@ -303,7 +294,7 @@ internal class CharaPatches : EClass
     {
         // Cap Healing to big number.
         if (amount > 100000000L) amount = 100000000L;
-        c.hp += (int) amount;
+        c.hp += (int)amount;
         if (c.hp > c.MaxHP) c.hp = c.MaxHP;
         c.PlaySound("heal");
         c.PlayEffect("heal");
@@ -329,7 +320,7 @@ internal class CharaPatches : EClass
     {
         // For Quests:
         //if (EClass.pc.currentZone == QuestManager.)
-        
+
         // Ranger - If the PC is mounted with Ranger's Canto on, and there is an available target they will make a free shot at the target. Will not work if the weapon needs to be reloaded.
         // Parasites instead use Map.MoveCard or SyncRide.
         if (!_zone.IsRegion &&
@@ -406,7 +397,7 @@ internal class CharaPatches : EClass
             __result = 0;
         }
     }
-    
+
     [HarmonyPatch(nameof(Chara.MakeGene))]
     [HarmonyPrefix]
     internal static bool MakeGene(Chara __instance)
@@ -425,10 +416,10 @@ internal class CharaPatches : EClass
     {
         // This is used by the original function to regulate the rate of these calculations.
         int turnMod = (__instance.turn + 1) % 50;
-        
+
         // Create a Lookup Table for reducing looping.
         ILookup<Type, Condition> activeConditions = __instance.conditions.ToLookup(c => c.GetType());
-        
+
         switch (turnMod)
         {
             case 1:
@@ -453,7 +444,7 @@ internal class CharaPatches : EClass
                         }
                         break;
                 }
-            
+
                 // Alraune - If Daylight AND wet, mod hunger 2 (in additional to the original 1, making them digest 3x as fast.
                 if (__instance.HasElement(Constants.FeatAlraune) &&
                     __instance.pos.IsSunLit &&
@@ -474,31 +465,32 @@ internal class CharaPatches : EClass
                     if (element != null)
                     {
                         __instance.elements.ModExp(element.id, 20f);
-                        __instance.AddCondition<ConHOT>(element.GetPower(__instance));   
+                        __instance.AddCondition<ConHOT>(element.GetPower(__instance));
                     }
                 }
-            
+
                 // Harpy Golem will attempt to add extra FOV Condition to the player.
                 if (__instance is { IsPCParty: true, IsAliveInCurrentZone: true } &&
                     __instance.HasElement(Constants.FeatHarpyGolemVisionId) &&
-                    EClass.pc.IsAliveInCurrentZone)
+                    pc.IsAliveInCurrentZone)
                 {
-                    Condition? visionBuff = EClass.pc.GetCondition<ConAerialVision>() ?? EClass.pc.AddCondition<ConAerialVision>();
+                    Condition? visionBuff = pc.GetCondition<ConAerialVision>() ?? pc.AddCondition<ConAerialVision>();
                     if (visionBuff is { value: <= 1 }) visionBuff?.Mod(5);
                 }
-            
+
                 // Siren Golems gain Adaptive Mobility when floating
                 // Siren Golems gain Liquid Cooling when Wet
                 if (__instance.IsAliveInCurrentZone)
                 {
                     if (__instance.HasElement(Constants.FeatSirenGolemSpeedId) &&
-                        (EClass._zone.IsUnderwater || __instance.Chara.isFloating))
+                        (_zone.IsUnderwater || __instance.Chara.isFloating))
                     {
                         if (activeConditions.Contains(typeof(ConAdaptiveMobility)))
                         {
                             Condition refreshCon = activeConditions[typeof(ConAdaptiveMobility)].Single();
                             if (refreshCon is { value: <= 1 }) refreshCon?.Mod(5);
-                        } else
+                        }
+                        else
                         {
                             __instance.AddCondition<ConAdaptiveMobility>();
                         }
@@ -510,7 +502,8 @@ internal class CharaPatches : EClass
                         {
                             Condition refreshCon = activeConditions[typeof(ConLiquidCooling)].Single();
                             if (refreshCon is { value: <= 1 }) refreshCon?.Mod(5);
-                        } else
+                        }
+                        else
                         {
                             __instance.AddCondition<ConLiquidCooling>();
                         }
@@ -519,10 +512,10 @@ internal class CharaPatches : EClass
                 break;
             }
         }
-        
+
         return true;
     }
-    
+
     [HarmonyPatch(nameof(Chara.GetName))]
     [HarmonyPostfix]
     internal static void CharaName_PrefixSkill_Patch(Chara __instance, ref string __result, NameStyle style, int num)
@@ -532,7 +525,7 @@ internal class CharaPatches : EClass
         {
             // If an enemy is an advanced enemy through spawn. Grant them a prefix so players know what to expect.
             int advancedCombatSkill = __instance.GetFlagValue(Constants.AdvancedCombatSkillFlag);
-            if (advancedCombatSkill != 0) __result = $"{EClass.sources.elements.map[advancedCombatSkill].alias}_prefix".lang(__result);
+            if (advancedCombatSkill != 0) __result = $"{sources.elements.map[advancedCombatSkill].alias}_prefix".lang(__result);
         }
     }
 }

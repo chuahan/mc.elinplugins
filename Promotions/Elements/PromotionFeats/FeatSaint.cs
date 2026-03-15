@@ -8,8 +8,9 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Saints focus on healing allies while casting holy magic at the enemies.
 ///     They specialize in casting advanced curative magic and applying disabling debuffs, as well as empowered Holy Magic.
 ///     Skill - Hand of God - A large scale healing spell is cast on all allies and minions, healing 35% HP immediately.
-///     All affected characters also gain a % healing over time. 30 Turn Cooldown. //TODO: Do I change this to 30% of max mana and remove cooldown?
-///     Skill - Holy Invigorate - Applies a buff to the target that boosts their HP. Up to 50% boost, scales off of Faith. 
+///     All affected characters also gain a % healing over time. 30 Turn Cooldown. //TODO: Do I change this to 30% of max
+///     mana and remove cooldown?
+///     Skill - Holy Invigorate - Applies a buff to the target that boosts their HP. Up to 50% boost, scales off of Faith.
 ///     Skill - Blessing - Applies a buff to the target that boosts their faith.
 ///     faith.
 ///     Passive - God Protects - When you pray, you and your allies gain Protection that absorbs damage based on piety.
@@ -27,8 +28,10 @@ public class FeatSaint : PromotionFeat
     {
         Constants.ActHandOfGodId,
         Constants.ActBlessingId,
-        Constants.ActInvigorateId,
+        Constants.ActInvigorateId
     };
+
+    public override string JobRequirement => "priest";
 
     protected override void ApplyInternalNPC(Chara c)
     {
@@ -38,13 +41,11 @@ public class FeatSaint : PromotionFeat
         c.ability.Add(50509, 75, false); // Holy Arrow
         c.ability.Add(51209, 75, false); // Holy Flare
         c.ability.Add(8403, 75, true); // Healing
-        c.AddElement(1422, 1); // Add Healing Instinct
+        c.AddElement(1422); // Add Healing Instinct
     }
 
-    public override string JobRequirement => "priest";
-    
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
-        base._OnApply(add,eleOwner, hint);
+        base._OnApply(add, eleOwner, hint);
     }
 }

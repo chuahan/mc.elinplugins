@@ -10,7 +10,7 @@ public class ActThisWay : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.MatchesPromotion(Constants.FeatAdventurer))
+        if (!CC.MatchesPromotion(Constants.FeatAdventurer))
         {
             Msg.Say("classlocked_ability".lang(Constants.AdventurerId.lang()));
             return false;

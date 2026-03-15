@@ -14,7 +14,7 @@ public abstract class ActSovereignOrder : Ability
 
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatSovereign) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatSovereign))
         {
             Msg.Say("classlocked_ability".lang(Constants.SovereignId.lang()));
             return false;

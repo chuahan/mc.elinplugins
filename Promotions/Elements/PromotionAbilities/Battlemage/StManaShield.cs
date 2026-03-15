@@ -6,7 +6,7 @@ public class StManaShield : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatBattlemage) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatBattlemage))
         {
             Msg.Say("classlocked_ability".lang(Constants.BattlemageId.lang()));
             return false;

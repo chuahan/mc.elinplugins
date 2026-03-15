@@ -25,7 +25,7 @@ public class ActSimpleSynthesis : Ability
 
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatArtificer) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatArtificer))
         {
             Msg.Say("classlocked_ability".lang(Constants.ArtificerId.lang()));
             return false;

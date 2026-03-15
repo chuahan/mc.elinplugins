@@ -18,6 +18,11 @@ public class ActSunder : Ability
 
     public override bool CanPerform()
     {
+        if (!CC.MatchesPromotion(Constants.FeatBerserker))
+        {
+            Msg.Say("classlocked_ability".lang(Constants.BerserkerId.lang()));
+            return false;
+        }
         if (CC != null)
         {
             int hpCost = (int)(CC.MaxHP * HealthCost);
@@ -27,11 +32,7 @@ public class ActSunder : Ability
                 return false;
             }
         }
-        if (CC.Evalue(Constants.FeatBerserker) == 0)
-        {
-            Msg.Say("classlocked_ability".lang(Constants.BerserkerId.lang()));
-            return false;
-        }
+        
         return base.CanPerform();
     }
 

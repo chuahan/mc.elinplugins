@@ -6,7 +6,7 @@ public class ActLifebreak : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatBerserker) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatBerserker))
         {
             Msg.Say("classlocked_ability".lang(Constants.BerserkerId.lang()));
             return false;

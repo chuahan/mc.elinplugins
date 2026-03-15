@@ -23,7 +23,7 @@ public class ActThrowTrap : Ability
 
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatRanger) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatRanger))
         {
             Msg.Say("classlocked_ability".lang(Constants.RangerId.lang()));
             return false;

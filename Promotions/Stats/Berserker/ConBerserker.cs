@@ -1,4 +1,5 @@
 using System.Linq;
+using PromotionMod.Common;
 namespace PromotionMod.Stats.Berserker;
 
 /// <summary>
@@ -10,6 +11,8 @@ namespace PromotionMod.Stats.Berserker;
 /// </summary>
 public class ConBerserker : ClassCondition
 {
+    public override int PromotionClass => Constants.FeatBerserker;
+    
     // Every Debuff grants 1.
     // Every 5% HP Missing grants 1
     // For every Point, 

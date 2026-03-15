@@ -8,7 +8,11 @@ public class ActBloodCurse : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatHexer) == 0) return false;
+        if (!CC.MatchesPromotion(Constants.FeatHexer))
+        {
+            Msg.Say("classlocked_ability".lang(Constants.HexerId.lang()));
+            return false;
+        }
         if (CC.hp <= CC.MaxHP * 0.1F) return false;
         if (TC == null) return false;
         return true;

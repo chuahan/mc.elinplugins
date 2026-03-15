@@ -23,7 +23,7 @@ public class ActAccursedTouch : Ability
 
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatHarbinger) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatHarbinger))
         {
             Msg.Say("classlocked_ability".lang(Constants.HarbingerId.lang()));
             return false;

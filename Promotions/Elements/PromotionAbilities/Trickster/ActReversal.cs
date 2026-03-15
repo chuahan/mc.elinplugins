@@ -11,7 +11,7 @@ public class ActReversal : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatTrickster) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatTrickster))
         {
             Msg.Say("classlocked_ability".lang(Constants.TricksterId.lang()));
             return false;

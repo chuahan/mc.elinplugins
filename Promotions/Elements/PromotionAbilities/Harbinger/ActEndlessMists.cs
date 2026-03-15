@@ -16,29 +16,14 @@ public class ActEndlessMists : Ability
 
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatHarbinger) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatHarbinger))
         {
             Msg.Say("classlocked_ability".lang(Constants.HarbingerId.lang()));
             return false;
         }
         if (CC.HasCooldown(Constants.ActEndlessMistsId)) return false;
         bool basePerform = base.CanPerform();
-
-        // This... doesn't work ._.
-        /*
-        if (basePerform && CC.IsPC)
-        {
-            List<Point> list = EClass._map.ListPointsInCircle(CC.pos, _effectRadius, true, true);
-            if (list.Count == 0)
-            {
-                list.Add(Act.CC.pos.Copy());
-            }
-            foreach (Point item in list)
-            {
-                item.SetHighlight(8);
-            }
-        }
-        */
+        
         return basePerform;
     }
 

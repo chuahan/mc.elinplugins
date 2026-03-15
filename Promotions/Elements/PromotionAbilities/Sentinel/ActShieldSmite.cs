@@ -6,7 +6,7 @@ public class ActShieldSmite : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatSentinel) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatSentinel))
         {
             Msg.Say("classlocked_ability".lang(Constants.SentinelId.lang()));
             return false;

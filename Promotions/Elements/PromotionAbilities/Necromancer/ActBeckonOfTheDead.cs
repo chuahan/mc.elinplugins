@@ -6,7 +6,7 @@ public class ActBeckonOfTheDead : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatNecromancer) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatNecromancer))
         {
             Msg.Say("classlocked_ability".lang(Constants.NecromancerId.lang()));
             return false;

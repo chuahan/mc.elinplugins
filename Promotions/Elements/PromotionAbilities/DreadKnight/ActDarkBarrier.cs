@@ -7,7 +7,7 @@ public class ActDarkBarrier : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatDreadKnight) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatDreadKnight))
         {
             Msg.Say("classlocked_ability".lang(Constants.DreadKnightId.lang()));
             return false;

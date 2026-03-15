@@ -9,7 +9,7 @@ public class ActMarkHostiles : Ability
 
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatSharpshooter) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatSharpshooter))
         {
             Msg.Say("classlocked_ability".lang(Constants.SharpshooterId.lang()));
             return false;

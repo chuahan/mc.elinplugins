@@ -18,7 +18,11 @@ public class ActReap : Ability
 
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatHeadhunter) == 0) return false;
+        if (!CC.MatchesPromotion(Constants.FeatHeadhunter))
+        {
+            Msg.Say("classlocked_ability".lang(Constants.HeadhunterId.lang()));
+            return false;
+        }
         if (CC.HasCooldown(Constants.ActReapId)) return false;
         if (CC == TC || TC == null || CC.Dist(TC) > PerformDistance)
         {

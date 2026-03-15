@@ -6,7 +6,7 @@ public class ActHandOfGod : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatSaint) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatSaint))
         {
             Msg.Say("classlocked_ability".lang(Constants.SaintId.lang()));
             return false;

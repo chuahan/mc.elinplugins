@@ -6,7 +6,7 @@ public class ActTargetHead : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatSniper) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatSniper))
         {
             Msg.Say("classlocked_ability".lang(Constants.SniperId.lang()));
             return false;

@@ -9,6 +9,8 @@ public class ConJenei : ClassCondition
 {
     [JsonProperty(PropertyName = "Q")] public Queue<int> ElementalQueue = new Queue<int>();
 
+    public override int PromotionClass => Constants.FeatJenei;
+    
     public void AddElement(int element)
     {
         if (ElementalQueue.Count >= 13)

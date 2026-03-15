@@ -16,7 +16,7 @@ public class ActSowWrathSeeds : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatDruid) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatDruid))
         {
             Msg.Say("classlocked_ability".lang(Constants.DruidId.lang()));
             return false;

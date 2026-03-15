@@ -9,7 +9,7 @@ public class ActSpearhead : ActRush
     public override bool CanPerform()
     {
         if (CC == null) return false;
-        if (CC.Evalue(Constants.FeatHolyKnight) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatHolyKnight))
         {
             Msg.Say("classlocked_ability".lang(Constants.HolyKnightId.lang()));
             return false;

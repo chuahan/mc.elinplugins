@@ -12,7 +12,7 @@ public class ActSchwarzeKatze : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatPhantom) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatPhantom))
         {
             Msg.Say("classlocked_ability".lang(Constants.PhantomId.lang()));
             return false;

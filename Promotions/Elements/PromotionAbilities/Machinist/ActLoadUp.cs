@@ -26,7 +26,7 @@ public class ActLoadUp : Ability
 
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatMachinist) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatMachinist))
         {
             Msg.Say("classlocked_ability".lang(Constants.MachinistId.lang()));
             return false;

@@ -6,7 +6,7 @@ public class ActBlessedArmaments : ActMelee
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatWarCleric) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatWarCleric))
         {
             Msg.Say("classlocked_ability".lang(Constants.WarClericId.lang()));
             return false;

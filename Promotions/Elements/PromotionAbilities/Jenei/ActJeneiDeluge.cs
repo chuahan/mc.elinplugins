@@ -7,7 +7,7 @@ public class ActJeneiDeluge : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatJenei) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatJenei))
         {
             Msg.Say("classlocked_ability".lang(Constants.JeneiId.lang()));
             return false;

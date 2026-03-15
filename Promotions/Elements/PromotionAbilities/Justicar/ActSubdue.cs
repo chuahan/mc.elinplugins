@@ -10,7 +10,7 @@ public class ActSubdue : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatJusticar) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatJusticar))
         {
             Msg.Say("classlocked_ability".lang(Constants.JusticarId.lang()));
             return false;

@@ -10,7 +10,7 @@ public class ActLightWave : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatEtoile) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatEtoile))
         {
             Msg.Say("classlocked_ability".lang(Constants.EtoileId.lang()));
             return false;

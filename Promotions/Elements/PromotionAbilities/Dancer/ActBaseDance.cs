@@ -7,7 +7,7 @@ public abstract class ActBaseDance<TStance> : Act
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatDancer) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatDancer))
         {
             Msg.Say("classlocked_ability".lang(Constants.DancerId.lang()));
             return false;

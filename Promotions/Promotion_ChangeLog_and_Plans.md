@@ -31,21 +31,49 @@
 - Fixed a few bugs with War Cleric and Headhunter. Minimized cost to 1 SP for Headhunter abilities, even with Headhunter reduction.
 - Added all the Condition Icons!
 - Added missing Ability Icon for Headhunter: Reap
+- Added missing Ability Icons for Dread Knight.
 
 ## To Do
 - Need to add targetting highlights for... everything really.
 - Need to add SFX and FX for a lot of stuff. I'll probably go through 1 by 1 and figure out what needs work.
 - Balance things. Need user feedback.
 - Move the Promotion Docs into the game as Hover. It's a bit much, but I will need to abbreviate it a bit.
+- Need to fix Knightcaller and Druid so that their rare summons can use their Promotion Abilities.
+- Add JP translations (Waiting till I got all the abilities tuned and ironed out.)
 
 ## Potential Balance Changes
-- Adventurer probably needs work.
-- Headhunter needs work. Largely only passives, consider renaming them into Reaper and giving them the ability to equip and benefit from cursed equipment (2x stats from negatives? How much of a pain is this going to be to code...)
-- War Cleric. Seems a little lackluster compared to Saint. Sanctuary is in dire need of special effects. Consider changing to Cell effect.
-- Hermit. Seems too simple. Need to give them more abilities in their kit so they aren't a single target pony. Consider giving them expertise in ranged or throwing weapons, or the ability to transfer Marked for Death on kill or something.
-- Sniper. Absolutely needs more work compared to Ranger. It's a passive class with... very little passive abilities, and Target X is pretty lackluster.
-- Jenei. Attempt to implement a Class-Install system for the Jenei that will use their current spirits to boost their normal combat capabilities. This will boost their attributes and provide temporary feats allow them to basically pseudo-class change into another archetype. E.G. a healer class that gains healing instinct and reduces mana cost of healing abilities. However, this comes with the cost that if you use Spirit Summon and use your current spirits, you will also lose your pseudo-class.
-- Dancer. Flourishes are way too strong. Weaken them somehow, or give them cooldowns.
+
+### Adventurer
+Probably needs work. Mostly passives, but I need to consider new abilities for them.  
+Idea: Mealprep: To all food in the inventory, Adventurers can refresh the stale-ness and also add "Just Cooked" to it. Might be too powerful?  
+Idea: Appraise: Basically a free Greater Identify with a cooldown.  
+Idea: Treasure Finder Passive: When completing a Nefia (Boss dead), Adventurers have a chance of unlocking a "bonus floor" which is basically a Hoard of loot with enemy spawners and extra bosses. With great danger comes great reward?  
+
+### Headhunter
+Largely only passives, consider renaming them into Reaper and giving them the ability to equip and benefit from cursed equipment (2x stats from negatives? How much of a pain is this going to be to code...) Then I can work them around kills + curses.
+
+### War Cleric
+Seems a little lackluster compared to Saint.  
+Sanctuary is in dire need of special effects. Consider changing to Cell effect.  
+The other idea is to make them more of a War Monk, so make them a Martial based class. Maybe Shaolin style with crit strikes, knockbacks, and reinforcing their own body?
+
+### Hermit
+Seems too simple. Need to give them more abilities in their kit so they aren't a single target pony.
+Consider giving them expertise in ranged or throwing weapons, or the ability to transfer Marked for Death on kill or something.
+Give them some method of applying conditions to synergize with. Posioned weapons or something. Or throwing hidden weapon laced with venoms.
+
+### Sniper
+Absolutely needs more work compared to Ranger. It's a passive class with... very little passive abilities, and Target X is pretty lackluster.  
+Idea: Anti-air specialty Passive. Gain bonus damage against flying/floating enemies.  
+Idea: Velocity Passive. Gain a damage bonus that scales with distance from the enemy?  
+Idea: Backstep. Moves the Sniper away from the target like a backstep so they can maintain crit range. Maybe leave a trap behind like a Blast Mine or Smokescreen.
+
+### Jenei
+Attempt to implement a Class-Install system for the Jenei that will use their current spirits to boost their normal combat capabilities. This will boost their attributes and provide temporary feats allow them to basically pseudo-class change into another archetype. E.G. a healer class that gains healing instinct and reduces mana cost of healing abilities. However, this comes with the cost that if you use Spirit Summon and use your current spirits, you will also lose your pseudo-class.
+
+### Dancer
+Flourishes are way too strong. Weaken them somehow, or give them cooldowns.
+Dances themselves are too weak. Give them buffs. Give them more functionality or effects, and work on their scaling a bit more.
 
 ## Future Content
 - City of Aluena

@@ -10,7 +10,7 @@ public class ActMarkForDeath : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatHermit) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatHermit))
         {
             Msg.Say("classlocked_ability".lang(Constants.HermitId.lang()));
             return false;

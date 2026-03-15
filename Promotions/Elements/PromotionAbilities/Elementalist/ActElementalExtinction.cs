@@ -15,7 +15,7 @@ public class ActElementalExtinction : Ability
 
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatElementalist) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatElementalist))
         {
             Msg.Say("classlocked_ability".lang(Constants.ElementalistId.lang()));
             return false;

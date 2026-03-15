@@ -12,7 +12,11 @@ public class ActRevenge : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatHexer) == 0) return false;
+        if (!CC.MatchesPromotion(Constants.FeatHexer))
+        {
+            Msg.Say("classlocked_ability".lang(Constants.HexerId.lang()));
+            return false;
+        }
         return CC.Chara.conditions.Count(con => con.Type is ConditionType.Debuff) != 0;
     }
 

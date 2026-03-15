@@ -6,7 +6,7 @@ public class ActCrushingStrike : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatSpellblade) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatSpellblade))
         {
             Msg.Say("classlocked_ability".lang(Constants.SpellbladeId.lang()));
             return false;

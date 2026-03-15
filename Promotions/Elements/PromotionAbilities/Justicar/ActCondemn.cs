@@ -14,7 +14,7 @@ public class ActCondemn : Ability
 
     public override bool CanPerform()
     {
-        if (CC.MatchesPromotion(Constants.FeatJusticar))
+        if (!CC.MatchesPromotion(Constants.FeatJusticar))
         {
             if (CC.IsPC) Msg.Say("classlocked_ability".lang(Constants.JusticarId.lang()));
             return false;

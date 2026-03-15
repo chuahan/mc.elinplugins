@@ -7,7 +7,7 @@ public class ActManaBreak : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatWitchHunter) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatWitchHunter))
         {
             Msg.Say("classlocked_ability".lang(Constants.WitchHunterId.lang()));
             return false;

@@ -6,7 +6,7 @@ public class ActSpiritRally : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatKnightcaller) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatKnightcaller))
         {
             Msg.Say("classlocked_ability".lang(Constants.KnightcallerId.lang()));
             return false;

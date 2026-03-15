@@ -6,7 +6,7 @@ public class ActSenseDanger : Ability
 {
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatAdventurer) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatAdventurer))
         {
             Msg.Say("classlocked_ability".lang(Constants.AdventurerId.lang()));
             return false;

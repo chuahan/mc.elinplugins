@@ -8,7 +8,7 @@ public class ActDeflection : AIAct
     public override bool CancelWhenDamaged => false;
     public override bool CanPerform()
     {
-        if (CC.Evalue(Constants.FeatHolyKnight) == 0)
+        if (!CC.MatchesPromotion(Constants.FeatHolyKnight))
         {
             Msg.Say("classlocked_ability".lang(Constants.HolyKnightId.lang()));
             return false;

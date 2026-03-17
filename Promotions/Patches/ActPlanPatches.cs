@@ -26,19 +26,18 @@ public class ActPlanPatches
                         return true;
                     });
                 }
-            }
-        }
-
-        if (__instance.input == ActInput.AllAction)
-        {
-            Point targetPoint = target.pos;
-            foreach (Chara c in targetPoint.Charas)
-            {
-                __instance.TrySetAct($"Debugging", delegate
+                if (c is { IsPCFaction: true })
                 {
-                    var abilityCon = c.ability;
-                    return true;
-                });
+                    __instance.TrySetAct($"Level Up {c.NameSimple}", delegate
+                    {
+                        c.LevelUp();
+                        //c.ModAffinity(EClass.pc, 75);
+                        //c.noMove = true;
+                        ////EMono.Branch.Recruit(c);
+                        //EClass._zone.branch.AddMemeber(c);
+                        return true;
+                    });
+                }
             }
         }
     }

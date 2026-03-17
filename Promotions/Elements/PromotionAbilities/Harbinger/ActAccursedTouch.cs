@@ -43,7 +43,7 @@ public class ActAccursedTouch : Ability
         List<string> inactiveMiasma = PossibleMiasmas.Except(activeMiasma).ToList();
         if (inactiveMiasma.Count == 0)
         {
-            target.Say("harbinger_max_affliction".langGame());
+            if (caster.IsPC) Msg.Say("harbinger_max_affliction".langGame(target.NameSimple));
             return;
         }
         ActEffect.ProcAt(EffectId.Debuff, power, BlessedState.Normal, CC, target, target.pos, true, new ActRef

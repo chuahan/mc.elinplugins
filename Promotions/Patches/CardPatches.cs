@@ -81,7 +81,7 @@ public class CardPatches
 
             if (targetConditions.ContainsKey(typeof(ConCorruption)))
             {
-                chara.Say("trickster_corruption_nullheal".lang());
+                chara.Say("trickster_corruption_nullheal".langGame());
                 return false;
             }
 
@@ -89,7 +89,7 @@ public class CardPatches
             // Does not trigger on HealSource.None, which is Regen, or duplicated healing, or mods who don't actually add a HealSource.
             if (__instance.Chara.MatchesPromotion(Constants.FeatWarCleric) && origin != HealSource.None)
             {
-                chara.Say("warcleric_healshare".lang());
+                chara.Say("warcleric_healshare".langGame());
                 foreach (Chara ally in HelperFunctions.GetCharasWithinRadius(__instance.pos, 3F, __instance.Chara, true, false))
                 {
                     ally.HealHP(a / 2);

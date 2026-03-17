@@ -41,7 +41,7 @@ public class SpSummonSkeleton : Spell
         // Can't go over cap of minions.
         if (CC.currentZone.CountMinions(CC) >= CC.MaxSummon)
         {
-            caster.Say("necromancer_limit".langGame());
+            if (CC.IsPC) caster.Say("necromancer_limit".langGame());
             return;
         }
 

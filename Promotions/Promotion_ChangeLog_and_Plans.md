@@ -33,12 +33,18 @@
 - Added missing Ability Icon for Headhunter: Reap
 - Added missing Ability Icons for Dread Knight.
 
+### March 16th, 2026 1.04 - Minions Build
+- Necromancers and Druids now give a passive buff to undead and plant allies respectively. 10% Boost to PV and DV and 20% Bost to Speed of their respective ally type. Note: This technically applies to themselves if you happen to be playing a Lich/Wraith/Alraune. Right now, this effect scales with how many of each class are on the field. E.G. if you have 3 Necromancers on the same team, all Undead Types will gain 30% boost to PV/DV and 60% Speed Boost. This also applies to the enemies (if there is an enemy necromancer on the field.) This effect caps at 10 stacks, so 100% increased PV and DV and 200% increased speed. This is subject to change, but you can very much do a mass bonelord party for funsies right now.
+- Fixed the Knightcaller so the Knight Captains are generated with their promotion flag set.
+- Buffed Shield Funnels to have 100 extra PV and 50% Physical Damage Reduction in an effort to offset the squishiness that is applied by Wall of Flesh. This does not impact their elemental defenses though, making them remain vulnerable to magic.
+- Fixed Lifetaker and Berserker on-kill healing to only work on hostiles. No more using your allies as health potions, this ain't Mad Max.
+- Fixed a lot of missing hints and hover text.
+
 ## To Do
 - Need to add targetting highlights for... everything really.
 - Need to add SFX and FX for a lot of stuff. I'll probably go through 1 by 1 and figure out what needs work.
 - Balance things. Need user feedback.
 - Move the Promotion Docs into the game as Hover. It's a bit much, but I will need to abbreviate it a bit.
-- Need to fix Knightcaller and Druid so that their rare summons can use their Promotion Abilities.
 - Add JP translations (Waiting till I got all the abilities tuned and ironed out.)
 
 ## Potential Balance Changes
@@ -74,6 +80,9 @@ Attempt to implement a Class-Install system for the Jenei that will use their cu
 ### Dancer
 Flourishes are way too strong. Weaken them somehow, or give them cooldowns.
 Dances themselves are too weak. Give them buffs. Give them more functionality or effects, and work on their scaling a bit more.
+
+### Druid
+Considering making Wrath of Nature a Berserker and Warmth of Nature a Saint.
 
 ## Future Content
 - City of Aluena

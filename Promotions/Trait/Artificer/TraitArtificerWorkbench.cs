@@ -28,10 +28,6 @@ public class TraitArtificerWorkbench : TraitWorkbench
     public override string idSoundProgress => "craft_sculpt";
     public override bool CanUse(Chara c)
     {
-        //if (c.MatchesPromotion(Constants.FeatArtificer)
-        //{
-        //Msg.Say("artificerlocked_table".lang());
-        //}
         return c.MatchesPromotion(Constants.FeatArtificer) && base.CanUse(c);
     }
 

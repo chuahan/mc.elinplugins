@@ -32,7 +32,7 @@ public class ActDancePartner : Ability
             if (partnerStance != null && chara == CC)
             {
                 partnerStance.Kill();
-                Msg.Say("dancer_swap_solo".lang(CC.NameSimple));
+                Msg.Say("dancer_swap_solo".langGame(CC.NameSimple));
                 return true;
             }
 
@@ -42,12 +42,10 @@ public class ActDancePartner : Ability
                 partnerStyle.PartnerUID = TC.Chara.uid;
                 CC.ShowEmo(Emo.happy);
                 chara.ShowEmo(Emo.happy);
-                Msg.Say("dancer_swap_partner".lang(CC.NameSimple, chara.NameSimple));
+                Msg.Say("dancer_swap_partner".langGame(CC.NameSimple, chara.NameSimple));
                 return true;
             }
         }
-
-        Msg.Say("dancer_partnerstyle_hint".lang());
         return false;
     }
 }

@@ -15,7 +15,7 @@ public class ActDarkBarrier : Ability
 
         if (!CC.HasCondition<ConDarkTraces>())
         {
-            if (CC.IsPC) Msg.Say("dreadknight_notraces".lang());
+            if (CC.IsPC) Msg.Say("dreadknight_notraces".langGame());
             return false;
         }
 

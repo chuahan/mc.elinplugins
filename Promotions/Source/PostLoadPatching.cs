@@ -24,5 +24,27 @@ internal class PostLoadPatching : EClass
                 lailahCharacter.SetFlagValue(Constants.PromotionFeatFlag, Constants.FeatSharpshooter);
             }
         }
+        
+        // For V1.04, Update all the Knightcaller Captains with their respective promotion feat flags.
+        PromotionMod_PatchCharaPromo(Constants.DinatogCharaId, Constants.FeatSniper);
+        PromotionMod_PatchCharaPromo(Constants.AlestieCharaId, Constants.FeatHermit);
+        PromotionMod_PatchCharaPromo(Constants.ValeroCharaId, Constants.FeatSentinel);
+        PromotionMod_PatchCharaPromo(Constants.EctoleCharaId, Constants.FeatSaint);
+        PromotionMod_PatchCharaPromo(Constants.ArkunCharaId, Constants.FeatSpellblade);
+        PromotionMod_PatchCharaPromo(Constants.DiasCharaId, Constants.FeatHeadhunter);
+        PromotionMod_PatchCharaPromo(Constants.RolingerCharaId, Constants.FeatBattlemage);
+
+    }
+
+    internal static void PromotionMod_PatchCharaPromo(string charaId, int promotionFeatId)
+    {
+        Chara? characterToPatch = game.cards.globalCharas.Values.FirstOrDefault(gc => gc.id == charaId);
+        if (characterToPatch != null)
+        {
+            if (characterToPatch.GetFlagValue(Constants.PromotionFeatFlag) == 0 && characterToPatch.HasElement(promotionFeatId))
+            {
+                characterToPatch.SetFlagValue(Constants.PromotionFeatFlag, promotionFeatId);
+            }
+        }
     }
 }

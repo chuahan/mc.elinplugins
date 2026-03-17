@@ -63,7 +63,7 @@ public class TraitBookCombat : TraitScroll
         //owner.Say(IsPlan ? "skillbook_learnPlan" : "skillbook_learn", c, source.GetName());
         c.SetFeat(idEle);
         c.SetFlagValue(Constants.AdvancedCombatSkillFlag, idEle);
-        Msg.Say("combatskilllearned".lang(c.NameSimple, sources.elements.map[idEle].GetName()));
+        Msg.Say("combatskilllearned".langGame(c.NameSimple, sources.elements.map[idEle].GetName()));
 
         c.Say("spellbookCrumble", owner.Duplicate(1));
         owner.ModNum(-1);

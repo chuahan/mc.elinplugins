@@ -159,7 +159,7 @@ internal class CharaPatches : EClass
             // Adventurer will automatically try to medicate, 1/4 chance of free medication.
             if (EClass.rnd(4) == 0)
             {
-                Msg.Say("adventurer_automedicate".lang(pc.NameSimple, __instance.NameSimple));
+                Msg.Say("adventurer_automedicate".langGame(pc.NameSimple, __instance.NameSimple));
                 __result.Kill();
                 return;
             }
@@ -216,12 +216,13 @@ internal class CharaPatches : EClass
 
             Chara target = __instance.Chara;
 
-            if (origin is { Chara: not null, isChara: true })
+            if (origin is { Chara: not null, isChara: true } && origin.Chara.IsHostile(target))
             {
                 // Heal on kill does not get impacted by reduced healing effects.
+                // Heal on kill should not work when killing allies.
                 Chara originChara = origin.Chara;
                 // Berserker - Heal on Kill
-                if (originChara.MatchesPromotion(Constants.FeatBerserker))
+                if (originChara.MatchesPromotion(Constants.FeatBerserker) && originChara.IsHostile())
                 {
                     int healAmount = (int)(originChara.MaxHP * .25F);
                     origin.Say("berserker_revel".langGame(originChara.NameSimple));
@@ -264,7 +265,7 @@ internal class CharaPatches : EClass
 
                 // Sovereign - Rout Order will replenish value on kill. Any active Intonation will also replenish value.
                 // Heal 2% life/stamina/mana on kill.
-                if (origin.isChara)
+                if (origin.isChara && origin.HasCondition<ConOrderRout>())
                 {
                     originChara.GetCondition<ConOrderRout>()?.Mod(1);
                     originChara.GetCondition<ConWeapon>()?.Mod(1);
@@ -274,7 +275,6 @@ internal class CharaPatches : EClass
                     originChara.HealHP(lifeHeal, HealSource.HOT);
                     originChara.mana.Mod(manaHeal);
                     originChara.stamina.Mod(staminaHeal);
-
                 }
 
                 // Trickster - Phantom Trickster Ids will inflict one of the random Trickster debuffs on their killer.

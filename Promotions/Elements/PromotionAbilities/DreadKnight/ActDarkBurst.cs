@@ -19,7 +19,7 @@ public class ActDarkBurst : Ability
 
         if (GetHPCost(CC) > CC.hp)
         {
-            if (CC.IsPC) Msg.Say("dreadknight_notenoughhp".lang());
+            if (CC.IsPC) Msg.Say("dreadknight_notenoughhp".langGame());
             return false;
         }
 

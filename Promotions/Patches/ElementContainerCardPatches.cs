@@ -1,3 +1,4 @@
+using System;
 using HarmonyLib;
 using PromotionMod.Common;
 namespace PromotionMod.Patches;
@@ -17,12 +18,8 @@ public class ElementContainerCardPatches
         // Necromancers and Druids will both apply a Hardware boost like upgrade to Undead and Plant allies respectively.
         // Necromancer - Lord of the Dead
         // Druid - Speaker for Nature
-        // 64 is DV
-        // 65 is PV
-        // 79 is Speed
-
         // Boost these three evalues only.
-        if (e.id is 64 or 65 or 79 &&
+        if (e.id is SKILL.DV or SKILL.PV or SKILL.SPD &&
             __instance.owner.isChara &&
             (__instance.owner.Chara.IsUndead || __instance.owner.Chara.IsPlant))
         {
@@ -30,50 +27,53 @@ public class ElementContainerCardPatches
 
             int undeadBoost = 0;
             int plantBoost = 0;
-            // Check for all characters on the map for any Necromancers or Druids.
+            // Check for all allied characters to the target on the map for any Necromancers or Druids.
             foreach (Chara member in EClass._map.charas)
             {
-                if (isEnemy && member.IsHostile(EClass.pc))
+                if ((isEnemy && member.IsHostile(EClass.pc)) || (!isEnemy && !member.IsHostile(EClass.pc)))
                 {
                     if (member.MatchesPromotion(Constants.FeatNecromancer))
                     {
                         undeadBoost++;
                     }
-                }
-                else if (!isEnemy && !member.IsHostile(EClass.pc))
-                {
+                    
                     if (member.MatchesPromotion(Constants.FeatDruid))
                     {
                         plantBoost++;
                     }
                 }
-
             }
+            
+            // Cap these boosts at 10.
+            undeadBoost = Math.Min(10, undeadBoost);
+            plantBoost = Math.Min(10, plantBoost);
 
             if (undeadBoost > 0 && __instance.Chara.IsUndead)
             {
+                int baseValue = (e.ValueWithoutLink + e.vLink);
                 switch (e.id)
                 {
-                    case 64: // DV
-                    case 65: // PV
-                        __result = (int)(__result * (1 + 0.1F * undeadBoost));
+                    case SKILL.DV: // DV
+                    case SKILL.PV: // PV
+                        __result = (int)(baseValue * (1 + 0.1F * undeadBoost));
                         return;
-                    case 79: // SPD
-                        __result = (int)(__result * (1 + 0.2F * undeadBoost));
+                    case SKILL.SPD: // SPD
+                        __result = (int)(baseValue * (1 + 0.2F * undeadBoost));
                         return;
                 }
             }
 
             if (plantBoost > 0 && __instance.Chara.IsPlant)
             {
+                int baseValue = (e.ValueWithoutLink + e.vLink);
                 switch (e.id)
                 {
-                    case 64: // DV
-                    case 65: // PV
-                        __result = (int)(__result * (1 + 0.1F * plantBoost));
+                    case SKILL.DV: // DV
+                    case SKILL.PV: // PV
+                        __result = (int)(baseValue * (1 + 0.1F * plantBoost));
                         return;
-                    case 79: // SPD
-                        __result = (int)(__result * (1 + 0.2F * plantBoost));
+                    case SKILL.SPD: // SPD
+                        __result = (int)(baseValue * (1 + 0.2F * plantBoost));
                         return;
                 }
             }

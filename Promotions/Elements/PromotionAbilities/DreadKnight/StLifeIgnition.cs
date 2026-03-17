@@ -18,7 +18,7 @@ public class StLifeIgnition : Ability
             if (CC.hp <= hpCost)
             {
                 // You would die if you use this now.
-                if (CC.IsPC) Msg.Say("dreadknight_notenoughhp".lang());
+                if (CC.IsPC) Msg.Say("dreadknight_notenoughhp".langGame());
                 return false;
             }
         }

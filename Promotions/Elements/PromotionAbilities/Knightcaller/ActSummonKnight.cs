@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 using PromotionMod.Stats.Knightcaller;
 using PromotionMod.Trait;
@@ -98,7 +99,6 @@ public class ActSummonKnight : Ability
         switch (chara.id)
         {
             case Constants.KnightArcherCharaId:
-            case Constants.DinatogCharaId:
                 chara.AddThing(ThingGen.Create("dagger", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("bow", -1, chara.LV));
 
@@ -109,9 +109,11 @@ public class ActSummonKnight : Ability
                 chara.AddThing(ThingGen.Create("cloak_foreign", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("boots_tight", -1, chara.LV));
                 break;
+            case Constants.DinatogCharaId:
+                chara.SetFlagValue(Constants.PromotionFeatFlag, Constants.FeatSniper);
+                goto case Constants.KnightArcherCharaId;
 
             case Constants.KnightHermitCharaId:
-            case Constants.AlestieCharaId:
                 chara.AddThing(ThingGen.Create("dagger", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("dagger", -1, chara.LV));
 
@@ -122,9 +124,11 @@ public class ActSummonKnight : Ability
                 chara.AddThing(ThingGen.Create("cloak_foreign", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("boots_tight", -1, chara.LV));
                 break;
+            case Constants.AlestieCharaId:
+                chara.SetFlagValue(Constants.PromotionFeatFlag, Constants.FeatHermit);
+                goto case Constants.KnightHermitCharaId;
 
             case Constants.KnightLancerCharaId:
-            case Constants.ValeroCharaId:
                 chara.AddThing(ThingGen.Create("spear", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("shield_knight", -1, chara.LV));
 
@@ -135,9 +139,11 @@ public class ActSummonKnight : Ability
                 chara.AddThing(ThingGen.Create("cloak_armored", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("boots_heavy", -1, chara.LV));
                 break;
-
+            case Constants.ValeroCharaId:
+                chara.SetFlagValue(Constants.PromotionFeatFlag, Constants.FeatSentinel);
+                goto case Constants.KnightLancerCharaId;
+                
             case Constants.KnightPriestessCharaId:
-            case Constants.EctoleCharaId:
                 chara.AddThing(ThingGen.Create("blunt_mace", 40, chara.LV));
 
                 chara.AddThing(ThingGen.Create("hat_wizard", -1, chara.LV));
@@ -147,9 +153,11 @@ public class ActSummonKnight : Ability
                 chara.AddThing(ThingGen.Create("cloak_light", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("boots_", -1, chara.LV));
                 break;
-
+            case Constants.EctoleCharaId:
+                chara.SetFlagValue(Constants.PromotionFeatFlag, Constants.FeatSaint);
+                goto case Constants.KnightPriestessCharaId;
+                
             case Constants.KnightDuelistCharaId:
-            case Constants.ArkunCharaId:
                 chara.AddThing(ThingGen.Create("sword", -1, chara.LV));
 
                 chara.AddThing(ThingGen.Create("helm_knight", -1, chara.LV));
@@ -158,11 +166,12 @@ public class ActSummonKnight : Ability
                 chara.AddThing(ThingGen.Create("girdle_corset", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("cloak_foreign", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("boots_heavy", -1, chara.LV));
-
                 break;
-
+            case Constants.ArkunCharaId:
+                chara.SetFlagValue(Constants.PromotionFeatFlag, Constants.FeatSpellblade);
+                goto case Constants.KnightDuelistCharaId;
+                
             case Constants.KnightWarriorCharaId:
-            case Constants.DiasCharaId:
                 chara.AddThing(ThingGen.Create("axe_battle", -1, chara.LV));
 
                 chara.AddThing(ThingGen.Create("helm_knight", -1, chara.LV));
@@ -172,9 +181,11 @@ public class ActSummonKnight : Ability
                 chara.AddThing(ThingGen.Create("cloak_armored", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("boots_heavy", -1, chara.LV));
                 break;
-
+            case Constants.DiasCharaId:
+                chara.SetFlagValue(Constants.PromotionFeatFlag, Constants.FeatHeadhunter);
+                goto case Constants.KnightWarriorCharaId;
+                
             case Constants.KnightWizardCharaId:
-            case Constants.RolingerCharaId:
                 chara.AddThing(ThingGen.Create("staff", -1, chara.LV));
 
                 chara.AddThing(ThingGen.Create("hat_wizard", -1, chara.LV));
@@ -184,6 +195,9 @@ public class ActSummonKnight : Ability
                 chara.AddThing(ThingGen.Create("cloak_light", -1, chara.LV));
                 chara.AddThing(ThingGen.Create("boots_", -1, chara.LV));
                 break;
+            case Constants.RolingerCharaId:
+                chara.SetFlagValue(Constants.PromotionFeatFlag, Constants.FeatBattlemage);
+                goto case Constants.KnightWizardCharaId;
         }
     }
 }

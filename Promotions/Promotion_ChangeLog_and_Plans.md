@@ -4,6 +4,30 @@
 ### March 11th, 2026 1.00 - Initial release
 - Includes the base Promotions, Lailah, and the Quiet Cottage Map.
 
+### March 16th, 2026 1.04 - Minions Build
+- Necromancers and Druids now give a passive buff to undead and plant allies respectively. 10% Boost to PV and DV and 20% Boost to Speed of their respective ally type. Note: This technically applies to themselves if you happen to be playing a Lich/Wraith/Alraune. Right now, this effect scales with how many of each class are on the field. E.G. if you have 3 Necromancers on the same team, all Undead Types will gain 30% boost to PV/DV and 60% Speed Boost. This also applies to the enemies (if there is an enemy necromancer on the field.) This effect caps at 10 stacks, so 100% increased PV and DV and 200% increased speed. This is subject to change, but you can very much do a mass bonelord party for funsies right now.
+- Fixed the Knightcaller so the Knight Captains are generated with their promotion flag set.
+- Buffed Shield Funnels to have 100 extra PV and 50% Physical Damage Reduction in an effort to offset the squishiness that is applied by Wall of Flesh. This does not impact their elemental defenses though, making them remain vulnerable to magic.
+- Fixed Lifetaker and Berserker on-kill healing to only work on hostiles. No more using your allies as health potions, this ain't Mad Max.
+- Fixed a lot of missing hints and hover text.
+
+### March 14th, 2026 1.03 - Thanks Rombus Patch
+- Refactored and fixed Dancer.
+- Turns out I forgot to add ability costs for... everything. Added rudimentary costs for most abilities. Heavily subject to change.
+- Tweaked the scaling of Protection across the board. Shouldn't be super inflated now. However, it's scaling like Light Healing, so will need to see if it remains relevant in the higher levels.
+- Fixed a few bugs with War Cleric and Headhunter. Minimized cost to 1 SP for Headhunter abilities, even with Headhunter reduction.
+- Added all the Condition Icons!
+- Added missing Ability Icon for Headhunter: Reap
+- Added missing Ability Icons for Dread Knight.
+
+### March 12th, 2026 1.02 - Goddamnit Rotty and Ascalon Patch 2.
+- Elementalist - Spell Tempo now also grants 2 Mana Consumption Reduction per stack, and the speed has been reduced down to 1% per stack.
+- Added CN and JP Translations to Lailah's Letter, hopefully that fixes that bug.
+- Fixes Jenei Feat Sheet crashing. Thanks Shu.
+- Removed Invulnerability from some of the summons (Flowers and Holy Banner), ran into some issues with Blood Bond.
+- Removed Vantage functionality while I figure out why it breaks things. Thanks 1z
+- Added the missing throwing knife sprite. Thanks 1z
+
 ### March 11th, 2026 1.01 - Goddamnit Ascalon Patch
 - Updated documentation to fix typoes and include more numbers for the number inclined.
 - Reworked the Evaluation system for Promos to an extension method. Technically this means that Sub-classing shouldn't be that hard to implement, but not what I want to deal with.  
@@ -15,30 +39,6 @@
 - Berserker - Healing recieved from revel now is true healing (does not get reduced.)  
 - Hexer - Fixed Paranoia.  
 - Artificer - Fixed null ref exception on Quickcraft. Thanks Ruair.  
-
-### March 12th, 2026 1.02 - Goddamnit Rotty and Ascalon Patch 2.
-- Elementalist - Spell Tempo now also grants 2 Mana Consumption Reduction per stack, and the speed has been reduced down to 1% per stack.
-- Added CN and JP Translations to Lailah's Letter, hopefully that fixes that bug.
-- Fixes Jenei Feat Sheet crashing. Thanks Shu.
-- Removed Invulnerability from some of the summons (Flowers and Holy Banner), ran into some issues with Blood Bond.
-- Removed Vantage functionality while I figure out why it breaks things. Thanks 1z
-- Added the missing throwing knife sprite. Thanks 1z
-
-### March 14th, 2026 1.03 - Thanks Rombus Patch
-- Refactored and fixed Dancer.
-- Turns out I forgot to add ability costs for... everything. Added rudimentary costs for most abilities. Heavily subject to change.
-- Tweaked the scaling of Protection across the board. Shouldn't be super inflated now. However, it's scaling like Light Healing, so will need to see if it remains relevant in the higher levels.
-- Fixed a few bugs with War Cleric and Headhunter. Minimized cost to 1 SP for Headhunter abilities, even with Headhunter reduction.
-- Added all the Condition Icons!
-- Added missing Ability Icon for Headhunter: Reap
-- Added missing Ability Icons for Dread Knight.
-
-### March 16th, 2026 1.04 - Minions Build
-- Necromancers and Druids now give a passive buff to undead and plant allies respectively. 10% Boost to PV and DV and 20% Bost to Speed of their respective ally type. Note: This technically applies to themselves if you happen to be playing a Lich/Wraith/Alraune. Right now, this effect scales with how many of each class are on the field. E.G. if you have 3 Necromancers on the same team, all Undead Types will gain 30% boost to PV/DV and 60% Speed Boost. This also applies to the enemies (if there is an enemy necromancer on the field.) This effect caps at 10 stacks, so 100% increased PV and DV and 200% increased speed. This is subject to change, but you can very much do a mass bonelord party for funsies right now.
-- Fixed the Knightcaller so the Knight Captains are generated with their promotion flag set.
-- Buffed Shield Funnels to have 100 extra PV and 50% Physical Damage Reduction in an effort to offset the squishiness that is applied by Wall of Flesh. This does not impact their elemental defenses though, making them remain vulnerable to magic.
-- Fixed Lifetaker and Berserker on-kill healing to only work on hostiles. No more using your allies as health potions, this ain't Mad Max.
-- Fixed a lot of missing hints and hover text.
 
 ## To Do
 - Need to add targetting highlights for... everything really.

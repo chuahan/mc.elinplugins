@@ -19,6 +19,13 @@ public class ActAssassinate : Ability
         return base.CanPerform();
     }
 
+    public override Cost GetCost(Chara c)
+    {
+        Cost convertToMp = base.GetCost(c);
+        convertToMp.type = CostType.MP;
+        return convertToMp;
+    }
+    
     public override bool Perform()
     {
         ConMarkedForDeath deathMark = TC.Chara.GetCondition<ConMarkedForDeath>();

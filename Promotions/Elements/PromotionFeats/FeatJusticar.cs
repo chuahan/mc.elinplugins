@@ -13,15 +13,15 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Neutral Justicars will randomly apply one of the two effects.
 ///     Ability - Intimidate - Inflicts Armor break on the target. Also inflicts excommunicate. Inflicts fear on other
 ///     enemies near the target.
-///     Law - Also inflicts armor boost on nearby allies.
-///     Chaos -
+///     Law - Also inflicts Armor Boost on nearby allies.
+///     Chaos - Does Sound damage.
 ///     Ability - Subdue - Inflicts Suppress, and Attack Break on the target. Also inflicts excommunicate.
-///     Law -
-///     Chaos -
+///     Law - Pick the nearest ally and apply a minor heal.
+///     Chaos - Heals the Justicar.
 ///     Ability - Condemn - Inflicts Entangle on nearby enemies. For every enemy impacted, Justicar grants their team
 ///     Protection.
-///     Law -
-///     Chaos -
+///     Law - Applies a Speed boost to nearby allies.
+///     Chaos - Inflicts Fire Damage against the enemies.
 ///     Flames of Judgement - Justicars will reserve a part of their mana to activate a flaming aura around themselves.
 ///     Justicar gains Regeneration that scales with the spellpower.
 ///     Every turn, the Justicar will take 30% of their maximum health as fire damage. This same damage is also dealt to

@@ -4,7 +4,6 @@ namespace PromotionMod.Stats.Sniper;
 
 public class ConNoDistractions : BaseBuff
 {
-
     public override bool TimeBased => true;
     public override Sprite GetSprite()
     {

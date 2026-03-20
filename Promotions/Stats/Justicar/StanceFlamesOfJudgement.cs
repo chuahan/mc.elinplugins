@@ -25,10 +25,11 @@ public class StanceFlamesOfJudgement : BaseStance
             // TODO Text: Stance off.
             Kill();
         }
-
+        
+        List<Chara> targetsHit = new List<Chara>();
         // Get Karma Scores for the Player.
         // NPCs will be considered 0 Karma.
-        bool positiveKarma = true, negativeKarma = true;
+        bool positiveKarma = false, negativeKarma = false;
         if (CC.IsPCFactionOrMinion || CC.IsPC)
         {
             // For PC Faction, use PC's Karma.
@@ -36,26 +37,47 @@ public class StanceFlamesOfJudgement : BaseStance
             negativeKarma = player.karma < 0;
         }
 
-        int firePower = (int)(owner.MaxHP * 0.3F);
-        (List<Chara> friendlies, List<Chara> enemies) = HelperFunctions.GetOrganizedCharasWithinRadius(owner.pos, 2F, owner, true);
-
-        // Damage enemies. Negative Karma will inflict Fire Break.
-        foreach (Chara target in enemies)
+        ElementRef colorRef = EClass.setting.elements["eleFire"];
+        if (negativeKarma)
         {
-            HelperFunctions.ProcSpellDamage(power, firePower, owner, target, AttackSource.None, Constants.EleFire, 50);
-            if (negativeKarma) target.AddCondition(SubPoweredCondition.Create(nameof(ConFireBreak), power, 10));
+            colorRef = EClass.setting.elements["eleFire"];
+        } else if (positiveKarma)
+        {
+            colorRef = EClass.setting.elements["eleHoly"];
         }
-
+            
+        int firePower = (int)(owner.MaxHP * 0.3F);
+        
         // Do self-damage.
         HelperFunctions.ProcSpellDamage(power, firePower, owner, owner, AttackSource.None, Constants.EleFire, 50);
-
-        // If Positive Karma, heal allies.
-        if (positiveKarma)
+        
+        foreach (Point tile in EClass._map.ListPointsInCircle(CC.pos, 5f, false, false))
         {
-            foreach (Chara target in friendlies.Where(target => target != owner))
+            int distance = tile.Distance(CC.pos);
+            foreach (Chara target in tile.ListCharas().Where(target => !targetsHit.Contains(target)))
             {
-                target.HealHP(firePower / 2, HealSource.Magic);
+                if (target.IsHostile(CC))
+                {
+                    HelperFunctions.ProcSpellDamage(power, firePower, owner, target, AttackSource.None, Constants.EleFire, 50);
+                    if (negativeKarma) target.AddCondition(SubPoweredCondition.Create(nameof(ConFireBreak), power, 10));
+                }
+                
+                if (positiveKarma && !target.IsHostile(CC))
+                {
+                    target.HealHP(firePower / 2, HealSource.Magic);
+                }
+
+                // Mark Target as hit.
+                targetsHit.Add(target);
             }
+
+            // Get distance from the origin. Use that to add delay to the explosion.
+            Effect spellEffect = Effect.Get("Element/ball_Fire");
+            spellEffect.SetParticleColor(colorRef.colorTrail, true, "_TintColor");
+            spellEffect.sr.color = colorRef.colorSprite;
+            float delay = distance * 0.08F;
+            spellEffect.SetStartDelay(delay);
+            spellEffect.Play(tile).Flip(tile.x > CC.pos.x);
         }
     }
 }

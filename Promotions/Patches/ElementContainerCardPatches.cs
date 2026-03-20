@@ -21,7 +21,7 @@ public class ElementContainerCardPatches
         // Boost these three evalues only.
         if (e.id is SKILL.DV or SKILL.PV or SKILL.SPD &&
             __instance.owner.isChara &&
-            (__instance.owner.Chara.IsUndead || __instance.owner.Chara.IsPlant))
+            (__instance.owner.Chara.IsUndead || __instance.owner.Chara.IsPlant) && EClass._zone != null)
         {
             bool isEnemy = __instance.owner.Chara.IsHostile(EClass.pc);
 

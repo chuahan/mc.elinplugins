@@ -52,6 +52,13 @@ public class ActImprovisedBrew : Ability
         return base.CanPerform();
     }
 
+    public override Cost GetCost(Chara c)
+    {
+        Cost convertToMp = base.GetCost(c);
+        convertToMp.type = CostType.MP;
+        return convertToMp;
+    }
+    
     public override bool Perform()
     {
         if (TC != null && TC.isChara)

@@ -278,7 +278,7 @@ public class ActEffectPatches
         {
             Chara summonedBit = CharaGen.Create(type);
             summonedBit.SetMainElement(element.source.alias, element.Value, true);
-            summonedBit.SetSummon(20 + power / 20 + EClass.rnd(10));
+            summonedBit.SetSummon(30 + power / 10);
             summonedBit.SetLv(levelOverride);
             summonedBit.interest = 0;
             EClass._zone.AddCard(summonedBit, tp.GetNearestPoint(false, false));

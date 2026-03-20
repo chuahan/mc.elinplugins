@@ -1,7 +1,7 @@
 using UnityEngine;
 namespace PromotionMod.Stats;
 
-public class ConCritBoost : ConBuffStats
+public class ConCritBoost : SubPoweredCondition
 {
     public override ConditionType Type => ConditionType.Buff;
     public override bool TimeBased => true;

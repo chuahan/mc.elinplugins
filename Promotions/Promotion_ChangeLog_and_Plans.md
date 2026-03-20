@@ -1,8 +1,26 @@
 # Changelog and Roadmap
 
 ## Changelog
-### March 11th, 2026 1.00 - Initial release
-- Includes the base Promotions, Lailah, and the Quiet Cottage Map.
+
+### March 18th, 2026 1.05 - Justicar, Hermit, and Sniper.
+- Crit Boost now increases Critical Damage as well as Critical Chance.
+- Fixed Headhunter condition accidentally reducing your damage dealt by a lot. Thanks Lickiwhirl.
+- Fixed NRE issue with Undead characters (and presumably plant characters) in the character creation. Thanks Zeltarel.
+- Some abilities (Hermit, Dancer) have been converted to use MP instead of SP.
+
+#### Justicar
+- Justicar Flames of Judgement now has special effects, complete with varying whether you are positive or negative karma.
+- Justicar's Intimidate will apply Armor Boost on nearby allies if you are positive karma. If you are negative karma, it will do additional Sound damage.
+- Justicar's Condemn will apply Crit Boost to nearby allies if you are postive karma. If you are negative karma, it can inflict burning.
+- Justicar's Subdue will inflict the Mana Leak Debuff that will cause attacks to steal MP from the target if you are positive karma. IF you are negative karma, you will purge one active buff on the target.
+
+#### Hermit
+- New Active Ability: Preparation. This ability can only be used on targets that have been Marked for Death. Targetted debuff that also grants the Hermit Crit Boost, while inflicting one of: Sleep, Poison, Paralyze, Bleed, or Faint. The chance of inflicting the debuff increases depending on how high the Stalk value of Mark for Death is.
+- Hermits Opportunist now also works with Poison and Bleed.
+
+#### Sniper
+- New Active Ability: Tactical Retreat - Can only be used in melee range. Move away from the target and make a ranged attack upon landing.
+- New Passive: Reactive Shot - Snipers can make a reactive shot against any incoming ranged attacks, even if it misses. Upon making this reactive shot, they will gain one tick of Vigilance. While they have Vigilance they cannot make further reactive shots limiting you to one a tick.
 
 ### March 16th, 2026 1.04 - Minions Build
 - Necromancers and Druids now give a passive buff to undead and plant allies respectively. 10% Boost to PV and DV and 20% Boost to Speed of their respective ally type. Note: This technically applies to themselves if you happen to be playing a Lich/Wraith/Alraune. Right now, this effect scales with how many of each class are on the field. E.G. if you have 3 Necromancers on the same team, all Undead Types will gain 30% boost to PV/DV and 60% Speed Boost. This also applies to the enemies (if there is an enemy necromancer on the field.) This effect caps at 10 stacks, so 100% increased PV and DV and 200% increased speed. This is subject to change, but you can very much do a mass bonelord party for funsies right now.
@@ -38,12 +56,17 @@
 - Dread Knight - Healing recieved reduced by 75% with Life Ignition. Lifetaker is now true healing (does not get reduced.)  
 - Berserker - Healing recieved from revel now is true healing (does not get reduced.)  
 - Hexer - Fixed Paranoia.  
-- Artificer - Fixed null ref exception on Quickcraft. Thanks Ruair.  
+- Artificer - Fixed null ref exception on Quickcraft. Thanks Ruair.
+
+### March 11th, 2026 1.00 - Initial release
+- Includes the base Promotions, Lailah, and the Quiet Cottage Map.
 
 ## To Do
 - Need to add targetting highlights for... everything really.
 - Need to add SFX and FX for a lot of stuff. I'll probably go through 1 by 1 and figure out what needs work.
 - Balance things. Need user feedback.
+- Sniper Vigilance needs Graphic.
+- Hermit Preparation need Graphic.
 - Move the Promotion Docs into the game as Hover. It's a bit much, but I will need to abbreviate it a bit.
 - Add JP translations (Waiting till I got all the abilities tuned and ironed out.)
 
@@ -69,10 +92,10 @@ Consider giving them expertise in ranged or throwing weapons, or the ability to 
 Give them some method of applying conditions to synergize with. Posioned weapons or something. Or throwing hidden weapon laced with venoms.
 
 ### Sniper
-Absolutely needs more work compared to Ranger. It's a passive class with... very little passive abilities, and Target X is pretty lackluster.  
-Idea: Anti-air specialty Passive. Gain bonus damage against flying/floating enemies.  
-Idea: Velocity Passive. Gain a damage bonus that scales with distance from the enemy?  
-Idea: Backstep. Moves the Sniper away from the target like a backstep so they can maintain crit range. Maybe leave a trap behind like a Blast Mine or Smokescreen.
+Passive Ability Idea: Does more damage with consecutive shots against the same target, stacking debuffs?
+
+### Ranger
+Consider also giving them Reactive Shots (Retaliate against ranged attacks with ranged attacks.)
 
 ### Jenei
 Attempt to implement a Class-Install system for the Jenei that will use their current spirits to boost their normal combat capabilities. This will boost their attributes and provide temporary feats allow them to basically pseudo-class change into another archetype. E.G. a healer class that gains healing instinct and reduces mana cost of healing abilities. However, this comes with the cost that if you use Spirit Summon and use your current spirits, you will also lose your pseudo-class.

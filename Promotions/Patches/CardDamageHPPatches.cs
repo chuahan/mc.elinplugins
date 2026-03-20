@@ -92,10 +92,12 @@ public class CardDamageHPPatches
                     return false;
                 }
 
-                // Hermits - When the target is afflicted with Sleep/Paralyze/Faint Conditions, 10% damage increase. Spells can't crit though.
-                if (targetConditions.Contains(typeof(ConSleep)) ||
-                    targetConditions.Contains(typeof(ConParalyze)) ||
-                    targetConditions.Contains(typeof(ConFaint)))
+                // Hermits - Opportunist - 10% damage increase if the target is afflicted with specific debuffs. Spells can't crit though.
+                if (targetConditions.Contains(typeof(ConParalyze)) ||
+                    targetConditions.Contains(typeof(ConBleed)) ||
+                    targetConditions.Contains(typeof(ConSleep)) ||
+                    targetConditions.Contains(typeof(ConFaint)) ||
+                    targetConditions.Contains(typeof(ConPoison)))
                 {
                     dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, 1.1F);
                 }
@@ -149,7 +151,7 @@ public class CardDamageHPPatches
                     if (originConditions.Contains(typeof(ConHeadhunter)))
                     {
                         ConHeadhunter headhunter = (ConHeadhunter)originConditions[typeof(ConHeadhunter)].Single();
-                        dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, headhunter.GetStacks() * .03F);
+                        dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, 1 + headhunter.GetStacks() * .03F);
                     }
                 }
 

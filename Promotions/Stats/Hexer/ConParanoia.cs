@@ -5,6 +5,8 @@ namespace PromotionMod.Stats.Hexer;
 // They will set their own allies as priority targets.
 public class ConParanoia : Timebuff
 {
+    public override ConditionType Type => ConditionType.Debuff;
+    
     public override Sprite GetSprite()
     {
         return SpriteSheet.Get(source.alias);

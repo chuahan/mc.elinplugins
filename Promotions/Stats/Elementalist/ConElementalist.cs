@@ -10,7 +10,7 @@ public class ConElementalist : ClassCondition
     public override int PromotionClass => Constants.FeatElementalist;
     
     // When you haven't gained elemental orbs in the past 5 turns, you will lose one random stockpiled orb a turn.
-    private const int DecayDelayMax = 5;
+    public override int DecayDelayMax => 5;
 
     [JsonProperty(PropertyName = "R")] private int _decayDelay;
 

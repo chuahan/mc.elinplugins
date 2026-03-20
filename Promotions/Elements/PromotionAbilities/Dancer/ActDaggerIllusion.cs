@@ -32,6 +32,13 @@ public class ActDaggerIllusion : Ability
         return base.CanPerform();
     }
 
+    public override Cost GetCost(Chara c)
+    {
+        Cost convertToMp = base.GetCost(c);
+        convertToMp.type = CostType.MP;
+        return convertToMp;
+    }
+    
     public override void OnMarkMapHighlights()
     {
         List<Point> list = _map.ListPointsInCircle(CC.pos, EffectRadius);

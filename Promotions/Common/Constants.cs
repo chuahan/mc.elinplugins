@@ -4,7 +4,6 @@ namespace PromotionMod.Common;
 
 public class Constants
 {
-
     internal const int SigmoidScalingMax = 3000;
     internal const float SigmoidScalingPowerSlope = 1.2f;
 
@@ -25,6 +24,9 @@ public class Constants
     public const string AdvancedCombatSkillFlag = "advSkill";
     public const string UnlockedEliteEnemiesFlag = "eliteEnemiesUL";
     public const string IsEliteEnemyFlag = "eliteEnemy";
+    
+    public const string PromotionModVersionFlag = "modVersion";
+    public const int PromotionModVersion = 105;
 
     #endregion
 
@@ -397,13 +399,15 @@ public class Constants
     public const int ActDarkBarrierId = 891144;
     public const int ActSteamlightId = 891145;
     public const int ActInvigorateId = 891167;
-
+    public const int ActPreparationId =  891168;
+    public const int ActTacticalRetreatId =  891169;
 
     public const string ActTrampleAlias = "ActTrample";
 
     public const string TraumatizeAlias = "ActTraumatize";
 
     public const string CondemnAlias = "ActCondemn";
+    public const string IntimidateAlias = "ActIntimidate";
 
     public const string RangerBlastTrapAlias = "ranger_blast_trap";
     public const string RangerParalyzeTrapAlias = "ranger_paralyze_trap";

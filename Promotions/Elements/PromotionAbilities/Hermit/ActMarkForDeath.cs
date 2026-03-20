@@ -18,6 +18,13 @@ public class ActMarkForDeath : Ability
         if (CC.HasCooldown(Constants.ActMarkForDeathId)) return false;
         return base.CanPerform();
     }
+    
+    public override Cost GetCost(Chara c)
+    {
+        Cost convertToMp = base.GetCost(c);
+        convertToMp.type = CostType.MP;
+        return convertToMp;
+    }
 
     public override bool Perform()
     {

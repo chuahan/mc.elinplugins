@@ -11,6 +11,10 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     Skill - Shadow Shroud - Hide in the Shadows, making yourself harder to detect. This condition has a chance to be
 ///     lifted when you perform any attack.
 ///     Skill - Assassinate - When attacking an enemy Marked for Death, inflicts a grievous wound.
+///     Skill - Preparation. Targetted debuff that also grants the Hermit Crit Boost.
+///         Also inflicts one of: Sleep, Poison, Paralyze, Bleed, or Faint.
+///         The chance of inflicting the debuff increases depending on how high the Stalk value of Mark for Death is.
+///         This ability can only be used on targets that have been Marked for Death. 
 ///     Passive - Opportunist - Increased performance against enemies inflicted with Bad statuses.
 /// </summary>
 public class FeatHermit : PromotionFeat
@@ -22,6 +26,7 @@ public class FeatHermit : PromotionFeat
     {
         Constants.ActMarkForDeathId,
         Constants.ActShadowShroudId,
+        Constants.ActPreparationId,
         Constants.ActAssassinateId
     };
 
@@ -31,6 +36,7 @@ public class FeatHermit : PromotionFeat
     {
         c.ability.Add(Constants.ActMarkForDeathId, 75, false);
         c.ability.Add(Constants.ActShadowShroudId, 100, false);
+        c.ability.Add(Constants.ActPreparationId, 75, false);
         c.ability.Add(Constants.ActAssassinateId, 50, false);
     }
 

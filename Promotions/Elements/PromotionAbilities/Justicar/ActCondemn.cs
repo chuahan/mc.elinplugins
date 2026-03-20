@@ -7,6 +7,8 @@ namespace PromotionMod.Elements.PromotionAbilities.Justicar;
 ///     Justicar Ability
 ///     Condemn targets a point and attempts to entangle all enemies around that area, dealing damage.
 ///     For each target in the area, add Protection to the Justicar and all allies around them.
+///     If you are good aligned, you will boost the critical chance and damage of nearby allies.
+///     If you are evil aligned, your chains can inflict burning.
 /// </summary>
 public class ActCondemn : Ability
 {
@@ -41,33 +43,60 @@ public class ActCondemn : Ability
 
     public override bool Perform()
     {
+        // Get Karma Scores for the Player.
+        // NPCs will be considered 0 Karma.
+        bool positiveKarma = false, negativeKarma = false;
+        if (CC.IsPCFactionOrMinion || CC.IsPC)
+        {
+            // For PC Faction, use PC's Karma.
+            positiveKarma = player.karma >= 0;
+            negativeKarma = player.karma < 0;
+        }
+
+        int calcPower = GetPower(CC);
+        
         // Can I play SFX Chains here?
         int condemnedTargets = 0;
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(TP, _effectRadius, CC, false, true))
         {
-            ActEffect.ProcAt(EffectId.Debuff, GetPower(CC), BlessedState.Normal, CC, target, target.pos, true, new ActRef
+            ActEffect.ProcAt(EffectId.Debuff, calcPower, BlessedState.Normal, CC, target, target.pos, true, new ActRef
             {
                 origin = CC.Chara,
                 n1 = nameof(ConEntangle)
             });
 
             // Inflict Bane.
-            ActEffect.ProcAt(EffectId.Debuff, GetPower(CC), BlessedState.Normal, CC, target, target.pos, true, new ActRef
+            ActEffect.ProcAt(EffectId.Debuff, calcPower, BlessedState.Normal, CC, target, target.pos, true, new ActRef
             {
                 origin = CC.Chara,
                 n1 = nameof(ConBane)
             });
 
-            int damage = HelperFunctions.SafeDice(Constants.CondemnAlias, GetPower(CC));
+            int damage = HelperFunctions.SafeDice(Constants.CondemnAlias, calcPower);
             target.DamageHP(damage, AttackSource.Melee, CC);
             condemnedTargets++;
+
+            if (negativeKarma)
+            {
+                ActEffect.ProcAt(EffectId.Debuff, calcPower, BlessedState.Normal, Act.CC, target, target.pos, false, new ActRef
+                {
+                    origin = Act.CC.Chara,
+                    n1 = nameof(ConBurning)
+                });
+            }
         }
 
-        int protectionAmount = condemnedTargets * GetPower(CC);
+        int protectionAmount = condemnedTargets * calcPower;
         foreach (Chara ally in HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, true, true))
         {
             ConProtection? protection = (ConProtection)(ally.GetCondition<ConProtection>() ?? ally.AddCondition<ConProtection>());
             protection?.AddProtection(protectionAmount);
+            
+            if (positiveKarma)
+            {
+                int boostPower = (int)(HelperFunctions.SigmoidScaling(calcPower, 10, 50));
+                ally.AddCondition(SubPoweredCondition.Create(nameof(ConCritBoost), calcPower, boostPower));
+            }
         }
 
         return true;

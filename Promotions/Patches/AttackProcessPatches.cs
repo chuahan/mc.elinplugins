@@ -14,6 +14,7 @@ using PromotionMod.Stats.Machinist;
 using PromotionMod.Stats.Ranger;
 using PromotionMod.Stats.Sentinel;
 using PromotionMod.Stats.Sharpshooter;
+using PromotionMod.Stats.Sniper;
 using PromotionMod.Stats.Sovereign;
 using PromotionMod.Stats.Spellblade;
 using UnityEngine;
@@ -26,6 +27,7 @@ public class AttackProcessPatches
     [HarmonyPrefix]
     internal static bool CalcHitPrefixPatch(AttackProcess __instance, ref bool __result)
     {
+        // Hermit - Assassinate
         if (__instance.CC != null && __instance.CC.HasCondition<ConDeathbringer>())
         {
             __instance.crit = true;
@@ -33,11 +35,16 @@ public class AttackProcessPatches
             return false;
         }
 
-        if (__instance.CC.MatchesPromotion(Constants.FeatHermit) &&
-            __instance.TC != null &&
-            (__instance.TC.isChara && __instance.TC.Chara.HasCondition<ConSleep>() || __instance.TC.Chara.HasCondition<ConParalyze>() || __instance.TC.Chara.HasCondition<ConFaint>()))
+        // Hermit - Opportunist
+        if (__instance.CC.MatchesPromotion(Constants.FeatHermit) && __instance.TC is { isChara: true })
         {
-            __instance.crit = true;
+            ILookup<Type, Condition> targetConditions = __instance.TC.Chara.conditions.ToLookup(c => c.GetType());
+            if (targetConditions.Contains(typeof(ConParalyze)) ||
+                targetConditions.Contains(typeof(ConBleed)) ||
+                targetConditions.Contains(typeof(ConSleep)) ||
+                targetConditions.Contains(typeof(ConFaint)) ||
+                targetConditions.Contains(typeof(ConPoison)))
+                __instance.crit = true;
             __instance.dMulti += 0.1F;
             __result = true;
             return false;
@@ -62,26 +69,6 @@ public class AttackProcessPatches
     [HarmonyPrefix]
     internal static bool PerformPrefixPatch(AttackProcess __instance, int count, ref bool hasHit, ref float dmgMulti, ref bool maxRoll, bool subAttack)
     {
-        /*
-        if (Act.TC != null && Act.TC.isChara && Act.CC != null && Act.CC.MatchesPromotion(Constants.FeatHermit)
-        {
-            // Hermits - When the target is afflicted with Sleep/Paralyze/Faint Conditions, guarantees crits.
-            if (Act.TC.Chara.HasCondition<ConSleep>() || Act.TC.Chara.HasCondition<ConParalyze>() || Act.TC.Chara.HasCondition<ConFaint>())
-            {
-                maxRoll = true;
-                dmgMulti += 0.1F;
-            }
-
-            // Hermits - If you have Shadow Shroud on, your attack has a 25% chance of revealing you, but your attacks will also do additional damage.
-            ConShadowShroud shrouded = Act.CC.GetCondition<ConShadowShroud>();
-            if (shrouded != null)
-            {
-                if (EClass.rnd(4) == 0) shrouded.Kill();
-                dmgMulti += .25F;
-            }
-        }
-        */
-
         // Sharpshooter - Charged Chamber applies the mana consumed (power) as a damage multiplier. Caps at 5x damage.
         // BALANCE: This might... be a little too strong later?
         if (Act.CC != null &&
@@ -90,6 +77,19 @@ public class AttackProcessPatches
         {
             ConChargedChamber charge = Act.CC.GetCondition<ConChargedChamber>();
             dmgMulti += Math.Max(charge.power / 100F, 5F);
+        }
+        
+        // Crit Boost - Boosts Crit Damage
+        if (Act.TC != null &&
+            Act.TC.isChara &&
+            Act.CC != null &&
+            __instance is { crit: true })
+        {
+            ConCritBoost critBoost = Act.CC.GetCondition<ConCritBoost>();
+            if (critBoost != null)
+            {
+                dmgMulti += critBoost.power / 100F;
+            }
         }
 
         // Combat Skill Activations:
@@ -379,6 +379,17 @@ public class AttackProcessPatches
             }
         }
 
+        // Sniper - Reactive Shot - If a Sniper takes any ranged fire and doesn't have Vigilance,
+        // they will gain vigilance and make a counterattack.
+        if (__instance.TC.isChara &&
+            __instance.TC.IsAliveInCurrentZone &&
+            __instance.TC.Chara.MatchesPromotion(Constants.FeatSniper) &&
+            !__instance.TC.Chara.HasCondition<ConVigilance>())
+        {
+            __instance.TC.Chara.AddCondition<ConVigilance>();
+            new ActRanged().Perform(__instance.TC.Chara, __instance.CC, __instance.CC.pos);
+        }
+        
         // Spellblade - Crushing Strike will attack a random body part.
         // Get the body parts of the target.
         if (originConditions.Contains(typeof(ConCrushingStrikeAttack)) &&
@@ -443,7 +454,7 @@ public class AttackProcessPatches
 
             originConditions[typeof(ConCrushingStrikeAttack)].Single().Kill();
         }
-
+        
         // Lethality - 50% chance to instant kill non boss targets.
         if (Act.TC != null &&
             Act.TC.isChara &&

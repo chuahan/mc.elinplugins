@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 using HarmonyLib;
 using UnityEngine;
 namespace Evolution.Patches;
@@ -14,7 +18,9 @@ public class DramaCustomSequencePatches
             (bool evolvable, string charaResult, string evoThing) = c.IsEvolvable();
             if (evolvable)
             {
-                __instance.Choice("daEvolve".lang(c.NameSimple, evoThing, charaResult), "_evolve");   
+                var choice = new DramaChoice("daEvolve".lang(c.NameSimple, evoThing, charaResult), "evolution");
+                __instance.manager.lastTalk.choices.Add(choice);
+                __instance.manager._choices.Add(choice);
             }
         }
     }

@@ -49,7 +49,7 @@ public static class CharaExpansion
 
                 for (int i = 0; i < allStorage.Count; i++)
                 {
-                    hasItem = !allStorage.Any(thing => thing.id.Equals(evolutionParams[2]));
+                    hasItem = allStorage.Any(thing => thing.id.Equals(evolutionParams[2]));
                 }
                 
                 extraReq = target._affinity >= 75;

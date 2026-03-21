@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cwl.API.Drama;
+using Cwl.Helper;
 using Cwl.Helper.Extensions;
 namespace Evolution;
 
@@ -10,7 +11,7 @@ internal class EvolutionDramaExpansion : DramaOutcome
     private static bool Evolve(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
         dm.RequiresActor(out var actor);
-        (bool evolvable, string charaResult, string evoThing) = actor.IsEvolvable();
+        (bool evolvable, string evoChara, string evoThing) = actor.IsEvolvable();
         
         // Locate the required evolution heart.
         // Search in Inventory
@@ -35,17 +36,50 @@ internal class EvolutionDramaExpansion : DramaOutcome
             allStorage.AddRange(toolBeltContainer.things);
         }
 
-        // Split and delete the item.
+        // Split and delete the evolution item from PC's inventory.
         Thing currentItem = allStorage.First(thing => thing.id.Equals(evoThing, StringComparison.InvariantCulture));
         Thing deleteTarget = currentItem.Split(1);
         deleteTarget.Destroy();
 
-        // Calculate the skill and attribute gains of the character being evolved vs it's base.
-        // Take all the items from the old character and throw them into the player's inventory.
-        // Delete the character
-        // Create the evolved character and add to the party.
-        // Apply the skill and attribute gains.
+        // Create the evolved character.
+        Chara evolvedChara = CharaGen.Create(evoChara);
         
+        // Take all the items from the old character and throw them into the new character's inventory.
+        foreach (Thing posession in actor.things)
+        {
+            evolvedChara.AddThing(posession);
+        }
+        
+        // Copy original elements and max them against the new form.
+        foreach (KeyValuePair<int, Element> element in actor.elements.dict)
+        {
+            Element copiedElement = evolvedChara.elements.GetOrCreateElement(element.Key);
+            copiedElement.vBase = Math.Max(copiedElement.vBase, element.Value.vBase);
+            copiedElement.vLink = Math.Max(copiedElement.vLink, element.Value.vBase);
+            copiedElement.vSource = Math.Max(copiedElement.vSource, element.Value.vBase);
+        }
+
+        // Sync Metadata
+        evolvedChara.bio = actor.bio;
+        evolvedChara._hobbies = actor._hobbies;
+        evolvedChara._ability = actor._ability;
+        evolvedChara._tactics = actor._tactics;
+        evolvedChara._job = actor._job;
+        evolvedChara._works = actor._works;
+        evolvedChara.hp = evolvedChara.MaxHP;
+        evolvedChara.mana.Set(evolvedChara.mana.max);
+        evolvedChara._affinity = actor._affinity;
+        
+        EClass.pc.currentZone.AddCard(evolvedChara, actor.pos);
+        EClass._zone.branch.AddMemeber(evolvedChara);
+        EClass.pc.party.AddMemeber(evolvedChara);
+
+        evolvedChara.PlayEffect("aura_heaven");
+        Msg.Say("evolution_complete".langGame(actor.NameSimple, actor.Name, evolvedChara.Name));
+        
+        // Delete the original character
+        actor.RemoveGlobal();
+
         return true;
     }
 }

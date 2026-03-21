@@ -164,3 +164,33 @@ Covert Operations from the Information Guild.
     - Gathering Reports from field agents.
     - Abduction Requests
     - Eliminate hidden agents.
+
+### The Merchant
+A class-less promotion. Unlockable via personal quest for a specific NPC.
+Merchants are mostly a non-combat support promotion that sets out with the mindset of money can solve most of your problems.
+
+Negotiate - The merchant uses their charisma and negotiation skills to talk to an enemy. If you succeed in negotiations, options open up to work with the enemy.
+- Purchase: The player has an option to purchase the inventory of the target. You will know how many items they have, and what kind of items they have, and they price they are offering. On accepting, the enemy will give you all the items, take the money, then leave.
+- Bribe: The player has an option to bribe the enemy to leave directly.
+- Hire: The enemy will offer their services, and the player can pay the amount to hire them.
+
+Health Insurance Stance - The Merchant enters a protection stance. Upon taking any combat damage, the damage will be reduced by a percentage and the merchant will lose some deductible. Every turn the Merchant remains in this stance they will lose an amount of orens. If the Merchant takes Lethal damage with the Insurance Active, they will lose half of their orens and be warped to safety.
+
+Collect - Can only take money from enemies once. Takes an amount of orens from them scaling with their strength.
+
+Tradewinds - Do light impact damage while knocking all enemies away from you.
+
+### Gambler
+A class-less promotion. Unlockable via personal quest for a specific NPC.
+Gamblers are a luck based promotion class that lives by the dice.
+
+I'm Feeling Lucky - Stance that modifies how much damage you deal and how much damage you take. Every time you take or deal damage you make a Dice roll of 20 then subtract 10.
+For damage dealt, your damage is multiplied by (10 + x) / 10, meaning a -10 would result in you dealing no damage, while a 20 will result in you dealing an additional 2x damage.
+For damage taken, incoming damage is multiplied by (10 - x) / 10, meaning a -10 would result in 2x damage taken while a 20 will result in you taking no damage.
+Negative Values will be treated as (10 + x) / 10 multiplier to damage dealt and 1 + abs(x)
+
+Slots - 
+
+Draw - 
+
+Double Down - 

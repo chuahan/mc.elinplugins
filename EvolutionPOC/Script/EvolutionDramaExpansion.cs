@@ -63,8 +63,8 @@ internal class EvolutionDramaExpansion : DramaOutcome
         {
             Element copiedElement = evolvedChara.elements.GetOrCreateElement(element.Key);
             copiedElement.vBase = Math.Max(copiedElement.vBase, element.Value.vBase);
-            copiedElement.vLink = Math.Max(copiedElement.vLink, element.Value.vBase);
-            copiedElement.vSource = Math.Max(copiedElement.vSource, element.Value.vBase);
+            copiedElement.vLink = Math.Max(copiedElement.vLink, element.Value.vLink);
+            copiedElement.vSource = Math.Max(copiedElement.vSource, element.Value.vSource);
         }
 
         // Sync Metadata
@@ -86,6 +86,7 @@ internal class EvolutionDramaExpansion : DramaOutcome
         Msg.Say("evolution_complete".langGame(actor.NameSimple, actor.Name, evolvedChara.Name));
         
         // Delete the original character
+        EClass._zone.map._RemoveCard(actor);
         actor.RemoveGlobal();
 
         return true;

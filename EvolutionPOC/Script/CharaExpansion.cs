@@ -16,7 +16,7 @@ public static class CharaExpansion
     public static (bool, string, string) IsEvolvable(this Chara target)
     {
         bool hasItem = false;
-        bool extraReq = false;
+        bool extraReq = target.IsPCFaction;
         foreach (var tag in target.source.tag) {
             if (tag.StartsWith("evolve#"))
             {
@@ -52,7 +52,7 @@ public static class CharaExpansion
                     hasItem = allStorage.Any(thing => thing.id.Equals(evolutionParams[2]));
                 }
                 
-                extraReq = target._affinity >= 75;
+                extraReq &= target._affinity >= 75;
                 
                 return (extraReq && hasItem, evolutionParams[1], evolutionParams[2]);
             }

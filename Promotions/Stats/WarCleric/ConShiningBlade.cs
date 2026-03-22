@@ -7,6 +7,8 @@ public class ConShiningBlade : BaseBuff
     {
         return SpriteSheet.Get(source.alias);
     }
+    
+    // Stack based Condition.
     public override void Tick()
     {
     }

@@ -8,7 +8,4 @@ namespace PromotionMod.Stats.Hermit;
 /// </summary>
 public class ConDeathbringer : BaseBuff
 {
-    public override void Tick()
-    {
-    }
 }

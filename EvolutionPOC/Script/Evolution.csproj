@@ -45,10 +45,6 @@
       <HintPath>$(ElinGamePath)\BepInEx\core\BepInEx.Unity.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CustomWhateverLoader">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\2135150\3370512305\CustomWhateverLoader.dll</HintPath>
-	  <Private>False</Private>
-    </Reference>
     <Reference Include="Elin">
       <HintPath>$(ElinGamePath)\Elin_Data\Managed\Elin.dll</HintPath>
       <Private>False</Private>
@@ -69,6 +65,10 @@
       <HintPath>$(ElinGamePath)\Elin_Data\Managed\Plugins.Sound.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Plugins.UI">
+      <HintPath>$(ElinGamePath)\Elin_Data\Managed\Plugins.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="UnityEngine">
@@ -83,8 +83,7 @@
   <ItemGroup>
     <Compile Include="CharaExpansion.cs" />
     <Compile Include="Evolution.cs" />
-    <Compile Include="EvolutionDramaExpansion.cs" />
-    <Compile Include="Patches\DramaCustomSequencePatches.cs" />
+    <Compile Include="TraitEvolutionHeart.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

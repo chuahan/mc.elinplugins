@@ -7,6 +7,7 @@
 - Fixed Headhunter condition accidentally reducing your damage dealt by a lot. Thanks Lickiwhirl.
 - Fixed NRE issue with Undead characters (and presumably plant characters) in the character creation. Thanks Zeltarel.
 - Some abilities (Hermit, Dancer) have been converted to use MP instead of SP.
+- Fixed NRE issue with firing at empty tiles. Thanks Xaytan and Ruair.
 
 #### Justicar
 - Justicar Flames of Judgement now has special effects, complete with varying whether you are positive or negative karma.
@@ -187,9 +188,12 @@ Gamblers are a luck based promotion class that lives by the dice.
 I'm Feeling Lucky - Stance that modifies how much damage you deal and how much damage you take. Every time you take or deal damage you make a Dice roll of 20 then subtract 10.
 For damage dealt, your damage is multiplied by (10 + x) / 10, meaning a -10 would result in you dealing no damage, while a 20 will result in you dealing an additional 2x damage.
 For damage taken, incoming damage is multiplied by (10 - x) / 10, meaning a -10 would result in 2x damage taken while a 20 will result in you taking no damage.
-Negative Values will be treated as (10 + x) / 10 multiplier to damage dealt and 1 + abs(x)
+These rolls are affected by LUC.
 
-Slots - 
+Slots - The Gambler summons slots and adds conditions to themselves. Each condition lasts 10 seconds. Upon reaching 3 conditions the slots will evaluate the response. If any of the conditions expire, all of them do.
+First Slot - Yevan (Physical) / Itzpalt (Magical) / Mani (Item) / Kizuami (Random)
+Second Slot - 
+
 
 Draw - 
 

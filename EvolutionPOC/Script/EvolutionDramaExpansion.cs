@@ -8,6 +8,14 @@ namespace Evolution;
 
 internal class EvolutionDramaExpansion : DramaOutcome
 {
+    private static bool CanEvolve(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
+    {
+        dm.RequiresActor(out var actor);
+        (bool evolvable, string evoChara, string evoThing) = actor.IsEvolvable();
+        if (evolvable) actor.SetFlagValue("canEvo", 1);
+        return false;
+    }
+    
     private static bool Evolve(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
         dm.RequiresActor(out var actor);

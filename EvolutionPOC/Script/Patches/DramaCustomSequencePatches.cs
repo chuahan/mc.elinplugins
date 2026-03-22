@@ -9,6 +9,7 @@ namespace Evolution.Patches;
 [HarmonyPatch(typeof(DramaCustomSequence))]
 public class DramaCustomSequencePatches
 {
+    /*
     [HarmonyPatch(nameof(DramaCustomSequence.Build))]
     [HarmonyPostfix]
     internal static void CanEvolvePatch(DramaCustomSequence __instance, Chara c)
@@ -18,10 +19,17 @@ public class DramaCustomSequencePatches
             (bool evolvable, string charaResult, string evoThing) = c.IsEvolvable();
             if (evolvable)
             {
-                var choice = new DramaChoice("daEvolve".lang(c.NameSimple, evoThing, charaResult), "evolution");
+                var choice = new DramaChoice(
+                    "daEvolve".lang(c.NameSimple, evoThing, charaResult),
+                    "",
+                    "invoke* Evolve",
+                    "",
+                    ""
+                );
                 __instance.manager.lastTalk.choices.Add(choice);
                 __instance.manager._choices.Add(choice);
             }
         }
     }
+    */
 }

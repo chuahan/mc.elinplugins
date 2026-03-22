@@ -204,12 +204,13 @@ public class AttackProcessPatches
 
         ILookup<Type, Condition> originConditions = originChara.conditions.ToLookup(c => c.GetType());
 
+        if (target == null || !__instance.TC.isChara) return;
         // Berserker - Lifebreak - On hit, inflict additional damage based on missing HP of the user.
         if (originConditions.Contains(typeof(ConLifebreakAttack)) &&
             !subAttack &&
             __instance is { IsRanged: false, isThrow: false })
         {
-            if (__instance.TC.isChara && __instance.hit)
+            if (__instance.hit)
             {
                 int damage = originChara.Chara.MaxHP - originChara.Chara.hp;
                 damage = HelperFunctions.SafeMultiplier(damage, 1.3F);
@@ -221,7 +222,6 @@ public class AttackProcessPatches
         // Machinist - Heavyarms mode followup rockets.
         if (originConditions.Contains(typeof(StanceHeavyarms)) &&
             !subAttack &&
-            __instance.TC.isChara &&
             __instance is { IsRanged: true, toolRange: not null })
         {
             Condition heavyArms = originConditions[typeof(StanceHeavyarms)].Single();
@@ -241,7 +241,7 @@ public class AttackProcessPatches
             __instance.weapon.trait is not TraitToolRangeCane)
         {
             ConGimmickCoating coating = (ConGimmickCoating)originConditions[typeof(ConGimmickCoating)].Single();
-            if (__instance is { hit: true, TC.isChara: true })
+            if (__instance is { hit: true})
             {
                 if (Enum.TryParse(coating.GimmickType, out Constants.RangerCoatings coatingType))
                 {
@@ -310,7 +310,7 @@ public class AttackProcessPatches
             __instance is { IsRanged: false, isThrow: false })
         {
             ConShieldSmiteAttack smite = (ConShieldSmiteAttack)originConditions[typeof(ConShieldSmiteAttack)].Single();
-            if (hasHit && __instance.TC.isChara)
+            if (__instance is { hit: true})
             {
                 int shieldSkill = originChara.Evalue(123);
                 int basherEnc = originChara.Evalue(381);
@@ -329,15 +329,14 @@ public class AttackProcessPatches
         }
 
         // Sharpshooter - Ranged Attacks will automatically apply the Suppress effect, regardless of hitting or not
-        if (__instance.TC is { isChara: true } &&
-            originChara.MatchesPromotion(Constants.FeatSharpshooter) &&
+        if (originChara.MatchesPromotion(Constants.FeatSharpshooter) &&
             __instance.IsRanged)
         {
             target.Chara.AddCondition<ConSupress>();
         }
 
         // Sovereign - Order Sword allows follow-up attacks from allies in Coherency.
-        if (originConditions.Contains(typeof(ConOrderSword)) && __instance.TC is { isChara: true })
+        if (originConditions.Contains(typeof(ConOrderSword)) && target.IsAliveInCurrentZone)
         {
             ConOrderSword orderSword = (ConOrderSword)originConditions[typeof(ConOrderSword)].Single();
             if (orderSword is { FollowUpAvailable: true })
@@ -381,22 +380,21 @@ public class AttackProcessPatches
 
         // Sniper - Reactive Shot - If a Sniper takes any ranged fire and doesn't have Vigilance,
         // they will gain vigilance and make a counterattack.
-        if (__instance.TC.isChara &&
-            __instance.TC.IsAliveInCurrentZone &&
+        if (__instance.TC.IsAliveInCurrentZone &&
             __instance.TC.Chara.MatchesPromotion(Constants.FeatSniper) &&
             !__instance.TC.Chara.HasCondition<ConVigilance>())
         {
             __instance.TC.Chara.AddCondition<ConVigilance>();
             new ActRanged().Perform(__instance.TC.Chara, __instance.CC, __instance.CC.pos);
         }
-        
+    
         // Spellblade - Crushing Strike will attack a random body part.
         // Get the body parts of the target.
         if (originConditions.Contains(typeof(ConCrushingStrikeAttack)) &&
             !subAttack &&
             __instance is { IsRanged: false, isThrow: false })
         {
-            if (__instance.hit && __instance.TC.isChara)
+            if (__instance is { hit: true})
             {
                 int power = originConditions[typeof(ConCrushingStrikeAttack)].Single().power;
                 BodySlot partTarget = target.Chara.body.slots.RandomItem();
@@ -454,11 +452,9 @@ public class AttackProcessPatches
 
             originConditions[typeof(ConCrushingStrikeAttack)].Single().Kill();
         }
-        
+    
         // Lethality - 50% chance to instant kill non boss targets.
-        if (Act.TC != null &&
-            Act.TC.isChara &&
-            Act.CC != null &&
+        if (Act.CC != null &&
             !Act.TC.Chara.IsBoss() &&
             __instance is { crit: true } &&
             Act.CC.HasElement(Constants.FeatLethalityId) &&

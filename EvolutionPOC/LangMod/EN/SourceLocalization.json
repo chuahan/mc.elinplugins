@@ -1,0 +1,13 @@
+{
+  "LangGame.evolution_complete.text": "#1 the #2 has evolved into #3!",
+  "LangGeneral.daEvolve.text": "Use #3 to evolve #1 into #2?",
+  "SourceChara.testchara_evo_stage1.name": "Tester1",
+  "SourceChara.testchara_evo_stage2.name": "Tester2",
+  "SourceChara.testchara_evo_stage3.name": "Tester3",
+  "SourceThing.evolution_heart_a.detail": "INSERT DESCRIPTION HERE",
+  "SourceThing.evolution_heart_a.name": "Evolution Heart Type A",
+  "SourceThing.evolution_heart_b.detail": "INSERT DESCRIPTION HERE",
+  "SourceThing.evolution_heart_b.name": "Evolution Heart Type B",
+  "SourceThing.evolution_heart_c.detail": "INSERT DESCRIPTION HERE",
+  "SourceThing.evolution_heart_c.name": "Evolution Heart Type C"
+}

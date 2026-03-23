@@ -2,12 +2,13 @@
 
 ## Changelog
 
-### March 18th, 2026 1.05 - Justicar, Hermit, and Sniper.
+### March 22th, 2026 1.05 - Justicar, Hermit, and Sniper.
 - Crit Boost now increases Critical Damage as well as Critical Chance.
 - Fixed Headhunter condition accidentally reducing your damage dealt by a lot. Thanks Lickiwhirl.
 - Fixed NRE issue with Undead characters (and presumably plant characters) in the character creation. Thanks Zeltarel.
 - Some abilities (Hermit, Dancer) have been converted to use MP instead of SP.
 - Fixed NRE issue with firing at empty tiles. Thanks Xaytan and Ruair.
+- Fixed quite a few issues with Conditions not ticking.
 
 #### Justicar
 - Justicar Flames of Judgement now has special effects, complete with varying whether you are positive or negative karma.

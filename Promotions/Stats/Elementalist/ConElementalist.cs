@@ -136,6 +136,8 @@ public class ConElementalist : ClassCondition
 
     public override void Tick()
     {
+        if (!owner.MatchesPromotion(this.PromotionClass)) this.Kill();
+        
         if (_decayDelay == DecayDelayMax)
         {
             // Lose a random orb.

@@ -15,6 +15,7 @@ using PromotionMod.Stats.Harbinger;
 using PromotionMod.Stats.Headhunter;
 using PromotionMod.Stats.Hermit;
 using PromotionMod.Stats.HolyKnight;
+using PromotionMod.Stats.Justicar;
 using PromotionMod.Stats.Runeknight;
 using PromotionMod.Stats.Sniper;
 using PromotionMod.Stats.Sovereign;
@@ -600,6 +601,13 @@ public class CardDamageHPPatches
             {
                 int manaDamage = (int)(damageWithMods * 0.1F) * -1;
                 targetChara.mana.Mod(manaDamage);
+            }
+            
+            // If the target has Mana Leak, restore 10% of the damage done as mana.
+            if (targetConditions.Contains(typeof(ConManaLeak)) && originChara != null)
+            {
+                int manaSteal = (int)(damageWithMods * 0.1F);
+                originChara.mana.Mod(manaSteal);
             }
         }
 

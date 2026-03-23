@@ -1,6 +1,7 @@
 {
   "LangGame.evolution_complete.text": "#1 the #2 has evolved into #3!",
-  "LangGeneral.daEvolve.text": "Use #3 to evolve #1 into #2?",
+  "LangGeneral.evolutionConfirmation.text": "Are you sure you want to evolve #1 into a #2?",
+  "LangGeneral.evolveChara.text": "Evolve into #1.",
   "SourceChara.testchara_evo_stage1.name": "Tester1",
   "SourceChara.testchara_evo_stage2.name": "Tester2",
   "SourceChara.testchara_evo_stage3.name": "Tester3",

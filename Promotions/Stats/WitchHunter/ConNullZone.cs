@@ -11,7 +11,8 @@ public class ConNullZone : BaseBuff
     }
     public override void Tick()
     {
-        // Apply Sanctuary to everyone within 3F.
+        // TODO: Null Presence should stop certain "spell" type abilities from being used.
+        // Apply Null Presence to everyone within 3F.
         foreach (Chara chara in pc.currentZone.map.ListCharasInCircle(owner.pos, 3F))
         {
             Condition? nullZone = chara.GetCondition<ConNullPresence>() ?? chara.AddCondition<ConNullPresence>();

@@ -1,21 +1,59 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
+using PromotionMod.Common;
+using PromotionMod.Source.QuestEventSystem.SpawnerConfigurations;
 namespace PromotionMod.Source.QuestEventSystem.QuestZones;
 
 public class ZoneEventDefendPosition : ZoneEventQuest
 {
     [JsonProperty] public int Kills;
-
+    
     // 5 Turns before Enemies arrive.
-    // Difficulty Scale: 80 to 200 turns
     [JsonProperty] public int Turns;
 
+    [JsonProperty] public int EnemyPresence;
+    
+    public override int TimeLimit => 200;
+
+    public SpawnSetup EnemyTypes => new FantasyBaddiesSetup();
     public ZoneInstanceRandomQuest instance => _zone.instance as ZoneInstanceRandomQuest;
 
     public override void OnVisit()
     {
+        int difficulty = (base.quest.FameContent ? (EClass.pc.FameLv / 100 * 50) : 0);
+        EClass._zone._dangerLv = 5 + difficulty;
+        
         if (game.isLoading) return;
-
-
+        // Initiate the Defense Zone
+        // Spawn the Defending Standard on the Spot.
+        Chara banner = CharaGen.Create(Constants.DefenseBannerCharaId, EClass._zone._dangerLv);
+        banner.homeZone = EClass._zone;
+        banner.SetFaction(game.factions.Find(Constants.AdvGuildFactionId));
+        Room targetRoom = _zone.map.rooms.listRoom.Single(r => r.Name.Equals("defenseArea", StringComparison.InvariantCultureIgnoreCase));
+        Point defenseAreaCenter = targetRoom.GetRoomCenter();
+        _zone.AddCard(banner, defenseAreaCenter);
+        
+        // Spawn Defenders around and leash them to the Defending Standard.
+        List<string> defenders = new List<string>()
+        {
+            Constants.WatcherFighterCharaId,
+            Constants.WatcherArcherCharaId,
+            Constants.WatcherHealerCharaId,
+        };
+        
+        // Create two of each in the Defending Area.
+        foreach (string defenderId in defenders)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                Chara defender = CharaGen.Create(defenderId, EClass._zone._dangerLv);
+                banner.homeZone = EClass._zone;
+                banner.SetFaction(game.factions.Find(Constants.AdvGuildFactionId));
+                _zone.AddCard(banner, defenseAreaCenter);
+            }
+        }
     }
 
     public override void _OnTickRound()
@@ -23,6 +61,26 @@ public class ZoneEventDefendPosition : ZoneEventQuest
         // base.quest.difficulty
         Turns++;
 
+        // Check the Status of the Defense Area:
+        Room targetRoom = _zone.map.rooms.listRoom.Single(r => r.Name.Equals("defenseArea", StringComparison.InvariantCultureIgnoreCase));
+        this.EnemyPresence = 0;
+        foreach (Point pos in targetRoom.points)
+        {
+            foreach (Chara presence in pos.Charas)
+            {
+                if (presence.IsHostile(EClass.pc) && presence.faction != game.factions.Find(Constants.AdvGuildFactionId))
+                {
+                    this.EnemyPresence++;
+                }
+            }
+        }
+
+        if (EnemyPresence > 5)
+        {
+            // TODO: Fail the quest.
+            Kill();
+        }
+        
         // Spawn first wave at wave 5, allowing 5 turns to get set up.
         if (Turns == 5)
         {
@@ -32,39 +90,27 @@ public class ZoneEventDefendPosition : ZoneEventQuest
         {
             if (Turns % 10 == 5 || Turns % 10 == 0)
             {
-                // Every 5 waves spawn more enemies.
+                // Every 5 turns spawn more enemies.
                 SpawnAttackers();
             }
 
             if (Turns % 30 == 0)
             {
-                // Every 30 Turns spawn a boss.
+                // Every 30 turns spawn a boss.
                 Rand.SetSeed(quest.uid);
                 SpawnBoss(Turns > EClass.rnd(100));
                 Rand.SetSeed();
             }
         }
 
-        AggroEnemy();
+        MoveNPCs();
     }
 
-    // Spawn an allied hero unit when a specific number of kills has been met.
-    public void SpawnHero()
+    public override ZoneInstance.Status OnReachTimeLimit()
     {
-        // Picks a hero.
-        // Default choice is a Watcher Knight
-        // Depending on your rank with the Information Guild: Sena and Ruras can show up.
-        // Depending on your rank with the Adventurers guild: Louise and Mitsune can show up.
-        // Depending on your friendship level with Lailah: Lailah Golem can show up.
-        // Depending on your friendship level with Doren: A squad of Aluena Watch can show up to help.
+        Msg.Say("position_defended".lang());
+        return ZoneInstance.Status.Success;
     }
-
-    // Spawn a batch of defenders
-    public void SpawnDefenders()
-    {
-        // Allied forces include: 2 Knights, 2 Archers, 2 Healers, and 1 Mage.
-    }
-
 
     // Spawn the enemy at the far edge if possible.
     public void SpawnAttackers(int num = 1)
@@ -77,8 +123,7 @@ public class ZoneEventDefendPosition : ZoneEventQuest
                 enemies.Add(chara.uid);
         }
     }
-
-    //
+    
     public void SpawnAttackingCommander(bool evolve = false)
     {
         Point nearestPoint = _map.bounds.GetRandomEdge().GetNearestPoint(allowChara: false);
@@ -94,12 +139,37 @@ public class ZoneEventDefendPosition : ZoneEventQuest
 
     public override void OnCharaDie(Chara c)
     {
-        if (!c.IsPCParty && !c.IsPCPartyMinion)
+        if (c.id == Constants.DefenseBannerCharaId) Kill(); 
+    }
+    
+    public void MoveNPCs()
+    {
+        Chara bannerTarget = EClass._zone.FindChara(Constants.DefenseBannerCharaId);
+        // 50% chance to target PC faction, otherwise target the banner.
+        foreach (Chara chara in EClass._map.charas)
         {
-            Kills++;
-            if (Kills == 50)
+            if (!chara.IsPCFactionOrMinion && !chara.IsInCombat)
             {
-                SpawnHero();
+                // If it's an ally character, they should move towards the banner.
+                if (chara.faction != game.factions.Find(Constants.AdvGuildFactionId))
+                {
+                    if (bannerTarget != null) chara.TryMoveTowards(bannerTarget.pos);
+                }
+                else
+                {
+                    // Move the enemies towards the Defense Banner or the PC party.
+                    if (EClass.rnd(3) == 0 && bannerTarget != null)
+                    {
+                        chara.SetEnemy(bannerTarget);                    
+                    }
+                    else
+                    {
+                        chara.SetEnemy(EClass.pc.party.members.RandomItem());
+                    }
+                
+                    chara.SetAIAggro();
+                }
+
             }
         }
     }

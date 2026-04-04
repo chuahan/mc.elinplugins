@@ -2,6 +2,10 @@
 
 ## Changelog
 
+### March 26th, 2026 1.06 - Bugfixes
+- Fixed a few issues with Elementalist. Thanks callomerlose.
+- Fixed an issue with Sword Sages not being able to promote. Thanks Tesshu.
+
 ### March 22th, 2026 1.05 - Justicar, Hermit, and Sniper.
 - Crit Boost now increases Critical Damage as well as Critical Chance.
 - Fixed Headhunter condition accidentally reducing your damage dealt by a lot. Thanks Lickiwhirl.
@@ -186,16 +190,66 @@ Tradewinds - Do light impact damage while knocking all enemies away from you.
 A class-less promotion. Unlockable via personal quest for a specific NPC.
 Gamblers are a luck based promotion class that lives by the dice.
 
-I'm Feeling Lucky - Stance that modifies how much damage you deal and how much damage you take. Every time you take or deal damage you make a Dice roll of 20 then subtract 10.
+I'm Feeling Lucky - Stance that modifies how much damage and healing you deal and how much damage / healing you recieve. Every time you recieve or deal damage you make a Dice roll of 20 then subtract 10.
 For damage dealt, your damage is multiplied by (10 + x) / 10, meaning a -10 would result in you dealing no damage, while a 20 will result in you dealing an additional 2x damage.
 For damage taken, incoming damage is multiplied by (10 - x) / 10, meaning a -10 would result in 2x damage taken while a 20 will result in you taking no damage.
 These rolls are affected by LUC.
 
-Slots - The Gambler summons slots and adds conditions to themselves. Each condition lasts 10 seconds. Upon reaching 3 conditions the slots will evaluate the response. If any of the conditions expire, all of them do.
-First Slot - Yevan (Physical) / Itzpalt (Magical) / Mani (Item) / Kizuami (Random)
-Second Slot - 
+Slots - The Gambler summons slots and adds conditions to themselves. Each condition lasts 10 global turns. Upon reaching 3 conditions the slots will evaluate the response. If any of the conditions expire, all of them do.
+First Slot - Yevan (Physical) / Itzpalt (Magical) / Jure (Buff/Debuff) / Kizuami (Random) - Ehekatl (Jackpot/Random)
+    Yevan enters the Attack Slot.
+    Itzpalt enters to Magic Slot.
+    Jure enters the Support Slot.
+    Kizuami Picks one of the first three at random.
+    Ehekatl Picks one of the first three at random if not Jackpot.
+Second Slot - Skull (Bad) / Bar / Cherry / Bell / Jackpot
+    Skull - Targets Allies.
+    Bar - Targets all nearby enemies.
+    Cherry - Targets a single nearby enemy.
+    Bell - Targets all allies with a positive effect and enemies with a negative effect.
+    Jackpot - If not Jackpot, picks any but Skull.
+Third Slot - Anima / Light / Dark / Sword / Jackpot
+    Yevan
+        Anima - Strikes with Magic Sword attacks.
+        Light - Strikes with Holy Sword attacks.
+        Dark - Strikes with Dark Sword attacks.
+        Sword - Performs Bladestorm.
+        Jackpot - Strikes with a Melee attack that will cut the target's HP in half.
+    Itzpalt
+        Anima - Strikes with one of Fire/Cold/Lightning Arrow.
+        Light - Strikes with Holy Ball.
+        Dark - Strikes with Dark Bolt
+        Sword - Strikes with random magical sword of Fire/Cold/Lightning
+        Jackpot - Drops a Meteor of Fire/Cold/Lightning on the target.
+    Jure
+        Anima - Restores HP to the target.
+        Light - Grants Holy veil to the target.
+        Dark - Inflicts Bane on the target.
+        Sword - Inflicts Weakness on the target.
+        Jackpot - Fully Heals the target.
+    Kizuami
+    Ehekatl
+        Jackpot -
+            Skull - All allies are fully healed. HP/MP/Stamina.
+            Bar - All nearby enemies take massive Melee damage.
+            Cherry - Attempts to instant kill a target. If failure, does 75 - 50 -25 % of their HP as damage.
+            Bell - Allies are fully restored. Enemies nearby are hit with Slow/Bane/Weakness/EleScar/Nightmare
+            Jackpot - All enemies nearby will drop their entire inventories and disappear.
 
+Blackjack Throw - Draws cards to perform a ranged attack. Creates a card and modifies it's weight based on the number.
+Use the dealers rules, hit when below 16 and stand when 17 or better.
+17 - 
+18 - 
+19 -
+20 - 
+Blackjack - Fires 21 Fire/Cold/Lightning Arrows
+Bust - Throws a normal card.
+5 Card Charlie - 
+Joker
 
-Draw - 
+Dice Roll - Rolls a pair of dice to perform a melee attack.
+SnakeEyes - Heals the target for the damage you would have dealt.
+Between 3 and 11 does a melee hit with a damage multiplier of 1 + ((x - 7) * .1). So a 3 would cause you to deal 60% damage while an 11 will perform a melee attack with 140% damage.
+Twelve - Reaper's Scythe - Does Double Damage.
 
-Double Down - 
+Lucky Cat - Buff that increases luck.

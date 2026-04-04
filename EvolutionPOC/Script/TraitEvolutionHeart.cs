@@ -20,6 +20,12 @@ public class TraitEvolutionHeart : Trait
                     string properName = EClass.sources.charas.map[charaEvolve].GetName();
                     p.TrySetAct("evolveChara".lang(properName), delegate
                     {
+                        if (c._affinity < 75)
+                        {
+                            Msg.Say("evolutionAffinityRequirementNotMet".lang(c.NameSimple));
+                            return true;
+                        }
+
                         Dialog.YesNo("evolutionConfirmation".lang(c.Name, properName), delegate
                         {
                             Evolve(c, charaEvolve, this.owner.Thing);

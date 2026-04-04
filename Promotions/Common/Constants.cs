@@ -26,31 +26,31 @@ public class Constants
     public const string IsEliteEnemyFlag = "eliteEnemy";
     
     public const string PromotionModVersionFlag = "modVersion";
-    public const int PromotionModVersion = 105;
+    public const int PromotionModVersion = 106;
 
     #endregion
 
     #region Element Ids
 
-    public const int EleFire = 910;
-    public const int EleCold = 911;
-    public const int EleLightning = 912;
-    public const int EleDarkness = 913;
-    public const int EleMind = 914;
-    public const int ElePoison = 915;
-    public const int EleNether = 916;
-    public const int EleSound = 917;
-    public const int EleNerve = 918;
-    public const int EleHoly = 919;
-    public const int EleChaos = 920;
-    public const int EleMagic = 921;
-    public const int EleEther = 922;
-    public const int EleAcid = 923;
-    public const int EleCut = 924;
-    public const int EleImpact = 925;
-    public const int EleVoid = 926;
+    public const int EleFire = SKILL.eleFire;
+    public const int EleCold = SKILL.eleCold;
+    public const int EleLightning = SKILL.eleLightning;
+    public const int EleDarkness = SKILL.eleDarkness;
+    public const int EleMind = SKILL.eleMind;
+    public const int ElePoison = SKILL.elePoison;
+    public const int EleNether = SKILL.eleNether;
+    public const int EleSound = SKILL.eleSound;
+    public const int EleNerve = SKILL.eleNerve;
+    public const int EleHoly = SKILL.eleHoly;
+    public const int EleChaos = SKILL.eleChaos;
+    public const int EleMagic = SKILL.eleMagic;
+    public const int EleEther = SKILL.eleEther;
+    public const int EleAcid = SKILL.eleAcid;
+    public const int EleCut = SKILL.eleCut;
+    public const int EleImpact = SKILL.eleImpact;
+    public const int EleVoid = SKILL.eleVoid;
 
-    public const int FaithId = 306;
+    public const int FaithId = SKILL.faith;
 
     public static readonly Dictionary<int, string> ElementAliasLookup = new Dictionary<int, string>
     {
@@ -202,6 +202,11 @@ public class Constants
     public const string MonsterSpawnerCharaId = "spawner_monster";
     public const string HumanSpawnerCharaId = "spawner_human";
     public const string EvilSpawnerCharaId = "spawner_evil";
+    
+    public const string DefenseBannerCharaId = "defense_banner";
+    public const string WatcherFighterCharaId = "watcher_fighter";
+    public const string WatcherArcherCharaId = "watcher_archer";
+    public const string WatcherHealerCharaId = "watcher_healer";
 
     public const string BasicGuardCharaId = "armed_guard";
     public const string EliteGuardCharaId = "elite_armed_guard";
@@ -431,7 +436,7 @@ public class Constants
     #endregion
 
     #region Artificer Stuff
-
+    
     public const int FeatHarpyGolemVisionId = 891029;
     public const int FeatSirenGolemSpeedId = 891030;
     public const int FeatSirenGolemMagicId = 891031;
@@ -446,7 +451,7 @@ public class Constants
     public const string TitanGolemCharaId = "golem_titan";
 
     public const string ArtificerSteamlightItem = "artificer_steamlight";
-
+    
     #endregion
 
     #region Adv Combat Skills

@@ -277,7 +277,7 @@ public class TraitPromotionManual : TraitScroll
         // Some classes don't work really well for NPCs.
         bool isPC = c.IsPC;
         List<string> promotionIds;
-        switch (c.job.name)
+        switch (c.job.id)
         {
             case "warrior":
                 promotionIds = new List<string>

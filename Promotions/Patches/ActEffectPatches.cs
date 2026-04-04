@@ -83,19 +83,28 @@ public class ActEffectPatches
                 actRef.act is not ActElementalFury &&
                 actRef.act is not ActElementalExtinction)
             {
-                int element = Constants.ElementIdLookup[actRef.aliasEle];
-                ConElementalist? elementalist = chara.GetCondition<ConElementalist>() ?? chara.AddCondition<ConElementalist>() as ConElementalist;
-                if (tc is { isChara: true }) elementalist?.AddElementalOrb(element, tc.Chara);
+                if (Constants.ElementAliasLookup.ContainsValue(actRef.aliasEle))
+                {
+                    int element = Constants.ElementIdLookup[actRef.aliasEle];
+                    ConElementalist? elementalist = chara.GetCondition<ConElementalist>() ?? chara.AddCondition<ConElementalist>() as ConElementalist;
+                    if (tc is { isChara: true })
+                    {
+                        elementalist?.AddElementalOrb(element, tc.Chara.IsHostile(chara) ? tc.Chara : null);
+                    }   
+                }
             }
 
             // Jenei - Track Spellcasts for Impact/Fire/Cold/Lightning
-            if (chara.HasElement(Constants.FeatJenei) && !actRef.aliasEle.IsEmpty())
+            if (chara.HasElement(Constants.FeatJenei) && actRef.aliasEle != null && !actRef.aliasEle.IsEmpty())
             {
-                int element = Constants.ElementIdLookup[actRef.aliasEle];
-                if (element is Constants.EleImpact or Constants.EleFire or Constants.EleCold or Constants.EleLightning)
+                if (Constants.ElementAliasLookup.ContainsValue(actRef.aliasEle))
                 {
-                    ConJenei? jenei = chara.GetCondition<ConJenei>() ?? chara.AddCondition<ConJenei>() as ConJenei;
-                    jenei?.AddElement(element);
+                    int element = Constants.ElementIdLookup[actRef.aliasEle];
+                    if (element is Constants.EleImpact or Constants.EleFire or Constants.EleCold or Constants.EleLightning)
+                    {
+                        ConJenei? jenei = chara.GetCondition<ConJenei>() ?? chara.AddCondition<ConJenei>() as ConJenei;
+                        jenei?.AddElement(element);
+                    }
                 }
             }
 

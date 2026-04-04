@@ -74,24 +74,8 @@ public static class HelperFunctions
             switch (friendly)
             {
                 case false when target.IsHostile(caster):
-                case true when !target.IsHostile(caster):
-                    targets.Add(target);
-                    break;
-            }
-        }
-
-        return targets;
-    }
-
-    public static List<Chara> GetCharasWithinRadius(Point origin, float radius, bool friendlyToPC, bool losRequired)
-    {
-        List<Chara> targets = new List<Chara>();
-        foreach (Chara target in EClass.pc.currentZone.map.ListCharasInCircle(origin, radius, losRequired))
-        {
-            switch (friendlyToPC)
-            {
-                case false when target.IsHostile(EClass.pc):
-                case true when !target.IsHostile(EClass.pc):
+                //case true when !target.IsHostile(caster):
+                case true when caster.IsPCFactionOrMinion && target.IsPCFactionOrMinion:
                     targets.Add(target);
                     break;
             }
@@ -111,7 +95,7 @@ public static class HelperFunctions
             {
                 enemies.Add(target);
             }
-            else
+            else if (caster.IsPCFactionOrMinion && target.IsPCFactionOrMinion)
             {
                 friendlies.Add(target);
             }

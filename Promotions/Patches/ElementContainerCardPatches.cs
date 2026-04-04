@@ -10,7 +10,7 @@ public class ElementContainerCardPatches
     [HarmonyPostfix]
     internal static void ValueBonus(ElementContainerCard __instance, ref int __result, Element e)
     {
-        if (EClass.game == null)
+        if (EClass.game == null || e == null)
         {
             return;
         }
@@ -20,7 +20,7 @@ public class ElementContainerCardPatches
         // Druid - Speaker for Nature
         // Boost these three evalues only.
         if (e.id is SKILL.DV or SKILL.PV or SKILL.SPD &&
-            __instance.owner.isChara &&
+            __instance.owner is { isChara: true } &&
             (__instance.owner.Chara.IsUndead || __instance.owner.Chara.IsPlant) && EClass._zone != null)
         {
             bool isEnemy = __instance.owner.Chara.IsHostile(EClass.pc);

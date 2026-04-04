@@ -22,7 +22,11 @@ public class ActElementalFury : Ability
         if (CC.HasCondition<ConElementalist>())
         {
             ConElementalist elementalist = CC.GetCondition<ConElementalist>();
-            if (elementalist.GetElementalCombination() < ElementalFuryRequirement) return false;
+            if (elementalist.GetElementalCombination() < ElementalFuryRequirement)
+            {
+                Msg.Say("elementalist_notenoughorbs".langGame(ElementalFuryRequirement.ToString()));
+                return false;
+            }
         }
         else
         {

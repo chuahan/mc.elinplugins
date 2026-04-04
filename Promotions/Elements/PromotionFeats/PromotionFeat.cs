@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Cwl.Helper.Extensions;
+using PromotionMod.Common;
 using UnityEngine;
 namespace PromotionMod.Elements.PromotionFeats;
 

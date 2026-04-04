@@ -103,7 +103,7 @@ public class ConElementalist : ClassCondition
     ///     Can accumulate up to 5 of each Element.
     ///     If gaining the elemental orb for the first time, gain a stack of Spell Tempo (caps at 10.)
     /// </summary>
-    public void AddElementalOrb(int eleId, Chara tc)
+    public void AddElementalOrb(int eleId, Chara? tc)
     {
         if (ElementalStockpile[eleId] == 0)
         {
@@ -118,7 +118,10 @@ public class ConElementalist : ClassCondition
             }
 
             owner.AddCondition<ConSpellTempo>(tempoStage);
-            HelperFunctions.ApplyElementalBreak(eleId, owner, tc, GetPower(owner));
+            if (tc != null)
+            {
+                HelperFunctions.ApplyElementalBreak(eleId, owner, tc, GetPower(owner));   
+            }
         }
         if (ElementalStockpile[eleId] < 5) ElementalStockpile[eleId]++;
         _decayDelay = 0;

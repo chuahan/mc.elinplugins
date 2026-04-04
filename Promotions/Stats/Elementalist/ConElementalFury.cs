@@ -35,6 +35,7 @@ public class ConElementalFury : BaseBuff
                     // If the stockpile was depleted, end the Fury.
                     owner.Say("elementalist_fury_end");
                     Kill();
+                    return;
                 }
 
                 int powerAmped = power * ElementalStockpile[element];
@@ -66,6 +67,7 @@ public class ConElementalFury : BaseBuff
                 // If the stockpile was depleted, end the Fury.
                 owner.Say("elementalist_fury_end");
                 Kill();
+                return;
             }
             ElementalStockpile.Remove(element);
         }

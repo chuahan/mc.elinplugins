@@ -1,11 +1,15 @@
+using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
-namespace PromotionMod.Patches;
 
-// TODO: Delete move this to my own building mod.
+namespace BuildingTools;
+
+/// <summary>
+/// This patch allows you to fast recruit allies and clean the entire map of debris.
+/// </summary>
 [HarmonyPatch(typeof(ActPlan))]
 public class ActPlanPatches
 {
-    /*
     [HarmonyPatch(nameof(ActPlan._Update))]
     [HarmonyPostfix]
     internal static void ActPlanUpdatePatch(ActPlan __instance, PointTarget target)
@@ -26,20 +30,32 @@ public class ActPlanPatches
                         return true;
                     });
                 }
-                if (c is { IsPCFaction: true })
-                {
-                    __instance.TrySetAct($"Level Up {c.NameSimple}", delegate
-                    {
-                        c.LevelUp();
-                        //c.ModAffinity(EClass.pc, 75);
-                        //c.noMove = true;
-                        ////EMono.Branch.Recruit(c);
-                        //EClass._zone.branch.AddMemeber(c);
-                        return true;
-                    });
-                }
             }
+
+            __instance.TrySetAct("Clean Map Debris", delegate
+            {
+                EClass._zone.map.ForeachPoint(CleanAction);
+
+                return true;
+            });
+            
+            __instance.TrySetAct("PURGE HERETICS", delegate
+            {
+                List<Chara> hostilesInMap = EClass._zone.map.charas.Where(chara => !chara.IsPCFactionOrMinion).ToList();
+                foreach (Chara c in hostilesInMap)
+                {
+                    c.Die();
+                    EClass._zone.map._RemoveCard(c);
+                }
+                return true;
+            });
         }
+        
+
     }
-    */
+    private static void CleanAction(Point pos)
+    {
+        EClass._map.SetDecal(pos.x, pos.z);
+        EClass._map.SetLiquid(pos.x, pos.z, 0, 0);
+    }
 }

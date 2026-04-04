@@ -1,11 +1,12 @@
 using HarmonyLib;
 namespace PromotionMod.Patches;
 
-// TODO: Delete move this to my own building mod.
+/// <summary>
+/// Sets debug container mats to 10k.
+/// </summary>
 [HarmonyPatch(typeof(CoreDebug))]
 public class CoreDebugPatches
 {
-    /*
     [HarmonyPatch(nameof(CoreDebug.SetStartStockpile))]
     [HarmonyPrefix]
     internal static bool SetStartStockpilePatch(CoreDebug __instance, Thing container, ref int num)
@@ -13,5 +14,4 @@ public class CoreDebugPatches
         num = 10000;
         return true;
     }
-    */
 }

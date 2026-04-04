@@ -21,7 +21,6 @@ public static class CharaExpansion
                 if (evolutionParams.Length != 3)
                     throw new Exception("Evolution Tag should be in the form of evolve#chara_id#thing_id");
                 
-                extraReq &= target._affinity >= 75;
                 if (evolutionParams[2].Equals(evolutionHeart.id)) return (extraReq, evolutionParams[1]);
             }
         }

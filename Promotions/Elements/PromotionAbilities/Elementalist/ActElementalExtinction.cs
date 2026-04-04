@@ -23,7 +23,11 @@ public class ActElementalExtinction : Ability
         if (CC.HasCondition<ConElementalist>())
         {
             ConElementalist elementalist = CC.GetCondition<ConElementalist>();
-            if (elementalist.GetElementalCombination() < ElementalFuryRequirement) return false;
+            if (elementalist.GetElementalCombination() < ElementalFuryRequirement)
+            {
+                Msg.Say("elementalist_notenoughorbs".langGame(ElementalFuryRequirement.ToString()));
+                return false;
+            }
         }
         else
         {
@@ -90,8 +94,7 @@ public class ActElementalExtinction : Ability
             {
                 TC.pos
             }, actRef, nameof(ActElementalExtinction));
-            //ActEffect.ProcAt(EffectId.Meteor, power, BlessedState.Normal, CC, TC, TC.pos, true, actRef);
-
+            
             // Consume an orb.
             activeStockpile[element]--;
             if (activeStockpile[element] <= 0) activeStockpile.Remove(element);

@@ -9,7 +9,7 @@ namespace PromotionMod.Source;
 
 internal class PostLoadPatching : EClass
 {
-    [CwlPostLoad]
+    [CwlPostSave]
     internal static void PromotionMod_PatchSyncing(GameIOProcessor.GameIOContext context)
     {
         if (!core.IsGameStarted)
@@ -19,41 +19,42 @@ internal class PostLoadPatching : EClass
 
         if (EClass.pc != null)
         {
+            // Run this save function when in the same zone to update them...
+            // For V1.02, if Lailah is already spawned, set her Promotion flag so she can use her abilities if necessary.
+            Chara lailah = EClass.pc.currentZone.FindChara(Constants.LailahCharaId);
+            if (lailah != null)
+            {
+                if (lailah.GetFlagValue(Constants.PromotionFeatFlag) == 0 && lailah.HasElement(Constants.FeatSharpshooter))
+                {
+                    lailah.SetFlagValue(Constants.PromotionFeatFlag, Constants.FeatSharpshooter);
+                }
+            }
+            
+            // For V1.04, Update all the Knightcaller Captains with their respective promotion feat flags.
+            PromotionMod_PatchCharaPromo(Constants.DinatogCharaId, Constants.FeatSniper);
+            PromotionMod_PatchCharaPromo(Constants.AlestieCharaId, Constants.FeatHermit);
+            PromotionMod_PatchCharaPromo(Constants.ValeroCharaId, Constants.FeatSentinel);
+            PromotionMod_PatchCharaPromo(Constants.EctoleCharaId, Constants.FeatSaint);
+            PromotionMod_PatchCharaPromo(Constants.ArkunCharaId, Constants.FeatSpellblade);
+            PromotionMod_PatchCharaPromo(Constants.DiasCharaId, Constants.FeatHeadhunter);
+            PromotionMod_PatchCharaPromo(Constants.RolingerCharaId, Constants.FeatBattlemage);
+            
             int version = EClass.pc.GetFlagValue(Constants.PromotionModVersionFlag);
 
             if (version < Constants.PromotionModVersion)
             {
-                // For V1.02, if Lailah is already spawned, set her Promotion flag so she can use her abilities if necessary.
-                Chara? lailahCharacter = game.cards.globalCharas.Values.FirstOrDefault(gc => gc.id == Constants.LailahCharaId);
-                if (lailahCharacter != null)
-                {
-                    if (lailahCharacter.GetFlagValue(Constants.PromotionFeatFlag) == 0 && lailahCharacter.HasElement(Constants.FeatSharpshooter))
-                    {
-                        lailahCharacter.SetFlagValue(Constants.PromotionFeatFlag, Constants.FeatSharpshooter);
-                    }
-                }
-        
-                // For V1.04, Update all the Knightcaller Captains with their respective promotion feat flags.
-                PromotionMod_PatchCharaPromo(Constants.DinatogCharaId, Constants.FeatSniper);
-                PromotionMod_PatchCharaPromo(Constants.AlestieCharaId, Constants.FeatHermit);
-                PromotionMod_PatchCharaPromo(Constants.ValeroCharaId, Constants.FeatSentinel);
-                PromotionMod_PatchCharaPromo(Constants.EctoleCharaId, Constants.FeatSaint);
-                PromotionMod_PatchCharaPromo(Constants.ArkunCharaId, Constants.FeatSpellblade);
-                PromotionMod_PatchCharaPromo(Constants.DiasCharaId, Constants.FeatHeadhunter);
-                PromotionMod_PatchCharaPromo(Constants.RolingerCharaId, Constants.FeatBattlemage);
-        
                 // For V1.05 - Update Hermits and Snipers with their new abilities.
                 PromotionMod_PatchHermitSniper();
             }
             
-            // Update the Flag Value so we can skip this stuff.
+            // Update the Flag Value so we can skip this stuff next time.
             EClass.pc.SetFlagValue(Constants.PromotionModVersionFlag, Constants.PromotionModVersion);
         }
     }
 
     internal static void PromotionMod_PatchCharaPromo(string charaId, int promotionFeatId)
     {
-        Chara? characterToPatch = game.cards.globalCharas.Values.FirstOrDefault(gc => gc.id == charaId);
+        Chara characterToPatch = EClass.pc.currentZone.FindChara(charaId);
         if (characterToPatch != null)
         {
             if (characterToPatch.GetFlagValue(Constants.PromotionFeatFlag) == 0 && characterToPatch.HasElement(promotionFeatId))

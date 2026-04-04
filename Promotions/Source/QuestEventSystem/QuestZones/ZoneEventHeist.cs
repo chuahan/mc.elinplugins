@@ -24,7 +24,5 @@ public class ZoneEventHeist : ZoneEventQuest
         {
             _zone.instance.status = OnReachTimeLimit();
         }
-
-
     }
 }

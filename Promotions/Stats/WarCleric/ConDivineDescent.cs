@@ -1,3 +1,4 @@
+using Cwl.Helper.Extensions;
 using UnityEngine;
 namespace PromotionMod.Stats.WarCleric;
 
@@ -10,8 +11,23 @@ public class ConDivineDescent : BaseBuff
         return SpriteSheet.Get(source.alias);
     }
 
-    public override RendererReplacer GetRendererReplacer()
+    public override void OnStart()
     {
-        return RendererReplacer.CreateFrom("angel_mode");
+        base.OnStart();
+        if (owner != null)
+        {
+            // Praise religion
+        }
+        if (!owner.IsPCC)
+        {
+            owner.SetSpriteOverride("angel_mode");
+        }
+        owner.PlaySound("boost2");
+    }
+
+    public override void OnRemoved()
+    {
+        base.OnRemoved();
+        owner.SetSpriteOverride(null);
     }
 }

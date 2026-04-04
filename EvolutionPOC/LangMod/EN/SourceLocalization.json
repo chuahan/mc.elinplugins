@@ -1,5 +1,6 @@
 {
   "LangGame.evolution_complete.text": "#1 the #2 has evolved into #3!",
+  "LangGeneral.evolutionAffinityRequirementNotMet.text": "#1 doesn’t trust you enough for evolution. Try again after befriending them.",
   "LangGeneral.evolutionConfirmation.text": "Are you sure you want to evolve #1 into a #2?",
   "LangGeneral.evolveChara.text": "Evolve into #1.",
   "SourceChara.testchara_evo_stage1.name": "Tester1",

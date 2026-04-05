@@ -75,7 +75,7 @@ public class TraitEvolutionHeart : Trait
         EClass.pc.party.AddMemeber(evolvedChara);
 
         evolvedChara.PlayEffect("aura_heaven");
-        Msg.Say("evolution_complete".langGame(c.NameSimple, c.Name, evolvedChara.Name));
+        Msg.Say("evolution_complete".langGame(c.Name, evolvedChara.Name));
 
         // Delete the original character
         c.homeBranch.BanishMember(c, true);

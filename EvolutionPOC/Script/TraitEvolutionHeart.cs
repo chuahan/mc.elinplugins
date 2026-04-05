@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 namespace Evolution;
 
 public class TraitEvolutionHeart : Trait
@@ -43,9 +44,9 @@ public class TraitEvolutionHeart : Trait
         Chara evolvedChara = CharaGen.Create(charaEvolve);
 
         // Take all the items from the old character and throw them into the new character's inventory.
-        foreach (Thing posession in c.things)
+        while (c.things.Count > 0)
         {
-            evolvedChara.AddThing(posession);
+            evolvedChara.AddThing(c.things.FirstOrDefault());
         }
 
         // Copy original elements and max them against the new form.
@@ -67,6 +68,7 @@ public class TraitEvolutionHeart : Trait
         evolvedChara.hp = evolvedChara.MaxHP;
         evolvedChara.mana.Set(evolvedChara.mana.max);
         evolvedChara._affinity = c._affinity;
+        evolvedChara.c_altName = c.c_altName;
 
         EClass.pc.currentZone.AddCard(evolvedChara, c.pos);
         EClass._zone.branch.AddMemeber(evolvedChara);

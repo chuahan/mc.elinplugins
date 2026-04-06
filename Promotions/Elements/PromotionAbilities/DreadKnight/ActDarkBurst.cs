@@ -30,7 +30,7 @@ public class ActDarkBurst : Ability
     {
         return new Cost
         {
-            cost = 0,
+            cost = 1,
             type = CostType.None
         };
     }

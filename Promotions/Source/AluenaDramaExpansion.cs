@@ -5,6 +5,7 @@ using Cwl.API.Drama;
 using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 using PromotionMod.Stats;
+using PromotionMod.Trait.Characters;
 namespace PromotionMod.Source;
 
 internal class AluenaDramaExpansion : DramaOutcome
@@ -44,6 +45,16 @@ internal class AluenaDramaExpansion : DramaOutcome
         return true;
     }
 
+    private static bool KariStateCheck(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
+        {
+            if (EClass.pc.party.members.Any(c => c.hunger.GetPhase() >= StatsHunger.Hungry))
+            {
+                EClass.pc.SetFlagValue("partyHungry", 1);
+            }
+        
+            return false;
+        }
+        
     private static bool DiningHall_FreeFoodEligible(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
         if (EClass.pc.party.members.Any(c => c.hunger.GetPhase() >= StatsHunger.Hungry))
@@ -56,11 +67,22 @@ internal class AluenaDramaExpansion : DramaOutcome
 
     private static bool DiningHall_EatFreeFood(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
-        // Feed all the hungry party members.
+        // Shove a meal into all the hungry party members.
+        dm.RequiresActor(out Chara grandmaCat);
         foreach (Chara c in EClass.pc.party.members.Where(c => c.hunger.GetPhase() >= StatsHunger.Hungry))
         {
+            Msg.Say("grandmaCat_foodGift".langGame(c.NameSimple));
+            Thing meal = TraitGrandmaCat.MakeGrandmaLunch(grandmaCat);
+            c.AddCard(meal);
+            c.SetAIImmediate(new AI_Eat
+            {
+                target = meal
+            });
+            EClass.pc.SetFlagValue("partyHungry", 0);
+            // Add a cooldown of 1 day.
             
         }
+
         return false;
     }
 }

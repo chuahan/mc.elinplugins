@@ -21,7 +21,7 @@ public class StChaosMode : Ability
         return new Cost
         {
             type = CostType.None,
-            cost = 0
+            cost = 1
         };
     }
 

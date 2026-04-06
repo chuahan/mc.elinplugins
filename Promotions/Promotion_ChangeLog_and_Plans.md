@@ -2,6 +2,14 @@
 
 ## Changelog
 
+### April 6th, 2026, 1.07 - Bugfixes.
+Sorry for the lack of updates, I've been working on the city update and the first class-less promotion.
+Pushing this patch out because 오징어 has informed me of a bug with CostType None preventing some abilities from leveling up.
+I've gone through and reworked the affected abilities, they should be able to level now!
+I've also went ahead and added sprites for the new Hermit and Sniper abilities, Preparation and Tactical Retreat, and the new Sniper Condition: Vigilance.
+The next update will likely include the city of Aluèna and the NPCs involved. However, the coding for the Adventurers Guild and the Information Guild is not quite complete, so those buildings will remain vacant for now.
+The Gambler Promotion will need a bit more cooking, but feel free to preview it's abilities below!
+
 ### March 26th, 2026 1.06 - Bugfixes
 - Fixed a few issues with Elementalist. Thanks callomerlose.
 - Fixed an issue with Sword Sages not being able to promote. Thanks Tesshu.
@@ -171,44 +179,26 @@ Covert Operations from the Information Guild.
     - Abduction Requests
     - Eliminate hidden agents.
 
-### The Merchant
-A class-less promotion. Unlockable via personal quest for a specific NPC.
-Merchants are mostly a non-combat support promotion that sets out with the mindset of money can solve most of your problems.
-
-Negotiate - The merchant uses their charisma and negotiation skills to talk to an enemy. If you succeed in negotiations, options open up to work with the enemy.
-- Purchase: The player has an option to purchase the inventory of the target. You will know how many items they have, and what kind of items they have, and they price they are offering. On accepting, the enemy will give you all the items, take the money, then leave.
-- Bribe: The player has an option to bribe the enemy to leave directly.
-- Hire: The enemy will offer their services, and the player can pay the amount to hire them.
-
-Health Insurance Stance - The Merchant enters a protection stance. Upon taking any combat damage, the damage will be reduced by a percentage and the merchant will lose some deductible. Every turn the Merchant remains in this stance they will lose an amount of orens. If the Merchant takes Lethal damage with the Insurance Active, they will lose half of their orens and be warped to safety.
-
-Collect - Can only take money from enemies once. Takes an amount of orens from them scaling with their strength.
-
-Tradewinds - Do light impact damage while knocking all enemies away from you.
-
 ### Gambler
-A class-less promotion. Unlockable via personal quest for a specific NPC.
-Gamblers are a luck based promotion class that lives by the dice.
+Evie is a wandering bounty hunter who goes by the moniker Lucky Shot. She is known equally for her gunslinging skill as her penchant for gambling.
+If you run into this cheerful girl, she might be willing to teach you a couple tricks in the right circumstance. Evie wields the Fomalhaut hand cannon with deadly accuracy.
+
+Gamblers are a luck based promotion class that lives by the dice. Their damage is highly variant and their abilities are whimsical, ranging from hitting extremely hard to potentially benefiting the target instead. It is important to note that all of their abilities are governed by Dice Rolls, and thus are impacted by the Gambler's Luck stat.
 
 I'm Feeling Lucky - Stance that modifies how much damage and healing you deal and how much damage / healing you recieve. Every time you recieve or deal damage you make a Dice roll of 20 then subtract 10.
 For damage dealt, your damage is multiplied by (10 + x) / 10, meaning a -10 would result in you dealing no damage, while a 20 will result in you dealing an additional 2x damage.
 For damage taken, incoming damage is multiplied by (10 - x) / 10, meaning a -10 would result in 2x damage taken while a 20 will result in you taking no damage.
-These rolls are affected by LUC.
 
-Slots - The Gambler summons slots and adds conditions to themselves. Each condition lasts 10 global turns. Upon reaching 3 conditions the slots will evaluate the response. If any of the conditions expire, all of them do.
-First Slot - Yevan (Physical) / Itzpalt (Magical) / Jure (Buff/Debuff) / Kizuami (Random) - Ehekatl (Jackpot/Random)
+Slots - Self Targeted Casting Ability - The Gambler spins the slots, gaining the "Slots" condition. After one turn elapses, the slots will finalize and the effect will activate. This can be beneficial or harmful, for either the Gambler and allies or their targets. Fate can be whimsical.
+
+First Wheel - Gods - Yevan (Physical) / Itzpalt (Magical) / Jure (Buff/Debuff) / Kizuami (Random) - Ehekatl (Jackpot/Random)
     Yevan enters the Attack Slot.
     Itzpalt enters to Magic Slot.
     Jure enters the Support Slot.
     Kizuami Picks one of the first three at random.
     Ehekatl Picks one of the first three at random if not Jackpot.
-Second Slot - Skull (Bad) / Bar / Cherry / Bell / Jackpot
-    Skull - Targets Allies.
-    Bar - Targets all nearby enemies.
-    Cherry - Targets a single nearby enemy.
-    Bell - Targets all allies with a positive effect and enemies with a negative effect.
-    Jackpot - If not Jackpot, picks any but Skull.
-Third Slot - Anima / Light / Dark / Sword / Jackpot
+
+Second Wheel - Elements - Anima / Holy / Dark / Void / Jackpot
     Yevan
         Anima - Strikes with Magic Sword attacks.
         Light - Strikes with Holy Sword attacks.
@@ -228,28 +218,36 @@ Third Slot - Anima / Light / Dark / Sword / Jackpot
         Sword - Inflicts Weakness on the target.
         Jackpot - Fully Heals the target.
     Kizuami
+        Random from choice.
     Ehekatl
-        Jackpot -
-            Skull - All allies are fully healed. HP/MP/Stamina.
-            Bar - All nearby enemies take massive Melee damage.
-            Cherry - Attempts to instant kill a target. If failure, does 75 - 50 -25 % of their HP as damage.
-            Bell - Allies are fully restored. Enemies nearby are hit with Slow/Bane/Weakness/EleScar/Nightmare
-            Jackpot - All enemies nearby will drop their entire inventories and disappear.
+        Random from choice if not Jackpot.
 
-Blackjack Throw - Draws cards to perform a ranged attack. Creates a card and modifies it's weight based on the number.
+Third Wheel - Targetting - Bar / Cherry / Bell / Skull / 7
+    Bar - Targets all nearby enemies within 5F.
+    Cherry - Targets a random single enemy within 5F.
+    Bell - Targets all allies with a positive effect and enemies with a negative effect.
+    Skill - Targets all allies within 5F.
+    7 - If not Jackpot, picks any but Skull.
+
+Jackpot - If the Gambler rolls Ehekatl/Jackpot/7, a fourth wheel is spun to determine the effect.
+    Little Sister - Fully HP/MP/Stamina of the Gambler's Allies.
+    Grim Reaper - All nearby enemies take a massive critical Melee damage strike, with a 2.5x multiplier.
+    Zantetsuken - A random nearby enemy is struck with a grevious attack with a 1/7 chance to instant kill.
+        If the instant kill does not trigger, a 12 sided dice is rolled up with the results multiplied by 7.
+        That number is used as the percent life removed from the target, so rolling a 12 will result in the target losing 84% of their life.
+    Full Throttle - Allies are buffed with Haste/Hero/Elemental Shield/Greater Regeneration and 1 turn of invulnerability. Enemies nearby are hit with Slow/Bane/Weakness/EleScar/Nightmare
+    Jackpot - All enemies nearby will drop their entire inventories and disappear.
+
+Blackjack Throw - Single Target Ranged Combat Ability - Draws cards to perform a throwing attack. Creates a card and modifies it's weight based on the number.
 Use the dealers rules, hit when below 16 and stand when 17 or better.
-17 - 
-18 - 
-19 -
-20 - 
-Blackjack - Fires 21 Fire/Cold/Lightning Arrows
-Bust - Throws a normal card.
-5 Card Charlie - 
-Joker
+17 to 21 Will result in an enhanced throwing attack being made with guaranteed accuracy.
+Blackjack - Results in two throwing attacks executed with full Vorpal.
+Bust - The attack fails.
+5 Card Charlie - Throws 5 basic throwing attacks in a single action.
 
 Dice Roll - Rolls a pair of dice to perform a melee attack.
 SnakeEyes - Heals the target for the damage you would have dealt.
 Between 3 and 11 does a melee hit with a damage multiplier of 1 + ((x - 7) * .1). So a 3 would cause you to deal 60% damage while an 11 will perform a melee attack with 140% damage.
 Twelve - Reaper's Scythe - Does Double Damage.
 
-Lucky Cat - Buff that increases luck.
+Lucky Cat - Buff that increases luck. Can be Partycast.

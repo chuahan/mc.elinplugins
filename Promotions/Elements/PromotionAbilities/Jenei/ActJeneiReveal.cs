@@ -1,3 +1,4 @@
+using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 using PromotionMod.Stats;
 using PromotionMod.Stats.Spellblade;
@@ -51,6 +52,7 @@ public class ActJeneiReveal : Ability
         {
             TC.Chara.AddCondition(SubPoweredCondition.Create(nameof(ConMagicBreak), GetPower(CC), 5));
         }
+        //Msg.Nerun(TC.GetFlagValue(Constants.PromotionFeatFlag).ToString());
         return true;
     }
 }

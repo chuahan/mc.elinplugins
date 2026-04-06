@@ -3,12 +3,10 @@
 ## Changelog
 
 ### April 6th, 2026, 1.07 - Bugfixes.
-Sorry for the lack of updates, I've been working on the city update and the first class-less promotion.
-Pushing this patch out because 오징어 has informed me of a bug with CostType None preventing some abilities from leveling up.
-I've gone through and reworked the affected abilities, they should be able to level now!
-I've also went ahead and added sprites for the new Hermit and Sniper abilities, Preparation and Tactical Retreat, and the new Sniper Condition: Vigilance.
-The next update will likely include the city of Aluèna and the NPCs involved. However, the coding for the Adventurers Guild and the Information Guild is not quite complete, so those buildings will remain vacant for now.
-The Gambler Promotion will need a bit more cooking, but feel free to preview it's abilities below!
+Sorry for the lack of updates, I've been working on the city update and the first class-less promotion. Pushing this patch out because 오징어 has informed me of a bug with CostType None preventing some abilities from leveling up. I've gone through and reworked the affected abilities, they should be able to level now!  
+- Added sprites for the new Hermit and Sniper abilities, Preparation and Tactical Retreat, and the new Sniper Condition: Vigilance.  
+- The next update will likely include the city of Aluèna and the NPCs involved. However, the coding for the Adventurers Guild and the Information Guild is not quite complete, so those buildings will remain vacant for now.  
+- The Gambler Promotion will need a bit more cooking, but feel free to preview it's abilities below!
 
 ### March 26th, 2026 1.06 - Bugfixes
 - Fixed a few issues with Elementalist. Thanks callomerlose.
@@ -79,8 +77,6 @@ The Gambler Promotion will need a bit more cooking, but feel free to preview it'
 - Need to add targetting highlights for... everything really.
 - Need to add SFX and FX for a lot of stuff. I'll probably go through 1 by 1 and figure out what needs work.
 - Balance things. Need user feedback.
-- Sniper Vigilance needs Graphic.
-- Hermit Preparation need Graphic.
 - Move the Promotion Docs into the game as Hover. It's a bit much, but I will need to abbreviate it a bit.
 - Add JP translations (Waiting till I got all the abilities tuned and ironed out.)
 
@@ -167,87 +163,90 @@ In addition to being excellent information gatherers, agents of the Drunken Crow
 This mod adds a variety of new quests for players to undertake.
 
 Combat Operations from the Adventurer's Guild
-    - Defend position.
-    - Capture position.
-    - Rout the Enemy
-    - Defeat Enemy Leader
-    - Rescue allied forces.
+- Defend position.
+- Capture position.
+- Rout the Enemy
+- Defeat Enemy Leader
+- Rescue allied forces.
 
 Covert Operations from the Information Guild.
-    - Delivering Letters or Packages.
-    - Gathering Reports from field agents.
-    - Abduction Requests
-    - Eliminate hidden agents.
+- Delivering Letters or Packages.
+- Gathering Reports from field agents.
+- Abduction Requests
+- Eliminate hidden agents.
 
 ### Gambler
-Evie is a wandering bounty hunter who goes by the moniker Lucky Shot. She is known equally for her gunslinging skill as her penchant for gambling.
+Evie is a wandering bounty hunter who goes by the moniker Lucky Shot. She is known equally for her gunslinging skill as her penchant for gambling.  
 If you run into this cheerful girl, she might be willing to teach you a couple tricks in the right circumstance. Evie wields the Fomalhaut hand cannon with deadly accuracy.
 
 Gamblers are a luck based promotion class that lives by the dice. Their damage is highly variant and their abilities are whimsical, ranging from hitting extremely hard to potentially benefiting the target instead. It is important to note that all of their abilities are governed by Dice Rolls, and thus are impacted by the Gambler's Luck stat.
 
-I'm Feeling Lucky - Stance that modifies how much damage and healing you deal and how much damage / healing you recieve. Every time you recieve or deal damage you make a Dice roll of 20 then subtract 10.
+__I'm Feeling Lucky - Stance that modifies how much damage and healing you deal and how much damage / healing you recieve.__  
+Every time you recieve or deal damage you make a Dice roll of 20 then subtract 10.
 For damage dealt, your damage is multiplied by (10 + x) / 10, meaning a -10 would result in you dealing no damage, while a 20 will result in you dealing an additional 2x damage.
 For damage taken, incoming damage is multiplied by (10 - x) / 10, meaning a -10 would result in 2x damage taken while a 20 will result in you taking no damage.
 
-Slots - Self Targeted Casting Ability - The Gambler spins the slots, gaining the "Slots" condition. After one turn elapses, the slots will finalize and the effect will activate. This can be beneficial or harmful, for either the Gambler and allies or their targets. Fate can be whimsical.
+__Slots - Self Targeted Casting Ability - Fate is Whimsical.__  
+The Gambler spins the slots, gaining the "Slots" condition. After one turn elapses, the slots will finalize and the effect will activate. This can be beneficial or harmful, for either the Gambler and allies or their targets.
 
-First Wheel - Gods - Yevan (Physical) / Itzpalt (Magical) / Jure (Buff/Debuff) / Kizuami (Random) - Ehekatl (Jackpot/Random)
-    Yevan enters the Attack Slot.
-    Itzpalt enters to Magic Slot.
-    Jure enters the Support Slot.
-    Kizuami Picks one of the first three at random.
-    Ehekatl Picks one of the first three at random if not Jackpot.
+__First Wheel - Gods - Yevan (Physical) / Itzpalt (Magical) / Jure (Buff/Debuff) / Kizuami (Random) - Ehekatl (Jackpot/Random)__
+- Yevan enters the Attack Slots.
+- Itzpalt enters to Magic Slots.
+- Jure enters the Support Slots.
+- Kizuami Picks one of the first three at random.
+- Ehekatl Picks one of the first three at random if not Jackpot.
 
-Second Wheel - Elements - Anima / Holy / Dark / Void / Jackpot
-    Yevan
-        Anima - Strikes with Magic Sword attacks.
-        Light - Strikes with Holy Sword attacks.
-        Dark - Strikes with Dark Sword attacks.
-        Sword - Performs Bladestorm.
-        Jackpot - Strikes with a Melee attack that will cut the target's HP in half.
-    Itzpalt
-        Anima - Strikes with one of Fire/Cold/Lightning Arrow.
-        Light - Strikes with Holy Ball.
-        Dark - Strikes with Dark Bolt
-        Sword - Strikes with random magical sword of Fire/Cold/Lightning
-        Jackpot - Drops a Meteor of Fire/Cold/Lightning on the target.
-    Jure
-        Anima - Restores HP to the target.
-        Light - Grants Holy veil to the target.
-        Dark - Inflicts Bane on the target.
-        Sword - Inflicts Weakness on the target.
-        Jackpot - Fully Heals the target.
-    Kizuami
-        Random from choice.
-    Ehekatl
-        Random from choice if not Jackpot.
+__Second Wheel - Elements - Anima / Holy / Dark / Void / Jackpot__
 
-Third Wheel - Targetting - Bar / Cherry / Bell / Skull / 7
-    Bar - Targets all nearby enemies within 5F.
-    Cherry - Targets a random single enemy within 5F.
-    Bell - Targets all allies with a positive effect and enemies with a negative effect.
-    Skill - Targets all allies within 5F.
-    7 - If not Jackpot, picks any but Skull.
+Yevan
+- Anima - Strikes with Magic Sword attacks.
+- Light - Strikes with Holy Sword attacks.
+- Dark - Strikes with Dark Sword attacks.
+- Sword - Performs Bladestorm.
+- Jackpot - Strikes with a Melee attack that will cut the target's HP in half.
 
-Jackpot - If the Gambler rolls Ehekatl/Jackpot/7, a fourth wheel is spun to determine the effect.
-    Little Sister - Fully HP/MP/Stamina of the Gambler's Allies.
-    Grim Reaper - All nearby enemies take a massive critical Melee damage strike, with a 2.5x multiplier.
-    Zantetsuken - A random nearby enemy is struck with a grevious attack with a 1/7 chance to instant kill.
-        If the instant kill does not trigger, a 12 sided dice is rolled up with the results multiplied by 7.
-        That number is used as the percent life removed from the target, so rolling a 12 will result in the target losing 84% of their life.
-    Full Throttle - Allies are buffed with Haste/Hero/Elemental Shield/Greater Regeneration and 1 turn of invulnerability. Enemies nearby are hit with Slow/Bane/Weakness/EleScar/Nightmare
-    Jackpot - All enemies nearby will drop their entire inventories and disappear.
+Itzpalt
+- Anima - Strikes with one of Fire/Cold/Lightning Arrow.
+- Light - Strikes with Holy Ball.
+- Dark - Strikes with Dark Bolt
+- Sword - Strikes with random magical sword of Fire/Cold/Lightning
+- Jackpot - Drops a Meteor of Fire/Cold/Lightning on the target.
 
-Blackjack Throw - Single Target Ranged Combat Ability - Draws cards to perform a throwing attack. Creates a card and modifies it's weight based on the number.
+Jure
+- Anima - Restores HP to the target.
+- Light - Grants Holy veil to the target.
+- Dark - Inflicts Bane on the target.
+- Sword - Inflicts Weakness on the target.
+- Jackpot - Fully Heals the target.
+
+Kizuami - Random from the other options.  
+Ehekatl - Random from the other options if not Jackpot.
+
+__Third Wheel - Targetting - Bar / Cherry / Bell / Skull / 7__
+- Bar - Targets all nearby enemies within 5F.
+- Cherry - Targets a random single enemy within 5F.
+- Bell - Targets all allies with a positive effect and enemies with a negative effect.
+- Skill - Targets all allies within 5F.
+- 7 - If not Jackpot, picks any but Skull.
+
+__Jackpot - If the Gambler rolls Ehekatl/Jackpot/7, a fourth wheel is spun to determine the effect.__
+
+- Little Sister - Fully HP/MP/Stamina of the Gambler's Allies.
+- Grim Reaper - All nearby enemies take a massive critical Melee damage strike, with a 2.5x multiplier.
+- Zantetsuken - A random nearby enemy is struck with a grevious attack with a 1/7 chance to instant kill. If the instant kill does not trigger, a 12 sided dice is rolled up with the results multiplied by 7. That number is used as the percent life removed from the target, so rolling a 12 will result in the target losing 84% of their life.
+- Full Throttle - Allies are buffed with Haste/Hero/Elemental Shield/Greater Regeneration and 1 turn of invulnerability. Enemies nearby are hit with Slow/Bane/Weakness/EleScar/Nightmare
+- Jackpot - All enemies nearby will drop their entire inventories and disappear.
+
+__Blackjack Throw - Single Target Ranged Combat Ability - Draws cards to perform a throwing attack. Creates a card and modifies it's weight based on the number.__  
 Use the dealers rules, hit when below 16 and stand when 17 or better.
 17 to 21 Will result in an enhanced throwing attack being made with guaranteed accuracy.
 Blackjack - Results in two throwing attacks executed with full Vorpal.
 Bust - The attack fails.
 5 Card Charlie - Throws 5 basic throwing attacks in a single action.
 
-Dice Roll - Rolls a pair of dice to perform a melee attack.
+__Dice Roll - Rolls a pair of dice to perform a melee attack.__  
 SnakeEyes - Heals the target for the damage you would have dealt.
 Between 3 and 11 does a melee hit with a damage multiplier of 1 + ((x - 7) * .1). So a 3 would cause you to deal 60% damage while an 11 will perform a melee attack with 140% damage.
 Twelve - Reaper's Scythe - Does Double Damage.
 
-Lucky Cat - Buff that increases luck. Can be Partycast.
+__Lucky Cat - Buff that increases luck. Can be Partycast.__

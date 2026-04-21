@@ -1,37 +1,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
-using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.Hexer;
 
 /// <summary>
 ///     Attempts to consume a debuff on the Hexer and does damage equal to it's power against a target.
 ///     User must have a debuff to remove.
 /// </summary>
-public class ActRevenge : Ability
+public class ActRevenge : PromotionSpellAbility
 {
-    public override bool CanPerform()
+    public override int PromotionId => Constants.FeatHexer;
+    public override string PromotionString => Constants.HexerId;
+    public override int AbilityId => Constants.ActRevengeId;
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
+
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatHexer))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.HexerId.lang()));
-            return false;
-        }
+        if (TC is not { isChara: true }) return false;
         return CC.Chara.conditions.Count(con => con.Type is ConditionType.Debuff) != 0;
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
-
-    // Apply Spell Enhance to this ability.
-    public override int GetPower(Card c)
-    {
-        int power = base.GetPower(c);
-        return power * Mathf.Max(100 + c.Evalue(411) - c.Evalue(93), 1) / 100;
     }
 
     public override bool Perform()

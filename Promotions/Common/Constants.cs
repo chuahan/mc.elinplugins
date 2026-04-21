@@ -15,16 +15,13 @@ public class Constants
     public const string IsPlayerFactionTrapFlag = "pcTrap";
     public const string JeneiAttunementFlag = "jeAtt";
 
-    public const string PhantomPromotionUnlockedFlag = "phUL";
-    public const string EtoilePromotionUnlockedFlag = "etUL";
-    public const string HeroPromotionUnlockedFlag = "heUL";
-    public const string LusterPromotionUnlockedFlag = "luUL";
+    public const string GamblerPromotionUnlockedFlag = "gUL";
 
     public const string ArtificerGolemCreated = "madeGol";
     public const string AdvancedCombatSkillFlag = "advSkill";
     public const string UnlockedEliteEnemiesFlag = "eliteEnemiesUL";
     public const string IsEliteEnemyFlag = "eliteEnemy";
-    
+
     public const string PromotionModVersionFlag = "modVersion";
     public const int PromotionModVersion = 106;
 
@@ -49,8 +46,6 @@ public class Constants
     public const int EleCut = SKILL.eleCut;
     public const int EleImpact = SKILL.eleImpact;
     public const int EleVoid = SKILL.eleVoid;
-
-    public const int FaithId = SKILL.faith;
 
     public static readonly Dictionary<int, string> ElementAliasLookup = new Dictionary<int, string>
     {
@@ -143,12 +138,7 @@ public class Constants
     public const int FeatRuneKnight = 891026;
     public const int FeatHexer = 891027;
     public const int FeatArtificer = 891028;
-
-    // Unimplemented. Future update
-    public const int FeatPhantom = 1;
-    public const int FeatEtoile = 1;
-    public const int FeatHero = 1;
-    public const int FeatLuster = 1;
+    public const int FeatGambler = 891170;
 
     public const string SentinelId = "sentinel";
     public const string BerserkerId = "berserker";
@@ -179,11 +169,7 @@ public class Constants
     public const string RuneKnightId = "runeknight";
     public const string HexerId = "hexer";
     public const string ArtificerId = "artificer";
-
-    public const string PhantomId = "phantom";
-    public const string EtoileId = "etoile";
-    public const string HeroId = "hero";
-    public const string LusterId = "luster";
+    public const string GamblerId = "gambler";
 
     #endregion
 
@@ -202,7 +188,7 @@ public class Constants
     public const string MonsterSpawnerCharaId = "spawner_monster";
     public const string HumanSpawnerCharaId = "spawner_human";
     public const string EvilSpawnerCharaId = "spawner_evil";
-    
+
     public const string DefenseBannerCharaId = "defense_banner";
     public const string WatcherFighterCharaId = "watcher_fighter";
     public const string WatcherArcherCharaId = "watcher_archer";
@@ -216,6 +202,9 @@ public class Constants
     public const string CouncilDorenCharaId = "council_doren";
     public const string CouncilWyndinCharaId = "council_wyndin";
     public const string CouncilArthurCharaId = "council_arthur";
+    public const string CouncilLarissaCharaId = "council_larissa";
+    public const string CouncilGomidorCharaId = "council_gomidor";
+    public const string CouncilSarveshCharaId = "council_sarvesh";
 
     // Knightcaller Commanders
     public const string ValeroCharaId = "knight_valero";
@@ -283,7 +272,6 @@ public class Constants
     public const string NormalBitCharaId = "bit";
     public const string ShieldBitCharaId = "shield_funnel";
     public const string SwordBitCharaId = "sword_funnel";
-    public const string PhantomBitCharaId = "phantom_funnel";
 
     public const string HolyBannerCharaId = "holy_banner";
 
@@ -354,9 +342,6 @@ public class Constants
     public const int ActBlessingOfTheDeadId = 891094;
     public const int ActCorpseExplosionId = 891095;
     public const int SpSummonSkeletonId = 891096;
-    public const int ActSchwarzeKatzeId = 891097;
-    public const int ActVerbrechenId = 891098;
-    public const int ActWolkenkratzerId = 891099;
     public const int ActGimmickCoatingId = 891100;
     public const int ActThrowTrapId = 891101;
     public const int StRangersCantoId = 891102;
@@ -404,8 +389,13 @@ public class Constants
     public const int ActDarkBarrierId = 891144;
     public const int ActSteamlightId = 891145;
     public const int ActInvigorateId = 891167;
-    public const int ActPreparationId =  891168;
-    public const int ActTacticalRetreatId =  891169;
+    public const int ActPreparationId = 891168;
+    public const int ActTacticalRetreatId = 891169;
+    public const int ActCardThrowId = 891171;
+    public const int ActDiceStrikeId = 891172;
+    public const int ActLuckyCatId = 891173;
+    public const int ActSpinSlotsId = 891174;
+    public const int StFeelingLuckyId = 891175;
 
     public const string ActTrampleAlias = "ActTrample";
 
@@ -436,7 +426,7 @@ public class Constants
     #endregion
 
     #region Artificer Stuff
-    
+
     public const int FeatHarpyGolemVisionId = 891029;
     public const int FeatSirenGolemSpeedId = 891030;
     public const int FeatSirenGolemMagicId = 891031;
@@ -451,7 +441,7 @@ public class Constants
     public const string TitanGolemCharaId = "golem_titan";
 
     public const string ArtificerSteamlightItem = "artificer_steamlight";
-    
+
     #endregion
 
     #region Adv Combat Skills

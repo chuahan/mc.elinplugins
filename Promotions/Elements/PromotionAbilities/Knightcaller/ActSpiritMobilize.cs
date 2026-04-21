@@ -1,25 +1,17 @@
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Knightcaller;
 
-public class ActSpiritMobilize : Ability
+public class ActSpiritMobilize : PromotionSpellAbility
 {
-    public override bool CanPerform()
+    public override int PromotionId => Constants.FeatKnightcaller;
+    public override string PromotionString => Constants.KnightcallerId;
+    public override int Cooldown => 5;
+    public override int AbilityId => Constants.ActSpiritMobilizeId;
+
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatKnightcaller))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.KnightcallerId.lang()));
-            return false;
-        }
-        if (CC.HasCooldown(Constants.ActSpiritMobilizeId)) return false;
         if (!TP.IsValid || !Los.IsVisible(CC.pos, TP)) return false;
         return base.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
     }
 
     public override bool Perform()
@@ -34,7 +26,7 @@ public class ActSpiritMobilize : Ability
             }
         }
 
-        CC.AddCooldown(Constants.ActSpiritMobilizeId, 5);
+        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

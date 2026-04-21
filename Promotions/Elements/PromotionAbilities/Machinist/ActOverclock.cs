@@ -3,16 +3,15 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Machinist;
 namespace PromotionMod.Elements.PromotionAbilities.Machinist;
 
-public class ActOverclock : Ability
+public class ActOverclock : PromotionCombatAbility
 {
-    public override bool CanPerform()
+    public override int PromotionId => Constants.FeatMachinist;
+    public override string PromotionString => Constants.MachinistId;
+    public override int Cooldown => 10;
+    public override int AbilityId => Constants.ActOverclockId;
+
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatMachinist))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.MachinistId.lang()));
-            return false;
-        }
-        if (CC.HasCooldown(Constants.ActOverclockId)) return false;
         return base.CanPerform();
     }
 
@@ -32,7 +31,7 @@ public class ActOverclock : Ability
         }
         CC.AddCondition<ConOverclock>(power);
 
-        CC.AddCooldown(Constants.ActOverclockId, 10);
+        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

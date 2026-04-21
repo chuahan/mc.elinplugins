@@ -2,29 +2,19 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Sentinel;
 namespace PromotionMod.Elements.PromotionAbilities.Sentinel;
 
-public class ActShieldSmite : Ability
+public class ActShieldSmite : PromotionCombatAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatSentinel))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.SentinelId.lang()));
-            return false;
-        }
+    public override int PromotionId => Constants.FeatSentinel;
+    public override string PromotionString => Constants.SentinelId;
+    public override int AbilityId => Constants.ActShieldSmiteId;
 
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
+
+    public override bool CanPerformExtra()
+    {
         if (CC.body.GetAttackStyle() is not AttackStyle.Shield) return false;
-        if (TC == null)
-        {
-            return false;
-        }
+        if (TC is not { isChara: true }) return false;
         return ACT.Melee.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
     }
 
     public override bool Perform()

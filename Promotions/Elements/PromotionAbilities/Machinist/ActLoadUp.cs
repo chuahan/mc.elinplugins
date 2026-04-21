@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Machinist;
 
-public class ActLoadUp : Ability
+public class ActLoadUp : PromotionCombatAbility
 {
     private static List<List<int>> BulletMods = new List<List<int>>
     {
@@ -24,22 +24,12 @@ public class ActLoadUp : Ability
         } // Tracer Rounds - Accuracy and Chaser
     };
 
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatMachinist))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.MachinistId.lang()));
-            return false;
-        }
-        return base.CanPerform();
-    }
+    public override int PromotionId => Constants.FeatMachinist;
+    public override string PromotionString => Constants.MachinistId;
 
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
+    public override int Cooldown => 10;
+    public override int AbilityId => Constants.ActLoadUpId;
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
     public override bool Perform()
     {
@@ -82,6 +72,7 @@ public class ActLoadUp : Ability
             }
         }
 
+        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

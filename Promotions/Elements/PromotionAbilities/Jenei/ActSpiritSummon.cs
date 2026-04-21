@@ -6,7 +6,7 @@ using PromotionMod.Elements.PromotionFeats;
 using PromotionMod.Stats.Jenei;
 namespace PromotionMod.Elements.PromotionAbilities.Jenei;
 
-public class ActSpiritSummon : Ability
+public class ActSpiritSummon : PromotionSpellAbility
 {
 
     public static Dictionary<string, JeneiSummonSequence> SummonAbility = new Dictionary<string, JeneiSummonSequence>
@@ -64,30 +64,15 @@ public class ActSpiritSummon : Ability
         }
     };
 
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatJenei))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.JeneiId.lang()));
-            return false;
-        }
-        if (CC.HasCooldown(Constants.ActSpiritSummonId)) return false;
+    public override int PromotionId => Constants.FeatJenei;
+    public override string PromotionString => Constants.JeneiId;
 
-        // NPCs can summon a random summon every 30 turns.
-        if (CC.IsPC && !CC.HasCondition<ConJenei>()) return false;
-        if (CC.currentZone.CountMinions(CC) >= CC.MaxSummon) return false;
-        return base.CanPerform();
-    }
+    public override int Cooldown => 10;
 
-    // Spirit Summon Costs nothing.
-    public override Cost GetCost(Chara c)
-    {
-        return new Cost
-        {
-            cost = 1,
-            type = CostType.None
-        };
-    }
+    public override int AbilityId => Constants.ActSpiritSummonId;
+
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostNone;
+
 
     public override bool Perform()
     {
@@ -96,22 +81,7 @@ public class ActSpiritSummon : Ability
         string? summon = FeatJenei.JeneiSummons.GetSummon(djinnStockpile.GetElementalStockpile());
         if (summon == null) return false;
         if (!CC.IsPC) summon = FeatJenei.JeneiSummons.AllSummons.Select(x => x.SummonId).ToList().RandomItem();
-/*
-        // If the zone already has this summon active, fizzle.
-        if (CC.currentZone.FindChara(summon) != null) return false;
 
-        // Summon - For PCs summons can scale to your deepest achieved depth instead.
-        Chara jeneiSummon = CharaGen.Create(summon);
-        jeneiSummon.SetSummon(10);
-        int power = GetPower(CC);
-        int levelOverride = CC.LV * (100 + power / 10) / 100 + power / 30;
-        if (CC.IsPC) levelOverride = Math.Max(player.stats.deepest, levelOverride);
-        jeneiSummon.SetLv(levelOverride);
-        jeneiSummon.interest = 0;
-        CC.currentZone.AddCard(jeneiSummon, TP);
-        jeneiSummon.PlayEffect("aura_heaven");
-        jeneiSummon.MakeMinion(CC);
-*/
         // Get Text
         string summonName = summon + "_formalname";
         CC.TalkRaw("jenei_summonphrase".langGame(summonName.langGame()));
@@ -121,11 +91,11 @@ public class ActSpiritSummon : Ability
         if (CC.IsPC)
         {
             djinnStockpile.EmptyStockpile();
-            CC.AddCooldown(Constants.ActSpiritSummonId, 10);
+            CC.AddCooldown(AbilityId, 10);
         }
         else
         {
-            CC.AddCooldown(Constants.ActSpiritSummonId, 30);
+            CC.AddCooldown(AbilityId, 30);
         }
         SummonAbility[summon].PerformSummonAttack(CC, GetPower(CC));
         return true;

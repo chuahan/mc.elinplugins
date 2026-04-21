@@ -2,25 +2,11 @@ using PromotionMod.Common;
 using PromotionMod.Stats.WarCleric;
 namespace PromotionMod.Elements.PromotionAbilities.WarCleric;
 
-public class ActBlessedArmaments : ActMelee
+public class ActBlessedArmaments : PromotionSpellAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatWarCleric))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.WarClericId.lang()));
-            return false;
-        }
-        if (CC.HasCooldown(Constants.ActBlessedArmamentsId)) return false;
-        return base.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
+    public override int PromotionId => Constants.FeatWarCleric;
+    public override string PromotionString => Constants.WarClericId;
+    public override int AbilityId => Constants.ActBlessedArmamentsId;
 
     public override bool Perform()
     {

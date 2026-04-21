@@ -2,54 +2,49 @@ using System.Collections.Generic;
 using PromotionMod.Common;
 using PromotionMod.Stats;
 using PromotionMod.Stats.Hermit;
-
 namespace PromotionMod.Elements.PromotionAbilities.Hermit;
 
 /// <summary>
-/// This ability can only be used on targets that have been Marked for Death.
-/// Targeted debuff that also grants the Hermit Crit Boost, while inflicting one of: Sleep, Poison, Paralyze, Bleed, or Faint. The chance of inflicting the debuff increases depending on how high the Stalk value of Mark for Death is.
+///     This ability can only be used on targets that have been Marked for Death.
+///     Targeted debuff that also grants the Hermit Crit Boost, while inflicting one of: Sleep, Poison, Paralyze, Bleed, or
+///     Faint. The chance of inflicting the debuff increases depending on how high the Stalk value of Mark for Death is.
 /// </summary>
-public class ActPreparation : Ability
+public class ActPreparation : PromotionCombatAbility
 {
-    private static List<string> _possibleDebuffs = new List<string>()
+
+    private static List<string> _possibleDebuffs = new List<string>
     {
         nameof(ConParalyze),
         nameof(ConBleed),
         nameof(ConSleep),
         nameof(ConFaint),
-        nameof(ConPoison),
-        
-    };
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatHermit))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.HermitId.lang()));
-            return false;
-        }
+        nameof(ConPoison)
 
+    };
+
+    public override int PromotionId => Constants.FeatHermit;
+    public override string PromotionString => Constants.HermitId;
+    public override int AbilityId => Constants.ActPreparationId;
+
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
+
+    public override bool CanPerformExtra()
+    {
         // Must have a Target. Target must be marked for death with at least 10 value.
-        if (TC == null) return false;
+        if (TC is not { isChara: true }) return false;
 
         ConMarkedForDeath deathMark = TC.Chara.GetCondition<ConMarkedForDeath>();
         if (deathMark == null || deathMark.value < 10) return false;
-        return base.CanPerform();
+        return true;
     }
 
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
-    
     public override bool Perform()
     {
         ConMarkedForDeath deathMark = TC.Chara.GetCondition<ConMarkedForDeath>();
         if (deathMark == null) return false;
 
-        int calcPower = this.GetPower(CC);
-        int boostPower = (int)(HelperFunctions.SigmoidScaling(calcPower, 10, 50));
+        int calcPower = GetPower(CC);
+        int boostPower = (int)HelperFunctions.SigmoidScaling(calcPower, 10, 50);
         CC.AddCondition(SubPoweredCondition.Create(nameof(ConCritBoost), calcPower, boostPower));
 
         int stalkBonusMultiplier = deathMark.value / 10;

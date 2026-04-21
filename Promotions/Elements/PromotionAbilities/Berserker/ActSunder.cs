@@ -3,26 +3,18 @@ using System.Linq;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Berserker;
 
-public class ActSunder : Ability
+public class ActSunder : PromotionCombatAbility
 {
     public float HealthCost = 0.25F;
+    public override int PromotionId => Constants.FeatBerserker;
+    public override string PromotionString => Constants.BerserkerId;
 
-    public override Cost GetCost(Chara c)
-    {
-        return new Cost
-        {
-            cost = 5,
-            type = CostType.SP
-        };
-    }
+    public override int Cooldown => 10;
+    public override int AbilityId => Constants.ActSunderId;
 
-    public override bool CanPerform()
+
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatBerserker))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.BerserkerId.lang()));
-            return false;
-        }
         if (CC != null)
         {
             int hpCost = (int)(CC.MaxHP * HealthCost);
@@ -32,8 +24,8 @@ public class ActSunder : Ability
                 return false;
             }
         }
-        
-        return base.CanPerform();
+
+        return true;
     }
 
     public override bool Perform()
@@ -57,7 +49,7 @@ public class ActSunder : Ability
 
         TC.DamageHP(damage, AttackSource.Melee, CC);
         CC.HealHP(damage, HealSource.Magic);
-        CC.AddCooldown(Constants.ActSunderId, 10);
+        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

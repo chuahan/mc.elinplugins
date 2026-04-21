@@ -49,8 +49,8 @@ public class FeatDreadKnight : PromotionFeat
         c.ability.Add(Constants.ActDarkBurstId, 50, false);
         c.ability.Add(Constants.ActDarkBarrierId, 50, false);
 
-        c.ability.Add(51006, 50, false); // Nether Sword
-        c.ability.Add(50506, 50, false); // Nether Arrow
+        c.ability.Add(SPELL.sword_Nether, 50, false); // Nether Sword
+        c.ability.Add(SPELL.arrow_Nether, 50, false); // Nether Arrow
     }
 
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)

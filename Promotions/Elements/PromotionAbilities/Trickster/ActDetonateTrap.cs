@@ -2,21 +2,21 @@ using PromotionMod.Common;
 using PromotionMod.Trait.Trickster;
 namespace PromotionMod.Elements.PromotionAbilities.Trickster;
 
-public class ActDetonateTrap : Ability
+public class ActDetonateTrap : PromotionSpellAbility
 {
+    public override int PromotionId => Constants.FeatTrickster;
+    public override string PromotionString => Constants.TricksterId;
+    public override int AbilityId => Constants.ActDetonateTrapId;
+
     public override int PerformDistance => 5;
 
-    public override bool CanPerform()
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatTrickster))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.TricksterId.lang()));
-            return false;
-        }
         if (TP.Installed == null || TP.GetInstalled<TraitTricksterArcaneTrap>() == null) return false;
-        return base.CanPerform();
+        return true;
     }
 
+    // Leave this at 0 so it doesn't level up. The main cost is the trap itself.
     public override Cost GetCost(Chara c)
     {
         return new Cost

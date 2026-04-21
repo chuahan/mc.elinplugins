@@ -8,8 +8,9 @@ namespace PromotionMod.Elements.PromotionAbilities.Artificer;
 ///     If target is an ally, will be beneficial. 1/10 Chance of being an extremely beneficial brew.
 ///     If target is an enemy, will be harmful. 1/4 Chance of being a... special brew.
 /// </summary>
-public class ActImprovisedBrew : Ability
+public class ActImprovisedBrew : PromotionSpellAbility
 {
+
     private static List<string> NegativePotions = new List<string>
     {
         "330", // Blindness
@@ -42,23 +43,10 @@ public class ActImprovisedBrew : Ability
         8550 // Phoenix
     };
 
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatArtificer))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.ArtificerId.lang()));
-            return false;
-        }
-        return base.CanPerform();
-    }
+    public override int PromotionId => Constants.FeatArtificer;
+    public override string PromotionString => Constants.ArtificerId;
+    public override int AbilityId => Constants.ActImprovisedBrewId;
 
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
-    
     public override bool Perform()
     {
         if (TC != null && TC.isChara)

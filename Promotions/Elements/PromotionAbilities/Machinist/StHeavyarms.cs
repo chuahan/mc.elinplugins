@@ -3,19 +3,21 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Machinist;
 namespace PromotionMod.Elements.PromotionAbilities.Machinist;
 
-public class StHeavyarms : Ability
+public class StHeavyarms : PromotionAbility
 {
-    public override bool CanPerform()
+    public override int PromotionId => Constants.FeatMachinist;
+    public override string PromotionString => Constants.MachinistId;
+
+    public override int AbilityId => Constants.StHeavyarmsId;
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostNone;
+
+
+    public override bool CanPerformExtra()
     {
+        // Can cancel out at any time.
         if (CC.HasCondition<StanceHeavyarms>())
         {
             return true;
-        }
-
-        if (!CC.MatchesPromotion(Constants.FeatMachinist))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.MachinistId.lang()));
-            return false;
         }
 
         // Cannot be used while riding or as a parasite.
@@ -43,17 +45,6 @@ public class StHeavyarms : Ability
             return false;
         }
 
-        return base.CanPerform();
-
-    }
-
-    // This ability doesn't cost MP or Stamina to activate, and instead will drain 5% mana per turn when active. 
-    public override Cost GetCost(Chara c)
-    {
-        return new Cost
-        {
-            cost = 1,
-            type = CostType.None
-        };
+        return true;
     }
 }

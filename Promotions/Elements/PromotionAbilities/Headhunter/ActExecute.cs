@@ -8,23 +8,23 @@ namespace PromotionMod.Elements.PromotionAbilities.Headhunter;
 ///     Headhunter Ability
 ///     Melee attack that will instantly kill any enemies at or below 25% HP.
 /// </summary>
-public class ActExecute : Ability
+public class ActExecute : PromotionCombatAbility
 {
-    public float CullThreshold = 0.25f;
 
-    public override bool CanPerform()
+    public float CullThreshold = 0.25f;
+    public override int PromotionId => Constants.FeatHeadhunter;
+    public override string PromotionString => Constants.HeadhunterId;
+    public override int Cooldown => 10;
+    public override int AbilityId => Constants.ActExecuteId;
+
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatHeadhunter))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.HeadhunterId.lang()));
-            return false;
-        }
-        if (CC.HasCooldown(Constants.ActExecuteId)) return false;
-        if (CC == TC || TC == null || CC.Dist(TC) > 1)
+
+        if (CC == TC || TC is not { isChara: true } || CC.Dist(TC) > 1)
         {
             return false;
         }
-        return base.CanPerform();
+        return true;
     }
 
     // Cost is reduced by 10% per Headhunter stack are active.
@@ -44,7 +44,7 @@ public class ActExecute : Ability
     {
         // Perform a Melee Attack.
         new ActMelee().Perform(CC, TC);
-        
+
         // Cull enemy if possible.
         if (TC.MaxHP * CullThreshold >= TC.hp)
         {
@@ -66,9 +66,9 @@ public class ActExecute : Ability
         else
         {
             // Add a cooldown.
-            CC.AddCooldown(Constants.ActExecuteId, 10 - CC.GetCondition<ConHeadhunter>()?.GetStacks() ?? 0);
+            CC.AddCooldown(AbilityId, Cooldown - CC.GetCondition<ConHeadhunter>()?.GetStacks() ?? 0);
         }
-        
+
         return true;
     }
 }

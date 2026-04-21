@@ -3,19 +3,19 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Dancer;
 namespace PromotionMod.Elements.PromotionAbilities.Dancer;
 
-public class ActDaggerIllusion : Ability
+public class ActDaggerIllusion : PromotionCombatAbility
 {
+
     private const float EffectRadius = 5F;
 
     private const int MaxTargets = 5;
+    public override int PromotionId => Constants.FeatDancer;
+    public override string PromotionString => Constants.DancerId;
+    public override int Cooldown => 5;
+    public override int AbilityId => Constants.ActDaggerIllusionId;
 
-    public override bool CanPerform()
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatDancer))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.DancerId.lang()));
-            return false;
-        }
         Thing thing = ActDaggerIllusion.GetBestThrowingWeapon(CC);
         if (thing == null)
         {
@@ -28,17 +28,9 @@ public class ActDaggerIllusion : Ability
             if (CC.IsPC) Msg.Say("dancer_mustbedancing".lang());
             return false;
         }
-
-        return base.CanPerform();
+        return true;
     }
 
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
-    
     public override void OnMarkMapHighlights()
     {
         List<Point> list = _map.ListPointsInCircle(CC.pos, EffectRadius);
@@ -111,6 +103,8 @@ public class ActDaggerIllusion : Ability
 
             targetsHit++;
         }
+
+        CC.AddCooldown(AbilityId, Cooldown);
 
         return true;
     }

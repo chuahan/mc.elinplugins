@@ -21,7 +21,7 @@ public class ConSpellTempo : Timebuff
         // Recover 2% mana per stack, topping at 20% a turn mana at max stacks.
         int manaHealAmount = (int)(CC.mana.max * (0.02F * power));
         CC.mana.Mod(manaHealAmount);
-        
+
         base.Tick();
     }
 }

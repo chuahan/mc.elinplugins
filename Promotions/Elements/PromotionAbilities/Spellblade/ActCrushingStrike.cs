@@ -2,24 +2,13 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Spellblade;
 namespace PromotionMod.Elements.PromotionAbilities.Spellblade;
 
-public class ActCrushingStrike : Ability
+public class ActCrushingStrike : PromotionCombatAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatSpellblade))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.SpellbladeId.lang()));
-            return false;
-        }
-        return base.CanPerform();
-    }
+    public override int PromotionId => Constants.FeatSpellblade;
+    public override string PromotionString => Constants.SpellbladeId;
+    public override int AbilityId => Constants.ActCrushingStrikeId;
 
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
     public override bool Perform()
     {

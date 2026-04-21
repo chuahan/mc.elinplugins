@@ -110,6 +110,7 @@ public class CardDamageHPPatches
                     if (EClass.rnd(4) == 0)
                     {
                         originConditions[typeof(ConShadowShroud)].Single().Kill();
+                        originChara.AddCooldown(Constants.ActShadowShroudId, 5);
                     }
                 }
 
@@ -169,13 +170,18 @@ public class CardDamageHPPatches
                 // Saint - If the Saint and the target share the same religion, the Saint can attempt to convert the opponent.
                 if (originChara.MatchesPromotion(Constants.FeatSaint) && originChara.faith.id == target.faith.id)
                 {
-                    if (Math.Max(originChara.Evalue(85), originChara.Evalue(Constants.FaithId)) > target.Evalue(Constants.FaithId) &&
-                        !target.IsMinion &&
-                        target.CanBeTempAlly(originChara))
+                    // Saint's faith must be higher than the target.
+                    // Must be a convertable target.
+                    // Succeed a 1/10 roll.
+                    // Random WIL + FAITH + 10 less than the Saint's Faith.
+                    if (!target.IsMinion &&
+                        target.CanBeTempAlly(originChara) &&
+                        originChara.Evalue(SKILL.faith) > target.Evalue(SKILL.faith) &&
+                        EClass.rnd(10) == 0 &&
+                        EClass.rnd(target.WIL + target.Evalue(SKILL.faith) + 10) < originChara.Evalue(SKILL.faith))
                     {
-                        target.Say("dominate_machine", target, originChara);
-                        target.PlayEffect("boost");
-                        target.PlaySound("boost");
+                        Msg.Say("saint_convert_target".langGame(originChara.NameSimple, target.NameSimple));
+                        target.PlayEffect("aura_heaven");
                         target.ShowEmo(Emo.love);
                         target.lastEmo = Emo.angry;
                         target.Chara.MakeMinion(originChara.IsPCParty ? EClass.pc : originChara);
@@ -602,7 +608,7 @@ public class CardDamageHPPatches
                 int manaDamage = (int)(damageWithMods * 0.1F) * -1;
                 targetChara.mana.Mod(manaDamage);
             }
-            
+
             // If the target has Mana Leak, restore 10% of the damage done as mana.
             if (targetConditions.Contains(typeof(ConManaLeak)) && originChara != null)
             {

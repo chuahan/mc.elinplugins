@@ -1,25 +1,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
-using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.Hexer;
 
 /// <summary>
 ///     Does Mind Damage scaling on many negative conditions are on the enemy. 5 turn cooldown. 20% Mana cost.
 ///     Does not consume the negative conditions like Trickster or Shatter Hex.
 /// </summary>
-public class ActTraumatize : Ability
+public class ActTraumatize : PromotionSpellAbility
 {
-    public override bool CanPerform()
+    public override int PromotionId => Constants.FeatHexer;
+    public override string PromotionString => Constants.HexerId;
+    public override int Cooldown => 5;
+    public override int AbilityId => Constants.ActTraumatizeId;
+
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatHexer))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.HexerId.lang()));
-            return false;
-        }
         if (CC.hp <= CC.MaxHP * 0.1F) return false;
-        if (CC.HasCooldown(Constants.ActTraumatizeId)) return false;
-        if (TC == null) return false;
+        if (TC is not { isChara: true }) return false;
         return true;
     }
 
@@ -30,13 +28,6 @@ public class ActTraumatize : Ability
             type = CostType.MP,
             cost = (int)(c.mana.max * 0.2F)
         };
-    }
-
-    // Apply Spell Enhance to this ability.
-    public override int GetPower(Card c)
-    {
-        int power = base.GetPower(c);
-        return power * Mathf.Max(100 + c.Evalue(411) - c.Evalue(93), 1) / 100;
     }
 
     public override bool Perform()
@@ -52,7 +43,7 @@ public class ActTraumatize : Ability
             damage = HelperFunctions.SafeMultiplier(damage, negativeConditions.Count);
             TC.DamageHP(damage, Constants.EleMind, 100, AttackSource.None, CC);
         }
-        CC.AddCooldown(Constants.ActTraumatizeId, 5);
+        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

@@ -4,20 +4,19 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Dancer;
 namespace PromotionMod.Elements.PromotionAbilities.Dancer;
 
-public class ActDancePartner : Ability
+public class ActDancePartner : PromotionCombatAbility
 {
-    public override bool CanPerform()
+    public override int PromotionId => Constants.FeatDancer;
+    public override string PromotionString => Constants.DancerId;
+    public override int AbilityId => Constants.ActDancePartnerId;
+
+    public override bool CanPerformExtra()
     {
         if (!CC.IsPC) return false;
-        if (!CC.MatchesPromotion(Constants.FeatDancer))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.DancerId.lang()));
-            return false;
-        }
 
         List<Chara> characters = TP.ListCharas();
         if (characters.Count(c => c.IsPCParty || c.IsPC) == 0) return false;
-        return base.CanPerform();
+        return true;
     }
 
     public override bool Perform()

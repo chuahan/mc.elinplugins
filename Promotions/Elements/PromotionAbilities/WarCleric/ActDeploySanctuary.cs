@@ -2,8 +2,14 @@ using PromotionMod.Common;
 using PromotionMod.Stats.WarCleric;
 namespace PromotionMod.Elements.PromotionAbilities.WarCleric;
 
-public class ActDeploySanctuary : Ability
+public class ActDeploySanctuary : PromotionSpellAbility
 {
+    public override int PromotionId => Constants.FeatWarCleric;
+    public override string PromotionString => Constants.WarClericId;
+
+    public override int Cooldown => 100;
+    public override int AbilityId => Constants.ActDeploySanctuaryId;
+
     public override bool CanPerform()
     {
         if (!CC.MatchesPromotion(Constants.FeatWarCleric))
@@ -27,7 +33,7 @@ public class ActDeploySanctuary : Ability
     public override bool Perform()
     {
         CC.AddCondition<ConSanctuary>();
-        CC.AddCooldown(Constants.ActDeploySanctuaryId, 100);
+        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

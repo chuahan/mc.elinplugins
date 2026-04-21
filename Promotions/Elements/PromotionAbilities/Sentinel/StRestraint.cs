@@ -2,17 +2,11 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Sentinel;
 namespace PromotionMod.Elements.PromotionAbilities.Sentinel;
 
-public class StRestraint : Ability
+public class StRestraint : PromotionAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatSentinel))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.SentinelId.lang()));
-            return false;
-        }
-        return base.CanPerform();
-    }
+    public override int PromotionId => Constants.FeatSentinel;
+    public override string PromotionString => Constants.SentinelId;
+    public override int AbilityId => Constants.StRestraintId;
 
     public override bool Perform()
     {

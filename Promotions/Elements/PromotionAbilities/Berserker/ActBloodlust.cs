@@ -2,27 +2,15 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Berserker;
 namespace PromotionMod.Elements.PromotionAbilities.Berserker;
 
-public class ActBloodlust : Ability
+public class ActBloodlust : PromotionAbility
 {
     public float HealthCost = 0.25F;
+    public override int PromotionId => Constants.FeatBerserker;
+    public override string PromotionString => Constants.BerserkerId;
+    public override int AbilityId => Constants.ActBloodlustId;
 
-    public override Cost GetCost(Chara c)
+    public override bool CanPerformExtra()
     {
-        return new Cost
-        {
-            cost = 5,
-            type = CostType.SP
-        };
-    }
-
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatBerserker))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.BerserkerId.lang()));
-            return false;
-        }
-        
         if (CC != null)
         {
             int hpCost = (int)(CC.MaxHP * HealthCost);
@@ -33,14 +21,13 @@ public class ActBloodlust : Ability
                 return false;
             }
         }
-
-        return base.CanPerform();
+        return true;
     }
 
     public override bool Perform()
     {
         int hpCost = (int)(CC.MaxHP * 0.25F);
-        CC.DamageHP(hpCost);
+        CC.hp -= hpCost;
         CC.AddCondition<ConBloodlust>();
         return true;
     }

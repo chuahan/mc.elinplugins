@@ -1,25 +1,11 @@
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Trickster;
 
-public class ActDiversion : Ability
+public class ActDiversion : PromotionSpellAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatTrickster))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.TricksterId.lang()));
-            return false;
-        }
-
-        return base.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
+    public override int PromotionId => Constants.FeatTrickster;
+    public override string PromotionString => Constants.TricksterId;
+    public override int AbilityId => Constants.ActDiversionId;
 
     public override bool Perform()
     {

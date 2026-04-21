@@ -7,6 +7,7 @@ public class ActStrategyOrder : ActSovereignOrder
 {
     protected override string OrderType => "strategy";
     protected override int CooldownId => Constants.ActStrategyOrderId;
+    public override int AbilityId => Constants.ActStrategyOrderId;
     public override void AddLawCondition(Chara chara, int stacks)
     {
         chara.RemoveCondition<ConOrderRout>();

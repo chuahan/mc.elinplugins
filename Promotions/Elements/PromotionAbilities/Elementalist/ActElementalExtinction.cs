@@ -2,24 +2,22 @@ using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Stats;
-using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.Elementalist;
 
 /// <summary>
 ///     Elementalist Ability
 ///     Consumes all orbs and drops elemental meteors on the enemy's location.
 /// </summary>
-public class ActElementalExtinction : Ability
+public class ActElementalExtinction : PromotionSpellAbility
 {
-    public int ElementalFuryRequirement = 4;
 
-    public override bool CanPerform()
+    public int ElementalFuryRequirement = 4;
+    public override int PromotionId => Constants.FeatElementalist;
+    public override string PromotionString => Constants.ElementalistId;
+    public override int AbilityId => Constants.ActElementalExtinctionId;
+
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatElementalist))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.ElementalistId.lang()));
-            return false;
-        }
         if (CC.HasCondition<ConElementalist>())
         {
             ConElementalist elementalist = CC.GetCondition<ConElementalist>();
@@ -34,21 +32,7 @@ public class ActElementalExtinction : Ability
             return false;
         }
 
-        return base.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost cost = base.GetCost(c);
-        cost.type = CostType.MP;
-        return cost;
-    }
-
-    // Apply Spell Enhance to this ability.
-    public override int GetPower(Card c)
-    {
-        int power = base.GetPower(c);
-        return power * Mathf.Max(100 + c.Evalue(411) - c.Evalue(93), 1) / 100;
+        return true;
     }
 
     public override bool Perform()
@@ -94,7 +78,7 @@ public class ActElementalExtinction : Ability
             {
                 TC.pos
             }, actRef, nameof(ActElementalExtinction));
-            
+
             // Consume an orb.
             activeStockpile[element]--;
             if (activeStockpile[element] <= 0) activeStockpile.Remove(element);

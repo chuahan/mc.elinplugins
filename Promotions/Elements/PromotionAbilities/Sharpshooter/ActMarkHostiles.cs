@@ -3,27 +3,16 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Sharpshooter;
 namespace PromotionMod.Elements.PromotionAbilities.Sharpshooter;
 
-public class ActMarkHostiles : Ability
+public class ActMarkHostiles : PromotionCombatAbility
 {
+
     private float _effectRadius = 3F;
+    public override int PromotionId => Constants.FeatSharpshooter;
+    public override string PromotionString => Constants.SharpshooterId;
+    public override int AbilityId => Constants.ActMarkHostilesId;
 
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatSharpshooter))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.SharpshooterId.lang()));
-            return false;
-        }
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
-        return base.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
 
     public override void OnMarkMapHighlights()
     {

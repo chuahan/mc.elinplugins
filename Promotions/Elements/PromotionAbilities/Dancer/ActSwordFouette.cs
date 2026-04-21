@@ -7,25 +7,24 @@ namespace PromotionMod.Elements.PromotionAbilities.Dancer;
 ///     Dancer Ability
 ///     2 Radius Swarm. For each enemy hit it applies a damage reduction to your next blow.
 /// </summary>
-public class ActSwordFouette : Ability
+public class ActSwordFouette : PromotionCombatAbility
 {
+
     private float _effectRadius = 2F;
+    public override int PromotionId => Constants.FeatDancer;
+    public override string PromotionString => Constants.DancerId;
+    public override int Cooldown => 5;
+    public override int AbilityId => Constants.ActSwordFouetteId;
 
-    public override bool CanPerform()
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatDancer))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.DancerId.lang()));
-            return false;
-        }
-
         if (owner?.Chara?.conditions.Exists(x => x is StanceDance) == false)
         {
             if (CC.IsPC) Msg.Say("dancer_mustbedancing".lang());
             return false;
         }
 
-        return base.CanPerform();
+        return true;
     }
 
     public override Cost GetCost(Chara c)
@@ -34,7 +33,7 @@ public class ActSwordFouette : Ability
         convertToMp.type = CostType.MP;
         return convertToMp;
     }
-    
+
     public override void OnMarkMapHighlights()
     {
         List<Point> list = _map.ListPointsInCircle(CC.pos, _effectRadius);
@@ -75,6 +74,7 @@ public class ActSwordFouette : Ability
             }
         }
 
+        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

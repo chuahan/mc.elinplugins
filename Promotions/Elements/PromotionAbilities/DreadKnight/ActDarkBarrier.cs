@@ -3,16 +3,14 @@ using PromotionMod.Stats;
 using PromotionMod.Stats.DreadKnight;
 namespace PromotionMod.Elements.PromotionAbilities.DreadKnight;
 
-public class ActDarkBarrier : Ability
+public class ActDarkBarrier : PromotionSpellAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatDreadKnight))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.DreadKnightId.lang()));
-            return false;
-        }
+    public override int PromotionId => Constants.FeatDreadKnight;
+    public override string PromotionString => Constants.DreadKnightId;
+    public override int AbilityId => Constants.ActDarkBarrierId;
 
+    public override bool CanPerformExtra()
+    {
         if (!CC.HasCondition<ConDarkTraces>())
         {
             if (CC.IsPC) Msg.Say("dreadknight_notraces".langGame());
@@ -20,13 +18,6 @@ public class ActDarkBarrier : Ability
         }
 
         return base.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
     }
 
     public override bool Perform()

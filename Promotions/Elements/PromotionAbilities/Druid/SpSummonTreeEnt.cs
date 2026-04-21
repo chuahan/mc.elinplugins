@@ -2,15 +2,13 @@ using System;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Druid;
 
-public class SpSummonTreeEnt : Spell
+public class SpSummonTreeEnt : PromotionSpellAbility
 {
-    public override bool CanPerform()
+    public override int PromotionId => Constants.FeatDruid;
+    public override string PromotionString => Constants.DruidId;
+    public override int AbilityId => Constants.SpSummonTreeEntId;
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatDruid))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.DruidId.lang()));
-            return false;
-        }
         if (CC.currentZone.CountMinions(CC) >= CC.MaxSummon) return false;
         return base.CanPerform();
     }
@@ -26,7 +24,7 @@ public class SpSummonTreeEnt : Spell
                 // For PCs Ent Warriors summons can scale to your deepest achieved depth instead.
                 int power = GetPower(CC);
                 int levelOverride = CC.LV * (100 + power / 10) / 100 + power / 30;
-                if (CC.IsPC) levelOverride = Math.Max(player.stats.deepest, levelOverride);
+                if (CC.IsPCFaction) levelOverride = Math.Max(player.stats.deepest, levelOverride);
                 plant.SetLv(levelOverride);
                 plant.interest = 0;
                 CC.currentZone.AddCard(plant, TP);

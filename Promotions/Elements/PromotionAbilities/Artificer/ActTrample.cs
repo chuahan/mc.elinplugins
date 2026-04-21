@@ -3,7 +3,7 @@ using System.Linq;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Artificer;
 
-public class ActTitanCharge : Ability
+public class ActTrample : Ability
 {
     public override Cost GetCost(Chara c)
     {

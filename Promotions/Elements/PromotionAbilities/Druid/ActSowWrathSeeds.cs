@@ -12,25 +12,17 @@ namespace PromotionMod.Elements.PromotionAbilities.Druid;
 ///     Toxic Bloom - Afflicts poison to enemies.
 ///     Soporific Bloom - Afflicts sleep to enemies.
 /// </summary>
-public class ActSowWrathSeeds : Ability
+public class ActSowWrathSeeds : PromotionSpellAbility
 {
-    public override bool CanPerform()
+    public override int PromotionId => Constants.FeatDruid;
+    public override string PromotionString => Constants.DruidId;
+    public override int AbilityId => Constants.ActSowWrathSeedsId;
+
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatDruid))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.DruidId.lang()));
-            return false;
-        }
         if (CC.currentZone.CountMinions(CC) >= CC.MaxSummon) return false;
         if (!TP.IsValid || TP.HasChara) return false;
         return base.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
     }
 
     public override void OnMarkMapHighlights()
@@ -47,7 +39,7 @@ public class ActSowWrathSeeds : Ability
         foreach (Point item in list)
         {
             // These are slightly different. The target point is the summoning spot. The surrounding highlight is the area of effect for the aura.
-            if (Equals(scene.mouseTarget.pos, item))
+            if (object.Equals(scene.mouseTarget.pos, item))
             {
                 item.SetHighlight(7);
             }
@@ -97,7 +89,7 @@ public class ActSowWrathSeeds : Ability
             // Normal summon leveling.
             // For PCs Ent Warriors and Nature's Warmth summons can scale to your deepest achieved depth instead.
             int levelOverride = CC.LV * (100 + power / 10) / 100 + power / 30;
-            if (CC.IsPC) levelOverride = Math.Max(player.stats.deepest, levelOverride);
+            if (CC.IsPC || CC.IsPCParty) levelOverride = Math.Max(player.stats.deepest, levelOverride);
             plant.SetLv(levelOverride);
         }
 

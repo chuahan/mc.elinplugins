@@ -1,5 +1,4 @@
 using System;
-using Cwl.Helper.Extensions;
 using Newtonsoft.Json;
 using PromotionMod.Common;
 using UnityEngine;
@@ -14,7 +13,7 @@ public abstract class ClassCondition : Timebuff
 {
 
     [JsonProperty(PropertyName = "R")] public int DecayDelay;
-    [JsonProperty(PropertyName = "S")] private int Stacks = 0;
+    [JsonProperty(PropertyName = "S")] private int Stacks;
 
     public virtual int MaxStacks => 30;
 
@@ -24,8 +23,6 @@ public abstract class ClassCondition : Timebuff
 
     public virtual int PromotionClass => -1;
 
-    public virtual bool CanExpire => false;
-    
     public override Sprite GetSprite()
     {
         return SpriteSheet.Get(source.alias);
@@ -50,10 +47,15 @@ public abstract class ClassCondition : Timebuff
         Stacks = Math.Max(0, Stacks);
     }
 
+    protected void EmptyStacks()
+    {
+        Stacks = 0;
+    }
+
     public override void Tick()
     {
         // If at any point, the character with this condition does not match this... AKA, you had it before and then class changed, kill the condition.
-        if (!owner.MatchesPromotion(this.PromotionClass)) this.Kill();
+        if (!owner.MatchesPromotion(PromotionClass)) Kill();
 
         if (DecayDelayMax != -1)
         {
@@ -66,7 +68,7 @@ public abstract class ClassCondition : Timebuff
                 DecayDelay++;
             }
         }
-        
-        if (CanExpire) base.Tick();
+
+        if (Stacks == 0) base.Tick();
     }
 }

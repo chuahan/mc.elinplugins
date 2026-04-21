@@ -4,37 +4,38 @@ using Newtonsoft.Json;
 namespace PromotionMod.Stats;
 
 /// <summary>
-/// Depending on the type of tea ingested, the tea will have different effects.
-/// Green Tea - Restores Mana.
-/// Black Tea - Restores Stamina.
-/// Oolong Tea - Hastens Digestion.
-/// Osmanthus - Decreases Ether disease count but increases sleepiness.
-/// Chamomile - Restores Health, but will also tick down caffeine condition.
+///     Depending on the type of tea ingested, the tea will have different effects.
+///     Green Tea - Restores Mana.
+///     Black Tea - Restores Stamina.
+///     Oolong Tea - Hastens Digestion.
+///     Osmanthus - Decreases Ether disease count but increases sleepiness.
+///     Chamomile - Restores Health, but will also tick down caffeine condition.
 /// </summary>
 public class ConTeaTime : Timebuff
 {
-    // The effects only kick in every 5 turns.
-    public int TickTime = 5;
-    
+
     public enum TeaType
     {
         Green,
         Black,
         Oolong,
         Osmanthus,
-        Chamomile,
+        Chamomile
     }
-    
-    [JsonProperty(PropertyName = "T")] public TeaType TeaFlavor { get; set; }
-    
+
     [JsonProperty(PropertyName = "D")] public int TickDelay;
-    
+
+    // The effects only kick in every 5 turns.
+    public int TickTime = 5;
+
+    [JsonProperty(PropertyName = "T")] public TeaType TeaFlavor { get; set; }
+
     public override ConditionType Type => ConditionType.Buff;
 
     public override void Tick()
     {
         base.Tick();
-        
+
         if (TickDelay == TickTime)
         {
             switch (TeaFlavor)
@@ -53,7 +54,7 @@ public class ConTeaTime : Timebuff
                 case TeaType.Osmanthus:
                     if (owner.corruption > 0)
                     {
-                        owner.ModCorruption(0 - Math.Min(5, owner.corruption));   
+                        owner.ModCorruption(0 - Math.Min(5, owner.corruption));
                     }
                     owner.sleepiness.Mod(1);
                     break;
@@ -61,10 +62,10 @@ public class ConTeaTime : Timebuff
                     ConAwakening awakening = owner.GetCondition<ConAwakening>();
                     if (awakening != null)
                     {
-                        int reduceAwakening = 0 - (awakening.value / 5);
+                        int reduceAwakening = 0 - awakening.value / 5;
                         awakening.Mod(reduceAwakening);
                     }
-                
+
                     owner.HealHP((int)(owner.MaxHP * 0.10));
                     owner.sleepiness.Mod(1);
                     break;
@@ -75,7 +76,7 @@ public class ConTeaTime : Timebuff
             TickDelay++;
         }
     }
-    
+
     public override void OnWriteNote(List<string> list)
     {
         switch (TeaFlavor)

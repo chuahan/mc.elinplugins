@@ -10,19 +10,13 @@ namespace PromotionMod.Elements.PromotionAbilities.Justicar;
 ///     If you are good aligned, you will boost the critical chance and damage of nearby allies.
 ///     If you are evil aligned, your chains can inflict burning.
 /// </summary>
-public class ActCondemn : Ability
+public class ActCondemn : PromotionCombatAbility
 {
-    private float _effectRadius = 3F;
 
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatJusticar))
-        {
-            if (CC.IsPC) Msg.Say("classlocked_ability".lang(Constants.JusticarId.lang()));
-            return false;
-        }
-        return base.CanPerform();
-    }
+    private float _effectRadius = 3F;
+    public override int PromotionId => Constants.FeatJusticar;
+    public override string PromotionString => Constants.JusticarId;
+    public override int AbilityId => Constants.ActCondemnId;
 
     public override void OnMarkMapHighlights()
     {
@@ -54,7 +48,7 @@ public class ActCondemn : Ability
         }
 
         int calcPower = GetPower(CC);
-        
+
         // Can I play SFX Chains here?
         int condemnedTargets = 0;
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(TP, _effectRadius, CC, false, true))
@@ -78,9 +72,9 @@ public class ActCondemn : Ability
 
             if (negativeKarma)
             {
-                ActEffect.ProcAt(EffectId.Debuff, calcPower, BlessedState.Normal, Act.CC, target, target.pos, false, new ActRef
+                ActEffect.ProcAt(EffectId.Debuff, calcPower, BlessedState.Normal, CC, target, target.pos, false, new ActRef
                 {
-                    origin = Act.CC.Chara,
+                    origin = CC.Chara,
                     n1 = nameof(ConBurning)
                 });
             }
@@ -91,10 +85,10 @@ public class ActCondemn : Ability
         {
             ConProtection? protection = (ConProtection)(ally.GetCondition<ConProtection>() ?? ally.AddCondition<ConProtection>());
             protection?.AddProtection(protectionAmount);
-            
+
             if (positiveKarma)
             {
-                int boostPower = (int)(HelperFunctions.SigmoidScaling(calcPower, 10, 50));
+                int boostPower = (int)HelperFunctions.SigmoidScaling(calcPower, 10, 50);
                 ally.AddCondition(SubPoweredCondition.Create(nameof(ConCritBoost), calcPower, boostPower));
             }
         }

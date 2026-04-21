@@ -3,28 +3,20 @@ using PromotionMod.Common;
 using PromotionMod.Stats.HolyKnight;
 namespace PromotionMod.Elements.PromotionAbilities.HolyKnight;
 
-public class ActHolyBanner : Ability
+public class ActHolyBanner : PromotionSpellAbility
 {
-    public override bool CanPerform()
+    public override int PromotionId => Constants.FeatHolyKnight;
+    public override string PromotionString => Constants.HolyKnightId;
+    public override int Cooldown => 0;
+    public override int AbilityId => Constants.ActHolyBannerId;
+
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatHolyKnight))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.HolyKnightId.lang()));
-            return false;
-        }
-        if (CC.HasCooldown(Constants.ActHolyBannerId)) return false;
         // Cannot use it if they already placed a Holy Banner.
         if (CC.HasMinion(Constants.HolyBannerCharaId)) return false;
         // Cannot use if TP is not placeable.
         if (!TP.IsValid || !Los.IsVisible(CC.pos, TP)) return false;
-        return base.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
+        return true;
     }
 
     public override bool Perform()
@@ -43,7 +35,6 @@ public class ActHolyBanner : Ability
         bannerMob.AddCondition<RadiantAura>(power);
         // TODO: Give Banner Metal 999?
         // The Banner should be Immortal, but will only last for 10 turns.
-        //bannerMob.AddCondition<ConInvulnerable>(300);
         return true;
     }
 }

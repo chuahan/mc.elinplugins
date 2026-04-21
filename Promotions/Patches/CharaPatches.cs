@@ -107,6 +107,14 @@ internal class CharaPatches : EClass
             {
                 __result = false;
             }
+
+
+            // If spotted, remove Shadow Shroud and add a Cooldown.
+            if (__result)
+            {
+                c.Chara.GetCondition<ConShadowShroud>().Kill();
+                c.Chara.AddCooldown(Constants.ActShadowShroudId, 5);
+            }
         }
     }
 

@@ -2,24 +2,16 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Runeknight;
 namespace PromotionMod.Elements.PromotionAbilities.Runeknight;
 
-public class ActSpinningSlash : Ability
+public class ActSpinningSlash : PromotionSpellAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatRuneKnight))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.RuneKnightId.lang()));
-            return false;
-        }
-        if (CC.HasCondition<ConElementalAttunement>() == false) return false;
-        return base.CanPerform();
-    }
+    public override int PromotionId => Constants.FeatRuneKnight;
+    public override string PromotionString => Constants.RuneKnightId;
+    public override int AbilityId => Constants.ActSpinningSlashId;
 
-    public override Cost GetCost(Chara c)
+    public override bool CanPerformExtra()
     {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
+        if (CC.HasCondition<ConElementalAttunement>() == false) return false;
+        return true;
     }
 
     public override bool Perform()

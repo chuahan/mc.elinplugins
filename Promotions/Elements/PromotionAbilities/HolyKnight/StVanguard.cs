@@ -1,15 +1,9 @@
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.HolyKnight;
 
-public class StVanguard : Ability
+public class StVanguard : PromotionAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatHolyKnight))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.HolyKnightId.lang()));
-            return false;
-        }
-        return base.CanPerform();
-    }
+    public override int PromotionId => Constants.FeatHolyKnight;
+    public override string PromotionString => Constants.HolyKnightId;
+    public override int AbilityId => Constants.StVanguardId;
 }

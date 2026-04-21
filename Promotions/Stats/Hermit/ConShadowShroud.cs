@@ -4,6 +4,8 @@ namespace PromotionMod.Stats.Hermit;
 
 public class ConShadowShroud : BaseBuff
 {
+
+    public override string TextDuration => "";
     public override Sprite GetSprite()
     {
         return SpriteSheet.Get(source.alias);

@@ -86,9 +86,6 @@ public class TraitPromotionManual : TraitScroll
             Constants.SpellbladeId, Constants.FeatSpellblade
         },
         {
-            Constants.PhantomId, Constants.FeatPhantom
-        },
-        {
             Constants.DreadKnightId, Constants.FeatDreadKnight
         },
         {
@@ -96,6 +93,9 @@ public class TraitPromotionManual : TraitScroll
         },
         {
             Constants.ArtificerId, Constants.FeatArtificer
+        },
+        {
+            Constants.GamblerId, Constants.FeatGambler
         }
     };
 
@@ -180,9 +180,6 @@ public class TraitPromotionManual : TraitScroll
             Constants.FeatSpellblade, Constants.SpellbladeId
         },
         {
-            Constants.FeatPhantom, Constants.PhantomId
-        },
-        {
             Constants.FeatHexer, Constants.HexerId
         },
         {
@@ -190,6 +187,9 @@ public class TraitPromotionManual : TraitScroll
         },
         {
             Constants.FeatDreadKnight, Constants.DreadKnightId
+        },
+        {
+            Constants.FeatGambler, Constants.GamblerId
         }
     };
 
@@ -422,6 +422,9 @@ public class TraitPromotionManual : TraitScroll
             promotionIds.Remove(Constants.AdventurerId);
             promotionIds.Remove(Constants.ArtificerId);
         }
+
+        // Add Custom Unlock Classes
+        if (pc.GetFlagValue(Constants.GamblerPromotionUnlockedFlag) > 0) promotionIds.Add(Constants.GamblerId);
 
         return promotionIds;
     }

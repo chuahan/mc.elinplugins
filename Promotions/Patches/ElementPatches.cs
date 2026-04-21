@@ -24,10 +24,12 @@ public class ElementPatches
             }
         }
     }
-    
+
     [HarmonyPatch(typeof(Element.BonusInfo))]
     [HarmonyPatch("WriteNote")]
-    [HarmonyPatch(new Type[] { })]   // no parameters
+    [HarmonyPatch(new Type[]
+    {
+    })] // no parameters
     [HarmonyPostfix]
     internal static void WriteNote_Necromancer_Druid_Patches(MethodBase __originalMethod, Element.BonusInfo __instance)
     {
@@ -44,20 +46,20 @@ public class ElementPatches
             // Check for all characters on the map for any Necromancers or Druids.
             foreach (Chara member in EClass._map.charas)
             {
-                if ((isEnemy && member.IsHostile(EClass.pc)) || (!isEnemy && !member.IsHostile(EClass.pc)))
+                if (isEnemy && member.IsHostile(EClass.pc) || !isEnemy && !member.IsHostile(EClass.pc))
                 {
                     if (member.MatchesPromotion(Constants.FeatNecromancer))
                     {
                         undeadBoost++;
                     }
-                    
+
                     if (member.MatchesPromotion(Constants.FeatDruid))
                     {
                         plantBoost++;
                     }
                 }
             }
-            
+
             // Cap these boosts at 10.
             undeadBoost = Math.Min(10, undeadBoost);
             plantBoost = Math.Min(10, plantBoost);

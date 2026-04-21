@@ -3,8 +3,7 @@ namespace PromotionMod.Trait.Characters;
 
 public class TraitAzalea : TraitPromotionUniqueCharacter
 {
-    public override bool IsBefriendedThroughDialog => true;
+    public override bool IsBefriendedThroughDialog => player.dialogFlags.TryGetValue("azaleaRecruited") > 0;
 
     public override int Prepromotion => Constants.FeatDruid;
-    public override int RestockDay => 5;
 }

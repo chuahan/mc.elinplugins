@@ -2,15 +2,16 @@ using PromotionMod.Common;
 using PromotionMod.Stats.DreadKnight;
 namespace PromotionMod.Elements.PromotionAbilities.DreadKnight;
 
-public class StLifeIgnition : Ability
+public class StLifeIgnition : PromotionAbility
 {
-    public override bool CanPerform()
+    public override int PromotionId => Constants.FeatDreadKnight;
+    public override string PromotionString => Constants.DreadKnightId;
+    public override int AbilityId => Constants.StLifeIgnitionId;
+
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostNone;
+
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatDreadKnight))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.DreadKnightId.lang()));
-            return false;
-        }
 
         if (CC != null)
         {
@@ -24,15 +25,6 @@ public class StLifeIgnition : Ability
         }
 
         return base.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        return new Cost
-        {
-            cost = 1,
-            type = CostType.None
-        };
     }
 
     public override bool Perform()

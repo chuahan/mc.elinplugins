@@ -2,16 +2,14 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Sniper;
 namespace PromotionMod.Elements.PromotionAbilities.Sniper;
 
-public class ActTargetLegs : Ability
+public class ActTargetLegs : PromotionCombatAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatSniper))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.SniperId.lang()));
-            return false;
-        }
+    public override int PromotionId => Constants.FeatSniper;
+    public override string PromotionString => Constants.SniperId;
+    public override int AbilityId => Constants.ActTargetLegsId;
 
+    public override bool CanPerformExtra()
+    {
         if (CC.GetBestRangedWeapon() == null)
         {
             if (CC.IsPC) Msg.Say("sniper_needrangedweapon".langGame());

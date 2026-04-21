@@ -2,36 +2,25 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Berserker;
 namespace PromotionMod.Elements.PromotionAbilities.Berserker;
 
-public class ActLifebreak : Ability
+public class ActLifebreak : PromotionCombatAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatBerserker))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.BerserkerId.lang()));
-            return false;
-        }
-        if (TC == null)
-        {
-            return false;
-        }
-        return ACT.Melee.CanPerform();
-    }
+    public override int PromotionId => Constants.FeatBerserker;
+    public override string PromotionString => Constants.BerserkerId;
 
-    public override Cost GetCost(Chara c)
+    public override int Cooldown => 10;
+    public override int AbilityId => Constants.ActLifebreakId;
+
+    public override bool CanPerformExtra()
     {
-        return new Cost
-        {
-            cost = 5,
-            type = CostType.SP
-        };
+        if (TC is not { isChara: true }) return false;
+        return ACT.Melee.CanPerform();
     }
 
     public override bool Perform()
     {
         CC.AddCondition<ConLifebreakAttack>(GetPower(CC), true);
         new ActMelee().Perform(CC, TC);
-        CC.AddCooldown(Constants.ActLifebreakId, 10);
+        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

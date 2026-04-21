@@ -10,14 +10,17 @@ public class ConJenei : ClassCondition
     [JsonProperty(PropertyName = "Q")] public Queue<int> ElementalQueue = new Queue<int>();
 
     public override int PromotionClass => Constants.FeatJenei;
-    
+
+    public override int MaxStacks => 13;
+
     public void AddElement(int element)
     {
-        if (ElementalQueue.Count >= 13)
+        if (ElementalQueue.Count >= MaxStacks)
         {
             ElementalQueue.Dequeue();
         }
         ElementalQueue.Enqueue(element);
+        AddStacks(1);
     }
 
     public Dictionary<int, int> GetElementalStockpile()
@@ -30,6 +33,7 @@ public class ConJenei : ClassCondition
     public void EmptyStockpile()
     {
         ElementalQueue.Clear();
+        EmptyStacks();
         Owner.Say("jenei_recovery".langGame(owner.NameSimple));
     }
 

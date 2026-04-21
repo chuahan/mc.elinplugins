@@ -2,25 +2,11 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Runeknight;
 namespace PromotionMod.Elements.PromotionAbilities.Runeknight;
 
-public class ActRunicGuard : Ability
+public class ActRunicGuard : PromotionSpellAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatRuneKnight))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.RuneKnightId.lang()));
-            return false;
-        }
-
-        return base.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
+    public override int PromotionId => Constants.FeatRuneKnight;
+    public override string PromotionString => Constants.RuneKnightId;
+    public override int AbilityId => Constants.ActRunicGuardId;
 
     public override bool Perform()
     {

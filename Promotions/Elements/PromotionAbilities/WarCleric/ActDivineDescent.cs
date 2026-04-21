@@ -4,32 +4,24 @@ using PromotionMod.Common;
 using PromotionMod.Stats.WarCleric;
 namespace PromotionMod.Elements.PromotionAbilities.WarCleric;
 
-public class ActDivineDescent : Ability
+public class ActDivineDescent : PromotionCombatAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatWarCleric))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.WarClericId.lang()));
-            return false;
-        }
-        if (CC.HasCooldown(Constants.ActDivineDescentId)) return false;
-        return base.CanPerform();
-    }
+    public override int PromotionId => Constants.FeatWarCleric;
+    public override string PromotionString => Constants.WarClericId;
+    public override int Cooldown => 1440;
+    public override int AbilityId => Constants.ActDivineDescentId;
 
-    public override Cost GetCost(Chara c)
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostNone;
+
+    public override bool CanPerformExtra()
     {
-        return new Cost
-        {
-            cost = 1,
-            type = CostType.None
-        };
+        return base.CanPerform();
     }
 
     public override int GetPower(Card c)
     {
         int basePower = base.GetPower(c);
-        basePower += c.Evalue(Constants.FaithId) * 4 + 30;
+        basePower += c.Evalue(SKILL.faith) * 4 + 30;
         return basePower;
     }
 
@@ -85,7 +77,7 @@ public class ActDivineDescent : Ability
         }
 
         // 1 day cooldown.
-        CC.AddCooldown(Constants.ActDivineDescentId, 1440);
+        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

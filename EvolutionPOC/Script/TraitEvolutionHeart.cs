@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cwl.Helper.Extensions;
+using Cwl.Patches.Charas;
 namespace Evolution;
 
 public class TraitEvolutionHeart : Trait
@@ -29,6 +31,7 @@ public class TraitEvolutionHeart : Trait
 
                         Dialog.YesNo("evolutionConfirmation".lang(c.Name, properName), delegate
                         {
+                            //Evolve(c, charaEvolve, this.owner.Thing);
                             Evolve(c, charaEvolve, this.owner.Thing);
                         });
                         return true;
@@ -82,6 +85,16 @@ public class TraitEvolutionHeart : Trait
         EClass.pc.currentZone.RemoveCard(c);
         c.Destroy();
         c.RemoveGlobal();
+        
+        // Delete the thing.
+        Thing toDelete = evolutionHeart.Split(1);
+        EClass.pc.RemoveThing(toDelete);
+    }
+
+    public static void Evolve2(Chara c, string charaEvolve, Thing evolutionHeart)
+    {
+        c.id = charaEvolve;
+        c.SetCardOnDeserialized();
         
         // Delete the thing.
         Thing toDelete = evolutionHeart.Split(1);

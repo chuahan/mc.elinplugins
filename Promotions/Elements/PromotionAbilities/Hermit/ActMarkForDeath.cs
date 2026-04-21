@@ -6,30 +6,19 @@ namespace PromotionMod.Elements.PromotionAbilities.Hermit;
 ///     Hermit Ability
 ///     Marks an enemy for death.
 /// </summary>
-public class ActMarkForDeath : Ability
+public class ActMarkForDeath : PromotionCombatAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatHermit))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.HermitId.lang()));
-            return false;
-        }
-        if (CC.HasCooldown(Constants.ActMarkForDeathId)) return false;
-        return base.CanPerform();
-    }
-    
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
+    public override int PromotionId => Constants.FeatHermit;
+    public override string PromotionString => Constants.HermitId;
+    public override int Cooldown => 5;
+    public override int AbilityId => Constants.ActMarkForDeathId;
+
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
     public override bool Perform()
     {
         TC.Chara.AddCondition<ConMarkedForDeath>(force: true);
-        CC.AddCooldown(Constants.ActMarkForDeathId, 5);
+        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

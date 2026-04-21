@@ -24,7 +24,7 @@ public class ConSenseDanger : Timebuff
         {
             card.isHidden = false;
         }
-        
+
         base.Tick();
     }
 }

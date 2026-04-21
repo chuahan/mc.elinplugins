@@ -3,25 +3,12 @@ using System.Linq;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.WitchHunter;
 
-public class ActManaBreak : Ability
+public class ActManaBreak : PromotionCombatAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatWitchHunter))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.WitchHunterId.lang()));
-            return false;
-        }
-        if (CC.HasCooldown(Constants.ActManaBreakId)) return false;
-        return base.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
+    public override int PromotionId => Constants.FeatWitchHunter;
+    public override string PromotionString => Constants.WitchHunterId;
+    public override int Cooldown => 10;
+    public override int AbilityId => Constants.ActManaBreakId;
 
     public override bool Perform()
     {
@@ -48,7 +35,7 @@ public class ActManaBreak : Ability
             });
         }
 
-        CC.AddCooldown(Constants.ActManaBreakId, 10);
+        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

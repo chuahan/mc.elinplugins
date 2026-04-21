@@ -30,7 +30,7 @@ public class SpSummonTurret : Spell
         Chara summon = CharaGen.Create(summonedGunType);
         int power = GetPower(CC);
         int levelOverride = CC.LV * (100 + power / 10) / 100 + power / 30;
-        if (CC.IsPC) levelOverride = Math.Max(player.stats.deepest, levelOverride);
+        if (CC.IsPCFaction) levelOverride = Math.Max(player.stats.deepest, levelOverride);
         summon.SetLv(levelOverride);
         summon.interest = 0;
         CC.currentZone.AddCard(summon, TP);

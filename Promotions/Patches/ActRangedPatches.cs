@@ -1,5 +1,4 @@
 using HarmonyLib;
-using PromotionMod.Common;
 using PromotionMod.Stats;
 using PromotionMod.Stats.Machinist;
 using PromotionMod.Stats.Sharpshooter;

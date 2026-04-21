@@ -2,32 +2,24 @@ using PromotionMod.Common;
 using PromotionMod.Stats.WitchHunter;
 namespace PromotionMod.Elements.PromotionAbilities.WitchHunter;
 
-public class ActNullZone : Ability
+public class ActNullZone : PromotionCombatAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatWitchHunter))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.WitchHunterId.lang()));
-            return false;
-        }
-        if (CC.HasCooldown(Constants.ActNullZoneId)) return false;
-        return base.CanPerform();
-    }
+    public override int PromotionId => Constants.FeatWitchHunter;
+    public override string PromotionString => Constants.WitchHunterId;
+    public override int Cooldown => 10;
+    public override int AbilityId => Constants.ActNullZoneId;
 
-    public override Cost GetCost(Chara c)
-    {
-        return new Cost
-        {
-            type = CostType.None,
-            cost = 1
-        };
-    }
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostNone;
 
     public override bool Perform()
     {
+        if (CC.HasCondition<ConNullZone>())
+        {
+            CC.RemoveCondition<ConNullZone>();
+            return true;
+        }
         CC.AddCondition<ConNullZone>();
-        CC.AddCooldown(Constants.ActNullZoneId, 10);
+        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

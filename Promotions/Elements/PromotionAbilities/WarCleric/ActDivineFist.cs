@@ -1,21 +1,16 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
+using PromotionMod.Elements.PromotionAbilities.Gambler;
 using PromotionMod.Stats.WarCleric;
 using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.WarCleric;
 
-public class ActDivineFist : ActMelee
+public class ActDivineFist : PromotionCombatAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatWarCleric))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.WarClericId.lang()));
-            return false;
-        }
-        if (CC.HasCooldown(Constants.ActDivineFistId)) return false;
-        return base.CanPerform();
-    }
+    public override int PromotionId => Constants.FeatWarCleric;
+    public override string PromotionString => Constants.WarClericId;
+    public override int Cooldown => 5;
+    public override int AbilityId => Constants.ActDivineFistId;
 
     public override Cost GetCost(Chara c)
     {
@@ -35,7 +30,11 @@ public class ActDivineFist : ActMelee
         // Perform a melee attack against the enemy.
         float dmgMulti = 1.0F;
         if (divineDescentActive) dmgMulti = 1.3F;
-        Attack(dmgMulti);
+        new ActMeleeDivineFist
+        {
+            DamageMultiOverride = dmgMulti
+        }.Perform(CC, TC);
+
         solBlade.Kill();
         // Render Holy Arrows flying at nearby targets
         int boltCount = 4;
@@ -73,7 +72,7 @@ public class ActDivineFist : ActMelee
 
         if (!divineDescentActive)
         {
-            CC.AddCooldown(Constants.ActDivineFistId, 5);
+            CC.AddCooldown(AbilityId, Cooldown);
         }
         return true;
     }

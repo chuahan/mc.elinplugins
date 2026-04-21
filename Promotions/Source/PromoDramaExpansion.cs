@@ -137,7 +137,7 @@ internal class PromoDramaExpansion : DramaOutcome
         for (int i = 0; i < allStorage.Count; i++)
         {
             Thing currentItem = allStorage[i];
-            // Normal Ancient Books are worth 1 each.
+            // Normal Ancient Books are worth 2 each.
             if (currentItem is { id: "book_ancient", IsIdentified: true })
             {
                 while (decipheringProgress < 100 && !currentItem.isDestroyed)
@@ -151,7 +151,7 @@ internal class PromoDramaExpansion : DramaOutcome
                     {
                         currentItem.Destroy();
                     }
-                    decipheringProgress++;
+                    decipheringProgress += 2;
                 }
             }
 

@@ -10,19 +10,13 @@ namespace PromotionMod.Elements.PromotionAbilities.Justicar;
 ///     Law - Also inflicts Armor Boost on nearby allies.
 ///     Chaos - Does Sound damage.
 /// </summary>
-public class ActIntimidate : Ability
+public class ActIntimidate : PromotionCombatAbility
 {
-    private float _effectRadius = 3F;
 
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatJusticar))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.JusticarId.lang()));
-            return false;
-        }
-        return base.CanPerform();
-    }
+    private float _effectRadius = 3F;
+    public override int PromotionId => Constants.FeatJusticar;
+    public override string PromotionString => Constants.JusticarId;
+    public override int AbilityId => Constants.ActIntimidateId;
 
     public override void OnMarkMapHighlights()
     {
@@ -38,7 +32,7 @@ public class ActIntimidate : Ability
         foreach (Point item in list)
         {
             // Highlight the target point a different color.
-            if (Equals(scene.mouseTarget.pos, item))
+            if (object.Equals(scene.mouseTarget.pos, item))
             {
                 item.SetHighlight(7);
             }
@@ -64,7 +58,7 @@ public class ActIntimidate : Ability
         int calcPower = GetPower(CC);
         int breakAmount = (int)HelperFunctions.SigmoidScaling(calcPower, 10, 25);
         TC.Chara.AddCondition(SubPoweredCondition.Create(nameof(ConArmorBreak), calcPower, breakAmount));
-        
+
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(TC.pos, _effectRadius, CC, false, false))
         {
             // Inflict AOE Bane and Fear
@@ -87,7 +81,7 @@ public class ActIntimidate : Ability
                 ActEffect.ProcAt(EffectId.Hand, calcPower, BlessedState.Normal, CC, target, target.pos, true, new ActRef
                 {
                     aliasEle = Constants.ElementAliasLookup[Constants.EleSound],
-                    origin = CC.Chara,
+                    origin = CC.Chara
                 });
             }
         }

@@ -21,7 +21,7 @@ public class ConBloodlust : Timebuff
         {
             owner.AddCondition<ConSilence>(10, true);
         }
-        
+
         base.Tick();
     }
 

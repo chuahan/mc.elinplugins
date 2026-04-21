@@ -21,8 +21,8 @@ public class ActPrayPatches
         {
             // Add Protection to entire party based on Faith of all Saints and War Clerics.
             int totalFaith = 0;
-            if (c.MatchesPromotion(Constants.FeatSaint) || c.MatchesPromotion(Constants.FeatWarCleric)) totalFaith += c.Evalue(Constants.FaithId);
-            totalFaith += allyAdvancedPray.Sum(alliedSaint => alliedSaint.Evalue(Constants.FaithId));
+            if (c.MatchesPromotion(Constants.FeatSaint) || c.MatchesPromotion(Constants.FeatWarCleric)) totalFaith += c.Evalue(SKILL.faith);
+            totalFaith += allyAdvancedPray.Sum(alliedSaint => alliedSaint.Evalue(SKILL.faith));
             // Faith is multiplied by 10.
             totalFaith = HelperFunctions.SafeMultiplier(totalFaith, 10);
             foreach (Chara target in c.party.members)

@@ -9,7 +9,7 @@ namespace PromotionMod.Elements.PromotionAbilities.Harbinger;
 ///     Applies one of the Harbinger Miasmas to the target.
 ///     Will not apply a miasma that the target already has.
 /// </summary>
-public class ActAccursedTouch : Ability
+public class ActAccursedTouch : PromotionCombatAbility
 {
     internal static List<string> PossibleMiasmas = new List<string>
     {
@@ -21,15 +21,12 @@ public class ActAccursedTouch : Ability
         nameof(ConDisorientingMiasma) // Confuse
     };
 
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatHarbinger))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.HarbingerId.lang()));
-            return false;
-        }
-        return base.CanPerform();
-    }
+    public override int PromotionId => Constants.FeatHarbinger;
+    public override string PromotionString => Constants.HarbingerId;
+    public override int AbilityId => Constants.ActAccursedTouchId;
+
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
+
 
     public override bool Perform()
     {

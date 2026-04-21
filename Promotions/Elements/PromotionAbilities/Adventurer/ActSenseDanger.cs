@@ -2,25 +2,23 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Adventurer;
 namespace PromotionMod.Elements.PromotionAbilities.Adventurer;
 
-public class ActSenseDanger : Ability
+public class ActSenseDanger : PromotionAbility
 {
-    public override bool CanPerform()
+    public override int PromotionId => Constants.FeatAdventurer;
+    public override string PromotionString => Constants.AdventurerId;
+    public override int Cooldown => 10;
+
+    public override int AbilityId => Constants.ActSenseDangerId;
+
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatAdventurer))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.AdventurerId.lang()));
-            return false;
-        }
-        // Unusable by NPCs.
-        if (!CC.IsPC) return false;
-        if (CC.HasCooldown(Constants.ActSenseDangerId)) return false;
-        return base.CanPerform();
+        return CC.IsPC;
     }
 
     public override bool Perform()
     {
         CC.AddCondition<ConSenseDanger>();
-        CC.AddCooldown(Constants.ActSenseDangerId, 10);
+        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

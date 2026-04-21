@@ -6,23 +6,22 @@ namespace PromotionMod.Elements.PromotionAbilities.Adventurer;
 ///     Escape Ability: Teleports the player to the staircase up on the floor, or as close as they can to it.
 ///     30 Turn cooldown.
 /// </summary>
-public class ActThisWay : Ability
+public class ActThisWay : PromotionCombatAbility
 {
-    public override bool CanPerform()
+    public override int PromotionId => Constants.FeatAdventurer;
+    public override string PromotionString => Constants.AdventurerId;
+    public override int Cooldown => 30;
+    public override int AbilityId => Constants.ActThisWayId;
+
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatAdventurer))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.AdventurerId.lang()));
-            return false;
-        }
         // Unusable by NPCs.
         if (!CC.IsPC) return false;
-        if (CC.HasCooldown(Constants.ActThisWayId)) return false;
 
         // Not usable outside of dungeons.
         if (CC.currentZone.IsPCFactionOrTent || CC.currentZone is not Zone_Dungeon) return false;
 
-        return base.CanPerform();
+        return true;
     }
 
     public override bool Perform()
@@ -35,7 +34,7 @@ public class ActThisWay : Ability
         }
         Point exitPoint = stairs.owner.pos;
         CC.Teleport(exitPoint.GetNearestPoint(false, false) ?? exitPoint);
-        CC.AddCooldown(Constants.ActThisWayId, 30);
+        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

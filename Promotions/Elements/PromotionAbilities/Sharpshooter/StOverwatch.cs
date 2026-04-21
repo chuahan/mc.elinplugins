@@ -1,15 +1,9 @@
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Sharpshooter;
 
-public class StOverwatch : Ability
+public class StOverwatch : PromotionAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatSharpshooter))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.SharpshooterId.lang()));
-            return false;
-        }
-        return base.CanPerform();
-    }
+    public override int PromotionId => Constants.FeatSharpshooter;
+    public override string PromotionString => Constants.SharpshooterId;
+    public override int AbilityId => Constants.StOverwatchId;
 }

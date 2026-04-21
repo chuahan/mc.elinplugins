@@ -7,10 +7,6 @@ namespace PromotionMod.Stats;
 
 public class ConElementalist : ClassCondition
 {
-    public override int PromotionClass => Constants.FeatElementalist;
-    
-    // When you haven't gained elemental orbs in the past 5 turns, you will lose one random stockpiled orb a turn.
-    public override int DecayDelayMax => 5;
 
     [JsonProperty(PropertyName = "R")] private int _decayDelay;
 
@@ -66,6 +62,11 @@ public class ConElementalist : ClassCondition
         }
     };
 
+    public override int PromotionClass => Constants.FeatElementalist;
+
+    // When you haven't gained elemental orbs in the past 5 turns, you will lose one random stockpiled orb a turn.
+    public override int DecayDelayMax => 5;
+
     public override bool TimeBased => true;
 
     public int GetPower(Chara cc)
@@ -120,7 +121,7 @@ public class ConElementalist : ClassCondition
             owner.AddCondition<ConSpellTempo>(tempoStage);
             if (tc != null)
             {
-                HelperFunctions.ApplyElementalBreak(eleId, owner, tc, GetPower(owner));   
+                HelperFunctions.ApplyElementalBreak(eleId, owner, tc, GetPower(owner));
             }
         }
         if (ElementalStockpile[eleId] < 5) ElementalStockpile[eleId]++;
@@ -139,8 +140,8 @@ public class ConElementalist : ClassCondition
 
     public override void Tick()
     {
-        if (!owner.MatchesPromotion(this.PromotionClass)) this.Kill();
-        
+        if (!owner.MatchesPromotion(PromotionClass)) Kill();
+
         if (_decayDelay == DecayDelayMax)
         {
             // Lose a random orb.

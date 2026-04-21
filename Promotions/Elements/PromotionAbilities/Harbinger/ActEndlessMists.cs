@@ -8,24 +8,17 @@ namespace PromotionMod.Elements.PromotionAbilities.Harbinger;
 ///     Harbinger Ability
 ///     Extends the duration of all the Miasma debuffs on nearby enemies.
 /// </summary>
-public class ActEndlessMists : Ability
+public class ActEndlessMists : PromotionCombatAbility
 {
 
     private float _effectRadius = 5F;
+    public override int PromotionId => Constants.FeatHarbinger;
+    public override string PromotionString => Constants.HarbingerId;
+    public override int Cooldown => 5;
+    public override int AbilityId => Constants.ActEndlessMistsId;
     public override bool ShowMapHighlight => true;
 
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatHarbinger))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.HarbingerId.lang()));
-            return false;
-        }
-        if (CC.HasCooldown(Constants.ActEndlessMistsId)) return false;
-        bool basePerform = base.CanPerform();
-        
-        return basePerform;
-    }
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
     public override void OnMarkMapHighlights()
     {
@@ -55,7 +48,7 @@ public class ActEndlessMists : Ability
             }
         }
 
-        CC.AddCooldown(Constants.ActEndlessMistsId, 5);
+        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

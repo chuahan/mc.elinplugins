@@ -1,7 +1,6 @@
 using PromotionMod.Common;
 using PromotionMod.Stats;
 using PromotionMod.Stats.Justicar;
-
 namespace PromotionMod.Elements.PromotionAbilities.Justicar;
 
 /// <summary>
@@ -10,15 +9,14 @@ namespace PromotionMod.Elements.PromotionAbilities.Justicar;
 ///     If you are good aligned, you will inflict the Mana Leak Debuff that will cause attacks to steal MP from the target.
 ///     If you are evil aligned, you will purge one active buff on the target.
 /// </summary>
-public class ActSubdue : Ability
+public class ActSubdue : PromotionCombatAbility
 {
-    public override bool CanPerform()
+    public override int PromotionId => Constants.FeatJusticar;
+    public override string PromotionString => Constants.JusticarId;
+    public override int AbilityId => Constants.ActSubdueId;
+
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatJusticar))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.JusticarId.lang()));
-            return false;
-        }
         return ACT.Melee.CanPerform();
     }
 
@@ -34,7 +32,7 @@ public class ActSubdue : Ability
             negativeKarma = player.karma < 0;
         }
 
-        int calcPower = this.GetPower(CC);
+        int calcPower = GetPower(CC);
         int breakAmount = (int)HelperFunctions.SigmoidScaling(calcPower, 10, 25);
         TC.Chara.AddCondition(SubPoweredCondition.Create(nameof(ConAttackBreak), calcPower, breakAmount));
 
@@ -51,7 +49,7 @@ public class ActSubdue : Ability
             origin = CC.Chara,
             n1 = nameof(ConSupress)
         });
-        
+
         if (positiveKarma)
         {
             ActEffect.ProcAt(EffectId.Debuff, calcPower, BlessedState.Normal, CC, TC, TC.pos, true, new ActRef

@@ -4,18 +4,17 @@ using PromotionMod.Stats;
 using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities;
 
-public class ActBlessingOfTheDead : Ability
+public class ActBlessingOfTheDead : PromotionSpellAbility
 {
-    public override bool CanPerform()
+    public override int PromotionId => Constants.FeatNecromancer;
+    public override string PromotionString => Constants.NecromancerId;
+    public override int AbilityId => Constants.ActBlessingOfTheDeadId;
+
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatNecromancer))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.NecromancerId.lang()));
-            return false;
-        }
         // Must be a minion of the caster and must be undead.
         if (!TC.isChara || !TC.IsMinion || TC.Chara.master != CC || !TC.Chara.IsUndead || !TC.IsAliveInCurrentZone) return false;
-        return base.CanPerform();
+        return true;
     }
 
     public override Cost GetCost(Chara c)

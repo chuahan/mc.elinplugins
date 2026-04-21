@@ -2,30 +2,19 @@ using PromotionMod.Common;
 using PromotionMod.Stats.WitchHunter;
 namespace PromotionMod.Elements.PromotionAbilities.WitchHunter;
 
-public class ActMagicReflect : Ability
+public class ActMagicReflect : PromotionCombatAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatWitchHunter))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.WitchHunterId.lang()));
-            return false;
-        }
-        if (CC.HasCooldown(Constants.ActMagicReflectId)) return false;
-        return base.CanPerform();
-    }
+    public override int PromotionId => Constants.FeatWitchHunter;
+    public override string PromotionString => Constants.WitchHunterId;
+    public override int AbilityId => Constants.ActMagicReflectId;
+    public override int Cooldown => 5;
 
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
     public override bool Perform()
     {
         CC.Chara.AddCondition<ConMagicReflect>();
-        CC.AddCooldown(Constants.ActMagicReflectId, 5);
+        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

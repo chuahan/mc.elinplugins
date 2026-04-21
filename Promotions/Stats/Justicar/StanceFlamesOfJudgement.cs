@@ -25,7 +25,7 @@ public class StanceFlamesOfJudgement : BaseStance
             // TODO Text: Stance off.
             Kill();
         }
-        
+
         List<Chara> targetsHit = new List<Chara>();
         // Get Karma Scores for the Player.
         // NPCs will be considered 0 Karma.
@@ -37,21 +37,22 @@ public class StanceFlamesOfJudgement : BaseStance
             negativeKarma = player.karma < 0;
         }
 
-        ElementRef colorRef = EClass.setting.elements["eleFire"];
+        ElementRef colorRef = setting.elements["eleFire"];
         if (negativeKarma)
         {
-            colorRef = EClass.setting.elements["eleFire"];
-        } else if (positiveKarma)
-        {
-            colorRef = EClass.setting.elements["eleHoly"];
+            colorRef = setting.elements["eleFire"];
         }
-            
+        else if (positiveKarma)
+        {
+            colorRef = setting.elements["eleHoly"];
+        }
+
         int firePower = (int)(owner.MaxHP * 0.3F);
-        
+
         // Do self-damage.
         HelperFunctions.ProcSpellDamage(power, firePower, owner, owner, AttackSource.None, Constants.EleFire, 50);
-        
-        foreach (Point tile in EClass._map.ListPointsInCircle(CC.pos, 5f, false, false))
+
+        foreach (Point tile in _map.ListPointsInCircle(CC.pos, 5f, false, false))
         {
             int distance = tile.Distance(CC.pos);
             foreach (Chara target in tile.ListCharas().Where(target => !targetsHit.Contains(target)))
@@ -61,7 +62,7 @@ public class StanceFlamesOfJudgement : BaseStance
                     HelperFunctions.ProcSpellDamage(power, firePower, owner, target, AttackSource.None, Constants.EleFire, 50);
                     if (negativeKarma) target.AddCondition(SubPoweredCondition.Create(nameof(ConFireBreak), power, 10));
                 }
-                
+
                 if (positiveKarma && !target.IsHostile(CC))
                 {
                     target.HealHP(firePower / 2, HealSource.Magic);

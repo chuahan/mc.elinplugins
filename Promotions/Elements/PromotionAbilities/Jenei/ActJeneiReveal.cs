@@ -1,35 +1,18 @@
-using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 using PromotionMod.Stats;
 using PromotionMod.Stats.Spellblade;
-using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.Jenei;
 
-public class ActJeneiReveal : Ability
+public class ActJeneiReveal : PromotionSpellAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatJenei))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.JeneiId.lang()));
-            return false;
-        }
-        if (TC == null || !TC.isChara) return false;
-        return base.CanPerform();
-    }
+    public override int PromotionId => Constants.FeatJenei;
+    public override string PromotionString => Constants.JeneiId;
+    public override int AbilityId => Constants.ActJeneiRevealId;
 
-    public override Cost GetCost(Chara c)
+    public override bool CanPerformExtra()
     {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
-
-    // Apply Spell Enhance to this ability.
-    public override int GetPower(Card c)
-    {
-        int power = base.GetPower(c);
-        return power * Mathf.Max(100 + c.Evalue(411) - c.Evalue(93), 1) / 100;
+        if (TC is not { isChara: true }) return false;
+        return true;
     }
 
     public override bool Perform()

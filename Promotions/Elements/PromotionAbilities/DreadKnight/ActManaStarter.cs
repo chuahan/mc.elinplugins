@@ -2,16 +2,16 @@ using PromotionMod.Common;
 using PromotionMod.Stats.DreadKnight;
 namespace PromotionMod.Elements.PromotionAbilities.DreadKnight;
 
-public class ActManaStarter : Ability
+public class ActManaStarter : PromotionCombatAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatDreadKnight))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.DreadKnightId.lang()));
-            return false;
-        }
+    public override int PromotionId => Constants.FeatDreadKnight;
+    public override string PromotionString => Constants.DreadKnightId;
+    public override int AbilityId => Constants.ActManaStarterId;
 
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostNone;
+
+    public override bool CanPerformExtra()
+    {
         if (GetHPCost(CC) > CC.hp)
         {
             if (CC.IsPC) Msg.Say("dreadknight_notenoughhp".langGame());
@@ -19,15 +19,6 @@ public class ActManaStarter : Ability
         }
 
         return base.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        return new Cost
-        {
-            cost = 1,
-            type = CostType.None
-        };
     }
 
     public int GetHPCost(Chara c)
@@ -59,7 +50,8 @@ public class ActManaStarter : Ability
 
         // User will restore 2x the cost in Mana.
         int cost = (int)(CC.MaxHP * hpCost);
-        CC.DamageHP(cost, AttackSource.Condition);
+
+        CC.hp -= cost;
         CC.mana.Mod(cost * 2);
 
         darkTrace.AddStacks(1);

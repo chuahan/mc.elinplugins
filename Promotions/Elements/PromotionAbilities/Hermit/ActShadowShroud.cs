@@ -7,28 +7,27 @@ namespace PromotionMod.Elements.PromotionAbilities.Hermit;
 ///     Provides advanced stealth.
 ///     Lifted on Attack.
 /// </summary>
-public class ActShadowShroud : Ability
+public class ActShadowShroud : PromotionCombatAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatHermit))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.HermitId.lang()));
-            return false;
-        }
-        return base.CanPerform();
-    }
+    public override int PromotionId => Constants.FeatHermit;
+    public override string PromotionString => Constants.HermitId;
+    public override int Cooldown => 10;
+    public override int AbilityId => Constants.ActShadowShroudId;
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
-    
     public override bool Perform()
     {
-        CC.AddCondition<ConShadowShroud>();
+        ConShadowShroud shadowShroud = CC.GetCondition<ConShadowShroud>();
+        if (shadowShroud != null)
+        {
+            shadowShroud.Kill();
+            CC.AddCooldown(AbilityId, Cooldown);
+        }
+        else
+        {
+            CC.AddCondition<ConShadowShroud>();
+        }
+
         return true;
     }
 }

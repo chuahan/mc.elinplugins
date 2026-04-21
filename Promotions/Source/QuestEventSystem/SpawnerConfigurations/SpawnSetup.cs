@@ -2,8 +2,7 @@ using System.Collections.Generic;
 namespace PromotionMod.Source.QuestEventSystem.SpawnerConfigurations;
 
 /// <summary>
-/// This class sets up what kind of enemies will spawn in a quest.
-/// 
+///     This class sets up what kind of enemies will spawn in a quest.
 /// </summary>
 public abstract class SpawnSetup
 {
@@ -19,7 +18,7 @@ public class FantasyBaddiesSetup : SpawnSetup
 {
     public override string SpawnerType => "spawner_monster";
 
-    public override List<string> SpawnerResults => new List<string>()
+    public override List<string> SpawnerResults => new List<string>
     {
         "orc_warrior",
         "orc",
@@ -37,7 +36,7 @@ public class FantasyBaddiesSetup : SpawnSetup
         "giant",
         "cyclops",
         "hound",
-        "dragon",
+        "dragon"
     };
 }
 
@@ -58,7 +57,7 @@ public class MechanicalHordeSetup : SpawnSetup
         "mech_angel",
         "mech_death",
         "bit2",
-        "drone",
+        "drone"
     };
 }
 
@@ -70,7 +69,7 @@ public class MercenarySetup : SpawnSetup
     {
         "merc_archer",
         "merc_mage",
-        "merc_warrior",
+        "merc_warrior"
     };
 }
 
@@ -82,7 +81,7 @@ public class HumanoidFantasyArmySetup : SpawnSetup
     {
         "merc_archer",
         "merc_mage",
-        "merc_warrior",
+        "merc_warrior"
     };
 }
 
@@ -101,7 +100,7 @@ public class UndeadHordeSetup : SpawnSetup
         "geist",
         "skeleton_warrior",
         "skeleton_berserker",
-        "skeleton_spartoi",
+        "skeleton_spartoi"
     };
 }
 
@@ -122,6 +121,6 @@ public class DemonIncursionSetup : SpawnSetup
         "evileye",
         "asura",
         "mitra",
-        "varuna",
+        "varuna"
     };
 }

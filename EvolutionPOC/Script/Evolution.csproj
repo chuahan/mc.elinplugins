@@ -45,6 +45,10 @@
       <HintPath>$(ElinGamePath)\BepInEx\core\BepInEx.Unity.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="CustomWhateverLoader">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\2135150\3370512305\CustomWhateverLoader.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Elin">
       <HintPath>$(ElinGamePath)\Elin_Data\Managed\Elin.dll</HintPath>
       <Private>False</Private>

@@ -1,18 +1,14 @@
-using System.Collections.Generic;
-using System.Linq;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Sniper;
 
-public class ActTacticalRetreat : Ability
+public class ActTacticalRetreat : PromotionCombatAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatSniper))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.SniperId.lang()));
-            return false;
-        }
+    public override int PromotionId => Constants.FeatSniper;
+    public override string PromotionString => Constants.SniperId;
+    public override int AbilityId => Constants.ActTacticalRetreatId;
 
+    public override bool CanPerformExtra()
+    {
         if (CC.GetBestRangedWeapon() == null)
         {
             if (CC.IsPC) Msg.Say("sniper_needrangedweapon".langGame());

@@ -12,23 +12,22 @@ namespace PromotionMod.Elements.PromotionAbilities.Headhunter;
 ///     Increases damage if enemy is afflicted with Bad Conditions.
 ///     Inflicts PV reduction.
 /// </summary>
-public class ActReap : Ability
+public class ActReap : PromotionCombatAbility
 {
+    public override int PromotionId => Constants.FeatHeadhunter;
+    public override string PromotionString => Constants.HeadhunterId;
+    public override int Cooldown => 10;
+    public override int AbilityId => Constants.ActReapId;
+
     public override int PerformDistance => 2;
 
     public override bool CanPerform()
     {
-        if (!CC.MatchesPromotion(Constants.FeatHeadhunter))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.HeadhunterId.lang()));
-            return false;
-        }
-        if (CC.HasCooldown(Constants.ActReapId)) return false;
-        if (CC == TC || TC == null || CC.Dist(TC) > PerformDistance)
+        if (CC == TC || TC is not { isChara: true } || CC.Dist(TC) > PerformDistance)
         {
             return false;
         }
-        return base.CanPerform();
+        return true;
     }
 
     // Cost is reduced by 10% per Headhunter stack are active.
@@ -68,7 +67,7 @@ public class ActReap : Ability
             int breakAmount = (int)HelperFunctions.SigmoidScaling(GetPower(CC), 10, 25);
             target.AddCondition(SubPoweredCondition.Create(nameof(ConArmorBreak), GetPower(CC), breakAmount));
         }
-        CC.AddCooldown(Constants.ActReapId, 10);
+        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

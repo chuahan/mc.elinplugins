@@ -1,33 +1,12 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
-using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.Jenei;
 
-public class ActJeneiBlaze : Ability
+public class ActJeneiBlaze : PromotionSpellAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatJenei))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.JeneiId.lang()));
-            return false;
-        }
-        return base.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
-
-    // Apply Spell Enhance to this ability.
-    public override int GetPower(Card c)
-    {
-        int power = base.GetPower(c);
-        return power * Mathf.Max(100 + c.Evalue(411) - c.Evalue(93), 1) / 100;
-    }
+    public override int PromotionId => Constants.FeatJenei;
+    public override string PromotionString => Constants.JeneiId;
+    public override int AbilityId => Constants.ActJeneiBlazeId;
 
     public override bool Perform()
     {

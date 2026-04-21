@@ -21,36 +21,38 @@ public class ElementContainerCardPatches
         // Boost these three evalues only.
         if (e.id is SKILL.DV or SKILL.PV or SKILL.SPD &&
             __instance.owner is { isChara: true } &&
-            (__instance.owner.Chara.IsUndead || __instance.owner.Chara.IsPlant) && EClass._zone != null)
+            (__instance.owner.Chara.IsUndead || __instance.owner.Chara.IsPlant) &&
+            EClass.pc.currentZone != null &&
+            EClass.pc.currentZone.map != null)
         {
             bool isEnemy = __instance.owner.Chara.IsHostile(EClass.pc);
 
             int undeadBoost = 0;
             int plantBoost = 0;
             // Check for all allied characters to the target on the map for any Necromancers or Druids.
-            foreach (Chara member in EClass._map.charas)
+            foreach (Chara member in EClass.pc.currentZone.map.charas)
             {
-                if ((isEnemy && member.IsHostile(EClass.pc)) || (!isEnemy && !member.IsHostile(EClass.pc)))
+                if (isEnemy && member.IsHostile(EClass.pc) || !isEnemy && !member.IsHostile(EClass.pc))
                 {
                     if (member.MatchesPromotion(Constants.FeatNecromancer))
                     {
                         undeadBoost++;
                     }
-                    
+
                     if (member.MatchesPromotion(Constants.FeatDruid))
                     {
                         plantBoost++;
                     }
                 }
             }
-            
+
             // Cap these boosts at 10.
             undeadBoost = Math.Min(10, undeadBoost);
             plantBoost = Math.Min(10, plantBoost);
 
             if (undeadBoost > 0 && __instance.Chara.IsUndead)
             {
-                int baseValue = (e.ValueWithoutLink + e.vLink);
+                int baseValue = e.ValueWithoutLink + e.vLink;
                 switch (e.id)
                 {
                     case SKILL.DV: // DV
@@ -65,7 +67,7 @@ public class ElementContainerCardPatches
 
             if (plantBoost > 0 && __instance.Chara.IsPlant)
             {
-                int baseValue = (e.ValueWithoutLink + e.vLink);
+                int baseValue = e.ValueWithoutLink + e.vLink;
                 switch (e.id)
                 {
                     case SKILL.DV: // DV

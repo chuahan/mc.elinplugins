@@ -2,6 +2,64 @@
 
 ## Changelog
 
+### April 19th, 2026, 1.10 - Refactoring.
+- Overhauled the Ability System codewise to reduce a lot of duplicate code.
+- Lailah will now automatically progress deciphering on her own, gaining 1% progression a day. The amount of progression granted for giving her Ancient books has been doubled (1%->2%). This should reduce the grind on her deciphering.
+
+#### Promotion Ability Reclassification
+Promotion Abilities have been divided into 3 Categories:
+- Combat Abilities are now affected by Suppress/Disable. I am considering providing some scaling support from Combat Arts feat onto Combat Abilities, this will likely need to be done with a case by case scenario though cause combat abilities usually don't scale off power.
+- Spell Abilities are now affected by Silence and usually cost Mana. They also will scale with Spell Enhance and Antimagic.
+- Generic Abilities are unaffected by either, usually reserved for things like Stances.
+Summarized changes are as follows:
+- Artificer abilities are all Spell Abilities.
+- Berserker's Sunder and Lifebreak have all been reclassified as Combat Abilities. Bloodlust has been classified as a Generic Abilitiy.
+- Dancer's Offensive Steps (Illusion, Fouette, and Pirouette) are all considered Combat Abilities and all have now have a cooldown now of 5 seconds. Sword Fouette and Dagger Illusion now cost a flat 5 Stamina. Wild Pirouette will continue to use Mana.
+- Dread Knight's Dark Burst and Barrier are classified as Spell Abilities. Mana Starter is a Combat Ability. Life Ignition Stance is Generic.
+- Druid abilities are all now Spell Abilities.
+- Elementalist abilities are all now Spell Abilities.
+- Gambler's Card Throw and Dice Strike are now Combat Abilities. Lucky Cat and Spin Slots are both Spell Abilities. Feeling Lucky is Generic.
+- Harbinger's Accursed Touch and Endleess Mists are Combat Abilities. Gloom remains Generic.
+- Headhunter abilities are all Combat Abilities.
+- Hermit abilites are all Combat Abilities.
+- Hexer abilities are all Spell Abilities.
+- Holy Knight abilities are all Combat Abilities.
+- Jenei abilities are all Spell Abilities (except for Venus: Move, that one is Generic cause it's a non combat ability.)
+- Justicar abilities are all Combat Abilities save for Flames of Judgement which is Generic.
+- Knightcaller abilities are all Spell Abilities.
+- Machinist abilities are all Combat Abilities except for Summon Turret. Loadup and Overclock recieved 10 turn cooldowns.
+- Necromancer abilities are all Spell Abilities.
+- Ranger abilities are Combat Abilities that cost Mana. Debating adding a Charge System to Throw Trap so that you can throw X without cooldown.
+- Rune Knight abilities are now Spell Abilities.
+- Saint abilities are Spell Abilities.
+- Sentinel abilities are Combat Abilities while Rage/Restraint remain Generic. They will continue to use Mana instead of Stamina.
+- Sharpshooter abilities are Combat Abilities.
+- Sniper abilities are Combat Abilities.
+- Sovereign abilities have been changed to Spell Abilities.
+- Spellblade abilities are Combat Abilities that use Mana.
+- Trickster abilities are Spell Abilities.
+- War Cleric's Blessed Armament and Divine Sanctuary are Spell Abilities. Divine Fist and Descent are both considered Combat Abilities.
+- Witch Hunter's abilities are Combat Abilities that use Mana. Null Zone can now be casted again to deactivate it.
+
+### April 17th, 2026, 1.09 - Kolinca Patch
+- A various bugfixes.
+- Fixed Faction NPC summons now to have the same scaling as the player (Can use your maximum depth reached instead.
+- Battlemage will now summon 1 normal funnel and 1 shield funnel in conjunction instead of 2 shield funnels.
+- Hermit now loses Shadow Shroud when they are detected.
+- Fixed Hidden Throwing weapons not tagged as throwing weapons.
+- Fixed some grammatical errors in some of the Artificer Stuff. Shiba.
+- Minor hiccup with Artificer requiring Mithril/Platinum typed ingots. Thanks Fresh for updating CWL to handle material name instead of just tags.
+- Nerfed Saint. They were too charismatic and persuasive, basically converting any enemy they encountered under the same faith. Made it a lot harder for this to happen.
+- Saint Blessing now properly updates the Player.
+- Saint Blessing can no longer recursively power itself up by spamming Blessing to increase Faith to extraordinary high levels.
+
+### April 13th, 2026, 1.08 - Changes
+- HP Costing spells can no longer be redirected with Blood Bond or Wall of Flesh. These will modify your HP directly. This includes Hexer's Blood Curse, Berserker's Bloodlust, Dread Knight's Dark Burst and Mana Starter. Thanks 오징어.
+- I've updated it so that Jenei and Elementalist conditions will now expire if they have 0 orbs. Thanks Kolinca.
+- Fixed Faction Traps causing Proc errors cause cards can't apply debuffs. Thanks Kolinca.
+- Evie's story is under development.
+- I got slightly sidetracked by Spirit Weapons.
+
 ### April 6th, 2026, 1.07 - Bugfixes.
 Sorry for the lack of updates, I've been working on the city update and the first class-less promotion. Pushing this patch out because 오징어 has informed me of a bug with CostType None preventing some abilities from leveling up. I've gone through and reworked the affected abilities, they should be able to level now!  
 - Added sprites for the new Hermit and Sniper abilities, Preparation and Tactical Retreat, and the new Sniper Condition: Vigilance.  
@@ -238,11 +296,11 @@ __Jackpot - If the Gambler rolls Ehekatl/Jackpot/7, a fourth wheel is spun to de
 - Jackpot - All enemies nearby will drop their entire inventories and disappear.
 
 __Blackjack Throw - Single Target Ranged Combat Ability - Draws cards to perform a throwing attack. Creates a card and modifies it's weight based on the number.__  
-Use the dealers rules, hit when below 16 and stand when 17 or better.
-17 to 21 Will result in an enhanced throwing attack being made with guaranteed accuracy.
-Blackjack - Results in two throwing attacks executed with full Vorpal.
-Bust - The attack fails.
-5 Card Charlie - Throws 5 basic throwing attacks in a single action.
+Use the dealers rules, hit when below 16 and stand when 17 or better.  
+17 to 21 Will result in an enhanced throwing attack being made with guaranteed accuracy.  
+Blackjack - Results in two throwing attacks executed with full Vorpal.  
+Bust - The attack fails.  
+5 Card Charlie - Throws 5 basic throwing attacks in a single action.  
 
 __Dice Roll - Rolls a pair of dice to perform a melee attack.__  
 SnakeEyes - Heals the target for the damage you would have dealt.

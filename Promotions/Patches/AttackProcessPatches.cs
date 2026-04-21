@@ -71,18 +71,18 @@ public class AttackProcessPatches
     {
         // Sharpshooter - Charged Chamber applies the mana consumed (power) as a damage multiplier. Caps at 5x damage.
         // BALANCE: This might... be a little too strong later?
-        if (Act.CC != null &&
-            Act.CC.HasCondition<ConChargedChamber>() &&
+        if (__instance.CC != null &&
+            __instance.CC.HasCondition<ConChargedChamber>() &&
             __instance.IsRanged)
         {
             ConChargedChamber charge = Act.CC.GetCondition<ConChargedChamber>();
             dmgMulti += Math.Max(charge.power / 100F, 5F);
         }
-        
+
         // Crit Boost - Boosts Crit Damage
-        if (Act.TC != null &&
-            Act.TC.isChara &&
-            Act.CC != null &&
+        if (__instance.TC != null &&
+            __instance.TC.isChara &&
+            __instance.CC != null &&
             __instance is { crit: true })
         {
             ConCritBoost critBoost = Act.CC.GetCondition<ConCritBoost>();
@@ -93,101 +93,103 @@ public class AttackProcessPatches
         }
 
         // Combat Skill Activations:
-        if (Act.TC != null && Act.TC.isChara && Act.CC != null)
+        if (__instance.TC != null &&
+            __instance.TC.isChara &&
+            __instance.CC != null)
         {
-            if (Act.CC.HasElement(Constants.FeatDeadeyeId) && __instance.IsRanged)
+            if (__instance.CC.HasElement(Constants.FeatDeadeyeId) && __instance.IsRanged)
             {
                 if (EClass.rnd(6) == 0)
                 {
-                    Act.CC.Say("deadeye_activation".langGame(Act.CC.NameSimple));
-                    Act.CC.PlaySound("warcry");
+                    __instance.CC.Say("deadeye_activation".langGame(Act.CC.NameSimple));
+                    __instance.CC.PlaySound("warcry");
                     // Nihil can deny this ability
-                    if (!HelperFunctions.NihilActivated(Act.TC.Chara))
+                    if (!HelperFunctions.NihilActivated(__instance.TC.Chara))
                     {
                         hasHit = true;
                         dmgMulti *= 3;
                     }
                 }
             }
-            else if (Act.CC.HasElement(Constants.FeatLunaId))
+            else if (__instance.CC.HasElement(Constants.FeatLunaId))
             {
                 // Luna - 25%
                 if (EClass.rnd(4) == 0)
                 {
-                    Act.CC.Say("luna_activation".langGame(Act.CC.NameSimple));
-                    Act.CC.PlaySound("warcry");
+                    __instance.CC.Say("luna_activation".langGame(__instance.CC.NameSimple));
+                    __instance.CC.PlaySound("warcry");
                     // Nihil can deny this ability
-                    if (Act.TC.HasElement(Constants.FeatNihilId))
+                    if (__instance.TC.HasElement(Constants.FeatNihilId))
                     {
-                        Act.TC.Say("nihil_activation".langGame(Act.TC.NameSimple));
-                        Act.TC.PlaySound("shield_bash");
+                        __instance.TC.Say("nihil_activation".langGame(__instance.TC.NameSimple));
+                        __instance.TC.PlaySound("shield_bash");
                     }
                     else
                     {
                         // Luna is applied to the enemy to halve their PV.
-                        Act.TC.Chara.AddCondition<ConLuna>(force: true);
+                        __instance.TC.Chara.AddCondition<ConLuna>(force: true);
                     }
                 }
             }
-            else if (Act.CC.HasElement(Constants.FeatLunaPlusId))
+            else if (__instance.CC.HasElement(Constants.FeatLunaPlusId))
             {
                 // Luna+ - 100% Chance
-                Act.CC.Say("luna_activation".langGame(Act.CC.NameSimple));
-                Act.CC.PlaySound("warcry");
-                if (Act.TC.HasElement(Constants.FeatNihilId))
+                __instance.CC.Say("luna_activation".langGame(__instance.CC.NameSimple));
+                __instance.CC.PlaySound("warcry");
+                if (__instance.TC.HasElement(Constants.FeatNihilId))
                 {
-                    Act.TC.Say("nihil_activation".langGame(Act.TC.NameSimple));
-                    Act.TC.PlaySound("shield_bash");
+                    __instance.TC.Say("nihil_activation".langGame(__instance.TC.NameSimple));
+                    __instance.TC.PlaySound("shield_bash");
                 }
                 else
                 {
                     // Luna is applied to the enemy to halve their PV.
-                    Act.TC.Chara.AddCondition<ConLuna>(force: true);
+                    __instance.TC.Chara.AddCondition<ConLuna>(force: true);
                 }
             }
-            else if (Act.CC.HasElement(Constants.FeatSolId))
+            else if (__instance.CC.HasElement(Constants.FeatSolId))
             {
                 // Sol - 30%
                 if (EClass.rnd(3) == 0)
                 {
-                    Act.CC.Say("sol_activation".langGame(Act.CC.NameSimple));
-                    Act.CC.PlaySound("warcry");
-                    if (Act.TC.HasElement(Constants.FeatNihilId))
+                    __instance.CC.Say("sol_activation".langGame(__instance.CC.NameSimple));
+                    __instance.CC.PlaySound("warcry");
+                    if (__instance.TC.HasElement(Constants.FeatNihilId))
                     {
-                        Act.TC.Say("nihil_activation".langGame(Act.TC.NameSimple));
-                        Act.TC.PlaySound("shield_bash");
+                        __instance.TC.Say("nihil_activation".langGame(__instance.TC.NameSimple));
+                        __instance.TC.PlaySound("shield_bash");
                     }
                     else
                     {
-                        Act.CC.AddCondition<ConSol>();
+                        __instance.CC.AddCondition<ConSol>();
                     }
                 }
             }
-            else if (Act.CC.HasElement(Constants.FeatRendHeavenId))
+            else if (__instance.CC.HasElement(Constants.FeatRendHeavenId))
             {
                 // Rend Heaven - 50%
                 if (EClass.rnd(2) == 0)
                 {
-                    Act.CC.Say("sol_activation".langGame(Act.CC.NameSimple));
-                    Act.CC.PlaySound("warcry");
-                    if (Act.TC.HasElement(Constants.FeatNihilId))
+                    __instance.CC.Say("sol_activation".langGame(__instance.CC.NameSimple));
+                    __instance.CC.PlaySound("warcry");
+                    if (__instance.TC.HasElement(Constants.FeatNihilId))
                     {
-                        Act.TC.Say("nihil_activation".langGame(Act.TC.NameSimple));
-                        Act.TC.PlaySound("shield_bash");
+                        __instance.TC.Say("nihil_activation".langGame(__instance.TC.NameSimple));
+                        __instance.TC.PlaySound("shield_bash");
                     }
                     else
                     {
                         // If Rend Heaven was activated, snapshot the opponents stats, average it and apply it as power.
-                        int attributesBorrowed = (Act.TC.Evalue(70) +
-                                                  Act.TC.Evalue(71) +
-                                                  Act.TC.Evalue(72) +
-                                                  Act.TC.Evalue(73) +
-                                                  Act.TC.Evalue(74) +
-                                                  Act.TC.Evalue(75) +
-                                                  Act.TC.Evalue(76) +
-                                                  Act.TC.Evalue(77)) /
+                        int attributesBorrowed = (__instance.TC.Evalue(70) +
+                                                  __instance.TC.Evalue(71) +
+                                                  __instance.TC.Evalue(72) +
+                                                  __instance.TC.Evalue(73) +
+                                                  __instance.TC.Evalue(74) +
+                                                  __instance.TC.Evalue(75) +
+                                                  __instance.TC.Evalue(76) +
+                                                  __instance.TC.Evalue(77)) /
                                                  8;
-                        Act.CC.AddCondition<ConRendHeaven>(attributesBorrowed);
+                        __instance.CC.AddCondition<ConRendHeaven>(attributesBorrowed);
                     }
                 }
             }
@@ -225,7 +227,7 @@ public class AttackProcessPatches
             __instance is { IsRanged: true, toolRange: not null })
         {
             Condition heavyArms = originConditions[typeof(StanceHeavyarms)].Single();
-            __instance.CC.Say("machinist_heavyarms_followup".langGame(), Act.CC);
+            __instance.CC.Say("machinist_heavyarms_followup".langGame(), __instance.CC);
             __instance.CC.PlaySound("missile");
             ActEffect.ProcAt(EffectId.Rocket, heavyArms.power / 4, BlessedState.Normal, __instance.CC, null, __instance.TC.pos, true, new ActRef
             {
@@ -241,7 +243,7 @@ public class AttackProcessPatches
             __instance.weapon.trait is not TraitToolRangeCane)
         {
             ConGimmickCoating coating = (ConGimmickCoating)originConditions[typeof(ConGimmickCoating)].Single();
-            if (__instance is { hit: true})
+            if (__instance is { hit: true })
             {
                 if (Enum.TryParse(coating.GimmickType, out Constants.RangerCoatings coatingType))
                 {
@@ -250,28 +252,28 @@ public class AttackProcessPatches
                         case Constants.RangerCoatings.HammerCoating:
                             ActEffect.ProcAt(EffectId.Debuff, coating.power, BlessedState.Normal, Act.CC, __instance.TC.Chara, __instance.TC.Chara.pos, true, new ActRef
                             {
-                                origin = Act.CC.Chara,
+                                origin = __instance.CC.Chara,
                                 n1 = nameof(ConFaint)
                             });
                             break;
                         case Constants.RangerCoatings.BladedCoating:
-                            ActEffect.ProcAt(EffectId.Debuff, coating.power, BlessedState.Normal, Act.CC, __instance.TC.Chara, __instance.TC.Chara.pos, true, new ActRef
+                            ActEffect.ProcAt(EffectId.Debuff, coating.power, BlessedState.Normal, __instance.CC, __instance.TC.Chara, __instance.TC.Chara.pos, true, new ActRef
                             {
-                                origin = Act.CC.Chara,
+                                origin = __instance.CC.Chara,
                                 n1 = nameof(ConBleed)
                             });
                             break;
                         case Constants.RangerCoatings.ParalyticCoating:
-                            ActEffect.ProcAt(EffectId.Debuff, coating.power, BlessedState.Normal, Act.CC, __instance.TC.Chara, __instance.TC.Chara.pos, true, new ActRef
+                            ActEffect.ProcAt(EffectId.Debuff, coating.power, BlessedState.Normal, __instance.CC, __instance.TC.Chara, __instance.TC.Chara.pos, true, new ActRef
                             {
-                                origin = Act.CC.Chara,
+                                origin = __instance.CC.Chara,
                                 n1 = nameof(ConParalyze)
                             });
                             break;
                         case Constants.RangerCoatings.PoisonCoating:
-                            ActEffect.ProcAt(EffectId.Debuff, coating.power, BlessedState.Normal, Act.CC, __instance.TC.Chara, __instance.TC.Chara.pos, true, new ActRef
+                            ActEffect.ProcAt(EffectId.Debuff, coating.power, BlessedState.Normal, __instance.CC, __instance.TC.Chara, __instance.TC.Chara.pos, true, new ActRef
                             {
-                                origin = Act.CC.Chara,
+                                origin = __instance.CC.Chara,
                                 n1 = nameof(ConPoison)
                             });
                             break;
@@ -283,12 +285,12 @@ public class AttackProcessPatches
                             Chara target2 = targets.RandomItem();
                             if (target1 != null)
                             {
-                                AttackProcess.Current.Prepare(Act.CC, __instance.weapon, target1, target1.pos);
+                                AttackProcess.Current.Prepare(__instance.CC, __instance.weapon, target1, target1.pos);
                                 AttackProcess.Current.Perform(count, hasHit, dmgMulti, maxRoll, true);
                             }
                             if (target2 != null)
                             {
-                                AttackProcess.Current.Prepare(Act.CC, __instance.weapon, target2, target2.pos);
+                                AttackProcess.Current.Prepare(__instance.CC, __instance.weapon, target2, target2.pos);
                                 AttackProcess.Current.Perform(count, hasHit, dmgMulti, maxRoll, true);
                             }
                             break;
@@ -310,7 +312,7 @@ public class AttackProcessPatches
             __instance is { IsRanged: false, isThrow: false })
         {
             ConShieldSmiteAttack smite = (ConShieldSmiteAttack)originConditions[typeof(ConShieldSmiteAttack)].Single();
-            if (__instance is { hit: true})
+            if (__instance is { hit: true })
             {
                 int shieldSkill = originChara.Evalue(123);
                 int basherEnc = originChara.Evalue(381);
@@ -343,9 +345,9 @@ public class AttackProcessPatches
             {
                 // Neighboring allies with OrderSword will also try to followup attack.
                 bool followUpPerformed = false;
-                Act.CC.pos.ListCharasInNeighbor(delegate(Chara c)
+                __instance.CC.pos.ListCharasInNeighbor(delegate(Chara c)
                 {
-                    if (c == Act.CC || c.IsHostile(Act.CC) || !c.HasCondition<ConOrderSword>())
+                    if (c == __instance.CC || c.IsHostile(__instance.CC) || !c.HasCondition<ConOrderSword>())
                     {
                         return false;
                     }
@@ -387,14 +389,14 @@ public class AttackProcessPatches
             __instance.TC.Chara.AddCondition<ConVigilance>();
             new ActRanged().Perform(__instance.TC.Chara, __instance.CC, __instance.CC.pos);
         }
-    
+
         // Spellblade - Crushing Strike will attack a random body part.
         // Get the body parts of the target.
         if (originConditions.Contains(typeof(ConCrushingStrikeAttack)) &&
             !subAttack &&
             __instance is { IsRanged: false, isThrow: false })
         {
-            if (__instance is { hit: true})
+            if (__instance is { hit: true })
             {
                 int power = originConditions[typeof(ConCrushingStrikeAttack)].Single().power;
                 BodySlot partTarget = target.Chara.body.slots.RandomItem();
@@ -452,21 +454,22 @@ public class AttackProcessPatches
 
             originConditions[typeof(ConCrushingStrikeAttack)].Single().Kill();
         }
-    
+
         // Lethality - 50% chance to instant kill non boss targets.
-        if (Act.CC != null &&
-            !Act.TC.Chara.IsBoss() &&
+        if (__instance.CC != null &&
+            __instance.TC.isChara &&
+            !__instance.TC.Chara.IsBoss() &&
             __instance is { crit: true } &&
-            Act.CC.HasElement(Constants.FeatLethalityId) &&
+            __instance.CC.HasElement(Constants.FeatLethalityId) &&
             EClass.rnd(2) == 0)
         {
-            Act.CC.Say("lethality_activation".langGame(Act.CC.NameSimple));
-            Act.CC.PlaySound("rush");
+            __instance.CC.Say("lethality_activation".langGame(__instance.CC.NameSimple));
+            __instance.CC.PlaySound("rush");
 
             // Nihil can deny this ability
             if (!HelperFunctions.NihilActivated(originChara))
             {
-                Act.TC.DamageHP(999999999L, AttackSource.Finish, Act.CC);
+                __instance.TC.DamageHP(999999999L, AttackSource.Finish, __instance.CC);
             }
         }
     }

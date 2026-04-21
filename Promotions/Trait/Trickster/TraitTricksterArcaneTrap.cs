@@ -52,7 +52,7 @@ public class TraitTricksterArcaneTrap : TraitFactionTrap
                     HelperFunctions.ApplyElementalBreak(Constants.EleMagic, null, target, power);
                 }
                 //Condition trapCondition = Condition.Create(randomCondition, GetPower());
-                ActEffect.ProcAt(EffectId.Debuff, power, BlessedState.Normal, owner, target, target.pos, true, new ActRef
+                ActEffect.Proc(EffectId.Debuff, target, null, power, new ActRef
                 {
                     n1 = randomCondition
                 });

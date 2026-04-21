@@ -2,22 +2,14 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Ranger;
 namespace PromotionMod.Elements.PromotionAbilities.Ranger;
 
-public class ActGimmickCoating : Ability
+public class ActGimmickCoating : PromotionCombatAbility
 {
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
+    public override int PromotionId => Constants.FeatRanger;
+    public override string PromotionString => Constants.RangerId;
+    public override int AbilityId => Constants.ActGimmickCoatingId;
 
-    public override bool CanPerform()
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatRanger))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.RangerId.lang()));
-            return false;
-        }
         if (CC.HasCooldown(Constants.ActGimmickCoatingId)) return false;
         return base.CanPerform();
     }

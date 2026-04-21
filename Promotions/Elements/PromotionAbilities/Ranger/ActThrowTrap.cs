@@ -3,8 +3,9 @@ using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Ranger;
 
-public class ActThrowTrap : Ability
+public class ActThrowTrap : PromotionCombatAbility
 {
+
     public static List<string> PossibleTraps = new List<string>
     {
         Constants.RangerBlastTrapAlias,
@@ -14,24 +15,18 @@ public class ActThrowTrap : Ability
         Constants.RangerSnareTrapAlias
     };
 
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
+    public override int PromotionId => Constants.FeatRanger;
+    public override string PromotionString => Constants.RangerId;
+    public override int AbilityId => Constants.ActThrowTrapId;
 
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatRanger))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.RangerId.lang()));
-            return false;
-        }
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
+
+    public override bool CanPerformExtra()
+    {
         // Cannot stack traps or place in pc faction
         if (TP.Installed != null || _zone.IsPCFaction) return false;
-        return base.CanPerform();
+        return true;
     }
 
     public override bool Perform()

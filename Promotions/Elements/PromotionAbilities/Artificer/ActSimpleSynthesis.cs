@@ -14,24 +14,11 @@ namespace PromotionMod.Elements.PromotionAbilities.Artificer;
 ///     - Artificer Items
 ///     Will gain up to 30 Synthesized ammunition that scales power based off of the Artificer's MagDev.
 /// </summary>
-public class ActSimpleSynthesis : Ability
+public class ActSimpleSynthesis : PromotionSpellAbility
 {
-    public override Cost GetCost(Chara c)
-    {
-        Cost baseCost = base.GetCost(c);
-        baseCost.type = CostType.MP;
-        return baseCost;
-    }
-
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatArtificer))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.ArtificerId.lang()));
-            return false;
-        }
-        return base.CanPerform();
-    }
+    public override int PromotionId => Constants.FeatArtificer;
+    public override string PromotionString => Constants.ArtificerId;
+    public override int AbilityId => Constants.ActSimpleSynthesisId;
 
     public override bool Perform()
     {

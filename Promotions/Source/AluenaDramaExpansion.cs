@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Cwl.API.Drama;
 using Cwl.Helper.Extensions;
-using PromotionMod.Common;
 using PromotionMod.Stats;
 using PromotionMod.Trait.Characters;
 namespace PromotionMod.Source;
@@ -19,19 +18,19 @@ internal class AluenaDramaExpansion : DramaOutcome
 
         return true;
     }
-    
+
     private static bool TeaHouse_OrderTea(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
         parameters.Requires(out string teaName);
-        
+
         // Deduct Orens
         if (!EClass.pc.TryPay(100 * EClass.pc.party.Count()))
         {
             return false;
-        } 
-        
+        }
+
         Enum.TryParse(teaName, out ConTeaTime.TeaType teaType);
-        
+
         // Apply the Tea Condition to everyone.
         foreach (Chara partyMember in EClass.pc.party.members)
         {
@@ -46,22 +45,22 @@ internal class AluenaDramaExpansion : DramaOutcome
     }
 
     private static bool KariStateCheck(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
+    {
+        if (EClass.pc.party.members.Any(c => c.hunger.GetPhase() >= StatsHunger.Hungry))
         {
-            if (EClass.pc.party.members.Any(c => c.hunger.GetPhase() >= StatsHunger.Hungry))
-            {
-                EClass.pc.SetFlagValue("partyHungry", 1);
-            }
-        
-            return false;
+            EClass.pc.SetFlagValue("partyHungry");
         }
-        
+
+        return false;
+    }
+
     private static bool DiningHall_FreeFoodEligible(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
         if (EClass.pc.party.members.Any(c => c.hunger.GetPhase() >= StatsHunger.Hungry))
         {
             return true;
         }
-        
+
         return false;
     }
 
@@ -80,7 +79,7 @@ internal class AluenaDramaExpansion : DramaOutcome
             });
             EClass.pc.SetFlagValue("partyHungry", 0);
             // Add a cooldown of 1 day.
-            
+
         }
 
         return false;

@@ -6,6 +6,8 @@ public class ActFormationOrder : ActSovereignOrder
 {
     protected override string OrderType => "formation";
     protected override int CooldownId => Constants.ActFormationOrderId;
+    public override int AbilityId => Constants.ActFormationOrderId;
+
     public override void AddLawCondition(Chara chara, int stacks)
     {
         chara.RemoveCondition<ConOrderSword>();

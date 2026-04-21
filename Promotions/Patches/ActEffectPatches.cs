@@ -90,7 +90,7 @@ public class ActEffectPatches
                     if (tc is { isChara: true })
                     {
                         elementalist?.AddElementalOrb(element, tc.Chara.IsHostile(chara) ? tc.Chara : null);
-                    }   
+                    }
                 }
             }
 
@@ -229,7 +229,7 @@ public class ActEffectPatches
 
     private static bool HasAltSummonBits(Chara caster)
     {
-        return caster.GetFlagValue(Constants.PromotionFeatFlag) is Constants.FeatElementalist or Constants.FeatBattlemage or Constants.FeatPhantom or Constants.FeatSpellblade;
+        return caster.GetFlagValue(Constants.PromotionFeatFlag) is Constants.FeatElementalist or Constants.FeatBattlemage or Constants.FeatSpellblade;
     }
 
     private static void SummonAltBits(Chara caster, int power, Point tp, ActRef actRef = default(ActRef))
@@ -249,41 +249,30 @@ public class ActEffectPatches
         {
             // Elementalists Summon multiple buffed Bits
             case Constants.FeatElementalist:
-                ActEffectPatches.SummonBitInternal(Constants.NormalBitCharaId, caster, power, tp, element);
-                // Apply Brightness of Life?"
+                int bitCount = Math.Max(2, Mathf.Clamp(power / 100, 1, 5) + (power >= 100 ? EClass.rnd(2) : 0));
+                ActEffectPatches.SummonBitInternal(Constants.NormalBitCharaId, caster, power, tp, element, bitCount, true);
+                // TODO: Apply Brightness of Life?
                 break;
-            // Battlemages Summon Shield Bits
+            // Battlemages Summon one Shield Bit and one normal bit.
             case Constants.FeatBattlemage:
-                ActEffectPatches.SummonBitInternal(Constants.ShieldBitCharaId, caster, power, tp, element);
+                ActEffectPatches.SummonBitInternal(Constants.ShieldBitCharaId, caster, power, tp, element, 1, false);
+                ActEffectPatches.SummonBitInternal(Constants.NormalBitCharaId, caster, power, tp, element, 1, false);
                 break;
             // Spellblades Summon Sword Bits
             case Constants.FeatSpellblade:
-                ActEffectPatches.SummonBitInternal(Constants.SwordBitCharaId, caster, power, tp, element);
-                break;
-            // Phantoms Summon Phantom Bits
-            case Constants.FeatPhantom:
-                ActEffectPatches.SummonBitInternal(Constants.PhantomBitCharaId, caster, power, tp, element);
+                ActEffectPatches.SummonBitInternal(Constants.SwordBitCharaId, caster, power, tp, element, 2, false);
                 break;
             default:
                 return;
         }
     }
 
-    private static void SummonBitInternal(string type, Chara caster, int power, Point tp, Element element)
+    private static void SummonBitInternal(string type, Chara caster, int power, Point tp, Element element, int count, bool buff)
     {
-        // If it's the normal bit, which elementalists summon, they summon more of them and they spawn Boosted.
-        int num = 2;
-        bool addBuffs = false;
-        if (type == Constants.NormalBitCharaId)
-        {
-            num = Math.Max(num, Mathf.Clamp(power / 100, 1, 5) + (power >= 100 ? EClass.rnd(2) : 0));
-            addBuffs = true;
-        }
-
         int levelOverride = power / 15;
-        if (caster.IsPC) levelOverride = Math.Max(EClass.player.stats.deepest, levelOverride);
+        if (caster.IsPCFaction) levelOverride = Math.Max(EClass.player.stats.deepest, levelOverride);
 
-        for (int i = 0; i < num; i++)
+        for (int i = 0; i < count; i++)
         {
             Chara summonedBit = CharaGen.Create(type);
             summonedBit.SetMainElement(element.source.alias, element.Value, true);
@@ -293,7 +282,7 @@ public class ActEffectPatches
             EClass._zone.AddCard(summonedBit, tp.GetNearestPoint(false, false));
             summonedBit.PlayEffect("teleport");
             summonedBit.MakeMinion(caster);
-            if (addBuffs)
+            if (buff)
             {
                 summonedBit.AddCondition<ConProtection>(power);
                 summonedBit.AddCondition<ConBoost>();

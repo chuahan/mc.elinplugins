@@ -38,10 +38,10 @@ public class FeatSaint : PromotionFeat
         c.ability.Add(Constants.ActHandOfGodId, 75, false);
         c.ability.Add(Constants.ActBlessingId, 75, true);
         c.ability.Add(Constants.ActInvigorateId, 75, true);
-        c.ability.Add(50509, 75, false); // Holy Arrow
-        c.ability.Add(51209, 75, false); // Holy Flare
-        c.ability.Add(8403, 75, true); // Healing
-        c.AddElement(1422); // Add Healing Instinct
+        c.ability.Add(SPELL.arrow_Holy, 75, false);
+        c.ability.Add(SPELL.flare_Holy, 75, false);
+        c.ability.Add(SPELL.SpHeal, 75, true);
+        c.AddElement(FEAT.featHealer);
     }
 
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)

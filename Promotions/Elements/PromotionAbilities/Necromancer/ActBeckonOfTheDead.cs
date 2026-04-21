@@ -2,17 +2,16 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Necromancer;
 namespace PromotionMod.Elements.PromotionAbilities;
 
-public class ActBeckonOfTheDead : Ability
+public class ActBeckonOfTheDead : PromotionSpellAbility
 {
-    public override bool CanPerform()
+    public override int PromotionId => Constants.FeatNecromancer;
+    public override string PromotionString => Constants.NecromancerId;
+    public override int AbilityId => Constants.ActBeckonOfTheDeadId;
+
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatNecromancer))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.NecromancerId.lang()));
-            return false;
-        }
         if (!TC.isChara || !TC.Chara.IsHostile(CC)) return false;
-        return base.CanPerform();
+        return true;
     }
 
     public override Cost GetCost(Chara c)

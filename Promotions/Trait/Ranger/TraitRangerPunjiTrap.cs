@@ -10,10 +10,16 @@ public class TraitRangerPunjiTrap : TraitFactionTrap
         c.DamageHP(GetPower(), AttackSource.Trap);
         c.PlayEffect("hit_slash");
         c.AddCondition<ConBleed>(GetPower(), true);
+        ActEffect.Proc(EffectId.DebuffStats, c, null, GetPower(), new ActRef
+        {
+            n1 = "SPD"
+        });
+        /*
         ActEffect.ProcAt(EffectId.DebuffStats, GetPower(), BlessedState.Normal, Act.CC, c, c.pos, true, new ActRef
         {
             origin = Act.CC.Chara,
             n1 = "SPD"
         });
+        */
     }
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Cwl.Helper.Extensions;
-using PromotionMod.Common;
 using UnityEngine;
 namespace PromotionMod.Elements.PromotionFeats;
 
@@ -31,7 +30,7 @@ public abstract class PromotionFeat : Feat
     // Add NPC Specific Class applications. This involves picking which abilities to add with weights.
     protected abstract void ApplyInternalNPC(Chara c);
 
-    internal virtual void _OnApply(int add, ElementContainer eleOwner, bool hint)
+    virtual internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
         if (!hint)
         {
@@ -63,7 +62,7 @@ public abstract class PromotionFeat : Feat
         }
     }
 
-    internal virtual void Demote(Chara c)
+    virtual internal void Demote(Chara c)
     {
         c.SetFeat(PromotionClassFeatId, 0);
 

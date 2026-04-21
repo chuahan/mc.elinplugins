@@ -7,25 +7,11 @@ namespace PromotionMod.Elements.PromotionAbilities.Trickster;
 /// <summary>
 ///     Consumes debuffs, provides self and allies Protection scaled to the amount of debuffs on the target.
 /// </summary>
-public class ActReversal : Ability
+public class ActReversal : PromotionSpellAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatTrickster))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.TricksterId.lang()));
-            return false;
-        }
-
-        return base.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
+    public override int PromotionId => Constants.FeatTrickster;
+    public override string PromotionString => Constants.TricksterId;
+    public override int AbilityId => Constants.ActReversalId;
 
     public override bool Perform()
     {

@@ -52,26 +52,26 @@ public class FeatJenei : PromotionFeat
             case 0: // Venus
                 c.ability.Add(Constants.ActJeneiMoveId, 50, false);
                 c.ability.Add(Constants.ActJeneiMotherGaiaId, 75, false);
-                c.ability.Add(50115, 75, false); // Impact Ball
-                c.ability.Add(50415, 75, false); // Impact Hand
+                c.ability.Add(SPELL.ball_Impact, 75, false); // Impact Ball
+                c.ability.Add(SPELL.hand_Impact, 75, false); // Impact Hand
                 break;
             case 1: // Mars
                 c.ability.Add(Constants.ActJeneiBlazeId, 50, false);
                 c.ability.Add(Constants.ActJeneiDragonFumeId, 75, false);
-                c.ability.Add(50215, 75, false); // Fire Breathe
-                c.ability.Add(51000, 75, false); // Fire Sword
+                c.ability.Add(ABILITY.breathe_Fire, 75, false); // Fire Breathe
+                c.ability.Add(SPELL.sword_Fire, 75, false); // Fire Sword
                 break;
             case 2: // Jupiter
                 c.ability.Add(Constants.ActJeneiRevealId, 50, false);
                 c.ability.Add(Constants.ActJeneiShinePlasmaId, 75, false);
-                c.ability.Add(50302, 75, false); // Lightning Bolt
-                c.ability.Add(50502, 75, false); // Lightning Arrow
+                c.ability.Add(SPELL.bolt_Lightning, 75, false); // Lightning Bolt
+                c.ability.Add(SPELL.arrow_Lightning, 75, false); // Lightning Arrow
                 break;
             case 3: // Mercury
                 c.ability.Add(Constants.ActJeneiDelugeId, 50, false);
                 c.ability.Add(Constants.ActJeneiPlyId, 75, true);
-                c.ability.Add(50201, 75, false); // Cold Breathe
-                c.ability.Add(51001, 75, false); // Cold Sword
+                c.ability.Add(ABILITY.breathe_Cold, 75, false); // Cold Breathe
+                c.ability.Add(SPELL.sword_Cold, 75, false); // Cold Sword
                 break;
         }
     }

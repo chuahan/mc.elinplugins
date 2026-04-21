@@ -2,22 +2,20 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Sniper;
 namespace PromotionMod.Elements.PromotionAbilities.Sniper;
 
-public class ActTargetHead : Ability
+public class ActTargetHead : PromotionCombatAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatSniper))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.SniperId.lang()));
-            return false;
-        }
+    public override int PromotionId => Constants.FeatSniper;
+    public override string PromotionString => Constants.SniperId;
+    public override int AbilityId => Constants.ActTargetHeadId;
 
+    public override bool CanPerformExtra()
+    {
         if (CC.GetBestRangedWeapon() == null)
         {
             if (CC.IsPC) Msg.Say("sniper_needrangedweapon".langGame());
             return false;
         }
-        return base.CanPerform() && ACT.Ranged.CanPerform();
+        return ACT.Ranged.CanPerform();
     }
 
     public override Cost GetCost(Chara c)

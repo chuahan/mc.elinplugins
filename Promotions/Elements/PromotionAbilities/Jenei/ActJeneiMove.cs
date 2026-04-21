@@ -10,7 +10,7 @@ public class ActJeneiMove : AI_TargetCard
             Msg.Say("classlocked_ability".lang(Constants.JeneiId.lang()));
             return false;
         }
-        if (TC == null) return false;
+        if (TC is not { isChara: true }) return false;
         return IsValidTC(TC);
     }
 

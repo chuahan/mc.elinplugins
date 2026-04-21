@@ -1,0 +1,67 @@
+using PromotionMod.Common;
+namespace PromotionMod.Elements.PromotionAbilities;
+
+/// <summary>
+///     A wrapper class to help reduce duplicate code.
+/// </summary>
+public abstract class PromotionAbility : Ability
+{
+
+    public enum PromotionAbilityCostType
+    {
+        PromotionAbilityCostStamina, // Defaults to Stamina Cost.
+        PromotionAbilityCostMana, // Converts to Mana Cost.
+        PromotionAbilityCostNone // Converts to None Cost with 1 so it can still level.
+    }
+
+    // Needed for making the promotion ability class locked.
+    public abstract int PromotionId { get; }
+    public abstract string PromotionString { get; }
+
+    public abstract int AbilityId { get; }
+
+    public virtual int Cooldown => 0;
+
+    public virtual PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostStamina;
+
+    public override bool CanPerform()
+    {
+        if (!CC.MatchesPromotion(PromotionId))
+        {
+            Msg.Say("classlocked_ability".lang(PromotionString.lang()));
+            return false;
+        }
+
+        if (Cooldown > 0)
+        {
+            if (CC.HasCooldown(AbilityId))
+                return false;
+        }
+
+        return CanPerformExtra() && base.CanPerform();
+    }
+
+    // Extra validations.
+    public virtual bool CanPerformExtra()
+    {
+        return true;
+    }
+
+    public override Cost GetCost(Chara c)
+    {
+        Cost cost = base.GetCost(c);
+        switch (PromotionAbilityCost)
+        {
+            case PromotionAbilityCostType.PromotionAbilityCostMana:
+                cost.type = CostType.MP;
+                break;
+            case PromotionAbilityCostType.PromotionAbilityCostNone:
+                cost.type = CostType.None;
+                cost.cost = 1;
+                break;
+        }
+        ;
+
+        return cost;
+    }
+}

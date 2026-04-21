@@ -23,7 +23,7 @@ public class ActSpearhead : ActRush
     {
         bool flag = CC.IsPC && !(CC.ai is GoalAutoCombat);
         if (flag) TC = scene.mouseTarget.card;
-        if (TC == null) return false;
+        if (TC is not { isChara: true }) return false;
         TP.Set(flag ? scene.mouseTarget.pos : TC.pos);
         Point rushPoint = Los.GetRushPoint(CC.pos, TP);
         int distance = CC.Dist(TP);

@@ -3,29 +3,28 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Sovereign;
 namespace PromotionMod.Elements.PromotionAbilities.Sovereign;
 
-public abstract class ActSovereignOrder : Ability
+public abstract class ActSovereignOrder : PromotionSpellAbility
 {
 
     private float _effectRadius = 5F;
+    public override int PromotionId => Constants.FeatSovereign;
+    public override string PromotionString => Constants.SovereignId;
     protected abstract string OrderType { get; }
     protected abstract int CooldownId { get; }
+
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
     public abstract void AddLawCondition(Chara chara, int stacks);
     public abstract void AddChaosCondition(Chara chara, int stacks);
 
-    public override bool CanPerform()
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatSovereign))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.SovereignId.lang()));
-            return false;
-        }
-        if (CC.HasCooldown(CooldownId)) return false;
         if (!CC.HasCondition<StanceSovereign>())
         {
             if (CC.IsPC) Msg.Say("sovereign_nostance".langGame());
             return false;
         }
-        return base.CanPerform();
+        if (CC.HasCooldown(CooldownId)) return false;
+        return true;
     }
 
     public override void OnMarkMapHighlights()
@@ -43,13 +42,6 @@ public abstract class ActSovereignOrder : Ability
         {
             item.SetHighlight(8);
         }
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
     }
 
     public override bool Perform()

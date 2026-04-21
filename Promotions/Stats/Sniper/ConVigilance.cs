@@ -1,5 +1,4 @@
 using UnityEngine;
-
 namespace PromotionMod.Stats.Sniper;
 
 public class ConVigilance : BaseBuff

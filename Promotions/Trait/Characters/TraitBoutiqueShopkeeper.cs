@@ -3,7 +3,6 @@ namespace PromotionMod.Trait.Characters;
 
 public class TraitBoutiqueShopkeeper : TraitPromotionUniqueCharacter
 {
-    public override bool IsBefriendedThroughDialog => false;
 
     public static List<int> PossibleMaterials = new List<int>
     {
@@ -13,11 +12,13 @@ public class TraitBoutiqueShopkeeper : TraitPromotionUniqueCharacter
         76, // dusk
         77, // griffon scale
         80, // wool
-        81, // spidersilk
+        81 // spidersilk
     };
-    
+
+    public override bool IsBefriendedThroughDialog => false;
+
     public override int RestockDay => 5;
-    
+
     public void _OnBarter()
     {
         Thing merchantInventory = owner.things.Find("chest_merchant");
@@ -36,16 +37,16 @@ public class TraitBoutiqueShopkeeper : TraitPromotionUniqueCharacter
         }
 
         // Create a stock of various clothing.
-        merchantInventory.AddCard(ThingGen.Create("robe_pope", PossibleMaterials.RandomItem(), this.ShopLv));
-        merchantInventory.AddCard(ThingGen.Create("girdle_corset", PossibleMaterials.RandomItem(), this.ShopLv));
-        merchantInventory.AddCard(ThingGen.Create("dress_wedding", PossibleMaterials.RandomItem(), this.ShopLv));
-        merchantInventory.AddCard(ThingGen.Create("hat_wedding", PossibleMaterials.RandomItem(), this.ShopLv));
-        merchantInventory.AddCard(ThingGen.Create("tuxedo", PossibleMaterials.RandomItem(), this.ShopLv));
-        merchantInventory.AddCard(ThingGen.Create("cloak_light", PossibleMaterials.RandomItem(), this.ShopLv));
-        merchantInventory.AddCard(ThingGen.Create("cloak_light", PossibleMaterials.RandomItem(), this.ShopLv));
-        merchantInventory.AddCard(ThingGen.Create("cloak_light", PossibleMaterials.RandomItem(), this.ShopLv));
-        merchantInventory.AddCard(ThingGen.Create("shirt", PossibleMaterials.RandomItem(), this.ShopLv));
-        merchantInventory.AddCard(ThingGen.Create("shirt", PossibleMaterials.RandomItem(), this.ShopLv));
-        merchantInventory.AddCard(ThingGen.Create("shirt", PossibleMaterials.RandomItem(), this.ShopLv));
+        merchantInventory.AddCard(ThingGen.Create("robe_pope", PossibleMaterials.RandomItem(), ShopLv));
+        merchantInventory.AddCard(ThingGen.Create("girdle_corset", PossibleMaterials.RandomItem(), ShopLv));
+        merchantInventory.AddCard(ThingGen.Create("dress_wedding", PossibleMaterials.RandomItem(), ShopLv));
+        merchantInventory.AddCard(ThingGen.Create("hat_wedding", PossibleMaterials.RandomItem(), ShopLv));
+        merchantInventory.AddCard(ThingGen.Create("tuxedo", PossibleMaterials.RandomItem(), ShopLv));
+        merchantInventory.AddCard(ThingGen.Create("cloak_light", PossibleMaterials.RandomItem(), ShopLv));
+        merchantInventory.AddCard(ThingGen.Create("cloak_light", PossibleMaterials.RandomItem(), ShopLv));
+        merchantInventory.AddCard(ThingGen.Create("cloak_light", PossibleMaterials.RandomItem(), ShopLv));
+        merchantInventory.AddCard(ThingGen.Create("shirt", PossibleMaterials.RandomItem(), ShopLv));
+        merchantInventory.AddCard(ThingGen.Create("shirt", PossibleMaterials.RandomItem(), ShopLv));
+        merchantInventory.AddCard(ThingGen.Create("shirt", PossibleMaterials.RandomItem(), ShopLv));
     }
 }

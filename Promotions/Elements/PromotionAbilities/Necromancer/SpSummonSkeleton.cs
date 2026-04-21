@@ -52,7 +52,7 @@ public class SpSummonSkeleton : Spell
         // Normal summon leveling.
         // For PCs Summons can scale to your deepest achieved depth instead.
         int levelOverride = Math.Max(caster.LV, targetLevel) * (100 + power / 10) / 100 + power / 30;
-        if (caster.IsPC) levelOverride = Math.Max(player.stats.deepest, levelOverride);
+        if (caster.IsPCFaction) levelOverride = Math.Max(player.stats.deepest, levelOverride);
         summon.SetLv(levelOverride);
         summon.interest = 0;
         caster.currentZone.AddCard(summon, target);

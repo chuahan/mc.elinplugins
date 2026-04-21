@@ -3,27 +3,28 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Dancer;
 namespace PromotionMod.Elements.PromotionAbilities.Dancer;
 
-public class ActWildPirouette : Ability
+public class ActWildPirouette : PromotionCombatAbility
 {
+
     private float _effectRadius = 5F;
+    public override int PromotionId => Constants.FeatDancer;
+    public override string PromotionString => Constants.DancerId;
+    public override int Cooldown => 5;
+    public override int AbilityId => Constants.ActWildPirouetteId;
 
-    public override bool CanPerform()
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
+
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatDancer))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.DancerId.lang()));
-            return false;
-        }
-
         if (owner?.Chara?.conditions.Exists(x => x is StanceDance) == false)
         {
             if (CC.IsPC) Msg.Say("dancer_mustbedancing".lang());
             return false;
         }
 
-        return base.CanPerform();
+        return true;
     }
-    
+
     public override Cost GetCost(Chara c)
     {
         Cost convertToMp = base.GetCost(c);
@@ -92,6 +93,8 @@ public class ActWildPirouette : Ability
                 }
             }
         }
+
+        CC.AddCooldown(AbilityId, Cooldown);
 
         return true;
     }

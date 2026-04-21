@@ -2,21 +2,18 @@ using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Stats.DreadKnight;
-using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.DreadKnight;
 
-public class ActDarkBurst : Ability
+public class ActDarkBurst : PromotionSpellAbility
 {
+
     private float _effectRadius = 3F;
+    public override int PromotionId => Constants.FeatDreadKnight;
+    public override string PromotionString => Constants.DreadKnightId;
+    public override int AbilityId => Constants.ActDarkBurstId;
 
-    public override bool CanPerform()
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatDreadKnight))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.DreadKnightId.lang()));
-            return false;
-        }
-
         if (GetHPCost(CC) > CC.hp)
         {
             if (CC.IsPC) Msg.Say("dreadknight_notenoughhp".langGame());
@@ -24,22 +21,6 @@ public class ActDarkBurst : Ability
         }
 
         return base.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        return new Cost
-        {
-            cost = 1,
-            type = CostType.None
-        };
-    }
-
-    // Apply Spell Enhance to this ability.
-    public override int GetPower(Card c)
-    {
-        int power = base.GetPower(c);
-        return power * Mathf.Max(100 + c.Evalue(411) - c.Evalue(93), 1) / 100;
     }
 
     public int GetHPCost(Chara c)
@@ -90,7 +71,7 @@ public class ActDarkBurst : Ability
 
         // User's consumed HP * 2 will be added as spellpower.
         int cost = (int)(CC.MaxHP * hpCost);
-        CC.DamageHP(cost, AttackSource.Condition);
+        CC.hp -= cost;
 
         int power = HelperFunctions.SafeAdd(GetPower(CC), HelperFunctions.SafeMultiplier(cost, 2));
         float adjustedEffectRadius = _effectRadius;

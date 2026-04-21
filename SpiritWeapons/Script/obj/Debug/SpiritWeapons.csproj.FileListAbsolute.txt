@@ -1,0 +1,6 @@
+C:\Program Files (x86)\Steam\steamapps\common\Elin\Package\Mod_SpiritWeapons\SpiritWeapons.dll
+C:\Program Files (x86)\Steam\steamapps\common\Elin\Package\Mod_SpiritWeapons\SpiritWeapons.pdb
+C:\Users\muddy\Repos\mc.elinplugins\SpiritWeapons\Script\obj\Debug\SpiritWeapons.csproj.AssemblyReference.cache
+C:\Users\muddy\Repos\mc.elinplugins\SpiritWeapons\Script\obj\Debug\SpiritWeapons.csproj.CoreCompileInputs.cache
+C:\Users\muddy\Repos\mc.elinplugins\SpiritWeapons\Script\obj\Debug\SpiritWeapons.dll
+C:\Users\muddy\Repos\mc.elinplugins\SpiritWeapons\Script\obj\Debug\SpiritWeapons.pdb

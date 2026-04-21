@@ -11,6 +11,8 @@ public class TraitFactionTrap : TraitTrap
 
     public override bool IsNegativeEffect => true;
 
+    public override int DestroyChanceOnActivateTrap => 100;
+
     public override int radius => 1;
 
     public override bool IgnoreWhenLevitating()

@@ -2,25 +2,14 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Sentinel;
 namespace PromotionMod.Elements.PromotionAbilities.Sentinel;
 
-public class ActShout : Ability
+public class ActShout : PromotionCombatAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatSentinel))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.SentinelId.lang()));
-            return false;
-        }
-        if (CC.HasCooldown(Constants.ActShoutId)) return false;
-        return base.CanPerform();
-    }
+    public override int PromotionId => Constants.FeatSentinel;
+    public override string PromotionString => Constants.SentinelId;
+    public override int Cooldown => 5;
+    public override int AbilityId => Constants.ActShoutId;
 
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
     public override bool Perform()
     {
@@ -31,7 +20,7 @@ public class ActShout : Ability
             taunted.TaunterUID = CC.uid;
         }
 
-        CC.AddCooldown(Constants.ActShoutId, 5);
+        CC.AddCooldown(AbilityId, Cooldown);
         CC.TalkRaw("sentinelTaunt".langList().RandomItem());
         return true;
     }

@@ -1,0 +1,6 @@
+C:\Program Files (x86)\Steam\steamapps\common\Elin\Package\Mod_Evolution\Evolution.dll
+C:\Program Files (x86)\Steam\steamapps\common\Elin\Package\Mod_Evolution\Evolution.pdb
+C:\Users\muddy\Repos\mc.elinplugins\EvolutionPOC\Script\obj\Debug\Evolution.csproj.AssemblyReference.cache
+C:\Users\muddy\Repos\mc.elinplugins\EvolutionPOC\Script\obj\Debug\Evolution.csproj.CoreCompileInputs.cache
+C:\Users\muddy\Repos\mc.elinplugins\EvolutionPOC\Script\obj\Debug\Evolution.dll
+C:\Users\muddy\Repos\mc.elinplugins\EvolutionPOC\Script\obj\Debug\Evolution.pdb

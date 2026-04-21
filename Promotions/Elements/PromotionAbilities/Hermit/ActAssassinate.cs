@@ -2,30 +2,24 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Hermit;
 namespace PromotionMod.Elements.PromotionAbilities.Hermit;
 
-public class ActAssassinate : Ability
+public class ActAssassinate : PromotionCombatAbility
 {
-    public override bool CanPerform()
+    public override int PromotionId => Constants.FeatHermit;
+    public override string PromotionString => Constants.HermitId;
+    public override int AbilityId => Constants.ActAssassinateId;
+
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
+
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatHermit))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.HermitId.lang()));
-            return false;
-        }
         // Must have a Target. Target must be marked for death with at least 10 value.
-        if (TC == null) return false;
+        if (TC is not { isChara: true }) return false;
 
         ConMarkedForDeath deathMark = TC.Chara.GetCondition<ConMarkedForDeath>();
         if (deathMark == null || deathMark.value < 10) return false;
-        return base.CanPerform();
+        return true;
     }
 
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
-    
     public override bool Perform()
     {
         ConMarkedForDeath deathMark = TC.Chara.GetCondition<ConMarkedForDeath>();

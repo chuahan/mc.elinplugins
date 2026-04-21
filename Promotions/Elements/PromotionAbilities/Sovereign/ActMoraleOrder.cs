@@ -6,6 +6,7 @@ public class ActMoraleOrder : ActSovereignOrder
 {
     protected override string OrderType => "morale";
     protected override int CooldownId => Constants.ActMoraleOrderId;
+    public override int AbilityId => Constants.ActMoraleOrderId;
     public override void AddLawCondition(Chara chara, int stacks)
     {
         chara.RemoveCondition<ConOrderDeath>();

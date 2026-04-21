@@ -2,16 +2,15 @@ using PromotionMod.Common;
 using PromotionMod.Stats;
 namespace PromotionMod.Elements.PromotionAbilities.Saint;
 
-public class ActHandOfGod : Ability
+public class ActHandOfGod : PromotionSpellAbility
 {
-    public override bool CanPerform()
+    public override int PromotionId => Constants.FeatSaint;
+    public override string PromotionString => Constants.SaintId;
+    public override int Cooldown => 30;
+    public override int AbilityId => Constants.ActHandOfGodId;
+
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatSaint))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.SaintId.lang()));
-            return false;
-        }
-        if (CC.HasCooldown(Constants.ActHandOfGodId)) return false;
         return base.CanPerform();
     }
 
@@ -26,13 +25,13 @@ public class ActHandOfGod : Ability
     {
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, true, false))
         {
-            int power = (int)HelperFunctions.SigmoidScaling(CC.Evalue(Constants.FaithId), .25F, 5F);
+            int power = (int)HelperFunctions.SigmoidScaling(CC.Evalue(SKILL.faith), .25F, 5F);
             power += GetPower(CC);
             TC.HealHP(power, HealSource.Magic);
-            TC.Chara.AddCondition<ConGreaterRegen>(CC.Evalue(Constants.FaithId));
+            TC.Chara.AddCondition<ConGreaterRegen>(CC.Evalue(SKILL.faith));
         }
 
-        CC.AddCooldown(Constants.ActHandOfGodId, 30);
+        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

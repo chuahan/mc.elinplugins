@@ -1,18 +1,21 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
 using PromotionMod.Stats;
-using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.Elementalist;
 
 /// <summary>
 ///     Elementalist Ability
 ///     Consumes all orbs and apply Elemental Storm to yourself based on how many elements you had.
 /// </summary>
-public class ActElementalFury : Ability
+public class ActElementalFury : PromotionSpellAbility
 {
-    public int ElementalFuryRequirement = 4;
 
-    public override bool CanPerform()
+    public int ElementalFuryRequirement = 4;
+    public override int PromotionId => Constants.FeatElementalist;
+    public override string PromotionString => Constants.ElementalistId;
+    public override int AbilityId => Constants.ActElementalFuryId;
+
+    public override bool CanPerformExtra()
     {
         if (!CC.MatchesPromotion(Constants.FeatElementalist))
         {
@@ -33,21 +36,7 @@ public class ActElementalFury : Ability
             return false;
         }
 
-        return base.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost cost = base.GetCost(c);
-        cost.type = CostType.MP;
-        return cost;
-    }
-
-    // Apply Spell Enhance to this ability.
-    public override int GetPower(Card c)
-    {
-        int power = base.GetPower(c);
-        return power * Mathf.Max(100 + c.Evalue(411) - c.Evalue(93), 1) / 100;
+        return true;
     }
 
     public override bool Perform()

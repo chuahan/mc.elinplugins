@@ -1,16 +1,9 @@
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Battlemage;
 
-public class StManaFocus : Ability
+public class StManaFocus : PromotionAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatBattlemage))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.BattlemageId.lang()));
-            return false;
-        }
-
-        return base.CanPerform();
-    }
+    public override int PromotionId => Constants.FeatBattlemage;
+    public override string PromotionString => Constants.BattlemageId;
+    public override int AbilityId => Constants.StManaFocusId;
 }

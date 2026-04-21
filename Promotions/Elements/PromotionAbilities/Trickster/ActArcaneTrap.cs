@@ -2,8 +2,12 @@ using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Trickster;
 
-public class ActArcaneTrap : Ability
+public class ActArcaneTrap : PromotionSpellAbility
 {
+    public override int PromotionId => Constants.FeatTrickster;
+    public override string PromotionString => Constants.TricksterId;
+    public override int AbilityId => Constants.ActArcaneTrapId;
+
     public override int PerformDistance => 5;
 
     public override bool CanPerform()
@@ -16,13 +20,6 @@ public class ActArcaneTrap : Ability
         // Cannot stack traps or place in pc faction
         if (TP.Installed != null || _zone.IsPCFaction) return false;
         return base.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
     }
 
     public override bool Perform()

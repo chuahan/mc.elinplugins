@@ -7,24 +7,16 @@ using PromotionMod.Stats.Knightcaller;
 using PromotionMod.Trait;
 namespace PromotionMod.Elements.PromotionAbilities.Knightcaller;
 
-public class ActSummonKnight : Ability
+public class ActSummonKnight : PromotionSpellAbility
 {
-    public override bool CanPerform()
+    public override int PromotionId => Constants.FeatKnightcaller;
+    public override string PromotionString => Constants.KnightcallerId;
+    public override int AbilityId => Constants.ActSummonKnightId;
+
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatKnightcaller))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.KnightcallerId.lang()));
-            return false;
-        }
         if (CC.currentZone.CountMinions(CC) >= CC.MaxSummon) return false;
         return base.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
     }
 
     public override bool Perform()
@@ -70,7 +62,7 @@ public class ActSummonKnight : Ability
         Chara knight = CharaGen.Create(toSummon);
         int power = GetPower(CC);
         int levelOverride = CC.LV * (100 + power / 10) / 100 + power / 30;
-        if (CC.IsPC) levelOverride = Math.Max(player.stats.deepest, levelOverride);
+        if (CC.IsPCFaction) levelOverride = Math.Max(player.stats.deepest, levelOverride);
         if (captainSummoned) levelOverride = HelperFunctions.SafeMultiplier(levelOverride, 1.1F);
         knight.SetLv(levelOverride);
         knight.interest = 0;
@@ -142,7 +134,7 @@ public class ActSummonKnight : Ability
             case Constants.ValeroCharaId:
                 chara.SetFlagValue(Constants.PromotionFeatFlag, Constants.FeatSentinel);
                 goto case Constants.KnightLancerCharaId;
-                
+
             case Constants.KnightPriestessCharaId:
                 chara.AddThing(ThingGen.Create("blunt_mace", 40, chara.LV));
 
@@ -156,7 +148,7 @@ public class ActSummonKnight : Ability
             case Constants.EctoleCharaId:
                 chara.SetFlagValue(Constants.PromotionFeatFlag, Constants.FeatSaint);
                 goto case Constants.KnightPriestessCharaId;
-                
+
             case Constants.KnightDuelistCharaId:
                 chara.AddThing(ThingGen.Create("sword", -1, chara.LV));
 
@@ -170,7 +162,7 @@ public class ActSummonKnight : Ability
             case Constants.ArkunCharaId:
                 chara.SetFlagValue(Constants.PromotionFeatFlag, Constants.FeatSpellblade);
                 goto case Constants.KnightDuelistCharaId;
-                
+
             case Constants.KnightWarriorCharaId:
                 chara.AddThing(ThingGen.Create("axe_battle", -1, chara.LV));
 
@@ -184,7 +176,7 @@ public class ActSummonKnight : Ability
             case Constants.DiasCharaId:
                 chara.SetFlagValue(Constants.PromotionFeatFlag, Constants.FeatHeadhunter);
                 goto case Constants.KnightWarriorCharaId;
-                
+
             case Constants.KnightWizardCharaId:
                 chara.AddThing(ThingGen.Create("staff", -1, chara.LV));
 

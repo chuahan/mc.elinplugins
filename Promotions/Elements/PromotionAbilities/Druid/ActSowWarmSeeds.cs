@@ -11,25 +11,17 @@ namespace PromotionMod.Elements.PromotionAbilities.Druid;
 ///     Warding Bloom - Allies gain protection.
 ///     Serene Bloom - Removes Debuffs
 /// </summary>
-public class ActSowWarmSeeds : Ability
+public class ActSowWarmSeeds : PromotionSpellAbility
 {
-    public override bool CanPerform()
+    public override int PromotionId => Constants.FeatDruid;
+    public override string PromotionString => Constants.DruidId;
+    public override int AbilityId => Constants.ActSowWarmSeedsId;
+
+    public override bool CanPerformExtra()
     {
-        if (!CC.MatchesPromotion(Constants.FeatDruid))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.DruidId.lang()));
-            return false;
-        }
         if (CC.currentZone.CountMinions(CC) >= CC.MaxSummon) return false;
         if (!TP.IsValid || TP.HasChara) return false;
         return base.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
     }
 
     public override void OnMarkMapHighlights()
@@ -46,7 +38,7 @@ public class ActSowWarmSeeds : Ability
         foreach (Point item in list)
         {
             // These are slightly different. The target point is the summoning spot. The surrounding highlight is the area of effect for the aura.
-            if (Equals(scene.mouseTarget.pos, item))
+            if (object.Equals(scene.mouseTarget.pos, item))
             {
                 item.SetHighlight(7);
             }
@@ -93,7 +85,7 @@ public class ActSowWarmSeeds : Ability
             // Normal summon leveling.
             // For PCs Ent Warriors and Nature's Warmth summons can scale to your deepest achieved depth instead.
             int levelOverride = CC.LV * (100 + power / 10) / 100 + power / 30;
-            if (CC.IsPC) levelOverride = Math.Max(player.stats.deepest, levelOverride);
+            if (CC.IsPC || CC.IsPCParty) levelOverride = Math.Max(player.stats.deepest, levelOverride);
             plant.SetLv(levelOverride);
         }
 

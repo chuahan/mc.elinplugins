@@ -12,9 +12,9 @@ namespace PromotionMod.Elements.PromotionFeats;
 ///     lifted when you perform any attack.
 ///     Skill - Assassinate - When attacking an enemy Marked for Death, inflicts a grievous wound.
 ///     Skill - Preparation. Targetted debuff that also grants the Hermit Crit Boost.
-///         Also inflicts one of: Sleep, Poison, Paralyze, Bleed, or Faint.
-///         The chance of inflicting the debuff increases depending on how high the Stalk value of Mark for Death is.
-///         This ability can only be used on targets that have been Marked for Death. 
+///     Also inflicts one of: Sleep, Poison, Paralyze, Bleed, or Faint.
+///     The chance of inflicting the debuff increases depending on how high the Stalk value of Mark for Death is.
+///     This ability can only be used on targets that have been Marked for Death.
 ///     Passive - Opportunist - Increased performance against enemies inflicted with Bad statuses.
 /// </summary>
 public class FeatHermit : PromotionFeat

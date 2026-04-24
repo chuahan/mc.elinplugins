@@ -114,8 +114,21 @@ public class CardPatches
         if (__instance.isChara &&
             __instance.Chara.trait is TraitUniqueSummon or TraitArtificerGolem)
         {
+            Msg.Say("noEgg_Effect".langGame());
             return false;
         }
+        return true;
+    }
+    
+    [HarmonyPatch(nameof(Card.Say), typeof(string), typeof(Card), typeof(string), typeof(string))]
+    [HarmonyPrefix]
+    internal static bool PromotionMod_Say_SkipNull(Card __instance, string lang, Card c1, string ref1 = null, string ref2 = null)
+    {
+        if (lang.Equals("item_drop", StringComparison.CurrentCultureIgnoreCase) && c1 is null)
+        {
+            return false;
+        }
+
         return true;
     }
 

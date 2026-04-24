@@ -6,6 +6,7 @@ public class ActTacticalRetreat : PromotionCombatAbility
     public override int PromotionId => Constants.FeatSniper;
     public override string PromotionString => Constants.SniperId;
     public override int AbilityId => Constants.ActTacticalRetreatId;
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
     public override bool CanPerformExtra()
     {

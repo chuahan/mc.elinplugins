@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Stats;
+using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities.Elementalist;
 
 /// <summary>
@@ -42,6 +43,7 @@ public class ActElementalExtinction : PromotionSpellAbility
         // Take all active elements.
         Dictionary<int, int> activeStockpile = elementalist.ElementalStockpile.Where(pair => pair.Value > 0).ToDictionary(pair => pair.Key, pair => pair.Value);
 
+        int orbsConsumed = 0;
         while (activeStockpile.Count > 0)
         {
             int element = activeStockpile.Keys.RandomItem();
@@ -82,7 +84,11 @@ public class ActElementalExtinction : PromotionSpellAbility
             // Consume an orb.
             activeStockpile[element]--;
             if (activeStockpile[element] <= 0) activeStockpile.Remove(element);
+            orbsConsumed++;
         }
+
+        int spellExp = CC.elements.GetSpellExp(CC, this.act, 100) * orbsConsumed;
+        CC.ModExp(this.AbilityId, spellExp);
 
         elementalist.ConsumeElementalOrbs();
         return true;

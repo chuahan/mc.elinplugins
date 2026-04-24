@@ -9,6 +9,8 @@ public class ActSenseDanger : PromotionAbility
     public override int Cooldown => 10;
 
     public override int AbilityId => Constants.ActSenseDangerId;
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
+    
 
     public override bool CanPerformExtra()
     {

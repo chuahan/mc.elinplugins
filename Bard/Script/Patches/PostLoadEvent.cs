@@ -1,4 +1,5 @@
-﻿using Cwl.API.Attributes;
+﻿using System.Linq;
+using Cwl.API.Attributes;
 using Cwl.API.Processors;
 namespace BardMod.Patches;
 

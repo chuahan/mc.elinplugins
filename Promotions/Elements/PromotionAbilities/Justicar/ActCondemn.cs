@@ -12,12 +12,12 @@ namespace PromotionMod.Elements.PromotionAbilities.Justicar;
 /// </summary>
 public class ActCondemn : PromotionCombatAbility
 {
-
     private float _effectRadius = 3F;
     public override int PromotionId => Constants.FeatJusticar;
     public override string PromotionString => Constants.JusticarId;
     public override int AbilityId => Constants.ActCondemnId;
 
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
     public override void OnMarkMapHighlights()
     {
         if (!scene.mouseTarget.pos.IsValid)

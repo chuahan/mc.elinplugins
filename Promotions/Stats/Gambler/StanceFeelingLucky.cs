@@ -1,6 +1,6 @@
-namespace PromotionMod.Stats.Luminary;
+namespace PromotionMod.Stats.Gambler;
 
-public class StVanguardStance : BaseStance
+public class StanceFeelingLucky : BaseStance
 {
     public override void Tick()
     {

@@ -8,6 +8,7 @@ public class ActSpreadShot : PromotionCombatAbility
     public override int PromotionId => Constants.FeatSniper;
     public override string PromotionString => Constants.SniperId;
     public override int AbilityId => Constants.ActSpreadShotId;
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
     public override bool CanPerformExtra()
     {

@@ -7,7 +7,7 @@ public class ActTargetHead : PromotionCombatAbility
     public override int PromotionId => Constants.FeatSniper;
     public override string PromotionString => Constants.SniperId;
     public override int AbilityId => Constants.ActTargetHeadId;
-
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
     public override bool CanPerformExtra()
     {
         if (CC.GetBestRangedWeapon() == null)

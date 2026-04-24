@@ -85,6 +85,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CardPatches.cs" />
     <Compile Include="CharaExpansion.cs" />
     <Compile Include="Evolution.cs" />
     <Compile Include="TraitEvolutionHeart.cs" />

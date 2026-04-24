@@ -413,6 +413,7 @@ internal class CharaPatches : EClass
         // The Unique Summons and Golems will not drop their Genes.
         if (__instance.trait is TraitUniqueSummon or TraitArtificerGolem)
         {
+            Msg.Say("noGene_Effect".langGame());
             return false;
         }
         return true;

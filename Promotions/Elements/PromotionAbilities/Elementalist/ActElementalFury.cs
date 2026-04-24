@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Stats;
 namespace PromotionMod.Elements.PromotionAbilities.Elementalist;
@@ -45,6 +46,11 @@ public class ActElementalFury : PromotionSpellAbility
         // Clone the Elemental Stockpile to deplete.
         ConElementalFury fury = CC.AddCondition<ConElementalFury>(GetPower(CC)) as ConElementalFury;
         fury.ElementalStockpile = new Dictionary<int, int>(elementalist.ElementalStockpile);
+
+        int orbsConsumed = elementalist.ElementalStockpile.Values.Sum(); 
+        int spellExp = CC.elements.GetSpellExp(CC, this.act, 100) * orbsConsumed;
+        CC.ModExp(this.AbilityId, spellExp);
+        
         elementalist.ConsumeElementalOrbs();
         return true;
     }

@@ -15,13 +15,16 @@ public class GameDatePatches
         EClass.player.dialogFlags.TryGetValue("lailahManualDeciphered", out int lailahManualDeciphered);
 
 
-        // Increment her progress on her own.
-        if (lailahWorking != 1 && lailahDeciphering < 100 && lailahManualDeciphered != 1)
+        // Increment her progress on her own if she has at least 1 book turned in.
+        if (lailahWorking != 1 && lailahDeciphering is < 100 and >= 1 && lailahManualDeciphered != 1)
         {
             EClass.player.dialogFlags["lailahDeciphering"] = lailahDeciphering + 1;
             if (EClass.player.dialogFlags["lailahDeciphering"] >= 100)
             {
-                // TODO: If this reaches 100, go through all the hoops and whistles to start the timer like in PromoDramaExpansion.
+                // If this reaches 100, go through all the hoops and whistles to start the timer like in PromoDramaExpansion.
+                // Store the current time onto the player.
+                EClass.player.dialogFlags["lailahDecipheringTimer"] = EClass.world.date.GetRaw() + 4320; // 3 Days, 1440 turns a day.
+                EClass.player.dialogFlags["lailahManualDeciphered"] = 1;
             }
         }
         else if (lailahSentLetter == 0 && lailahWorking == 1)

@@ -18,6 +18,8 @@ public class ActIntimidate : PromotionCombatAbility
     public override string PromotionString => Constants.JusticarId;
     public override int AbilityId => Constants.ActIntimidateId;
 
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
+    
     public override void OnMarkMapHighlights()
     {
         if (!scene.mouseTarget.pos.IsValid)

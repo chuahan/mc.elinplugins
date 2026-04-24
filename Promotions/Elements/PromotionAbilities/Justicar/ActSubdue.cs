@@ -15,6 +15,8 @@ public class ActSubdue : PromotionCombatAbility
     public override string PromotionString => Constants.JusticarId;
     public override int AbilityId => Constants.ActSubdueId;
 
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
+    
     public override bool CanPerformExtra()
     {
         return ACT.Melee.CanPerform();

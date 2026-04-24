@@ -9,8 +9,6 @@ public class StHeavyarms : PromotionAbility
     public override string PromotionString => Constants.MachinistId;
 
     public override int AbilityId => Constants.StHeavyarmsId;
-    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostNone;
-
 
     public override bool CanPerformExtra()
     {

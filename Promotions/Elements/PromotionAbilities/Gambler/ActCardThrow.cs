@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using PromotionMod.Common;
 namespace PromotionMod.Elements.PromotionAbilities.Gambler;
 
-/// <summary>
-/// </summary>
 public class ActCardThrow : PromotionCombatAbility
 {
 
@@ -45,7 +43,7 @@ public class ActCardThrow : PromotionCombatAbility
         int aces = 0;
         int handSize = 0;
 
-        while (handValue < 16)
+        while (handValue < 16 && handSize < 5)
         {
             int roll = gamble.Roll() + 1;
             handSize++;
@@ -98,6 +96,7 @@ public class ActCardThrow : PromotionCombatAbility
             {
                 // Bust
                 // Throws a single card made out of paper with no other effects.
+                CC.Say("gambler_card_bust".langGame(handValue.ToString()));
                 throwingCard.ChangeMaterial("paper");
                 CC.ranged = throwingCard;
                 ActThrow.Throw(CC, TC.pos, TC, throwingCard);
@@ -107,13 +106,25 @@ public class ActCardThrow : PromotionCombatAbility
 
         // Adjust the weight of the throwing card based off of the hand value.
         throwingCard.ChangeWeight(handValue * 20);
+        CC.ranged = throwingCard;
 
+        // 5 Card Charlie
+        if (handSize == 5)
+        {
+            // Add 5 to the hand value before multiplying.
+            CC.Say("gambler_card_fivecardcharlie".langGame());
+            throwingCard.ChangeWeight((handValue + 5) * 20);
+            throwingCard.ChangeMaterial("gold");
+            ActThrow.Throw(CC, TC.pos, TC, throwingCard);
+        }
+        
         // Blackjack (only with 2 cards)
         if (handSize == 2 && handValue == 21)
         {
             // Blackjack
             // Creates 2 ether cards, one with convertImpact and the other with one randomly out of convertFire/Cold/Lightning
             // Throw them at the enemy.
+            CC.Say("gambler_card_blackjack".langGame());
             throwingCard.ChangeMaterial("ether");
             throwingCard.ModNum(1, false);
 
@@ -127,7 +138,6 @@ public class ActCardThrow : PromotionCombatAbility
                 ENC.convertImpact
             };
             throwingCard.elements.ModBase(convertElements.RandomItem(), 50);
-            CC.ranged = throwingCard;
             ActThrow.Throw(CC, TC.pos, TC, throwingCard);
 
             throwingCard2.elements.ModBase(convertElements.RandomItem(), 50);
@@ -137,6 +147,7 @@ public class ActCardThrow : PromotionCombatAbility
         }
 
         // Stand 17–21
+        CC.Say("gambler_card_normal".langGame(handValue.ToString()));
         throwingCard.ChangeMaterial("steel");
         ActThrow.Throw(CC, TC.pos, TC, throwingCard);
         return true;

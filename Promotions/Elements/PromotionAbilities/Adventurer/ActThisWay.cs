@@ -12,6 +12,7 @@ public class ActThisWay : PromotionCombatAbility
     public override string PromotionString => Constants.AdventurerId;
     public override int Cooldown => 30;
     public override int AbilityId => Constants.ActThisWayId;
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
     public override bool CanPerformExtra()
     {

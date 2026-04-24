@@ -263,9 +263,9 @@ public static class HelperFunctions
     public static int GetMaximumStock(int shopLv)
     {
         // Maxmimum of 300 Items
-        float scaledStockCount = (float)(3 + Mathf.Min(shopLv / 5, 10)) + Mathf.Sqrt(shopLv);
+        float scaledStockCount = 3 + Mathf.Min(shopLv / 5, 10) + Mathf.Sqrt(shopLv);
         int maxItems = 300;
-        scaledStockCount = scaledStockCount * (float)(100 + EClass.pc.Evalue(1406) * 5) / 100f;
+        scaledStockCount = scaledStockCount * (100 + EClass.pc.Evalue(1406) * 5) / 100f;
         scaledStockCount = Mathf.Min(scaledStockCount, maxItems);
         return (int)scaledStockCount;
     }

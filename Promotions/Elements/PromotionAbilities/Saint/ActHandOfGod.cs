@@ -9,18 +9,6 @@ public class ActHandOfGod : PromotionSpellAbility
     public override int Cooldown => 30;
     public override int AbilityId => Constants.ActHandOfGodId;
 
-    public override bool CanPerformExtra()
-    {
-        return base.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
-
     public override bool Perform()
     {
         foreach (Chara target in HelperFunctions.GetCharasWithinRadius(CC.pos, 5F, CC, true, false))

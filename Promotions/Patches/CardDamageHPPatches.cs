@@ -11,6 +11,7 @@ using PromotionMod.Stats;
 using PromotionMod.Stats.AdvCombatSkills;
 using PromotionMod.Stats.Artificer;
 using PromotionMod.Stats.Battlemage;
+using PromotionMod.Stats.Gambler;
 using PromotionMod.Stats.Harbinger;
 using PromotionMod.Stats.Headhunter;
 using PromotionMod.Stats.Hermit;
@@ -93,6 +94,23 @@ public class CardDamageHPPatches
                     return false;
                 }
 
+                // Gambler - Feeling Lucky will change the damage dealt or taken. -10 to +10.
+                if (originConditions.Contains(typeof(StanceFeelingLucky)))
+                {
+                    Dice luckyDice = new Dice { num = 1, sides = 20, card = originChara };
+                    int diceRoll = luckyDice.Roll() - 9;
+                    float damageMulti = (10 + diceRoll) / 10F;
+                    dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, damageMulti);
+                }
+
+                if (targetConditions.Contains(typeof(StanceFeelingLucky)))
+                {
+                    Dice luckyDice = new Dice { num = 1, sides = 20, card = target };
+                    int diceRoll = luckyDice.Roll() - 9;
+                    float damageMulti = (10 - diceRoll) / 10F;
+                    dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, damageMulti);
+                }
+                
                 // Hermits - Opportunist - 10% damage increase if the target is afflicted with specific debuffs. Spells can't crit though.
                 if (targetConditions.Contains(typeof(ConParalyze)) ||
                     targetConditions.Contains(typeof(ConBleed)) ||

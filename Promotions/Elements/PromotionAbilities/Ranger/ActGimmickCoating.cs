@@ -8,6 +8,8 @@ public class ActGimmickCoating : PromotionCombatAbility
     public override string PromotionString => Constants.RangerId;
     public override int AbilityId => Constants.ActGimmickCoatingId;
 
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
+    
     public override bool CanPerformExtra()
     {
         if (CC.HasCooldown(Constants.ActGimmickCoatingId)) return false;

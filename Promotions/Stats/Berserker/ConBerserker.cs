@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
 namespace PromotionMod.Stats.Berserker;
@@ -53,6 +54,27 @@ public class ConBerserker : ClassCondition
             {
                 owner.AddCondition<ConUnrelenting>(unrelentingPower);
             }
+        }
+    }
+
+    public override void OnWriteNote(List<string> list)
+    {
+        if (owner.hp <= (int)(owner.MaxHP * .75F))
+        {
+            list.Add("hintBerserkerDefiance".lang());
+        }
+        if (owner.hp <= (int)(owner.MaxHP * .5F))
+        {
+            list.Add("hintBerserkerAnger".lang());
+        }
+        if (owner.hp <= (int)(owner.MaxHP * .25F))
+        {
+            list.Add("hintBerserkerFury".lang());
+        }
+        int unrelentingPower = GetBerserkPower();
+        if (unrelentingPower != 0)
+        {
+            list.Add("hintBerserkerUnrelenting".lang(unrelentingPower.ToString()));
         }
     }
 }

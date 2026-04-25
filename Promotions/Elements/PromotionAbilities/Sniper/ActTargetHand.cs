@@ -16,14 +16,7 @@ public class ActTargetHand : PromotionCombatAbility
             return false;
         }
 
-        return base.CanPerform() && ACT.Ranged.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
+        return ACT.Ranged.CanPerform();
     }
 
     public override bool Perform()

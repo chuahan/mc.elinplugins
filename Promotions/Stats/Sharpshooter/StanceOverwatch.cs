@@ -3,7 +3,7 @@ using PromotionMod.Common;
 using UnityEngine;
 namespace PromotionMod.Stats.Sharpshooter;
 
-public class StanceOverwatch : BaseStance
+public class StanceOverwatch : PromotionStance
 {
     public const int FOVBuffAmount = 5;
 
@@ -36,7 +36,7 @@ public class StanceOverwatch : BaseStance
 
         if (owner.IsAliveInCurrentZone && value > 1)
         {
-            foreach (Condition underFire in HelperFunctions.GetCharasWithinRadius(owner.pos, 6F, owner, false, true)
+            foreach (Condition underFire in HelperFunctions.GetCharasWithinRadius(owner.pos, 11F, owner, false, true)
                              .Select(target => target.GetCondition<ConUnderFire>() ?? target.AddCondition<ConUnderFire>()).Where(underFire => underFire is not { value: >= 1 }))
             {
                 underFire?.Mod(1);

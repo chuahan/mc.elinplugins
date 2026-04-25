@@ -14,7 +14,6 @@ public class ActEndlessMists : PromotionCombatAbility
     private float _effectRadius = 5F;
     public override int PromotionId => Constants.FeatHarbinger;
     public override string PromotionString => Constants.HarbingerId;
-    public override int Cooldown => 5;
     public override int AbilityId => Constants.ActEndlessMistsId;
     public override bool ShowMapHighlight => true;
 
@@ -47,8 +46,6 @@ public class ActEndlessMists : PromotionCombatAbility
                 condition.Mod(1);
             }
         }
-
-        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

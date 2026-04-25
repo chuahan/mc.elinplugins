@@ -47,10 +47,10 @@ public class ActElementalFury : PromotionSpellAbility
         ConElementalFury fury = CC.AddCondition<ConElementalFury>(GetPower(CC)) as ConElementalFury;
         fury.ElementalStockpile = new Dictionary<int, int>(elementalist.ElementalStockpile);
 
-        int orbsConsumed = elementalist.ElementalStockpile.Values.Sum(); 
-        int spellExp = CC.elements.GetSpellExp(CC, this.act, 100) * orbsConsumed;
-        CC.ModExp(this.AbilityId, spellExp);
-        
+        int orbsConsumed = elementalist.ElementalStockpile.Values.Sum();
+        int spellExp = CC.elements.GetSpellExp(CC, act) * orbsConsumed;
+        CC.ModExp(AbilityId, spellExp);
+
         elementalist.ConsumeElementalOrbs();
         return true;
     }

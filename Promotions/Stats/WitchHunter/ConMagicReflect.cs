@@ -1,7 +1,7 @@
 using UnityEngine;
 namespace PromotionMod.Stats.WitchHunter;
 
-public class ConMagicReflect : Condition
+public class ConMagicReflect : BaseBuff
 {
     public override bool CanManualRemove => true;
 

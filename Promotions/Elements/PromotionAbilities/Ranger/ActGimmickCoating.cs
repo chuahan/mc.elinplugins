@@ -9,12 +9,6 @@ public class ActGimmickCoating : PromotionCombatAbility
     public override int AbilityId => Constants.ActGimmickCoatingId;
 
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
-    
-    public override bool CanPerformExtra()
-    {
-        if (CC.HasCooldown(Constants.ActGimmickCoatingId)) return false;
-        return base.CanPerform();
-    }
 
     public override bool Perform()
     {

@@ -6,8 +6,6 @@ public class ActLifebreak : PromotionCombatAbility
 {
     public override int PromotionId => Constants.FeatBerserker;
     public override string PromotionString => Constants.BerserkerId;
-
-    public override int Cooldown => 10;
     public override int AbilityId => Constants.ActLifebreakId;
 
     public override bool CanPerformExtra()
@@ -20,7 +18,6 @@ public class ActLifebreak : PromotionCombatAbility
     {
         CC.AddCondition<ConLifebreakAttack>(GetPower(CC), true);
         new ActMelee().Perform(CC, TC);
-        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

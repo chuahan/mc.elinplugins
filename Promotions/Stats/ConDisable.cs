@@ -1,7 +1,7 @@
 using UnityEngine;
 namespace PromotionMod.Stats;
 
-public class ConDisable : BadCondition
+public class ConDisable : BaseDebuff
 {
     public override ConditionType Type => ConditionType.Debuff;
     public override bool TimeBased => true;

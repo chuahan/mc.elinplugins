@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
 using PromotionMod.Stats;
-using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities;
 
 public class ActBlessingOfTheDead : PromotionSpellAbility
@@ -13,22 +12,7 @@ public class ActBlessingOfTheDead : PromotionSpellAbility
     public override bool CanPerformExtra()
     {
         // Must be a minion of the caster and must be undead.
-        if (!TC.isChara || !TC.IsMinion || TC.Chara.master != CC || !TC.Chara.IsUndead || !TC.IsAliveInCurrentZone) return false;
-        return true;
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
-
-    // Apply Spell Enhance to this ability.
-    public override int GetPower(Card c)
-    {
-        int power = base.GetPower(c);
-        return power * Mathf.Max(100 + c.Evalue(411) - c.Evalue(93), 1) / 100;
+        return TC.isChara && TC.IsMinion && TC.Chara.master == CC && TC.Chara.IsUndead && TC.IsAliveInCurrentZone;
     }
 
     public override bool Perform()

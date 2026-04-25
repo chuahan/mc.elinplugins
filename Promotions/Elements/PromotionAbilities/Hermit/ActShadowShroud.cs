@@ -11,7 +11,7 @@ public class ActShadowShroud : PromotionCombatAbility
 {
     public override int PromotionId => Constants.FeatHermit;
     public override string PromotionString => Constants.HermitId;
-    public override int Cooldown => 10;
+    public int Cooldown => 10;
     public override int AbilityId => Constants.ActShadowShroudId;
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 

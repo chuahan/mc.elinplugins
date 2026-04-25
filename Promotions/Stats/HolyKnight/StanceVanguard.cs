@@ -1,7 +1,7 @@
 using UnityEngine;
 namespace PromotionMod.Stats.HolyKnight;
 
-public class StanceVanguard : BaseStance
+public class StanceVanguard : PromotionStance
 {
     public override Sprite GetSprite()
     {

@@ -7,7 +7,6 @@ public class ActDiceStrike : PromotionCombatAbility
 {
     public override int PromotionId => Constants.FeatGambler;
     public override string PromotionString => Constants.GamblerId;
-    public override int Cooldown => 0;
     public override int AbilityId => Constants.ActDiceStrikeId;
 
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;

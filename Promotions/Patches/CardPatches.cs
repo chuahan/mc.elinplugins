@@ -119,7 +119,7 @@ public class CardPatches
         }
         return true;
     }
-    
+
     [HarmonyPatch(nameof(Card.Say), typeof(string), typeof(Card), typeof(string), typeof(string))]
     [HarmonyPrefix]
     internal static bool PromotionMod_Say_SkipNull(Card __instance, string lang, Card c1, string ref1 = null, string ref2 = null)

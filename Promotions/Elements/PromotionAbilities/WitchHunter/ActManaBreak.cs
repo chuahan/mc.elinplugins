@@ -7,7 +7,6 @@ public class ActManaBreak : PromotionCombatAbility
 {
     public override int PromotionId => Constants.FeatWitchHunter;
     public override string PromotionString => Constants.WitchHunterId;
-    public override int Cooldown => 10;
     public override int AbilityId => Constants.ActManaBreakId;
 
     public override bool Perform()
@@ -34,8 +33,6 @@ public class ActManaBreak : PromotionCombatAbility
                 spellEffect.Play(tile, 0f, tile);
             });
         }
-
-        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

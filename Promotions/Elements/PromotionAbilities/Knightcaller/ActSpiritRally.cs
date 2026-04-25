@@ -6,7 +6,6 @@ public class ActSpiritRally : PromotionSpellAbility
 {
     public override int PromotionId => Constants.FeatKnightcaller;
     public override string PromotionString => Constants.KnightcallerId;
-    public override int Cooldown => 10;
     public override int AbilityId => Constants.ActSpiritRallyId;
 
     public override bool Perform()
@@ -27,8 +26,6 @@ public class ActSpiritRally : PromotionSpellAbility
         }
 
         CC.AddCondition<ConSpiritRally>(GetPower(CC));
-
-        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

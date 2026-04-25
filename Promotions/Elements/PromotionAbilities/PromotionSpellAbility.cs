@@ -1,3 +1,4 @@
+using PromotionMod.Stats.WitchHunter;
 using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities;
 
@@ -10,8 +11,9 @@ public abstract class PromotionSpellAbility : PromotionAbility
 
     public override bool CanPerform()
     {
-        // Spell type abilities cannot be used with Silence.
+        // Spell type abilities cannot be used with Silence or Null Presence.
         if (CC.HasCondition<ConSilence>()) return false;
+        if (CC.HasCondition<ConNullPresence>()) return false;
 
         return base.CanPerform();
     }

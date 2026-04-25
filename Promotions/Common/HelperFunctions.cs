@@ -40,20 +40,6 @@ public static class HelperFunctions
         }
     }
 
-    public static int SafeDiceForCard(string id, int power, bool rollMax = false, Card c = null, Act act = null)
-    {
-        Dice dice = Dice.Create(id, power, c, act);
-        try
-        {
-            if (rollMax) dice.RollMax();
-            return dice.Roll();
-        }
-        catch (OverflowException)
-        {
-            return 2000000000; // Clamp to 2b
-        }
-    }
-
     public static int SafeAdd(int value, int addend)
     {
         try

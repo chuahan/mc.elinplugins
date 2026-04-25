@@ -16,14 +16,8 @@ public class ActTacticalRetreat : PromotionCombatAbility
             return false;
         }
 
-        return base.CanPerform() && ACT.Ranged.CanPerform();
-    }
+        return TC != null && ACT.Ranged.CanPerform();
 
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
     }
 
     public override bool Perform()

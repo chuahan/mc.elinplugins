@@ -11,8 +11,9 @@ public class ActDaggerIllusion : PromotionCombatAbility
     private const int MaxTargets = 5;
     public override int PromotionId => Constants.FeatDancer;
     public override string PromotionString => Constants.DancerId;
-    public override int Cooldown => 5;
     public override int AbilityId => Constants.ActDaggerIllusionId;
+
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostStamina;
 
     public override bool CanPerformExtra()
     {
@@ -103,9 +104,6 @@ public class ActDaggerIllusion : PromotionCombatAbility
 
             targetsHit++;
         }
-
-        CC.AddCooldown(AbilityId, Cooldown);
-
         return true;
     }
 

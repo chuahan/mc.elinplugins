@@ -1,28 +1,36 @@
+using PromotionMod.Common;
 using UnityEngine;
 namespace PromotionMod.Stats.WitchHunter;
 
-public class ConNullZone : BaseBuff
+public class ConNullZone : ConAura
 {
     public override bool TimeBased => true;
     public override bool CanManualRemove => true;
+
+    public override bool TimedAura => true;
+    public override AuraType AuraTarget => AuraType.Both;
     public override Sprite GetSprite()
     {
         return SpriteSheet.Get(source.alias);
     }
-    public override void Tick()
-    {
-        // TODO: Null Presence should stop certain "spell" type abilities from being used.
-        // Apply Null Presence to everyone within 3F.
-        foreach (Chara chara in pc.currentZone.map.ListCharasInCircle(owner.pos, 3F))
-        {
-            Condition? nullZone = chara.GetCondition<ConNullPresence>() ?? chara.AddCondition<ConNullPresence>();
-            if (nullZone is { value: > 1 })
-            {
-                continue;
-            }
 
-            nullZone?.Mod(1);
-        }
-        base.Tick();
+    public override void OnRemoved()
+    {
+        // Add a cooldown on expiration.
+        CC.AddCooldown(Constants.ActNullZoneId, 10);
+    }
+
+    public override void ApplyFriendly(Chara target)
+    {
+        Condition? nullPresence = target.GetCondition<ConNullPresence>() ?? target.AddCondition<ConNullPresence>();
+        if (nullPresence is { value: > 1 }) return;
+        nullPresence?.Mod(1);
+    }
+
+    public override void ApplyFoe(Chara target)
+    {
+        Condition? nullPresence = target.GetCondition<ConNullPresence>() ?? target.AddCondition<ConNullPresence>();
+        if (nullPresence is { value: > 1 }) return;
+        nullPresence?.Mod(1);
     }
 }

@@ -10,7 +10,6 @@ public class ActThisWay : PromotionCombatAbility
 {
     public override int PromotionId => Constants.FeatAdventurer;
     public override string PromotionString => Constants.AdventurerId;
-    public override int Cooldown => 30;
     public override int AbilityId => Constants.ActThisWayId;
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
@@ -20,7 +19,11 @@ public class ActThisWay : PromotionCombatAbility
         if (!CC.IsPC) return false;
 
         // Not usable outside of dungeons.
-        if (CC.currentZone.IsPCFactionOrTent || CC.currentZone is not Zone_Dungeon) return false;
+        if (CC.currentZone.IsPCFactionOrTent || CC.currentZone is not Zone_Dungeon)
+        {
+            if (CC.IsPC) Msg.Say("adventurer_thisway_dungeononly".langGame());
+            return false;
+        }
 
         return true;
     }
@@ -35,7 +38,6 @@ public class ActThisWay : PromotionCombatAbility
         }
         Point exitPoint = stairs.owner.pos;
         CC.Teleport(exitPoint.GetNearestPoint(false, false) ?? exitPoint);
-        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

@@ -20,9 +20,7 @@ public abstract class PromotionAbility : Ability
 
     public abstract int AbilityId { get; }
 
-    public virtual int Cooldown => 0;
-
-    public virtual PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostStamina;
+    public virtual PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostNone;
 
     public override bool CanPerform()
     {
@@ -30,12 +28,6 @@ public abstract class PromotionAbility : Ability
         {
             Msg.Say("classlocked_ability".lang(PromotionString.lang()));
             return false;
-        }
-
-        if (Cooldown > 0)
-        {
-            if (CC.HasCooldown(AbilityId))
-                return false;
         }
 
         return CanPerformExtra() && base.CanPerform();

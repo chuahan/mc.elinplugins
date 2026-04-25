@@ -1,10 +1,16 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using UnityEngine;
 namespace PromotionMod.Stats.Dancer;
 
-public class StancePartnerStyle : BaseStance
+public class StancePartnerStyle : PromotionStance
 {
     [JsonProperty(PropertyName = "N")] public int PartnerUID;
+
+    public override Sprite GetSprite()
+    {
+        return SpriteSheet.Get(source.alias);
+    }
 
     public override void Tick()
     {

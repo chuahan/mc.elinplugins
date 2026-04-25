@@ -6,7 +6,7 @@ public class StLawMode : PromotionAbility
 {
     public override int PromotionId => Constants.FeatSovereign;
     public override string PromotionString => Constants.SovereignId;
-    public override int Cooldown => 0;
+    public int Cooldown => 0;
     public override int AbilityId => Constants.StLawModeId;
 
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostNone;

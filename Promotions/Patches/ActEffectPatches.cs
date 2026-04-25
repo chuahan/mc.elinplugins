@@ -274,6 +274,12 @@ public class ActEffectPatches
 
         for (int i = 0; i < count; i++)
         {
+            if (EClass._zone.CountMinions(caster) >= caster.MaxSummon || caster.c_uidMaster != 0)
+            {
+                caster.Say("summon_ally_fail", caster);
+                return;
+            }
+
             Chara summonedBit = CharaGen.Create(type);
             summonedBit.SetMainElement(element.source.alias, element.Value, true);
             summonedBit.SetSummon(30 + power / 10);
@@ -282,11 +288,9 @@ public class ActEffectPatches
             EClass._zone.AddCard(summonedBit, tp.GetNearestPoint(false, false));
             summonedBit.PlayEffect("teleport");
             summonedBit.MakeMinion(caster);
-            if (buff)
-            {
-                summonedBit.AddCondition<ConProtection>(power);
-                summonedBit.AddCondition<ConBoost>();
-            }
+            if (!buff) continue;
+            summonedBit.AddCondition<ConProtection>(power);
+            summonedBit.AddCondition<ConBoost>();
         }
     }
 }

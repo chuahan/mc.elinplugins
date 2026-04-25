@@ -32,7 +32,20 @@ public class ActSpinSlots : PromotionSpellAbility
         }
     }
 
+    // Remove this after. Doing this so I can test individual procs.
     public override bool Perform()
+    {
+        (List<Chara> friendlies, List<Chara> enemies) = HelperFunctions.GetOrganizedCharasWithinRadius(CC.pos, _effectRadius, CC, true);
+        Chara? enemy = enemies.FirstOrDefault();
+        if (enemy != null)
+        {
+            ProcBusterPunch(enemy, CC);
+        }
+
+        return true;
+    }
+
+    public bool Perform2()
     {
         // Prepare the slots.
         Dice slots = new Dice
@@ -41,9 +54,9 @@ public class ActSpinSlots : PromotionSpellAbility
             sides = 20,
             card = CC
         };
-        
+
         CC.Say("gambler_slots_start".langGame());
-        
+
         int slotType = slots.Roll();
         int slotAction = slots.Roll();
         int slotTarget = slots.Roll();
@@ -60,13 +73,16 @@ public class ActSpinSlots : PromotionSpellAbility
             {
                 case 4: // Refresh
                     CC.Say("gambler_slots_jackpot_refresh".langGame());
-                    foreach (Chara c in friendlies) c.HealAll();
+                    foreach (Chara c in friendlies)
+                    {
+                        c.HealAll();
+                    }
                     break;
                 case 3: // Fireworks
                     CC.Say("gambler_slots_jackpot_fireworks".langGame());
                     if (enemies.Count != 0)
                     {
-                        ProcFireworks(enemies, CC, power);   
+                        ProcFireworks(enemies, CC, power);
                     }
                     else
                     {
@@ -75,7 +91,7 @@ public class ActSpinSlots : PromotionSpellAbility
                     break;
                 case 2: // Beheading Strike
                     CC.Say("gambler_slots_jackpot_behead".langGame());
-                    Chara? enemy = enemies.FirstOrDefault(c => c != CC);
+                    Chara? enemy = enemies.FirstOrDefault();
                     if (enemy != null)
                     {
                         ProcVitalStrike(enemy, CC, power);
@@ -87,15 +103,21 @@ public class ActSpinSlots : PromotionSpellAbility
                     break;
                 case 1: // Full Throttle
                     CC.Say("gambler_slots_jackpot_fullthrottle".langGame());
-                    foreach (Chara c in friendlies) ProcFullThrottle(c, CC, power);
+                    foreach (Chara c in friendlies)
+                    {
+                        ProcFullThrottle(c, CC, power);
+                    }
                     break;
                 case 0: // Mighty Guard
                     CC.Say("gambler_slots_jackpot_mightyguard".langGame());
-                    foreach (Chara c in friendlies) ProcMightyGuard(c, CC, power);
+                    foreach (Chara c in friendlies)
+                    {
+                        ProcMightyGuard(c, CC, power);
+                    }
                     break;
             }
         }
-        
+
         // We should grant equal priority to all three wheel types. So replace slotType with a rnd(3).
         slotType = EClass.rnd(3);
         switch (slotType)
@@ -107,10 +129,14 @@ public class ActSpinSlots : PromotionSpellAbility
                 {
                     case 19: // Fully Heals the target.
                         CC.Say("gambler_slots_fullrecover".langGame());
+                        SayTargetWheel(slotTarget, CC);
                         switch (slotTarget)
                         {
                             case 19: // Targets all allies within range.
-                                foreach (Chara c in friendlies) c.HealHP(c.MaxHP, HealSource.Magic);
+                                foreach (Chara c in friendlies)
+                                {
+                                    c.HealHP(c.MaxHP, HealSource.Magic);
+                                }
                                 break;
                             case >= 7: // Targets self and first ally.
                                 Chara? ally = friendlies.FirstOrDefault(c => c != CC);
@@ -118,20 +144,27 @@ public class ActSpinSlots : PromotionSpellAbility
                                 CC.HealHP(CC.MaxHP, HealSource.Magic);
                                 break;
                             case > 1: // Targets the first enemy within range.
-                                Chara? enemy = enemies.FirstOrDefault(c => c != CC);
+                                Chara? enemy = enemies.FirstOrDefault();
                                 enemy?.HealHP(enemy.MaxHP, HealSource.Magic);
                                 break;
                             default: // Targets all enemies within range.
-                                foreach (Chara c in enemies) c.HealHP(c.MaxHP, HealSource.Magic);
+                                foreach (Chara c in enemies)
+                                {
+                                    c.HealHP(c.MaxHP, HealSource.Magic);
+                                }
                                 break;
                         }
                         break;
                     case >= 16: // Removes Debuffs from the target.
                         CC.Say("gambler_slots_statusrecover".langGame());
+                        SayTargetWheel(slotTarget, CC);
                         switch (slotTarget)
                         {
                             case 19: // Targets all allies within range.
-                                foreach (Chara c in friendlies) PurgeDebuff(c, power);
+                                foreach (Chara c in friendlies)
+                                {
+                                    PurgeDebuff(c, power);
+                                }
                                 break;
                             case >= 7: // Targets self and first ally.
                                 Chara? ally = friendlies.FirstOrDefault(c => c != CC);
@@ -139,20 +172,27 @@ public class ActSpinSlots : PromotionSpellAbility
                                 PurgeDebuff(CC, power);
                                 break;
                             case > 1: // Targets the first enemy within range.
-                                Chara? enemy = enemies.FirstOrDefault(c => c != CC);
+                                Chara? enemy = enemies.FirstOrDefault();
                                 if (enemy != null) PurgeDebuff(enemy, power);
                                 break;
                             default: // Targets all enemies within range.
-                                foreach (Chara c in enemies) PurgeDebuff(c, power);
+                                foreach (Chara c in enemies)
+                                {
+                                    PurgeDebuff(c, power);
+                                }
                                 break;
                         }
                         break;
                     case >= 11: // Grants random Buff.
                         CC.Say("gambler_slots_buff".langGame());
+                        SayTargetWheel(slotTarget, CC);
                         switch (slotTarget)
                         {
                             case 19: // Targets all allies within range.
-                                foreach (Chara c in friendlies) AddRandomBuff(c, CC, power);
+                                foreach (Chara c in friendlies)
+                                {
+                                    AddRandomBuff(c, CC, power);
+                                }
                                 break;
                             case >= 7: // Targets self and first ally.
                                 Chara? ally = friendlies.FirstOrDefault(c => c != CC);
@@ -160,23 +200,30 @@ public class ActSpinSlots : PromotionSpellAbility
                                 AddRandomBuff(CC, CC, power);
                                 break;
                             case > 1: // Targets the first enemy within range.
-                                Chara? enemy = enemies.FirstOrDefault(c => c != CC);
+                                Chara? enemy = enemies.FirstOrDefault();
                                 if (enemy != null) AddRandomBuff(enemy, CC, power);
                                 break;
                             default: // Targets all enemies within range.
-                                foreach (Chara c in enemies) AddRandomBuff(c, CC, power);
+                                foreach (Chara c in enemies)
+                                {
+                                    AddRandomBuff(c, CC, power);
+                                }
                                 break;
                         }
                         break;
                     case >= 7: // Grants random Debuff.
                         CC.Say("gambler_slots_debuff".langGame());
+                        SayTargetWheel(slotTarget, CC);
                         switch (slotTarget)
                         {
                             case 19: // Targets all enemies within range.
-                                foreach (Chara c in enemies) AddRandomBuff(c, CC, power);
+                                foreach (Chara c in enemies)
+                                {
+                                    AddRandomBuff(c, CC, power);
+                                }
                                 break;
                             case > 7: // Targets the first enemy within range.
-                                Chara? enemy = enemies.FirstOrDefault(c => c != CC);
+                                Chara? enemy = enemies.FirstOrDefault();
                                 if (enemy != null) AddRandomDebuff(enemy, CC, power);
                                 break;
                             case > 1: // Targets the first ally within range and self.
@@ -185,16 +232,23 @@ public class ActSpinSlots : PromotionSpellAbility
                                 AddRandomDebuff(CC, CC, power);
                                 break;
                             default: // Targets all allies within range.
-                                foreach (Chara c in friendlies) AddRandomDebuff(c, CC, power);
+                                foreach (Chara c in friendlies)
+                                {
+                                    AddRandomDebuff(c, CC, power);
+                                }
                                 break;
                         }
                         break;
                     default: // Restores 25% HP to the target.
                         CC.Say("gambler_slots_minorheal".langGame());
+                        SayTargetWheel(slotTarget, CC);
                         switch (slotTarget)
                         {
                             case 19: // Targets all allies within range.
-                                foreach (Chara c in friendlies) c.HealHP((int)(c.MaxHP * 0.25F), HealSource.Magic);
+                                foreach (Chara c in friendlies)
+                                {
+                                    c.HealHP((int)(c.MaxHP * 0.25F), HealSource.Magic);
+                                }
                                 break;
                             case >= 7: // Targets self and first ally.
                                 Chara? ally = friendlies.FirstOrDefault(c => c != CC);
@@ -202,13 +256,17 @@ public class ActSpinSlots : PromotionSpellAbility
                                 CC.HealHP((int)(CC.MaxHP * 0.25F), HealSource.Magic);
                                 break;
                             case > 1: // Targets the first enemy within range.
-                                Chara? enemy = enemies.FirstOrDefault(c => c != CC);
+                                Chara? enemy = enemies.FirstOrDefault();
                                 enemy?.HealHP((int)(enemy.MaxHP * 0.25F), HealSource.Magic);
                                 break;
                             default: // Targets all enemies within range.
-                                foreach (Chara c in enemies) c.HealHP((int)(c.MaxHP * 0.25F), HealSource.Magic);
+                                foreach (Chara c in enemies)
+                                {
+                                    c.HealHP((int)(c.MaxHP * 0.25F), HealSource.Magic);
+                                }
                                 break;
-                        };
+                        }
+                        ;
                         break;
                 }
                 break;
@@ -218,13 +276,17 @@ public class ActSpinSlots : PromotionSpellAbility
                 {
                     case 19: // Starfall - Drop a Magic Meteor on the target that results in a magic ball detonation on location.
                         CC.Say("gambler_slots_starfall".langGame());
+                        SayTargetWheel(slotTarget, CC);
                         switch (slotTarget)
                         {
                             case 19: // Targets all enemies within range.
-                                foreach (Chara c in enemies) ProcStarfall(c, CC, power);
+                                foreach (Chara c in enemies)
+                                {
+                                    ProcStarfall(c, CC, power);
+                                }
                                 break;
                             case > 7: // Targets the first enemy within range.
-                                Chara? enemy = enemies.FirstOrDefault(c => c != CC);
+                                Chara? enemy = enemies.FirstOrDefault();
                                 if (enemy != null) ProcStarfall(enemy, CC, power);
                                 break;
                             case > 1: // Targets the first ally within range.
@@ -232,19 +294,26 @@ public class ActSpinSlots : PromotionSpellAbility
                                 if (ally != null) ProcStarfall(ally, CC, power, true);
                                 break;
                             default: // Targets all allies within range.
-                                foreach (Chara c in friendlies) ProcStarfall(c, CC, power, true);
+                                foreach (Chara c in friendlies)
+                                {
+                                    ProcStarfall(c, CC, power, true);
+                                }
                                 break;
                         }
                         break;
                     case >= 16: // Lunar Sunder - Magic Sword and inflict Magic Break.
                         CC.Say("gambler_slots_magicsunder".langGame());
+                        SayTargetWheel(slotTarget, CC);
                         switch (slotTarget)
                         {
                             case 19: // Targets all enemies within range.
-                                foreach (Chara c in enemies) ProcStarfall(c, CC, power);
+                                foreach (Chara c in enemies)
+                                {
+                                    ProcStarfall(c, CC, power);
+                                }
                                 break;
                             case > 7: // Targets the first enemy within range.
-                                Chara? enemy = enemies.FirstOrDefault(c => c != CC);
+                                Chara? enemy = enemies.FirstOrDefault();
                                 if (enemy != null) ProcStarfall(enemy, CC, power);
                                 break;
                             case > 1: // Targets the first ally within range.
@@ -252,19 +321,26 @@ public class ActSpinSlots : PromotionSpellAbility
                                 if (ally != null) ProcStarfall(ally, CC, power, true);
                                 break;
                             default: // Targets all allies within range.
-                                foreach (Chara c in friendlies) ProcStarfall(c, CC, power, true);
+                                foreach (Chara c in friendlies)
+                                {
+                                    ProcStarfall(c, CC, power, true);
+                                }
                                 break;
                         }
                         break;
                     case >= 11: // Yin Yang - Detonates a Dark Ball followed by Holy Ball on the target.
                         CC.Say("gambler_slots_yinyang".langGame());
+                        SayTargetWheel(slotTarget, CC);
                         switch (slotTarget)
                         {
                             case 19: // Targets all enemies within range.
-                                foreach (Chara c in enemies) ProcNightAndDay(c, CC, power);
+                                foreach (Chara c in enemies)
+                                {
+                                    ProcNightAndDay(c, CC, power);
+                                }
                                 break;
                             case > 7: // Targets the first enemy within range.
-                                Chara? enemy = enemies.FirstOrDefault(c => c != CC);
+                                Chara? enemy = enemies.FirstOrDefault();
                                 if (enemy != null) ProcNightAndDay(enemy, CC, power);
                                 break;
                             case > 1: // Targets the first ally within range.
@@ -272,19 +348,26 @@ public class ActSpinSlots : PromotionSpellAbility
                                 if (ally != null) ProcNightAndDay(ally, CC, power, true);
                                 break;
                             default: // Targets all allies within range.
-                                foreach (Chara c in friendlies) ProcNightAndDay(c, CC, power, true);
+                                foreach (Chara c in friendlies)
+                                {
+                                    ProcNightAndDay(c, CC, power, true);
+                                }
                                 break;
                         }
                         break;
                     case >= 7: // Elemental Delta Breaker - Fire three bolts, Fire, Ice, and Lightning.
                         CC.Say("gambler_slots_deltabreak".langGame());
+                        SayTargetWheel(slotTarget, CC);
                         switch (slotTarget)
                         {
                             case 19: // Targets all enemies within range.
-                                foreach (Chara c in enemies) ProcDeltaBreaker(c, CC, power);
+                                foreach (Chara c in enemies)
+                                {
+                                    ProcDeltaBreaker(c, CC, power);
+                                }
                                 break;
                             case > 7: // Targets the first enemy within range.
-                                Chara? enemy = enemies.FirstOrDefault(c => c != CC);
+                                Chara? enemy = enemies.FirstOrDefault();
                                 if (enemy != null) ProcDeltaBreaker(enemy, CC, power);
                                 break;
                             case > 1: // Targets the first ally within range.
@@ -292,19 +375,26 @@ public class ActSpinSlots : PromotionSpellAbility
                                 if (ally != null) ProcDeltaBreaker(ally, CC, power);
                                 break;
                             default: // Targets all allies within range.
-                                foreach (Chara c in friendlies) ProcDeltaBreaker(c, CC, power);
+                                foreach (Chara c in friendlies)
+                                {
+                                    ProcDeltaBreaker(c, CC, power);
+                                }
                                 break;
                         }
                         break;
                     default: // Just cast Magic Hand on the target - Random Element.
                         CC.Say("gambler_slots_magichand".langGame());
+                        SayTargetWheel(slotTarget, CC);
                         switch (slotTarget)
                         {
                             case 19: // Targets all enemies within range.
-                                foreach (Chara c in enemies) ProcMagicHand(c, CC, power);
+                                foreach (Chara c in enemies)
+                                {
+                                    ProcMagicHand(c, CC, power);
+                                }
                                 break;
                             case > 7: // Targets the first enemy within range.
-                                Chara? enemy = enemies.FirstOrDefault(c => c != CC);
+                                Chara? enemy = enemies.FirstOrDefault();
                                 if (enemy != null) ProcMagicHand(enemy, CC, power);
                                 break;
                             case > 1: // Targets the first ally within range.
@@ -312,7 +402,10 @@ public class ActSpinSlots : PromotionSpellAbility
                                 if (ally != null) ProcMagicHand(ally, CC, power);
                                 break;
                             default: // Targets all allies within range.
-                                foreach (Chara c in friendlies) ProcMagicHand(c, CC, power);
+                                foreach (Chara c in friendlies)
+                                {
+                                    ProcMagicHand(c, CC, power);
+                                }
                                 break;
                         }
                         break;
@@ -324,13 +417,17 @@ public class ActSpinSlots : PromotionSpellAbility
                 {
                     case 19: // Sunsetting Slash - Void Damage Strike that cuts the target's HP in half.
                         CC.Say("gambler_slots_sunset".langGame());
+                        SayTargetWheel(slotTarget, CC);
                         switch (slotTarget)
                         {
                             case 19: // Targets all enemies within range.
-                                foreach (Chara c in enemies) ProcSunsettingSlash(c, CC);
+                                foreach (Chara c in enemies)
+                                {
+                                    ProcSunsettingSlash(c, CC);
+                                }
                                 break;
                             case > 7: // Targets the first enemy within range.
-                                Chara? enemy = enemies.FirstOrDefault(c => c != CC);
+                                Chara? enemy = enemies.FirstOrDefault();
                                 if (enemy != null) ProcSunsettingSlash(enemy, CC);
                                 break;
                             case > 1: // Targets the first ally within range.
@@ -338,19 +435,26 @@ public class ActSpinSlots : PromotionSpellAbility
                                 if (ally != null) ProcSunsettingSlash(ally, CC);
                                 break;
                             default: // Targets all allies within range.
-                                foreach (Chara c in friendlies) ProcSunsettingSlash(c, CC);
+                                foreach (Chara c in friendlies)
+                                {
+                                    ProcSunsettingSlash(c, CC);
+                                }
                                 break;
                         }
                         break;
                     case >= 16: // Scattering Strikes - Multi strike melee attack.
                         CC.Say("gambler_slots_scatterstrike".langGame());
+                        SayTargetWheel(slotTarget, CC);
                         switch (slotTarget)
                         {
                             case 19: // Targets all enemies within range.
-                                foreach (Chara c in enemies) ProcScatteringStrikes(c, CC);
+                                foreach (Chara c in enemies)
+                                {
+                                    ProcScatteringStrikes(c, CC);
+                                }
                                 break;
                             case > 7: // Targets the first enemy within range.
-                                Chara? enemy = enemies.FirstOrDefault(c => c != CC);
+                                Chara? enemy = enemies.FirstOrDefault();
                                 if (enemy != null) ProcScatteringStrikes(enemy, CC);
                                 break;
                             case > 1: // Targets the first ally within range.
@@ -358,19 +462,26 @@ public class ActSpinSlots : PromotionSpellAbility
                                 if (ally != null) ProcScatteringStrikes(ally, CC);
                                 break;
                             default: // Targets all allies within range.
-                                foreach (Chara c in friendlies) ProcScatteringStrikes(c, CC);
+                                foreach (Chara c in friendlies)
+                                {
+                                    ProcScatteringStrikes(c, CC);
+                                }
                                 break;
                         }
                         break;
                     case >= 11: // Buster Punch - Increased damage Physical attack that inflicts massive knockback.
                         CC.Say("gambler_slots_busterpunch".langGame());
+                        SayTargetWheel(slotTarget, CC);
                         switch (slotTarget)
                         {
                             case 19: // Targets all enemies within range.
-                                foreach (Chara c in enemies) ProcBusterPunch(c, CC);
+                                foreach (Chara c in enemies)
+                                {
+                                    ProcBusterPunch(c, CC);
+                                }
                                 break;
                             case > 7: // Targets the first enemy within range.
-                                Chara? enemy = enemies.FirstOrDefault(c => c != CC);
+                                Chara? enemy = enemies.FirstOrDefault();
                                 if (enemy != null) ProcBusterPunch(enemy, CC);
                                 break;
                             case > 1: // Targets the first ally within range.
@@ -378,19 +489,26 @@ public class ActSpinSlots : PromotionSpellAbility
                                 if (ally != null) ProcBusterPunch(ally, CC);
                                 break;
                             default: // Targets all allies within range.
-                                foreach (Chara c in friendlies) ProcBusterPunch(c, CC);
+                                foreach (Chara c in friendlies)
+                                {
+                                    ProcBusterPunch(c, CC);
+                                }
                                 break;
                         }
                         break;
                     case >= 7: // Armor Cracker - Physical attack that inflicts Armor Break.
                         CC.Say("gambler_slots_armorcracker".langGame());
+                        SayTargetWheel(slotTarget, CC);
                         switch (slotTarget)
                         {
                             case 19: // Targets all enemies within range.
-                                foreach (Chara c in enemies) ProcArmorCracker(c, CC, power);
+                                foreach (Chara c in enemies)
+                                {
+                                    ProcArmorCracker(c, CC, power);
+                                }
                                 break;
                             case > 7: // Targets the first enemy within range.
-                                Chara? enemy = enemies.FirstOrDefault(c => c != CC);
+                                Chara? enemy = enemies.FirstOrDefault();
                                 if (enemy != null) ProcArmorCracker(enemy, CC, power);
                                 break;
                             case > 1: // Targets the first ally within range.
@@ -398,19 +516,26 @@ public class ActSpinSlots : PromotionSpellAbility
                                 if (ally != null) ProcArmorCracker(ally, CC, power);
                                 break;
                             default: // Targets all allies within range.
-                                foreach (Chara c in friendlies) ProcArmorCracker(c, CC, power);
+                                foreach (Chara c in friendlies)
+                                {
+                                    ProcArmorCracker(c, CC, power);
+                                }
                                 break;
                         }
                         break;
                     default: // Melee Attack - Basic ass melee attack.
                         CC.Say("gambler_slots_basicmelee".langGame());
+                        SayTargetWheel(slotTarget, CC);
                         switch (slotTarget)
                         {
                             case 19: // Targets all enemies within range.
-                                foreach (Chara c in enemies) ProcMeleeStrike(c, CC);
+                                foreach (Chara c in enemies)
+                                {
+                                    ProcMeleeStrike(c, CC);
+                                }
                                 break;
                             case > 7: // Targets the first enemy within range.
-                                Chara? enemy = enemies.FirstOrDefault(c => c != CC);
+                                Chara? enemy = enemies.FirstOrDefault();
                                 if (enemy != null) ProcMeleeStrike(enemy, CC);
                                 break;
                             case > 1: // Targets the first ally within range.
@@ -418,33 +543,19 @@ public class ActSpinSlots : PromotionSpellAbility
                                 if (ally != null) ProcMeleeStrike(ally, CC);
                                 break;
                             default: // Targets all allies within range.
-                                foreach (Chara c in friendlies) ProcMeleeStrike(c, CC);
+                                foreach (Chara c in friendlies)
+                                {
+                                    ProcMeleeStrike(c, CC);
+                                }
                                 break;
                         }
                         break;
                 }
                 break;
         }
-        
-        // Say the Slot Targetting Message.
-        switch (slotTarget)
-        {
-            case 19:
-                CC.Say("gambler_slots_targeting_bigwin".langGame());
-                break;
-            case >= 7:
-                CC.Say("gambler_slots_targeting_win".langGame());
-                break;
-            case > 1:
-                CC.Say("gambler_slots_targeting_lose".langGame());
-                break;
-            default:
-                CC.Say("gambler_slots_targeting_biglose".langGame());
-                break;
-        }
         return true;
     }
-    
+
     public void PurgeDebuff(Chara target, int power)
     {
         // Remove a random debuff.
@@ -478,7 +589,7 @@ public class ActSpinSlots : PromotionSpellAbility
                 target.AddCondition<ConMagicReflect>(power);
                 break;
             case 3:
-                ActEffect.ProcAt(EffectId.BuffStats, power, BlessedState.Normal, Act.CC, target, target.pos, false, new ActRef
+                ActEffect.ProcAt(EffectId.BuffStats, power, BlessedState.Normal, CC, target, target.pos, false, new ActRef
                 {
                     origin = caster.Chara,
                     n1 = "SPD"
@@ -549,7 +660,7 @@ public class ActSpinSlots : PromotionSpellAbility
                         act = this
                     });
                 }
-                
+
                 // Mark Target as hit.
                 targetsHit.Add(target);
             }
@@ -562,12 +673,15 @@ public class ActSpinSlots : PromotionSpellAbility
             });
         }
     }
-    
+
     public void ProcLunarSunder(Chara target, Chara caster, int power)
     {
         target.PlayEffect("hit_slash");
         target.PlaySound("ab_magicsword");
-        ActEffect.DamageEle(CC, EffectId.Sword, power, Element.Create(Constants.EleMagic, power / 10), new List<Point> {target.pos}, new ActRef
+        ActEffect.DamageEle(CC, EffectId.Sword, power, Element.Create(Constants.EleMagic, power / 10), new List<Point>
+        {
+            target.pos
+        }, new ActRef
         {
             act = this
         });
@@ -595,7 +709,7 @@ public class ActSpinSlots : PromotionSpellAbility
                         act = this
                     });
                 }
-                
+
                 // Mark Target as hit.
                 targetsHit.Add(target);
             }
@@ -607,7 +721,7 @@ public class ActSpinSlots : PromotionSpellAbility
                 spellEffect.Play(tile, 0f, tile);
             });
         }
-        
+
         // Holy Ball on target.
         Effect spellEffect2 = Effect.Get("Element/ball_Holy");
         List<Chara> targetsHit2 = new List<Chara>();
@@ -627,7 +741,7 @@ public class ActSpinSlots : PromotionSpellAbility
                         act = this
                     });
                 }
-                
+
                 // Mark Target as hit.
                 targetsHit2.Add(target);
             }
@@ -677,7 +791,7 @@ public class ActSpinSlots : PromotionSpellAbility
 
     public void ProcScatteringStrikes(Chara target, Chara caster)
     {
-        int hitCount = 4 + EClass.rnd(6) + Act.CC.Evalue(FEAT.featComat);
+        int hitCount = 4 + EClass.rnd(6) + CC.Evalue(FEAT.featComat);
         for (int i = 0; i < hitCount; i++)
         {
             if (!caster.IsAliveInCurrentZone || !target.IsAliveInCurrentZone)
@@ -685,7 +799,7 @@ public class ActSpinSlots : PromotionSpellAbility
                 break;
             }
             bool anime = i % 4 == 0;
-            TweenUtil.Delay((float)i * 0.07f, delegate
+            TweenUtil.Delay(i * 0.07f, delegate
             {
                 if (anime)
                 {
@@ -700,21 +814,24 @@ public class ActSpinSlots : PromotionSpellAbility
     public void ProcBusterPunch(Chara target, Chara caster)
     {
         new ActMeleeRangeless().Perform(caster, target);
+
+        if (!target.IsAliveInCurrentZone) return;
+
         List<Point> linePath = ListPath(caster.pos, target.pos);
         Point farthestPoint = linePath.Last();
-        
+
         // Damage characters along the path of the launch
         for (int i = 0; i < linePath.Count; i++)
         {
             Point pathPoint = linePath[i];
-            Effect.Get("telekinesis2").Play(0.1f * (float)i, pathPoint);
-            if (pathPoint.Equals(Act.TC.pos) || !pathPoint.HasChara)
+            Effect.Get("telekinesis2").Play(0.1f * i, pathPoint);
+            if (pathPoint.Equals(TC.pos) || !pathPoint.HasChara)
             {
                 continue;
             }
             foreach (Chara collateral in pathPoint.ListCharas())
             {
-                target.Kick(collateral, ignoreSelf: true, karmaLoss: false);
+                target.Kick(collateral, true, false);
                 target.pos.PlayEffect("vanish");
                 if (collateral.isChara || collateral.trait.CanBeAttacked)
                 {
@@ -722,7 +839,7 @@ public class ActSpinSlots : PromotionSpellAbility
                 }
             }
         }
-        target.MoveImmediate(farthestPoint, focus: true, cancelAI: false);
+        target.MoveImmediate(farthestPoint, true, false);
     }
 
     public void DoCollisionDamage(Card target, Chara caster, int distance = 1, int mtp = 100)
@@ -735,18 +852,18 @@ public class ActSpinSlots : PromotionSpellAbility
         }
         damageRoll = damageRoll * mtp / 100;
         caster.DoHostileAction(target);
-        target.DamageHP(damageRoll, 925, 100, AttackSource.Throw, Act.CC);
+        target.DamageHP(damageRoll, 925, 100, AttackSource.Throw, CC);
     }
-    
+
     public List<Point> ListPath(Point start, Point end)
     {
         List<Point> returnList = new List<Point>();
-        List<Point> linePath = EClass._map.ListPointsInLine(start, end, 20, returnOnBlocked: false);
+        List<Point> linePath = _map.ListPointsInLine(start, end, 20, false);
         foreach (Point position in linePath)
         {
             if (!position.Equals(start) && start.Distance(position) <= start.Distance(end) && position.IsInBounds)
             {
-                if (!position.Equals(end) && (position.IsBlocked || (position.HasChara && position.FirstChara.IsMultisize)))
+                if (!position.Equals(end) && (position.IsBlocked || position.HasChara && position.FirstChara.IsMultisize))
                 {
                     break;
                 }
@@ -755,13 +872,13 @@ public class ActSpinSlots : PromotionSpellAbility
         }
         return returnList;
     }
-    
+
     public void ProcArmorCracker(Chara target, Chara caster, int power)
     {
         new ActMeleeRangeless().Perform(caster, target);
         target.AddCondition(SubPoweredCondition.Create(nameof(ConArmorBreak), power, 25));
     }
-    
+
     public void ProcMeleeStrike(Chara target, Chara caster)
     {
         new ActMeleeRangeless().Perform(caster, target);
@@ -772,14 +889,34 @@ public class ActSpinSlots : PromotionSpellAbility
     }
     public void ProcVitalStrike(Chara target, Chara caster, int power)
     {
-        
+
     }
     public void ProcFullThrottle(Chara target, Chara caster, int power)
     {
-        
+
     }
     public void ProcMightyGuard(Chara target, Chara caster, int power)
     {
-        
+
+    }
+
+    public void SayTargetWheel(int slotTarget, Chara caster)
+    {
+        // Say the Slot Targetting Message.
+        switch (slotTarget)
+        {
+            case 19:
+                caster.Say("gambler_slots_targeting_bigwin".langGame());
+                break;
+            case >= 7:
+                caster.Say("gambler_slots_targeting_win".langGame());
+                break;
+            case > 1:
+                caster.Say("gambler_slots_targeting_lose".langGame());
+                break;
+            default:
+                caster.Say("gambler_slots_targeting_biglose".langGame());
+                break;
+        }
     }
 }

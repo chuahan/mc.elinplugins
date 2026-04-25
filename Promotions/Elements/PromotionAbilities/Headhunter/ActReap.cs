@@ -16,9 +16,7 @@ public class ActReap : PromotionCombatAbility
 {
     public override int PromotionId => Constants.FeatHeadhunter;
     public override string PromotionString => Constants.HeadhunterId;
-    public override int Cooldown => 10;
     public override int AbilityId => Constants.ActReapId;
-
     public override int PerformDistance => 2;
 
     public override bool CanPerform()
@@ -67,7 +65,6 @@ public class ActReap : PromotionCombatAbility
             int breakAmount = (int)HelperFunctions.SigmoidScaling(GetPower(CC), 10, 25);
             target.AddCondition(SubPoweredCondition.Create(nameof(ConArmorBreak), GetPower(CC), breakAmount));
         }
-        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

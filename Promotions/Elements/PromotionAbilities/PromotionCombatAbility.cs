@@ -6,7 +6,6 @@ namespace PromotionMod.Elements.PromotionAbilities;
 /// </summary>
 public abstract class PromotionCombatAbility : PromotionAbility
 {
-
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostStamina;
 
     public override bool CanPerform()

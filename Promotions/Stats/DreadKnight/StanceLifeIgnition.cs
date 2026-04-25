@@ -2,7 +2,7 @@ using PromotionMod.Common;
 using UnityEngine;
 namespace PromotionMod.Stats.DreadKnight;
 
-public class StanceLifeIgnition : BaseStance
+public class StanceLifeIgnition : PromotionStance
 {
     public override bool TimeBased => true;
 

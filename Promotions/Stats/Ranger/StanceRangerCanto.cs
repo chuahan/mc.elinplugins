@@ -1,7 +1,7 @@
 using UnityEngine;
 namespace PromotionMod.Stats.Ranger;
 
-public class StanceRangerCanto : BaseStance
+public class StanceRangerCanto : PromotionStance
 {
     public override bool TimeBased => true;
 

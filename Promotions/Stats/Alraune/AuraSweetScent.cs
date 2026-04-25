@@ -9,7 +9,6 @@ namespace PromotionMod.Elements.Alraune;
 /// </summary>
 public class AuraSweetScent : ConAura
 {
-
     public override string TextDuration => "";
 
     public override bool CanManualRemove => false;

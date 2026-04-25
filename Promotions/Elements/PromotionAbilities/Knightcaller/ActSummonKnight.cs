@@ -15,8 +15,7 @@ public class ActSummonKnight : PromotionSpellAbility
 
     public override bool CanPerformExtra()
     {
-        if (CC.currentZone.CountMinions(CC) >= CC.MaxSummon) return false;
-        return base.CanPerform();
+        return CC.currentZone.CountMinions(CC) < CC.MaxSummon;
     }
 
     public override bool Perform()

@@ -9,7 +9,7 @@ public class ActDivineFist : PromotionCombatAbility
 {
     public override int PromotionId => Constants.FeatWarCleric;
     public override string PromotionString => Constants.WarClericId;
-    public override int Cooldown => 5;
+    public int Cooldown => 5;
     public override int AbilityId => Constants.ActDivineFistId;
 
     public override Cost GetCost(Chara c)

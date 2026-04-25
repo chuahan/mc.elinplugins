@@ -29,7 +29,7 @@ public class ElementPatches
     [HarmonyPatch("WriteNote")]
     [HarmonyPatch(new Type[]
     {
-    })] // no parameters
+    })]
     [HarmonyPostfix]
     internal static void WriteNote_Necromancer_Druid_Patches(MethodBase __originalMethod, Element.BonusInfo __instance)
     {

@@ -97,7 +97,12 @@ public class CardDamageHPPatches
                 // Gambler - Feeling Lucky will change the damage dealt or taken. -10 to +10.
                 if (originConditions.Contains(typeof(StanceFeelingLucky)))
                 {
-                    Dice luckyDice = new Dice { num = 1, sides = 20, card = originChara };
+                    Dice luckyDice = new Dice
+                    {
+                        num = 1,
+                        sides = 20,
+                        card = originChara
+                    };
                     int diceRoll = luckyDice.Roll() - 9;
                     float damageMulti = (10 + diceRoll) / 10F;
                     dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, damageMulti);
@@ -105,12 +110,17 @@ public class CardDamageHPPatches
 
                 if (targetConditions.Contains(typeof(StanceFeelingLucky)))
                 {
-                    Dice luckyDice = new Dice { num = 1, sides = 20, card = target };
+                    Dice luckyDice = new Dice
+                    {
+                        num = 1,
+                        sides = 20,
+                        card = target
+                    };
                     int diceRoll = luckyDice.Roll() - 9;
                     float damageMulti = (10 - diceRoll) / 10F;
                     dmg = CardDamageHPPatches.ApplyDamageMultiplier(dmg, damageMulti);
                 }
-                
+
                 // Hermits - Opportunist - 10% damage increase if the target is afflicted with specific debuffs. Spells can't crit though.
                 if (targetConditions.Contains(typeof(ConParalyze)) ||
                     targetConditions.Contains(typeof(ConBleed)) ||
@@ -331,7 +341,7 @@ public class CardDamageHPPatches
             }
 
             // Rune Knight - Runic Guard is removed and Elemental Attunement is added. All damage is absorbed.
-            if (targetConditions.Contains(typeof(ConRunicGuard)) && ele != Constants.EleVoid)
+            if (targetConditions.Contains(typeof(ConRunicGuard)) && ele != Constants.EleVoid && ele != 0)
             {
                 target.RemoveCondition<ConRunicGuard>();
                 ConElementalAttunement attunement = (ConElementalAttunement)target.AddCondition<ConElementalAttunement>();

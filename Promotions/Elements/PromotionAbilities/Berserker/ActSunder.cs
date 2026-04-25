@@ -8,8 +8,6 @@ public class ActSunder : PromotionCombatAbility
     public float HealthCost = 0.25F;
     public override int PromotionId => Constants.FeatBerserker;
     public override string PromotionString => Constants.BerserkerId;
-
-    public override int Cooldown => 10;
     public override int AbilityId => Constants.ActSunderId;
 
 
@@ -49,7 +47,6 @@ public class ActSunder : PromotionCombatAbility
 
         TC.DamageHP(damage, AttackSource.Melee, CC);
         CC.HealHP(damage, HealSource.Magic);
-        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

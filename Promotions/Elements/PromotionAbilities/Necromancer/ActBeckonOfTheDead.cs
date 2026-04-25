@@ -1,6 +1,6 @@
 using PromotionMod.Common;
 using PromotionMod.Stats.Necromancer;
-namespace PromotionMod.Elements.PromotionAbilities;
+namespace PromotionMod.Elements.PromotionAbilities.Necromancer;
 
 public class ActBeckonOfTheDead : PromotionSpellAbility
 {
@@ -10,15 +10,7 @@ public class ActBeckonOfTheDead : PromotionSpellAbility
 
     public override bool CanPerformExtra()
     {
-        if (!TC.isChara || !TC.Chara.IsHostile(CC)) return false;
-        return true;
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
+        return TC.isChara && TC.Chara.IsHostile(CC);
     }
 
     public override bool Perform()

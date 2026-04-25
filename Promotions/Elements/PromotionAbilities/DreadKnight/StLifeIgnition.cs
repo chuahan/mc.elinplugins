@@ -24,7 +24,7 @@ public class StLifeIgnition : PromotionAbility
             }
         }
 
-        return base.CanPerform();
+        return true;
     }
 
     public override bool Perform()

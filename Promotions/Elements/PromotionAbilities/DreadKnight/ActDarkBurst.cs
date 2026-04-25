@@ -20,7 +20,7 @@ public class ActDarkBurst : PromotionSpellAbility
             return false;
         }
 
-        return base.CanPerform();
+        return true;
     }
 
     public int GetHPCost(Chara c)

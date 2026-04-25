@@ -5,28 +5,13 @@ namespace PromotionMod.Elements.PromotionAbilities.Gambler;
 public class ActCardThrow : PromotionCombatAbility
 {
 
+
     private float _effectRadius = 5F;
     public override int PromotionId => Constants.FeatGambler;
     public override string PromotionString => Constants.GamblerId;
-    public override int Cooldown => 0;
     public override int AbilityId => Constants.ActCardThrowId;
-
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
     public override bool ShowMapHighlight => true;
-
-    public override bool CanPerformExtra()
-    {
-        bool basePerform = base.CanPerform();
-
-        return basePerform;
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
 
     public override bool Perform()
     {
@@ -96,7 +81,7 @@ public class ActCardThrow : PromotionCombatAbility
             {
                 // Bust
                 // Throws a single card made out of paper with no other effects.
-                CC.Say("gambler_card_bust".langGame(handValue.ToString()));
+                CC.Say("gambler_card_bust".langGame(CC.NameSimple, handValue.ToString()));
                 throwingCard.ChangeMaterial("paper");
                 CC.ranged = throwingCard;
                 ActThrow.Throw(CC, TC.pos, TC, throwingCard);
@@ -112,19 +97,19 @@ public class ActCardThrow : PromotionCombatAbility
         if (handSize == 5)
         {
             // Add 5 to the hand value before multiplying.
-            CC.Say("gambler_card_fivecardcharlie".langGame());
+            CC.Say("gambler_card_fivecardcharlie".langGame(CC.NameSimple));
             throwingCard.ChangeWeight((handValue + 5) * 20);
             throwingCard.ChangeMaterial("gold");
             ActThrow.Throw(CC, TC.pos, TC, throwingCard);
         }
-        
+
         // Blackjack (only with 2 cards)
         if (handSize == 2 && handValue == 21)
         {
             // Blackjack
             // Creates 2 ether cards, one with convertImpact and the other with one randomly out of convertFire/Cold/Lightning
             // Throw them at the enemy.
-            CC.Say("gambler_card_blackjack".langGame());
+            CC.Say("gambler_card_blackjack".langGame(CC.NameSimple));
             throwingCard.ChangeMaterial("ether");
             throwingCard.ModNum(1, false);
 
@@ -147,7 +132,7 @@ public class ActCardThrow : PromotionCombatAbility
         }
 
         // Stand 17–21
-        CC.Say("gambler_card_normal".langGame(handValue.ToString()));
+        CC.Say("gambler_card_normal".langGame(CC.NameSimple, handValue.ToString()));
         throwingCard.ChangeMaterial("steel");
         ActThrow.Throw(CC, TC.pos, TC, throwingCard);
         return true;

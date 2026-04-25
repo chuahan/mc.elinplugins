@@ -9,7 +9,6 @@ public class ActWildPirouette : PromotionCombatAbility
     private float _effectRadius = 5F;
     public override int PromotionId => Constants.FeatDancer;
     public override string PromotionString => Constants.DancerId;
-    public override int Cooldown => 5;
     public override int AbilityId => Constants.ActWildPirouetteId;
 
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
@@ -93,9 +92,6 @@ public class ActWildPirouette : PromotionCombatAbility
                 }
             }
         }
-
-        CC.AddCooldown(AbilityId, Cooldown);
-
         return true;
     }
 }

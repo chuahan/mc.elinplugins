@@ -22,7 +22,7 @@ public class ActSowWrathSeeds : PromotionSpellAbility
     {
         if (CC.currentZone.CountMinions(CC) >= CC.MaxSummon) return false;
         if (!TP.IsValid || TP.HasChara) return false;
-        return base.CanPerform();
+        return true;
     }
 
     public override void OnMarkMapHighlights()
@@ -39,7 +39,7 @@ public class ActSowWrathSeeds : PromotionSpellAbility
         foreach (Point item in list)
         {
             // These are slightly different. The target point is the summoning spot. The surrounding highlight is the area of effect for the aura.
-            if (object.Equals(scene.mouseTarget.pos, item))
+            if (Equals(scene.mouseTarget.pos, item))
             {
                 item.SetHighlight(7);
             }

@@ -10,7 +10,6 @@ public class ActMarkForDeath : PromotionCombatAbility
 {
     public override int PromotionId => Constants.FeatHermit;
     public override string PromotionString => Constants.HermitId;
-    public override int Cooldown => 5;
     public override int AbilityId => Constants.ActMarkForDeathId;
 
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
@@ -18,7 +17,6 @@ public class ActMarkForDeath : PromotionCombatAbility
     public override bool Perform()
     {
         TC.Chara.AddCondition<ConMarkedForDeath>(force: true);
-        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

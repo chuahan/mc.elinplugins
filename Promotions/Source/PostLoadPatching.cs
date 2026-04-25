@@ -27,6 +27,9 @@ internal class PostLoadPatching : EClass
                     chara.SetFeat(promotionId);
                 }
             }
+
+            // For testing purposes, activate Gambler for me cause Evie isn't fully implemented.
+            //EClass.pc.SetFlagValue(Constants.GamblerPromotionUnlockedFlag, 1);
         }
     }
 

@@ -2,25 +2,12 @@ using PromotionMod.Common;
 using PromotionMod.Stats.Spellblade;
 namespace PromotionMod.Elements.PromotionAbilities.Spellblade;
 
-public class ActSiphoningBlade : ActMelee
+public class ActSiphoningBlade : PromotionCombatAbility
 {
-    public override bool CanPerform()
-    {
-        if (!CC.MatchesPromotion(Constants.FeatSpellblade))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.SpellbladeId.lang()));
-            return false;
-        }
-        if (CC.HasCooldown(Constants.ActSiphoningBladeId)) return false;
-        return base.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
+    public override int PromotionId => Constants.FeatSpellblade;
+    public override string PromotionString => Constants.SpellbladeId;
+    public override int AbilityId => Constants.ActSiphoningBladeId;
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
     public override bool Perform()
     {
@@ -28,8 +15,7 @@ public class ActSiphoningBlade : ActMelee
         // Kill it right after completion.
         TC.PlayEffect("curse");
         Condition siphon = CC.AddCondition<ConSiphoningBlade>();
-        Attack();
-        CC.AddCooldown(Constants.ActSiphoningBladeId, 5);
+        new ActMelee().Perform(CC, TC);
         siphon.Kill();
         return true;
     }

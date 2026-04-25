@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Meta>
+  <title>Building Tools</title>
+  <id>han.buildtools.mod</id>
+  <author>Han</author>
+  <loadPriority>10</loadPriority>
+  <description>
+    Just a mod to help me make modded maps.
+  </description>
+  <tags>Integration, Gameplay</tags>
+  <version>0.23.252</version>
+</Meta>

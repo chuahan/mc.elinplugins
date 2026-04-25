@@ -17,7 +17,7 @@ public class ActDarkBarrier : PromotionSpellAbility
             return false;
         }
 
-        return base.CanPerform();
+        return true;
     }
 
     public override bool Perform()

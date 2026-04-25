@@ -7,9 +7,8 @@ public class ActHolyBanner : PromotionSpellAbility
 {
     public override int PromotionId => Constants.FeatHolyKnight;
     public override string PromotionString => Constants.HolyKnightId;
-    public override int Cooldown => 0;
     public override int AbilityId => Constants.ActHolyBannerId;
-    
+
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
     public override bool CanPerformExtra()

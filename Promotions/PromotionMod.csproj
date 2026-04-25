@@ -166,6 +166,8 @@
         <Compile Include="Elements\PromotionAbilities\Gambler\ActDiceStrike.cs"/>
         <Compile Include="Elements\PromotionAbilities\Gambler\ActLuckyCat.cs"/>
         <Compile Include="Elements\PromotionAbilities\Gambler\ActMeleeDiceStrike.cs"/>
+        <Compile Include="Elements\PromotionAbilities\Gambler\ActMeleeRangeless.cs"/>
+        <Compile Include="Elements\PromotionAbilities\Gambler\ActMeleeScatteringStrikes.cs"/>
         <Compile Include="Elements\PromotionAbilities\Gambler\ActSpinSlots.cs"/>
         <Compile Include="Elements\PromotionAbilities\Gambler\StFeelingLucky.cs"/>
         <Compile Include="Elements\PromotionAbilities\Harbinger\ActAccursedTouch.cs"/>
@@ -402,6 +404,7 @@
         <Compile Include="Stats\ConAttackResolveCondition.cs"/>
         <Compile Include="Stats\ConAura.cs"/>
         <Compile Include="Stats\ConCritBoost.cs"/>
+        <Compile Include="Stats\ConDebilitated.cs"/>
         <Compile Include="Stats\ConDisable.cs"/>
         <Compile Include="Stats\ConGreaterRegen.cs"/>
         <Compile Include="Stats\ConProtection.cs"/>
@@ -433,6 +436,8 @@
         <Compile Include="Stats\Elementalist\ConElementalFury.cs"/>
         <Compile Include="Stats\Elementalist\ConElementalist.cs"/>
         <Compile Include="Stats\Elementalist\ConSpellTempo.cs"/>
+        <Compile Include="Stats\Gambler\ConLuckyCat.cs"/>
+        <Compile Include="Stats\Gambler\StanceFeelingLucky.cs"/>
         <Compile Include="Stats\Harbinger\ConBlindingMiasma.cs"/>
         <Compile Include="Stats\Harbinger\ConChillingMiasma.cs"/>
         <Compile Include="Stats\Harbinger\ConDebilitatingMiasma.cs"/>
@@ -464,13 +469,10 @@
         <Compile Include="Stats\Knightcaller\ConSpiritRage.cs"/>
         <Compile Include="Stats\Knightcaller\ConSpiritRally.cs"/>
         <Compile Include="Stats\Knightcaller\ConSummoningSickness.cs"/>
-        <Compile Include="Stats\Etoile\ConLuminary.cs"/>
-        <Compile Include="Stats\Etoile\ConLuminousDeflection.cs"/>
-        <Compile Include="Stats\Etoile\StanceVanguardStance.cs"/>
         <Compile Include="Stats\Machinist\ConOverclock.cs"/>
         <Compile Include="Stats\Machinist\StanceHeavyarms.cs"/>
         <Compile Include="Stats\Necromancer\ConDeadBeckon.cs"/>
-        <Compile Include="Stats\Phantom\ConPhantomMark.cs"/>
+        <Compile Include="Stats\PromotionStance.cs"/>
         <Compile Include="Stats\QuestStats\ConCaptureTarget.cs"/>
         <Compile Include="Stats\QuestStats\ConSpawner.cs"/>
         <Compile Include="Stats\Ranger\ConGimmickCoating.cs"/>

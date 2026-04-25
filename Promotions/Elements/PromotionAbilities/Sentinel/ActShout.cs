@@ -6,7 +6,6 @@ public class ActShout : PromotionCombatAbility
 {
     public override int PromotionId => Constants.FeatSentinel;
     public override string PromotionString => Constants.SentinelId;
-    public override int Cooldown => 5;
     public override int AbilityId => Constants.ActShoutId;
 
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
@@ -19,8 +18,6 @@ public class ActShout : PromotionCombatAbility
             ConTaunted taunted = target.AddCondition<ConTaunted>(force: true) as ConTaunted;
             taunted.TaunterUID = CC.uid;
         }
-
-        CC.AddCooldown(AbilityId, Cooldown);
         CC.TalkRaw("sentinelTaunt".langList().RandomItem());
         return true;
     }

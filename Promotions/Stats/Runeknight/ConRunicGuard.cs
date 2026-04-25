@@ -3,7 +3,7 @@ namespace PromotionMod.Stats.Runeknight;
 
 public class ConRunicGuard : BaseBuff
 {
-    public override bool TimeBased => true;
+    public override string TextDuration => "";
 
     public override Sprite GetSprite()
     {

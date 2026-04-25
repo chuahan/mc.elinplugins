@@ -3,12 +3,12 @@ using Newtonsoft.Json;
 using UnityEngine;
 namespace PromotionMod.Stats;
 
+/// <summary>
+///     For some Conditions, they use the base Power to apply the effect,
+///     but it's far easier for me to just use PowerOverride to determine the strength, using P2 in the stat sheet.
+/// </summary>
 public class SubPoweredCondition : BaseBuff
 {
-    /// <summary>
-    ///     For some Conditions, they use the base Power to apply the effect,
-    ///     but it's far easier for me to just use PowerOverride to determine the strength, using P2 in the stat sheet.
-    /// </summary>
     [JsonProperty(PropertyName = "S")] private int _powerOverride = 1;
 
     public override int P2 => _powerOverride;

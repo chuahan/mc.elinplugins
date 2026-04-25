@@ -97,5 +97,10 @@ public abstract class ConAura : BaseBuff
                 }
                 break;
         }
+
+        if (TimedAura)
+        {
+            base.Tick();
+        }
     }
 }

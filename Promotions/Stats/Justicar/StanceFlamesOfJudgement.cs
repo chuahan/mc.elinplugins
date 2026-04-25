@@ -5,7 +5,7 @@ using PromotionMod.Stats.Spellblade;
 using UnityEngine;
 namespace PromotionMod.Stats.Justicar;
 
-public class StanceFlamesOfJudgement : BaseStance
+public class StanceFlamesOfJudgement : PromotionStance
 {
     public override Sprite GetSprite()
     {

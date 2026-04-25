@@ -1,10 +1,10 @@
+using UnityEngine;
 namespace PromotionMod.Stats.Gambler;
 
-public class StanceFeelingLucky : BaseStance
+public class StanceFeelingLucky : PromotionStance
 {
-    public override void Tick()
+    public override Sprite GetSprite()
     {
-        // If the users HP falls below 25%, automatically exit Vanguard Stance.
-        if (Owner.hp <= (int)(Owner.MaxHP * 0.25F)) Kill();
+        return SpriteSheet.Get(source.alias);
     }
 }

@@ -67,7 +67,7 @@ public class ActSpiritSummon : PromotionSpellAbility
     public override int PromotionId => Constants.FeatJenei;
     public override string PromotionString => Constants.JeneiId;
 
-    public override int Cooldown => 10;
+    public int Cooldown => 10;
 
     public override int AbilityId => Constants.ActSpiritSummonId;
 

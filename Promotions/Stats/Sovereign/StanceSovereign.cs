@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 using UnityEngine;
 namespace PromotionMod.Stats.Sovereign;
 
-public class StanceSovereign : BaseStance
+public class StanceSovereign : PromotionStance
 {
     public int MaxStacks = 10;
 

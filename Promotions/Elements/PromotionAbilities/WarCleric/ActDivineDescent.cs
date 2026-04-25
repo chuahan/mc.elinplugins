@@ -8,15 +8,8 @@ public class ActDivineDescent : PromotionCombatAbility
 {
     public override int PromotionId => Constants.FeatWarCleric;
     public override string PromotionString => Constants.WarClericId;
-    public override int Cooldown => 1440;
     public override int AbilityId => Constants.ActDivineDescentId;
-
-    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostNone;
-
-    public override bool CanPerformExtra()
-    {
-        return base.CanPerform();
-    }
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
     public override int GetPower(Card c)
     {
@@ -33,7 +26,7 @@ public class ActDivineDescent : PromotionCombatAbility
 
         // Cause a massive holy explosion that heals yourself and allies, damages enemies.
         List<Chara> targetsHit = new List<Chara>();
-        Effect spellEffect = Effect.Get("Element/ball_Holy");
+        ElementRef colorRef = setting.elements["eleSound"];
         foreach (Point tile in _map.ListPointsInCircle(CC.pos, 3f, false, false))
         {
             int distance = tile.Distance(CC.pos);
@@ -68,16 +61,14 @@ public class ActDivineDescent : PromotionCombatAbility
                 targetsHit.Add(target);
             }
 
-            // Get distance from the origin. Use that to add delay to the explosion,
-            float delay = distance * 0.7F;
-            TweenUtil.Delay(delay, delegate
-            {
-                spellEffect.Play(tile, 0f, tile);
-            });
+            // Get distance from the origin. Use that to add delay to the explosion.
+            Effect spellEffect = Effect.Get("Element/ball_Magic");
+            spellEffect.SetParticleColor(colorRef.colorTrail, true, "_TintColor");
+            spellEffect.sr.color = colorRef.colorSprite;
+            float delay = distance * 0.08F;
+            spellEffect.SetStartDelay(delay);
+            spellEffect.Play(tile).Flip(tile.x > CC.pos.x);
         }
-
-        // 1 day cooldown.
-        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

@@ -5,13 +5,11 @@ public class ActSpiritMobilize : PromotionSpellAbility
 {
     public override int PromotionId => Constants.FeatKnightcaller;
     public override string PromotionString => Constants.KnightcallerId;
-    public override int Cooldown => 5;
     public override int AbilityId => Constants.ActSpiritMobilizeId;
 
     public override bool CanPerformExtra()
     {
-        if (!TP.IsValid || !Los.IsVisible(CC.pos, TP)) return false;
-        return base.CanPerform();
+        return TP.IsValid && Los.IsVisible(CC.pos, TP);
     }
 
     public override bool Perform()
@@ -25,8 +23,6 @@ public class ActSpiritMobilize : PromotionSpellAbility
                 target.AddCondition<ConHero>(power);
             }
         }
-
-        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

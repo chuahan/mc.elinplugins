@@ -10,20 +10,7 @@ public class ActTargetLegs : PromotionCombatAbility
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
     public override bool CanPerformExtra()
     {
-        if (CC.GetBestRangedWeapon() == null)
-        {
-            if (CC.IsPC) Msg.Say("sniper_needrangedweapon".langGame());
-            return false;
-        }
-
-        return base.CanPerform() && ACT.Ranged.CanPerform();
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
+        return ACT.Ranged.CanPerform();
     }
 
     public override bool Perform()

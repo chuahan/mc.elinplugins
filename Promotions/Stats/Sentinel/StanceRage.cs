@@ -1,7 +1,7 @@
 using UnityEngine;
 namespace PromotionMod.Stats.Sentinel;
 
-public class StanceRage : BaseStance
+public class StanceRage : PromotionStance
 {
     public override Sprite GetSprite()
     {

@@ -14,7 +14,7 @@ public class ActExecute : PromotionCombatAbility
     public float CullThreshold = 0.25f;
     public override int PromotionId => Constants.FeatHeadhunter;
     public override string PromotionString => Constants.HeadhunterId;
-    public override int Cooldown => 10;
+    public int Cooldown => 10;
     public override int AbilityId => Constants.ActExecuteId;
 
     public override bool CanPerformExtra()

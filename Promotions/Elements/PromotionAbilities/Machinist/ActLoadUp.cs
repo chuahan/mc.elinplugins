@@ -26,8 +26,6 @@ public class ActLoadUp : PromotionCombatAbility
 
     public override int PromotionId => Constants.FeatMachinist;
     public override string PromotionString => Constants.MachinistId;
-
-    public override int Cooldown => 10;
     public override int AbilityId => Constants.ActLoadUpId;
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
@@ -71,8 +69,6 @@ public class ActLoadUp : PromotionCombatAbility
                 Msg.Say("machinist_loadup".langGame(target.NameSimple));
             }
         }
-
-        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

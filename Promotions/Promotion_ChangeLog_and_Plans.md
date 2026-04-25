@@ -2,28 +2,33 @@
 
 ## Changelog
 
-### April 19th, 2026, 1.10 - Refactoring.
+### April 24th, 2026, 1.10 - Refactoring.
 - Overhauled the Ability System codewise to reduce a lot of duplicate code.
-- Lailah will now automatically progress deciphering on her own, gaining 1% progression a day. The amount of progression granted for giving her Ancient books has been doubled (1%->2%). This should reduce the grind on her deciphering.
+- Lailah will now automatically progress deciphering on her own once you give her at least one book, gaining 1% progression a day. The amount of progression granted for giving her Ancient books has been doubled (1%->2%). This should reduce the grind on her deciphering.
+- A lot of classes were missing some descriptions and whatnot, so I've been combing through adding more information where necessary.
+- Effects that spawn multiple Alternative Funnels in one action will no longer spawn them past the minion cap of the caster.
+- Fixed a bug where Rune Knight could attune their guard to Void Damage.
 
 #### Promotion Ability Reclassification
 Promotion Abilities have been divided into 3 Categories:
 - Combat Abilities are now affected by Suppress/Disable. I am considering providing some scaling support from Combat Arts feat onto Combat Abilities, this will likely need to be done with a case by case scenario though cause combat abilities usually don't scale off power.
-- Spell Abilities are now affected by Silence and usually cost Mana. They also will scale with Spell Enhance and Antimagic.
+- Spell Abilities are now affected by Silence as well as Null Presence, will cost Mana. They also will scale with Spell Enhance and Antimagic.
 - Generic Abilities are unaffected by either, usually reserved for things like Stances.
-Summarized changes are as follows:
+Abilities that are not really impacted by spellpower will not increase their resource costs.
+
+Reclassification changes are as follows:
 - Artificer abilities are all Spell Abilities.
 - Berserker's Sunder and Lifebreak have all been reclassified as Combat Abilities. Bloodlust has been classified as a Generic Abilitiy.
-- Dancer's Offensive Steps (Illusion, Fouette, and Pirouette) are all considered Combat Abilities and all have now have a cooldown now of 5 seconds. Sword Fouette and Dagger Illusion now cost a flat 5 Stamina. Wild Pirouette will continue to use Mana.
+- Dancer's Offensive Steps (Illusion, Fouette, and Pirouette) are all considered Combat Abilities, but Wild Pirouette will continue to use Mana.
 - Dread Knight's Dark Burst and Barrier are classified as Spell Abilities. Mana Starter is a Combat Ability. Life Ignition Stance is Generic.
 - Druid abilities are all now Spell Abilities.
 - Elementalist abilities are all now Spell Abilities.
 - Gambler's Card Throw and Dice Strike are now Combat Abilities. Lucky Cat and Spin Slots are both Spell Abilities. Feeling Lucky is Generic.
 - Harbinger's Accursed Touch and Endleess Mists are Combat Abilities. Gloom remains Generic.
 - Headhunter abilities are all Combat Abilities.
-- Hermit abilites are all Combat Abilities.
+- Hermit abilites are all Combat Abilities that use Mana.
 - Hexer abilities are all Spell Abilities.
-- Holy Knight abilities are all Combat Abilities.
+- Holy Knight abilities are all Combat Abilities, with summon Banner being Mana consuming.
 - Jenei abilities are all Spell Abilities (except for Venus: Move, that one is Generic cause it's a non combat ability.)
 - Justicar abilities are all Combat Abilities save for Flames of Judgement which is Generic.
 - Knightcaller abilities are all Spell Abilities.
@@ -33,13 +38,22 @@ Summarized changes are as follows:
 - Rune Knight abilities are now Spell Abilities.
 - Saint abilities are Spell Abilities.
 - Sentinel abilities are Combat Abilities while Rage/Restraint remain Generic. They will continue to use Mana instead of Stamina.
-- Sharpshooter abilities are Combat Abilities.
-- Sniper abilities are Combat Abilities.
+- Sharpshooter abilities are Combat Abilities that use Mana.
+- Sniper abilities are Combat Abilities that use Mana.
 - Sovereign abilities have been changed to Spell Abilities.
 - Spellblade abilities are Combat Abilities that use Mana.
 - Trickster abilities are Spell Abilities.
 - War Cleric's Blessed Armament and Divine Sanctuary are Spell Abilities. Divine Fist and Descent are both considered Combat Abilities.
 - Witch Hunter's abilities are Combat Abilities that use Mana. Null Zone can now be casted again to deactivate it.
+
+Additional Changes
+- Dancer's Offensive Steps (Illusion, Fouette, and Pirouette) all have now have a cooldown now of 5 seconds. Sword Fouette and Dagger Illusion now cost a flat 5 Stamina. Dancer's dances will be disabled if the dancer is restrained or disabled.
+- Elementalist will now gain scaling exp based on # of orbs consumed for Elemental Fury and Extinction.
+- Fixed Saint's Hand of God not... actually healing the correct targets.
+- Sharpshooter's Overwatch "Under Fire" application range has been increased from 6 to 11, allowing it to mostly encompass their increased sight range.
+- Sharpshooter's MarkHostiles now has SFX.
+- War Cleric Divine Descent cooldown reduced from 1 Day to 12 Hours (720), this was largely because Elin doesn't like it when you go over 1000 in cooldown. It ends up adding the cooldown to the NEXT ability Id, which was why Divine Descent was adding cooldown for Divine Fist.
+- Witch Hunter's Null Zone now activates it's cooldown on cancellation.
 
 ### April 17th, 2026, 1.09 - Kolinca Patch
 - A various bugfixes.

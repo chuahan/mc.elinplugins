@@ -1,8 +1,14 @@
 using PromotionMod.Stats.Dancer;
+using UnityEngine;
 namespace PromotionMod.Elements.Abilities.Dancer;
 
 public class StanceFreedomDance : StanceDance
 {
+    public override Sprite GetSprite()
+    {
+        return SpriteSheet.Get(source.alias);
+    }
+
     public override void ActInternal(Chara target, int dancePower, bool isPartner)
     {
         // Remove up to 2 buffs a turn for partner, 1 buff a turn for non partners.

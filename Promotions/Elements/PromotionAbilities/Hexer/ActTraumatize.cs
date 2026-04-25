@@ -11,7 +11,6 @@ public class ActTraumatize : PromotionSpellAbility
 {
     public override int PromotionId => Constants.FeatHexer;
     public override string PromotionString => Constants.HexerId;
-    public override int Cooldown => 5;
     public override int AbilityId => Constants.ActTraumatizeId;
 
     public override bool CanPerformExtra()
@@ -43,7 +42,6 @@ public class ActTraumatize : PromotionSpellAbility
             damage = HelperFunctions.SafeMultiplier(damage, negativeConditions.Count);
             TC.DamageHP(damage, Constants.EleMind, 100, AttackSource.None, CC);
         }
-        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

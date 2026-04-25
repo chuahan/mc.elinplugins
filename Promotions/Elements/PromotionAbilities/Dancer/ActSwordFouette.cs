@@ -13,8 +13,9 @@ public class ActSwordFouette : PromotionCombatAbility
     private float _effectRadius = 2F;
     public override int PromotionId => Constants.FeatDancer;
     public override string PromotionString => Constants.DancerId;
-    public override int Cooldown => 5;
     public override int AbilityId => Constants.ActSwordFouetteId;
+
+    public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostStamina;
 
     public override bool CanPerformExtra()
     {
@@ -25,13 +26,6 @@ public class ActSwordFouette : PromotionCombatAbility
         }
 
         return true;
-    }
-
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
     }
 
     public override void OnMarkMapHighlights()
@@ -73,8 +67,6 @@ public class ActSwordFouette : PromotionCombatAbility
                 }
             }
         }
-
-        CC.AddCooldown(AbilityId, Cooldown);
         return true;
     }
 }

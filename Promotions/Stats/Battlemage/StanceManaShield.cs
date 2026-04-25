@@ -11,7 +11,7 @@ namespace PromotionMod.Stats.Battlemage;
 ///     When you haven't taken damage for a time, it will regenerate at 5% a turn.
 ///     Shield Capacity is based off of mana reserved.
 /// </summary>
-public class StanceManaShield : BaseStance
+public class StanceManaShield : PromotionStance
 {
     // Need to avoid taking damage for 3 turns
     private const int RechargeDelayMax = 3;

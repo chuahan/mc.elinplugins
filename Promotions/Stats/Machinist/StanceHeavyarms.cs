@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace PromotionMod.Stats.Machinist;
 
-public class StanceHeavyarms : BaseStance
+public class StanceHeavyarms : PromotionStance
 {
     public const int FOVBuffAmount = 2;
 

@@ -19,7 +19,7 @@ public class ActIntimidate : PromotionCombatAbility
     public override int AbilityId => Constants.ActIntimidateId;
 
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
-    
+
     public override void OnMarkMapHighlights()
     {
         if (!scene.mouseTarget.pos.IsValid)
@@ -34,7 +34,7 @@ public class ActIntimidate : PromotionCombatAbility
         foreach (Point item in list)
         {
             // Highlight the target point a different color.
-            if (object.Equals(scene.mouseTarget.pos, item))
+            if (Equals(scene.mouseTarget.pos, item))
             {
                 item.SetHighlight(7);
             }

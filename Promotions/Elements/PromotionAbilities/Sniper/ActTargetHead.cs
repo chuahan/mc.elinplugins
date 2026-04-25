@@ -18,13 +18,6 @@ public class ActTargetHead : PromotionCombatAbility
         return ACT.Ranged.CanPerform();
     }
 
-    public override Cost GetCost(Chara c)
-    {
-        Cost convertToMp = base.GetCost(c);
-        convertToMp.type = CostType.MP;
-        return convertToMp;
-    }
-
     public override bool Perform()
     {
         ConSniperTarget sniperTarget = CC.AddCondition<ConSniperTarget>(GetPower(CC)) as ConSniperTarget;

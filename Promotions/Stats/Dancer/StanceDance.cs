@@ -1,18 +1,10 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
-using UnityEngine;
 namespace PromotionMod.Stats.Dancer;
 
-public class StanceDance : BaseStance
+public class StanceDance : PromotionStance
 {
     public float DanceRange = 4f; // SUBJECT TO CHANGE.
-
-    public override string TextDuration => "";
-
-    public override Sprite GetSprite()
-    {
-        return SpriteSheet.Get(source.alias);
-    }
 
     public override void OnStart()
     {
@@ -40,6 +32,9 @@ public class StanceDance : BaseStance
         {
             return;
         }
+
+        // Cannot dance if disabled or restrained.
+        if (CC.isRestrained || CC.IsDisabled) Kill();
 
         bool hasPartner = false;
         Chara partner = null;

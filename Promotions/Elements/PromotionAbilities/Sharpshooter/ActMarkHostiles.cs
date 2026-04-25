@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Stats.Sharpshooter;
 namespace PromotionMod.Elements.PromotionAbilities.Sharpshooter;
@@ -13,28 +14,34 @@ public class ActMarkHostiles : PromotionCombatAbility
 
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
-
-    public override void OnMarkMapHighlights()
-    {
-        List<Point> list = _map.ListPointsInCircle(CC.pos, _effectRadius);
-        if (list.Count == 0)
-        {
-            list.Add(CC.pos.Copy());
-        }
-        foreach (Point item in list)
-        {
-            item.SetHighlight(8);
-        }
-    }
-
     public override bool Perform()
     {
         int manaRestore = (int)(CC.mana.max * 0.05F);
-        foreach (Chara target in HelperFunctions.GetCharasWithinRadius(TP, _effectRadius, CC, false, true))
+        List<Chara> targetsHit = new List<Chara>();
+        ElementRef colorRef = setting.elements["eleCut"];
+        foreach (Point tile in _map.ListPointsInCircle(TC.pos, 3f, false, false))
         {
-            target.AddCondition<ConMarked>();
-            CC.mana.Mod(manaRestore);
+            int distance = tile.Distance(CC.pos);
+            foreach (Chara target in tile.ListCharas().Where(target => !targetsHit.Contains(target)))
+            {
+                // Damage Hostiles and apply Fear
+                if (target.IsHostile(CC))
+                {
+                    target.AddCondition<ConMarked>();
+                    CC.mana.Mod(manaRestore);
+                }
+                targetsHit.Add(target);
+            }
+
+            // Get distance from the origin. Use that to add delay to the explosion.
+            Effect spellEffect = Effect.Get("Element/ball_Holy");
+            spellEffect.SetParticleColor(colorRef.colorTrail, true, "_TintColor");
+            spellEffect.sr.color = colorRef.colorSprite;
+            float delay = distance * 0.08F;
+            spellEffect.SetStartDelay(delay);
+            spellEffect.Play(tile).Flip(tile.x > CC.pos.x);
         }
+
         return true;
     }
 }

@@ -11,7 +11,7 @@ public class ActHolyBanner : PromotionSpellAbility
 
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         // Cannot use it if they already placed a Holy Banner.
         if (CC.HasMinion(Constants.HolyBannerCharaId)) return false;

@@ -9,11 +9,11 @@ public class ActDarkBarrier : PromotionSpellAbility
     public override string PromotionString => Constants.DreadKnightId;
     public override int AbilityId => Constants.ActDarkBarrierId;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         if (!CC.HasCondition<ConDarkTraces>())
         {
-            if (CC.IsPC) Msg.Say("dreadknight_notraces".langGame());
+            if (CC.IsPC && verbose) Msg.Say("dreadknight_notraces".langGame());
             return false;
         }
 

@@ -22,7 +22,7 @@ public class StanceFreedomDance : StanceDance
                 item5 is not ConWrath && // Don't purge Wrath of God.
                 item5 is not ConDeathSentense) // Don't purge Death Sentence.
             {
-                CC.Say("removeHex", target, item5.Name.ToLower());
+                owner.Say("removeHex", target, item5.Name.ToLower());
                 item5.Kill();
                 buffsRemoved--;
                 if (buffsRemoved == 0)

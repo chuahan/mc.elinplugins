@@ -14,10 +14,16 @@ public class ActRevenge : PromotionSpellAbility
     public override int AbilityId => Constants.ActRevengeId;
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         if (TC is not { isChara: true }) return false;
-        return CC.Chara.conditions.Count(con => con.Type is ConditionType.Debuff) != 0;
+        if (CC.Chara.conditions.Count(con => con.Type is ConditionType.Debuff) == 0)
+        {
+            if (CC.IsPC && verbose) Msg.Say("hexer_revenge_nodebuffs".langGame());
+            return false;
+        }
+
+        return true;
     }
 
     public override bool Perform()

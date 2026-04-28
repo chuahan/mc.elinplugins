@@ -16,6 +16,7 @@ public class StanceRangerCanto : PromotionStance
         if (owner.ride == null)
         {
             //TODO TEXT: Canto stop.
+            if (owner.IsPC) Msg.Say("ranger_rangerscanto_stopriding".langGame());
             Kill();
         }
     }

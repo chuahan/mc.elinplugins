@@ -13,21 +13,44 @@ public class FeatAlraune : Feat
     virtual internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
         if (hint) return;
-        if (owner.Chara.IsPC)
+        if (add == 1)
         {
-            if (!owner.Chara.HasElement(Constants.StSweetScentId))
+            if (owner.Chara.IsPC)
             {
-                owner.Chara.AddElement(Constants.StSweetScentId);
+                if (!owner.Chara.HasElement(Constants.StSweetScentId))
+                {
+                    owner.Chara.AddElement(Constants.StSweetScentId);
+                }
+                if (!owner.Chara.HasElement(Constants.ActWildGrowthId))
+                {
+                    owner.Chara.AddElement(Constants.ActWildGrowthId);
+                }
+                if (!owner.Chara.HasElement(Constants.ActAlrauneConsumeId))
+                {
+                    owner.Chara.AddElement(Constants.ActAlrauneConsumeId);
+                }
             }
-            if (!owner.Chara.HasElement(Constants.ActWildGrowthId))
+            else
             {
-                owner.Chara.AddElement(Constants.ActWildGrowthId);
+                if (!owner.Chara.ability.Has(Constants.ActAlrauneConsumeId)) owner.Chara.ability.Add(Constants.ActAlrauneConsumeId, 100, false);
+                if (!owner.Chara.ability.Has(Constants.StSweetScentId)) owner.Chara.ability.Add(Constants.StSweetScentId, 100, false);
+                if (!owner.Chara.ability.Has(Constants.ActWildGrowthId)) owner.Chara.ability.Add(Constants.ActWildGrowthId, 75, false);
             }
         }
-        else
+        else if (add == -1)
         {
-            if (!owner.Chara.ability.Has(Constants.StSweetScentId)) owner.Chara.ability.Add(Constants.StSweetScentId, 100, false);
-            if (!owner.Chara.ability.Has(Constants.ActWildGrowthId)) owner.Chara.ability.Add(Constants.ActWildGrowthId, 75, false);
+            if (owner.Chara.IsPC)
+            {
+                owner.Chara.elements.Remove(Constants.StSweetScentId);
+                owner.Chara.elements.Remove(Constants.ActWildGrowthId);
+                owner.Chara.elements.Remove(Constants.ActAlrauneConsumeId);
+            }
+            else
+            {
+                if (owner.Chara.ability.Has(Constants.StSweetScentId)) owner.Chara.ability.Remove(Constants.StSweetScentId);
+                if (owner.Chara.ability.Has(Constants.ActWildGrowthId)) owner.Chara.ability.Remove(Constants.ActWildGrowthId);
+                if (owner.Chara.ability.Has(Constants.ActAlrauneConsumeId)) owner.Chara.ability.Remove(Constants.ActAlrauneConsumeId);
+            }
         }
     }
 }

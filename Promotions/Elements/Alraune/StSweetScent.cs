@@ -19,7 +19,7 @@ public class StSweetScent : Ability
         }
         else
         {
-            CC.AddCondition<AuraSweetScent>();
+            CC.AddCondition<AuraSweetScent>(GetPower(CC));
         }
         return true;
     }

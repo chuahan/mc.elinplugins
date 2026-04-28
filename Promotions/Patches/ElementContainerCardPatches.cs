@@ -15,6 +15,7 @@ public class ElementContainerCardPatches
             return;
         }
 
+        // TODO: Should I make this apply to themselves if they match the race tag?
         // Necromancers and Druids will both apply a Hardware boost like upgrade to Undead and Plant allies respectively.
         // Necromancer - Lord of the Dead
         // Druid - Speaker for Nature

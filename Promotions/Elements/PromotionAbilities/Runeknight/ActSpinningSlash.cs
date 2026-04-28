@@ -8,9 +8,13 @@ public class ActSpinningSlash : PromotionSpellAbility
     public override string PromotionString => Constants.RuneKnightId;
     public override int AbilityId => Constants.ActSpinningSlashId;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
-        if (CC.HasCondition<ConElementalAttunement>() == false) return false;
+        if (CC.HasCondition<ConElementalAttunement>() == false)
+        {
+            if (CC.IsPC && verbose) Msg.Say("runeknight_spinningslash_noattunement".langGame());
+            return false;
+        }
         return true;
     }
 

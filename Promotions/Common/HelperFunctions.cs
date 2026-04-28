@@ -81,7 +81,14 @@ public static class HelperFunctions
             {
                 enemies.Add(target);
             }
-            else if (caster.IsPCFactionOrMinion && target.IsPCFactionOrMinion)
+            else if (caster.IsPCFactionOrMinion)
+            {
+                if (target.IsPCFactionOrMinion)
+                {
+                    friendlies.Add(target); // This filters out neutrals.
+                }
+            }
+            else
             {
                 friendlies.Add(target);
             }

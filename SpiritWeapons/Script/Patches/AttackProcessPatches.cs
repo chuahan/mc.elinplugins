@@ -98,7 +98,7 @@ public class AttackProcessPatches
 
         return spiritWeapon;
     }
-
+    
     public static string GetSpiritWeaponUnleashAbility(Card target)
     {
         // Melee: Damage, HP as Damage,

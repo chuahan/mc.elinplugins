@@ -7,24 +7,39 @@ namespace PromotionMod.Source;
 
 internal class GolemDramaExpansion : DramaExpansion
 {
+    private const string GolemComponentCooldownFlag = "golCD";
+    private const string GolemTypeFlag = "golType";
+
     private static bool golem_tutorial(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
         dm.RequiresActor(out Chara actor);
-        EClass.pc.SetFlagValue(actor.id);
-        return true;
-    }
-
-    private static bool golem_tutorial_clear(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
-    {
-        dm.RequiresActor(out Chara actor);
-        EClass.pc.SetFlagValue(actor.id, 0);
-        return true;
+        switch (actor.source.id)
+        {
+            case "golem_mim":
+                actor.Chara.SetFlagValue(GolemTypeFlag);
+                break;
+            case "golem_harpy":
+                actor.Chara.SetFlagValue(GolemTypeFlag, 2);
+                break;
+            case "golem_siren":
+                actor.Chara.SetFlagValue(GolemTypeFlag, 3);
+                break;
+            case "golem_titan":
+                actor.Chara.SetFlagValue(GolemTypeFlag, 4);
+                break;
+        }
+        return false;
     }
 
     private static bool check_component_cooldown(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
         dm.RequiresActor(out Chara actor);
-        return actor.HasCooldown(Constants.FeatArtificerGolemUpgradeId);
+        int golemComponentCooldown = actor.Chara.GetFlagValue(GolemComponentCooldownFlag);
+        if (golemComponentCooldown >= 1 && EClass.world.date.GetRaw() < golemComponentCooldown)
+        {
+            return true;
+        }
+        return false;
     }
 
     private static bool check_component_capacity(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
@@ -40,7 +55,7 @@ internal class GolemDramaExpansion : DramaExpansion
         dm.RequiresActor(out Chara actor);
         if (actor.trait is not TraitArtificerGolem) return false;
         actor.AddElement(Constants.FeatArtificerGolemUpgradeId, actor.id == Constants.MimGolemCharaId ? 2 : 1);
-        actor.AddCooldown(Constants.FeatArtificerGolemUpgradeId, 4320);
+        actor.Chara.SetFlagValue(GolemComponentCooldownFlag, EClass.world.date.GetRaw() + 4320);
         upgradeChip.Split(1).Destroy();
         return true;
     }

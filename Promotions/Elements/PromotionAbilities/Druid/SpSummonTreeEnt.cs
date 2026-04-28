@@ -8,7 +8,7 @@ public class SpSummonTreeEnt : PromotionSpellAbility
     public override string PromotionString => Constants.DruidId;
     public override int AbilityId => Constants.SpSummonTreeEntId;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         if (CC.currentZone.CountMinions(CC) >= CC.MaxSummon) return false;
         return true;

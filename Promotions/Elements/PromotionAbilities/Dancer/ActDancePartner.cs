@@ -10,7 +10,7 @@ public class ActDancePartner : PromotionCombatAbility
     public override string PromotionString => Constants.DancerId;
     public override int AbilityId => Constants.ActDancePartnerId;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         if (!CC.IsPC) return false;
 

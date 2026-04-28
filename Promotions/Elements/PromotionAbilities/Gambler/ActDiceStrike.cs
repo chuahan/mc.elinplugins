@@ -11,7 +11,7 @@ public class ActDiceStrike : PromotionCombatAbility
 
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         if (CC == TC || TC is not { isChara: true } || CC.Dist(TC) > 1)
         {

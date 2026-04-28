@@ -10,13 +10,17 @@ public class ActAssassinate : PromotionCombatAbility
 
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         // Must have a Target. Target must be marked for death with at least 10 value.
         if (TC is not { isChara: true }) return false;
 
         ConMarkedForDeath deathMark = TC.Chara.GetCondition<ConMarkedForDeath>();
-        if (deathMark == null || deathMark.value < 10) return false;
+        if (deathMark == null || deathMark.value < 10)
+        {
+            if (CC.IsPC && verbose) Msg.Say("hermit_assassinate_notenoughstalk".langGame());
+            return false;
+        }
         return true;
     }
 

@@ -13,7 +13,7 @@ public class ActThisWay : PromotionCombatAbility
     public override int AbilityId => Constants.ActThisWayId;
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         // Unusable by NPCs.
         if (!CC.IsPC) return false;
@@ -21,7 +21,7 @@ public class ActThisWay : PromotionCombatAbility
         // Not usable outside of dungeons.
         if (CC.currentZone.IsPCFactionOrTent || CC.currentZone is not Zone_Dungeon)
         {
-            if (CC.IsPC) Msg.Say("adventurer_thisway_dungeononly".langGame());
+            if (CC.IsPC && verbose) Msg.Say("adventurer_thisway_dungeononly".langGame());
             return false;
         }
 

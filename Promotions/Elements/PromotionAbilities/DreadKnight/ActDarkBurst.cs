@@ -12,11 +12,11 @@ public class ActDarkBurst : PromotionSpellAbility
     public override string PromotionString => Constants.DreadKnightId;
     public override int AbilityId => Constants.ActDarkBurstId;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         if (GetHPCost(CC) > CC.hp)
         {
-            if (CC.IsPC) Msg.Say("dreadknight_notenoughhp".langGame());
+            if (CC.IsPC && verbose) Msg.Say("hpcostability_notenoughhp".langGame());
             return false;
         }
 

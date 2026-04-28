@@ -8,8 +8,13 @@ public class ActTargetLegs : PromotionCombatAbility
     public override string PromotionString => Constants.SniperId;
     public override int AbilityId => Constants.ActTargetLegsId;
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
+        if (CC.GetBestRangedWeapon() == null)
+        {
+            if (CC.IsPC && verbose) Msg.Say("sniper_needrangedweapon".langGame());
+            return false;
+        }
         return ACT.Ranged.CanPerform();
     }
 

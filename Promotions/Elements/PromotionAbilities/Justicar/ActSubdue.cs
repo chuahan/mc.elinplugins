@@ -17,7 +17,7 @@ public class ActSubdue : PromotionCombatAbility
 
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         return ACT.Melee.CanPerform();
     }

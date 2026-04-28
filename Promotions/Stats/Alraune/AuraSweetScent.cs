@@ -5,7 +5,7 @@ using UnityEngine;
 namespace PromotionMod.Elements.Alraune;
 
 /// <summary>
-///     Alraune stance that applies  and Drunkeness to targets repeatedly.
+///     Alraune stance that applies Infatuation and Drunkenness to targets repeatedly.
 /// </summary>
 public class AuraSweetScent : ConAura
 {

@@ -2,6 +2,11 @@
 
 ## Changelog
 
+### April 26th, 2026, 1.101 - Mini patch.
+- Fixed Alraune feat adding/removing abilties. Note, Alraune is technically playable, but is not completely fleshed out yet. I'm still working on adding an ability that represents their whole... man-eating schtick. If you are already an Alraune, don't worry, there are systems in game so I can patch the new ability whenever I finish thinking of it and coding it onto older characters. You can preview their abilitiies below.
+- Fixed Artificer Golems not being able to talk (partially, still working on the specific golem type documentation as opposed to dumping all of it at once.) Thanks 오징어
+- Fixed Necromancer's Corpse Explosion and Blessing of the Dead, they were using ints instead of floats which caused it to basically always do absolutely nothing. Thanks 오징어
+
 ### April 24th, 2026, 1.10 - Refactoring.
 - Overhauled the Ability System codewise to reduce a lot of duplicate code.
 - Lailah will now automatically progress deciphering on her own once you give her at least one book, gaining 1% progression a day. The amount of progression granted for giving her Ancient books has been doubled (1%->2%). This should reduce the grind on her deciphering.
@@ -36,7 +41,7 @@ Reclassification changes are as follows:
 - Necromancer abilities are all Spell Abilities.
 - Ranger abilities are Combat Abilities that cost Mana. Debating adding a Charge System to Throw Trap so that you can throw X without cooldown.
 - Rune Knight abilities are now Spell Abilities.
-- Saint abilities are Spell Abilities.
+- Saint abilities are now Spell Abilities. However, Blessing and Invigorate are unique cases that scale off Faith and do not benefit from Spell Enhance.
 - Sentinel abilities are Combat Abilities while Rage/Restraint remain Generic. They will continue to use Mana instead of Stamina.
 - Sharpshooter abilities are Combat Abilities that use Mana.
 - Sniper abilities are Combat Abilities that use Mana.
@@ -168,45 +173,36 @@ Seems a little lackluster compared to Saint.
 Sanctuary is in dire need of special effects. Consider changing to Cell effect.  
 The other idea is to make them more of a War Monk, so make them a Martial based class. Maybe Shaolin style with crit strikes, knockbacks, and reinforcing their own body?
 
-### Hermit
-Seems too simple. Need to give them more abilities in their kit so they aren't a single target pony.
-Consider giving them expertise in ranged or throwing weapons, or the ability to transfer Marked for Death on kill or something.
-Give them some method of applying conditions to synergize with. Posioned weapons or something. Or throwing hidden weapon laced with venoms.
-
 ### Sniper
 Passive Ability Idea: Does more damage with consecutive shots against the same target, stacking debuffs?
 
 ### Ranger
-Consider also giving them Reactive Shots (Retaliate against ranged attacks with ranged attacks.)
+Consider also giving them Reactive Shots (Retaliate against ranged attacks with ranged attacks, currently held by Sniper.)
 
 ### Jenei
 Attempt to implement a Class-Install system for the Jenei that will use their current spirits to boost their normal combat capabilities. This will boost their attributes and provide temporary feats allow them to basically pseudo-class change into another archetype. E.G. a healer class that gains healing instinct and reduces mana cost of healing abilities. However, this comes with the cost that if you use Spirit Summon and use your current spirits, you will also lose your pseudo-class.
 
 ### Dancer
-Flourishes are way too strong. Weaken them somehow, or give them cooldowns.
 Dances themselves are too weak. Give them buffs. Give them more functionality or effects, and work on their scaling a bit more.
 
-### Druid
-Considering making Wrath of Nature a Berserker and Warmth of Nature a Saint.
-
 ## Future Content
-- City of Aluena
+- City of Aluèna
 - Information guild and Covert Ops Quests
 - Adventurer's guild and Combat Ops Quests
 - Advanced Combat Skills (Finish Implementing Galeforce)
 - Add Promotion Mod enemies
 - Minari storyline quests. (Sena and Ruras Recruit)
-- Aluena Councilmember Saro
-- Aluena Councilmember Cadem
+- Aluèna Councilmember Saro
+- Aluèna Councilmember Cadem
 - Vyers storyline quests. (Louise and Mitsune Recruit)
 - Lailah storyline quests. (Lailah and AGS-L41 Recruit)
-- City of Aluena: Government District
+- City of Aluèna: Government District
 - Azalea's Teahouse
-- Aluena Councilmember Wyndin
-- Aluena Councilmember Arthur
-- Aluena Councilmember Doren
-- Aluena Councilmember Larissa
-- Aluena Councilmember Sarvesh
+- Aluèna Councilmember Wyndin
+- Aluèna Councilmember Arthur
+- Aluèna Councilmember Doren
+- Aluèna Councilmember Larissa
+- Aluèna Councilmember Sarvesh
 
 ### A New Threat
 With class promotions unlocking levels of power for the players, it is only natural that the enemies will also gain a power boost to provide adequate challenge.
@@ -247,78 +243,27 @@ Covert Operations from the Information Guild.
 - Abduction Requests
 - Eliminate hidden agents.
 
+### Alraune
+A forest-dwelling plant monster with the upper body of a beautiful human, appearing to rise from an enormous, bulbous flower. It releases a sweet fragrance to entice living creatures, drawing them close before ensnaring and consuming them.
+
+This is the race I used as an example for the Custom Race/Class tutorial. I decided to revisit it and flesh out out a bit, giving them a statline and some perks.
+
+Their Racial Trait is "Floral Metabolism", which will automatically cast Nature's Embrace on themselves for free when they are in sunlight. When they are in sunlight and are wet, they will gain hunger at 3x the normal rate. However, this is accompanied by the fact that Alraunes cannot absorb food as easily as other races and have severely reduced nutrition gains from consuming normal food.
+Their Racial Abilities are Sweet Scent and Wild Growth.
+Sweet Scent will reserve 10% of your mana to activate it as an aura, attempting to apply Infatuation and Drunk to nearby hostiles.
+Wild Growth is an AOE Ability that grabs nearby enemies within 3 tiles with poisonous vines. While this ability does not do damaage, it can inflict Poison and Entangle.
+
+The Alraune's main racial ability is Consume Prey. Usable on non boss and non unique enemies that are below 10% HP and afflicted with the Infatuated Status, if the Alraune is hungry they will grab the enemy and pull them into their flower, consuming them. Any of the victim's possessions will be spat out, heavily rusted if not acid proof. The Alraune will gain a large amount of attributes and skills from this act, as well as a Bad Condition: Overfed. Overfed will reduce speed, prevent hunger from ticking, and will prevent the use of Consume while active. The duration of Overfed is based on the the level difference between the Alraune and the target, and strong targets can take days to even months to finish digesting. Being in this state is dangerous, so use it carefully.
+
+Usable on non boss non unique enemies below 10% HP and afflicted with Infatuation to consume them and gain attributes based on the power of the victim,Spits out the victim's belongings,Cannot be used while still digesting a previous victim
+
+Details: 
+Overfed Duration = Enemy Overlevel - the Alraune's level in Days. Any hunger the Alraune would gain during this condition would instead go towards the duration of this condition, so it pays off to be able to perform Floral Metabolism.
+Attribute/Skill Gain = Essentially the Alraune will benefit as if it was a baby drinking milk from the monster, except without the feat points. This does kind of make the Alraune VERY powerful once you reach scaled enemies as they are able to "quickly" raise their own stats.
+NPC Alraunes can use this ability if the conditions are met and they decide to do it. This could potentially get them killed. Not my fault.
+
 ### Gambler
-Evie is a wandering bounty hunter who goes by the moniker Lucky Shot. She is known equally for her gunslinging skill as her penchant for gambling.  
-If you run into this cheerful girl, she might be willing to teach you a couple tricks in the right circumstance. Evie wields the Fomalhaut hand cannon with deadly accuracy.
-
-Gamblers are a luck based promotion class that lives by the dice. Their damage is highly variant and their abilities are whimsical, ranging from hitting extremely hard to potentially benefiting the target instead. It is important to note that all of their abilities are governed by Dice Rolls, and thus are impacted by the Gambler's Luck stat.
-
-__I'm Feeling Lucky - Stance that modifies how much damage and healing you deal and how much damage / healing you recieve.__  
-Every time you recieve or deal damage you make a Dice roll of 20 then subtract 10.
-For damage dealt, your damage is multiplied by (10 + x) / 10, meaning a -10 would result in you dealing no damage, while a 20 will result in you dealing an additional 2x damage.
-For damage taken, incoming damage is multiplied by (10 - x) / 10, meaning a -10 would result in 2x damage taken while a 20 will result in you taking no damage.
-
-__Slots - Self Targeted Casting Ability - Fate is Whimsical.__  
-The Gambler spins the slots, gaining the "Slots" condition. After one turn elapses, the slots will finalize and the effect will activate. This can be beneficial or harmful, for either the Gambler and allies or their targets.
-
-__First Wheel - Gods - Yevan (Physical) / Itzpalt (Magical) / Jure (Buff/Debuff) / Kizuami (Random) - Ehekatl (Jackpot/Random)__
-- Yevan enters the Attack Slots.
-- Itzpalt enters to Magic Slots.
-- Jure enters the Support Slots.
-- Kizuami Picks one of the first three at random.
-- Ehekatl Picks one of the first three at random if not Jackpot.
-
-__Second Wheel - Elements - Anima / Holy / Dark / Void / Jackpot__
-
-Yevan
-- Anima - Strikes with Magic Sword attacks.
-- Light - Strikes with Holy Sword attacks.
-- Dark - Strikes with Dark Sword attacks.
-- Sword - Performs Bladestorm.
-- Jackpot - Strikes with a Melee attack that will cut the target's HP in half.
-
-Itzpalt
-- Anima - Strikes with one of Fire/Cold/Lightning Arrow.
-- Light - Strikes with Holy Ball.
-- Dark - Strikes with Dark Bolt
-- Sword - Strikes with random magical sword of Fire/Cold/Lightning
-- Jackpot - Drops a Meteor of Fire/Cold/Lightning on the target.
-
-Jure
-- Anima - Restores HP to the target.
-- Light - Grants Holy veil to the target.
-- Dark - Inflicts Bane on the target.
-- Sword - Inflicts Weakness on the target.
-- Jackpot - Fully Heals the target.
-
-Kizuami - Random from the other options.  
-Ehekatl - Random from the other options if not Jackpot.
-
-__Third Wheel - Targetting - Bar / Cherry / Bell / Skull / 7__
-- Bar - Targets all nearby enemies within 5F.
-- Cherry - Targets a random single enemy within 5F.
-- Bell - Targets all allies with a positive effect and enemies with a negative effect.
-- Skill - Targets all allies within 5F.
-- 7 - If not Jackpot, picks any but Skull.
-
-__Jackpot - If the Gambler rolls Ehekatl/Jackpot/7, a fourth wheel is spun to determine the effect.__
-
-- Little Sister - Fully HP/MP/Stamina of the Gambler's Allies.
-- Grim Reaper - All nearby enemies take a massive critical Melee damage strike, with a 2.5x multiplier.
-- Zantetsuken - A random nearby enemy is struck with a grevious attack with a 1/7 chance to instant kill. If the instant kill does not trigger, a 12 sided dice is rolled up with the results multiplied by 7. That number is used as the percent life removed from the target, so rolling a 12 will result in the target losing 84% of their life.
-- Full Throttle - Allies are buffed with Haste/Hero/Elemental Shield/Greater Regeneration and 1 turn of invulnerability. Enemies nearby are hit with Slow/Bane/Weakness/EleScar/Nightmare
-- Jackpot - All enemies nearby will drop their entire inventories and disappear.
-
-__Blackjack Throw - Single Target Ranged Combat Ability - Draws cards to perform a throwing attack. Creates a card and modifies it's weight based on the number.__  
-Use the dealers rules, hit when below 16 and stand when 17 or better.  
-17 to 21 Will result in an enhanced throwing attack being made with guaranteed accuracy.  
-Blackjack - Results in two throwing attacks executed with full Vorpal.  
-Bust - The attack fails.  
-5 Card Charlie - Throws 5 basic throwing attacks in a single action.  
-
-__Dice Roll - Rolls a pair of dice to perform a melee attack.__  
-SnakeEyes - Heals the target for the damage you would have dealt.
-Between 3 and 11 does a melee hit with a damage multiplier of 1 + ((x - 7) * .1). So a 3 would cause you to deal 60% damage while an 11 will perform a melee attack with 140% damage.
-Twelve - Reaper's Scythe - Does Double Damage.
-
-__Lucky Cat - Buff that increases luck. Can be Partycast.__
+Evie is an adventurer who goes by the moniker Lucky Shot. She is known equally for her gunslinging skill as her penchant for gambling.  
+Evie wields the Fomalhaut hand cannon with deadly accuracy, specializing in hunting down bounty targets. If you run into her and complete her questline, she will unlock the Gambler Promotion for your run, allowing ANY class to advance into this lucky Promotion.  
+  
+The Gambler is a luck based offshoot Promotion. Their abilities possess extreme randomness, making them capable of changing the tides of battle in either direction in a blink of an eye. Gamblers heavily depend on their Luck attribute, using it to increase the odds of their abilities producing positive results.

@@ -17,11 +17,11 @@ public class ActSwordFouette : PromotionCombatAbility
 
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostStamina;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         if (owner?.Chara?.conditions.Exists(x => x is StanceDance) == false)
         {
-            if (CC.IsPC) Msg.Say("dancer_mustbedancing".lang());
+            if (CC.IsPC && verbose) Msg.Say("dancer_mustbedancing".lang());
             return false;
         }
 

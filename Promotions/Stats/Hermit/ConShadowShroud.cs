@@ -22,7 +22,7 @@ public class ConShadowShroud : BaseBuff
             idEffect = EffectId.PuddleEffect,
             idEle = Constants.EleDarkness,
             power = power,
-            isHostileAct = CC.IsPCParty,
+            isHostileAct = owner.IsPCParty,
             color = BaseTileMap.GetColorInt(ref matColor, 100)
         });
     }

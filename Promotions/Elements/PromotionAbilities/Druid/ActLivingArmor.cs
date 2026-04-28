@@ -11,7 +11,7 @@ public class ActLivingArmor : PromotionSpellAbility
     public override string PromotionString => Constants.DruidId;
     public override int AbilityId => Constants.ActLivingArmorId;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         if (TC.Chara.IsHostile(CC)) return false;
         return true;

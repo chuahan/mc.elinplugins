@@ -122,6 +122,7 @@
         <Compile Include="Elements\AdvancedCombatFeats\FeatVantage.cs"/>
         <Compile Include="Elements\AdvancedCombatFeats\FeatVantagePlus.cs"/>
         <Compile Include="Elements\AdvancedCombatFeats\FeatVengeance.cs"/>
+        <Compile Include="Elements\Alraune\ActAlrauneConsume.cs"/>
         <Compile Include="Elements\Alraune\ActWildGrowth.cs"/>
         <Compile Include="Elements\Alraune\FeatAlraune.cs"/>
         <Compile Include="Elements\Alraune\StSweetScent.cs"/>
@@ -168,6 +169,7 @@
         <Compile Include="Elements\PromotionAbilities\Gambler\ActMeleeDiceStrike.cs"/>
         <Compile Include="Elements\PromotionAbilities\Gambler\ActMeleeRangeless.cs"/>
         <Compile Include="Elements\PromotionAbilities\Gambler\ActMeleeScatteringStrikes.cs"/>
+        <Compile Include="Elements\PromotionAbilities\Gambler\ActMeleeVitalStrike.cs"/>
         <Compile Include="Elements\PromotionAbilities\Gambler\ActSpinSlots.cs"/>
         <Compile Include="Elements\PromotionAbilities\Gambler\StFeelingLucky.cs"/>
         <Compile Include="Elements\PromotionAbilities\Harbinger\ActAccursedTouch.cs"/>
@@ -326,6 +328,7 @@
         <Compile Include="Patches\ConMiasmaPatches.cs"/>
         <Compile Include="Patches\ElementContainerCardPatches.cs"/>
         <Compile Include="Patches\ElementPatches.cs"/>
+        <Compile Include="Patches\FoodEffectPatches.cs"/>
         <Compile Include="Patches\GameDatePatches.cs"/>
         <Compile Include="Patches\FactionManagerPatch.cs"/>
         <Compile Include="Patches\FactionPatch.cs"/>
@@ -378,6 +381,7 @@
         <Compile Include="Stats\AdvCombatSkills\ConSol.cs"/>
         <Compile Include="Stats\Adventurer\ConSenseDanger.cs"/>
         <Compile Include="Stats\Alraune\AuraSweetScent.cs"/>
+        <Compile Include="Stats\Alraune\ConDigestingPrey.cs"/>
         <Compile Include="Stats\Artificer\ConAcceleration.cs"/>
         <Compile Include="Stats\Artificer\ConAdaptiveMobility.cs"/>
         <Compile Include="Stats\Artificer\ConBurnout.cs"/>

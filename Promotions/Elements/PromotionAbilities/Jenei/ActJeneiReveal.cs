@@ -9,7 +9,7 @@ public class ActJeneiReveal : PromotionSpellAbility
     public override string PromotionString => Constants.JeneiId;
     public override int AbilityId => Constants.ActJeneiRevealId;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         if (TC is not { isChara: true }) return false;
         return true;

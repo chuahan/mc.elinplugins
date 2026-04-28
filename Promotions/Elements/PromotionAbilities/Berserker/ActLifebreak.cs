@@ -8,7 +8,7 @@ public class ActLifebreak : PromotionCombatAbility
     public override string PromotionString => Constants.BerserkerId;
     public override int AbilityId => Constants.ActLifebreakId;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         if (TC is not { isChara: true }) return false;
         return ACT.Melee.CanPerform();

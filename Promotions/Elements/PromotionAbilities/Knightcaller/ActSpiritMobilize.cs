@@ -7,7 +7,7 @@ public class ActSpiritMobilize : PromotionSpellAbility
     public override string PromotionString => Constants.KnightcallerId;
     public override int AbilityId => Constants.ActSpiritMobilizeId;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         return TP.IsValid && Los.IsVisible(CC.pos, TP);
     }

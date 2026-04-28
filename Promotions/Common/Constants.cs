@@ -23,7 +23,7 @@ public class Constants
     public const string IsEliteEnemyFlag = "eliteEnemy";
 
     public const string PromotionModVersionFlag = "modVersion";
-    public const int PromotionModVersion = 106;
+    public const int PromotionModVersion = 107;
 
     #endregion
 
@@ -96,9 +96,6 @@ public class Constants
         },
         {
             EleImpact, "eleImpact"
-        },
-        {
-            EleVoid, "eleVoid"
         }
     };
 
@@ -475,6 +472,7 @@ public class Constants
     public const int FeatAlraune = 891164;
     public const int StSweetScentId = 891165;
     public const int ActWildGrowthId = 891166;
+    public const int ActAlrauneConsumeId = 891176;
 
     #endregion
 

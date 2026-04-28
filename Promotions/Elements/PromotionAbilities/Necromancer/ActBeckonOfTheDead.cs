@@ -8,7 +8,7 @@ public class ActBeckonOfTheDead : PromotionSpellAbility
     public override string PromotionString => Constants.NecromancerId;
     public override int AbilityId => Constants.ActBeckonOfTheDeadId;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         return TC.isChara && TC.Chara.IsHostile(CC);
     }

@@ -49,6 +49,23 @@ public class ActPlanPatches
                 }
                 return true;
             });
+            /*
+            __instance.TrySetAct("Targeted Removal", delegate
+            {
+                List<Chara> charas = EClass._zone.map.charas.ToList();
+                foreach (Chara c in charas)
+                {
+                    if (c.id is "azalea" or "camellia" or "vessia" or "alder" or "ushrir" or "kari")
+                    {
+                        //EClass.pc.Banish(c);
+                        c.RemoveGlobal();
+                        c.Destroy();
+                        c.Die();
+                    }
+                }
+                return true;
+            });
+            */
         }
         
 

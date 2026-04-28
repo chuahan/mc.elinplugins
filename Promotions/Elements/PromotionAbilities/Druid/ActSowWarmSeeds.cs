@@ -17,7 +17,7 @@ public class ActSowWarmSeeds : PromotionSpellAbility
     public override string PromotionString => Constants.DruidId;
     public override int AbilityId => Constants.ActSowWarmSeedsId;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         if (CC.currentZone.CountMinions(CC) >= CC.MaxSummon) return false;
         if (!TP.IsValid || TP.HasChara) return false;

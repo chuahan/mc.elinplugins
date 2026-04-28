@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Stats.Machinist;
 namespace PromotionMod.Elements.PromotionAbilities.Machinist;
@@ -10,7 +10,7 @@ public class StHeavyarms : PromotionAbility
 
     public override int AbilityId => Constants.StHeavyarmsId;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         // Can cancel out at any time.
         if (CC.HasCondition<StanceHeavyarms>())
@@ -21,25 +21,14 @@ public class StHeavyarms : PromotionAbility
         // Cannot be used while riding or as a parasite.
         if (CC.ride != null)
         {
-            if (CC.IsPC) Msg.Say("machinist_heavyarms_noride".langGame());
+            if (CC.IsPC && verbose) Msg.Say("machinist_heavyarms_noride".langGame());
             return false;
         }
 
         // Can only be used if there are visible targets.
-        List<Point> targets = new List<Point>();
-        foreach (Point p in CC.fov.ListPoints())
+        if (!CC.fov.ListPoints().Any(p => p.Charas.Any(c => c.IsHostile(CC))))
         {
-            foreach (Chara c in p.Charas)
-            {
-                if (!c.IsHostile(CC)) continue;
-                targets.Add(p);
-                break;
-            }
-        }
-
-        if (targets.Count == 0)
-        {
-            if (CC.IsPC) Msg.Say("machinist_heavyarms_notargets".langGame());
+            if (CC.IsPC && verbose) Msg.Say("machinist_heavyarms_notargets".langGame());
             return false;
         }
 

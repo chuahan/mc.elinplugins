@@ -11,14 +11,14 @@ public class ActSunder : PromotionCombatAbility
     public override int AbilityId => Constants.ActSunderId;
 
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         if (CC != null)
         {
             int hpCost = (int)(CC.MaxHP * HealthCost);
             if (CC.hp <= hpCost)
             {
-                // You would die if you use this now.
+                if (CC.IsPC && verbose) Msg.Say("hpcostability_notenoughhp".langGame());
                 return false;
             }
         }

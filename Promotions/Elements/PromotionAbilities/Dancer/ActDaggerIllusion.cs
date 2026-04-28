@@ -15,18 +15,18 @@ public class ActDaggerIllusion : PromotionCombatAbility
 
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostStamina;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         Thing thing = ActDaggerIllusion.GetBestThrowingWeapon(CC);
         if (thing == null)
         {
-            if (CC.IsPC) Msg.Say("daggerillusion_nothrowingweapon".lang());
+            if (CC.IsPC && verbose) Msg.Say("daggerillusion_nothrowingweapon".lang());
             return false;
         }
 
         if (owner?.Chara?.conditions.Exists(x => x is StanceDance) == false)
         {
-            if (CC.IsPC) Msg.Say("dancer_mustbedancing".lang());
+            if (CC.IsPC && verbose) Msg.Say("dancer_mustbedancing".lang());
             return false;
         }
         return true;

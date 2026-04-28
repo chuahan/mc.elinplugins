@@ -34,29 +34,29 @@ public class StanceDance : PromotionStance
         }
 
         // Cannot dance if disabled or restrained.
-        if (CC.isRestrained || CC.IsDisabled) Kill();
+        if (owner.isRestrained || owner.IsDisabled) Kill();
 
         bool hasPartner = false;
         Chara partner = null;
-        if (CC.HasCondition<StancePartnerStyle>())
+        if (owner.HasCondition<StancePartnerStyle>())
         {
-            StancePartnerStyle partnerStyle = CC.GetCondition<StancePartnerStyle>();
+            StancePartnerStyle partnerStyle = owner.GetCondition<StancePartnerStyle>();
             partner = _map.FindChara(partnerStyle.PartnerUID);
             hasPartner = true;
         }
 
         if (hasPartner)
         {
-            if (partner != null && partner.pos.Distance(CC.pos) <= DanceRange)
+            if (partner != null && partner.pos.Distance(owner.pos) <= DanceRange)
             {
                 // Apply Internal to Dancer and Partner at 1.5x Power and apply alternate effects.
                 ActInternal(partner, HelperFunctions.SafeMultiplier(power, 1.5F), true);
-                ActInternal(CC, HelperFunctions.SafeMultiplier(power, 1.5F), true);
+                ActInternal(owner, HelperFunctions.SafeMultiplier(power, 1.5F), true);
             }
         }
         else
         {
-            List<Chara> affectedAllies = HelperFunctions.GetCharasWithinRadius(CC.pos, DanceRange, CC, true, true);
+            List<Chara> affectedAllies = HelperFunctions.GetCharasWithinRadius(owner.pos, DanceRange, owner, true, true);
             foreach (Chara target in affectedAllies)
             {
                 ActInternal(target, HelperFunctions.SafeMultiplier(power, 2), false);

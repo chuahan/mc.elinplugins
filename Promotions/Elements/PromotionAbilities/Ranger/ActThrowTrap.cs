@@ -22,7 +22,7 @@ public class ActThrowTrap : PromotionCombatAbility
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
 
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         // Cannot stack traps or place in pc faction
         if (TP.Installed != null || _zone.IsPCFaction) return false;

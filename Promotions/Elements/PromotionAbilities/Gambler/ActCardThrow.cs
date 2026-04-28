@@ -4,14 +4,10 @@ namespace PromotionMod.Elements.PromotionAbilities.Gambler;
 
 public class ActCardThrow : PromotionCombatAbility
 {
-
-
-    private float _effectRadius = 5F;
     public override int PromotionId => Constants.FeatGambler;
     public override string PromotionString => Constants.GamblerId;
     public override int AbilityId => Constants.ActCardThrowId;
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostMana;
-    public override bool ShowMapHighlight => true;
 
     public override bool Perform()
     {

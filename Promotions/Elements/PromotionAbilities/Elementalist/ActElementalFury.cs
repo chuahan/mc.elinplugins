@@ -16,24 +16,20 @@ public class ActElementalFury : PromotionSpellAbility
     public override string PromotionString => Constants.ElementalistId;
     public override int AbilityId => Constants.ActElementalFuryId;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
-        if (!CC.MatchesPromotion(Constants.FeatElementalist))
-        {
-            Msg.Say("classlocked_ability".lang(Constants.ElementalistId.lang()));
-            return false;
-        }
         if (CC.HasCondition<ConElementalist>())
         {
             ConElementalist elementalist = CC.GetCondition<ConElementalist>();
             if (elementalist.GetElementalCombination() < ElementalFuryRequirement)
             {
-                Msg.Say("elementalist_notenoughorbs".langGame(ElementalFuryRequirement.ToString()));
+                if (CC.IsPC && verbose) Msg.Say("elementalist_notenoughorbs".langGame(ElementalFuryRequirement.ToString()));
                 return false;
             }
         }
         else
         {
+            if (CC.IsPC && verbose) Msg.Say("elementalist_notenoughorbs".langGame(ElementalFuryRequirement.ToString()));
             return false;
         }
 

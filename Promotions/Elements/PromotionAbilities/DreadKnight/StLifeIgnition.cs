@@ -10,7 +10,7 @@ public class StLifeIgnition : PromotionAbility
 
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostNone;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
 
         if (CC != null)
@@ -19,7 +19,7 @@ public class StLifeIgnition : PromotionAbility
             if (CC.hp <= hpCost)
             {
                 // You would die if you use this now.
-                if (CC.IsPC) Msg.Say("dreadknight_notenoughhp".langGame());
+                if (CC.IsPC && verbose) Msg.Say("hpcostability_notenoughhp".langGame());
                 return false;
             }
         }

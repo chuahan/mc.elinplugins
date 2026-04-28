@@ -10,9 +10,13 @@ public class ActDetonateTrap : PromotionSpellAbility
 
     public override int PerformDistance => 5;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
-        if (TP.Installed == null || TP.GetInstalled<TraitTricksterArcaneTrap>() == null) return false;
+        if (TP.Installed == null || TP.GetInstalled<TraitTricksterArcaneTrap>() == null)
+        {
+            if (CC.IsPC && verbose) Msg.Say("trickster_musttargettrap".langGame());
+            return false;
+        }
         return true;
     }
 

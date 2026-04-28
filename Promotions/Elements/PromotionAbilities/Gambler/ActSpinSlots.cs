@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 using PromotionMod.Stats;
+using PromotionMod.Stats.Hermit;
 using PromotionMod.Stats.Spellblade;
 using PromotionMod.Stats.WitchHunter;
 using UnityEngine;
@@ -32,20 +34,7 @@ public class ActSpinSlots : PromotionSpellAbility
         }
     }
 
-    // Remove this after. Doing this so I can test individual procs.
     public override bool Perform()
-    {
-        (List<Chara> friendlies, List<Chara> enemies) = HelperFunctions.GetOrganizedCharasWithinRadius(CC.pos, _effectRadius, CC, true);
-        Chara? enemy = enemies.FirstOrDefault();
-        if (enemy != null)
-        {
-            ProcBusterPunch(enemy, CC);
-        }
-
-        return true;
-    }
-
-    public bool Perform2()
     {
         // Prepare the slots.
         Dice slots = new Dice
@@ -75,6 +64,7 @@ public class ActSpinSlots : PromotionSpellAbility
                     CC.Say("gambler_slots_jackpot_refresh".langGame());
                     foreach (Chara c in friendlies)
                     {
+                        Msg.Say("gambler_slots_jackpot_refresh_heal".langGame(c.NameSimple));
                         c.HealAll();
                     }
                     break;
@@ -105,7 +95,7 @@ public class ActSpinSlots : PromotionSpellAbility
                     CC.Say("gambler_slots_jackpot_fullthrottle".langGame());
                     foreach (Chara c in friendlies)
                     {
-                        ProcFullThrottle(c, CC, power);
+                        c.AddCondition<ConBoost>();
                     }
                     break;
                 case 0: // Mighty Guard
@@ -691,15 +681,14 @@ public class ActSpinSlots : PromotionSpellAbility
     public void ProcNightAndDay(Chara target, Chara caster, int power, bool hitFriendly = false)
     {
         // Dark Ball on target.
-        Effect spellEffect = Effect.Get("Element/ball_Darkness");
         List<Chara> targetsHit = new List<Chara>();
-        foreach (Point tile in _map.ListPointsInCircle(CC.pos, 3F, false, false))
+        ElementRef colorRef = setting.elements["eleDarkness"];
+        foreach (Point tile in _map.ListPointsInCircle(target.pos, 3f, false, false))
         {
-            int distance = tile.Distance(CC.pos);
-
-            foreach (Chara c in tile.ListCharas().Where(c => !targetsHit.Contains(c)))
+            int distance = tile.Distance(target.pos);
+            foreach (Chara subTarget in tile.ListCharas().Where(subTarget => !targetsHit.Contains(subTarget)))
             {
-                if (c.IsHostile(caster) || hitFriendly)
+                if (subTarget.IsHostile(CC))
                 {
                     ActEffect.DamageEle(CC, EffectId.Ball, power, Element.Create(Constants.EleDarkness, power / 10), new List<Point>
                     {
@@ -711,27 +700,26 @@ public class ActSpinSlots : PromotionSpellAbility
                 }
 
                 // Mark Target as hit.
-                targetsHit.Add(target);
+                targetsHit.Add(subTarget);
             }
 
-            // Get distance from the origin. Use that to add delay to the effect.
-            float delay = distance * 0.7F;
-            TweenUtil.Delay(delay, delegate
-            {
-                spellEffect.Play(tile, 0f, tile);
-            });
+            // Get distance from the origin. Use that to add delay to the explosion.
+            Effect spellEffect2 = Effect.Get("Element/ball_Impact");
+            spellEffect2.SetParticleColor(colorRef.colorTrail, true, "_TintColor");
+            spellEffect2.sr.color = colorRef.colorSprite;
+            float delay = distance * 0.08F;
+            spellEffect2.SetStartDelay(delay);
+            spellEffect2.Play(tile).Flip(tile.x > CC.pos.x);
         }
 
-        // Holy Ball on target.
-        Effect spellEffect2 = Effect.Get("Element/ball_Holy");
-        List<Chara> targetsHit2 = new List<Chara>();
-        foreach (Point tile in _map.ListPointsInCircle(CC.pos, 3F, false, false))
+        targetsHit = new List<Chara>();
+        colorRef = setting.elements["eleLightning"];
+        foreach (Point tile in _map.ListPointsInCircle(target.pos, 3f, false, false))
         {
-            int distance = tile.Distance(CC.pos);
-
-            foreach (Chara c in tile.ListCharas().Where(c => !targetsHit2.Contains(c)))
+            int distance = tile.Distance(target.pos);
+            foreach (Chara subTarget in tile.ListCharas().Where(subTarget => !targetsHit.Contains(subTarget)))
             {
-                if (c.IsHostile(caster) || hitFriendly)
+                if (subTarget.IsHostile(CC))
                 {
                     ActEffect.DamageEle(CC, EffectId.Ball, power, Element.Create(Constants.EleHoly, power / 10), new List<Point>
                     {
@@ -743,15 +731,16 @@ public class ActSpinSlots : PromotionSpellAbility
                 }
 
                 // Mark Target as hit.
-                targetsHit2.Add(target);
+                targetsHit.Add(subTarget);
             }
 
-            // Get distance from the origin. Use that to add delay to the effect.
-            float delay = distance * 0.7F;
-            TweenUtil.Delay(delay, delegate
-            {
-                spellEffect2.Play(tile, 0f, tile);
-            });
+            // Get distance from the origin. Use that to add delay to the explosion.
+            Effect spellEffect2 = Effect.Get("Element/ball_Impact");
+            spellEffect2.SetParticleColor(colorRef.colorTrail, true);
+            spellEffect2.sr.color = colorRef.colorSprite;
+            float delay = distance * 0.08F;
+            spellEffect2.SetStartDelay(0.5F + delay);
+            spellEffect2.Play(tile).Flip(tile.x > CC.pos.x);
         }
     }
 
@@ -861,7 +850,7 @@ public class ActSpinSlots : PromotionSpellAbility
         List<Point> linePath = _map.ListPointsInLine(start, end, 20, false);
         foreach (Point position in linePath)
         {
-            if (!position.Equals(start) && start.Distance(position) <= start.Distance(end) && position.IsInBounds)
+            if (!position.Equals(start) && start.Distance(position) >= start.Distance(end) && position.IsInBounds)
             {
                 if (!position.Equals(end) && (position.IsBlocked || position.HasChara && position.FirstChara.IsMultisize))
                 {
@@ -886,18 +875,95 @@ public class ActSpinSlots : PromotionSpellAbility
 
     public void ProcFireworks(List<Chara> targets, Chara caster, int power)
     {
+        foreach (Chara target in targets)
+        {
+            target.pos.PlaySound("spell_flare");
+            int fireworkCount = 2 + EClass.rnd(4); // Fire between 2 and 5 Flares.
+            for (int i = 0; i < fireworkCount; i++)
+            {
+                int randomElement = Constants.ElementAliasLookup.Keys.RandomItem();
+                List<Chara> targetsHit = new List<Chara>();
+                ElementRef colorRef = setting.elements[Constants.ElementAliasLookup[randomElement]];
+                Point randomPoint = target.pos.GetRandomNeighbor();
+                foreach (Point tile in _map.ListPointsInCircle(randomPoint, 2f, false, false))
+                {
+                    int distance = tile.Distance(target.pos);
+                    foreach (Chara subTarget in tile.ListCharas().Where(subTarget => !targetsHit.Contains(subTarget)))
+                    {
+                        // Damage Hostiles
+                        if (subTarget.IsHostile(CC))
+                        {
+                            ActEffect.DamageEle(CC, EffectId.Flare, power, Element.Create(randomElement, power / 10), new List<Point>
+                            {
+                                target.pos
+                            }, new ActRef
+                            {
+                                act = this
+                            });
+                        }
+
+                        // Mark Target as hit.
+                        targetsHit.Add(subTarget);
+                    }
+
+                    // Get distance from the origin. Use that to add delay to the explosion.
+                    Effect spellEffect2 = Effect.Get("flare2");
+                    spellEffect2.SetParticleColor(colorRef.colorTrail, false, "_TintColor");
+                    spellEffect2.SetParticleColor(colorRef.colorSprite, false);
+                    spellEffect2.sr.color = colorRef.colorSprite;
+                    float delay = EClass.rndf(0.2f) + distance * 0.08F;
+                    spellEffect2.SetStartDelay(delay);
+                    spellEffect2.Play(tile).Flip(tile.x > CC.pos.x);
+                }
+            }
+        }
     }
+
     public void ProcVitalStrike(Chara target, Chara caster, int power)
     {
+        caster.AddCondition<ConDeathbringer>();
+        new ActMeleeVitalStrike().Perform(caster, target);
+        target.PlaySound("critical");
+        target.PlayEffect("hit_slash").SetScale(1f);
 
-    }
-    public void ProcFullThrottle(Chara target, Chara caster, int power)
-    {
+        // Bosses can't instantly die, but will lose 50% of their current HP.
+        if (target.IsBoss())
+        {
+            Msg.Say("gambler_slots_jackpot_behead_grievous".langGame(target.NameSimple));
+            target.DamageHP(target.hp / 2, AttackSource.Melee, caster);
+        }
+        else
+        {
+            Dice cullRoll = new Dice
+            {
+                num = 1,
+                sides = 7,
+                card = caster
+            };
 
+            int vitalRoll = cullRoll.Roll();
+            if (vitalRoll == 6)
+            {
+                // Instant Death.
+                Msg.Say("gambler_slots_jackpot_behead_instantkill".langGame(target.NameSimple));
+                target.Die(null, caster, AttackSource.Finish);
+            }
+            else
+            {
+                cullRoll.sides = 12;
+                Msg.Say("gambler_slots_jackpot_behead_grievous".langGame(target.NameSimple));
+                int damage = (int)(target.MaxHP * ((cullRoll.Roll() + 1) * 7 / 100F));
+                target.DamageHP(damage, AttackSource.Melee, caster);
+            }
+        }
+        caster.RemoveCondition<ConDeathbringer>();
     }
+
     public void ProcMightyGuard(Chara target, Chara caster, int power)
     {
-
+        int afterImageCount = (int)HelperFunctions.SigmoidScaling(power, 3F, 6F);
+        target.AddCondition<ConAfterimage>(afterImageCount);
+        target.AddCondition<ConProtection>(power);
     }
 
     public void SayTargetWheel(int slotTarget, Chara caster)

@@ -9,10 +9,16 @@ public class ActBlessingOfTheDead : PromotionSpellAbility
     public override string PromotionString => Constants.NecromancerId;
     public override int AbilityId => Constants.ActBlessingOfTheDeadId;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         // Must be a minion of the caster and must be undead.
-        return TC.isChara && TC.IsMinion && TC.Chara.master == CC && TC.Chara.IsUndead && TC.IsAliveInCurrentZone;
+        if (TC is not { isChara: true } || !TC.IsMinion || TC.Chara.master != CC || !TC.Chara.IsUndead && !TC.IsAliveInCurrentZone)
+        {
+            if (CC.IsPC && verbose) Msg.Say("necromancer_target_undead_minions".langGame());
+            return false;
+        }
+
+        return true;
     }
 
     public override bool Perform()
@@ -25,8 +31,11 @@ public class ActBlessingOfTheDead : PromotionSpellAbility
         }
         // Target's Remaining HP is scaled down.
         int healthPercent = (int)HelperFunctions.SigmoidScaling(GetPower(CC), 40, 75);
-        int healthValue = TC.Chara.hp * (healthPercent / 100);
+        int healthValue = (int)(TC.Chara.hp * (healthPercent / 100F));
+        //Msg.Nerun($"Blessing of the Dead Health Percent: {healthPercent}");
+        //Msg.Nerun($"Blessing of the Dead Healing: {healthValue}");
         List<Chara> targetsHit = new List<Chara>();
+        ElementRef colorRef = setting.elements["eleAcid"];
         foreach (Point tile in _map.ListPointsInCircle(TC.pos, 5f, false, false))
         {
             int distance = tile.Distance(CC.pos);
@@ -53,12 +62,13 @@ public class ActBlessingOfTheDead : PromotionSpellAbility
                 targetsHit.Add(target);
             }
 
-            // Get distance from the origin. Use that to add delay to the explosion,
-            float delay = distance * 0.07F;
-            TweenUtil.Delay(delay, delegate
-            {
-                tile.PlayEffect("Element/ball_Holy");
-            });
+            // Get distance from the origin. Use that to add delay to the explosion.
+            Effect spellEffect = Effect.Get("Element/ball_Fire");
+            spellEffect.SetParticleColor(colorRef.colorTrail, true, "_TintColor");
+            spellEffect.sr.color = colorRef.colorSprite;
+            float delay = distance * 0.08F;
+            spellEffect.SetStartDelay(delay);
+            spellEffect.Play(tile).Flip(tile.x > CC.pos.x);
         }
 
         TC.Chara.Die();

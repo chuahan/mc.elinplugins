@@ -16,14 +16,14 @@ public class ActElementalExtinction : PromotionSpellAbility
     public override string PromotionString => Constants.ElementalistId;
     public override int AbilityId => Constants.ActElementalExtinctionId;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         if (CC.HasCondition<ConElementalist>())
         {
             ConElementalist elementalist = CC.GetCondition<ConElementalist>();
             if (elementalist.GetElementalCombination() < ElementalFuryRequirement)
             {
-                Msg.Say("elementalist_notenoughorbs".langGame(ElementalFuryRequirement.ToString()));
+                if (CC.IsPC && verbose) Msg.Say("elementalist_notenoughorbs".langGame(ElementalFuryRequirement.ToString()));
                 return false;
             }
         }

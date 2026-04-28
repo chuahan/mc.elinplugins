@@ -69,12 +69,12 @@ public class ConElementalist : ClassCondition
 
     public override bool TimeBased => true;
 
-    public int GetPower(Chara cc)
+    public int GetPower(Chara c)
     {
-        int basePower = cc.LV * 6 + 100; // Level * 6 + 100
-        basePower += cc.Evalue(76) * 4; // Add MAG stat * 4
+        int basePower = c.LV * 6 + 100; // Level * 6 + 100
+        basePower += c.Evalue(76) * 4; // Add MAG stat * 4
         basePower = EClass.curve(basePower, 400, 100); // Curve
-        return basePower * Mathf.Max(100 + cc.Evalue(411) - cc.Evalue(93), 1) / 100; // Add Spellpower + AntiMag
+        return basePower * Mathf.Max(100 + c.Evalue(411) - c.Evalue(93), 1) / 100; // Add Spellpower + AntiMag
     }
 
     public int GetElementalStrength()

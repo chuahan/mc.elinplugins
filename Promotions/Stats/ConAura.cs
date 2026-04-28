@@ -71,7 +71,7 @@ public abstract class ConAura : BaseBuff
             power = element.GetPower(owner); // Refresh the live power from the ability
         }
 
-        (List<Chara> friendlies, List<Chara> enemies) = HelperFunctions.GetOrganizedCharasWithinRadius(CC.pos, AuraRadius, CC, true);
+        (List<Chara> friendlies, List<Chara> enemies) = HelperFunctions.GetOrganizedCharasWithinRadius(owner.pos, AuraRadius, owner, true);
         switch (AuraTarget)
         {
             case AuraType.Friendly:

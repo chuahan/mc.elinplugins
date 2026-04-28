@@ -24,12 +24,13 @@ internal class PostLoadPatching : EClass
                 int promotionId = chara.GetFlagValue(Constants.PromotionFeatFlag);
                 if (!chara.HasElement(promotionId))
                 {
+                    Msg.Say("promotionmod_patching".langGame());
                     chara.SetFeat(promotionId);
                 }
             }
 
             // For testing purposes, activate Gambler for me cause Evie isn't fully implemented.
-            //EClass.pc.SetFlagValue(Constants.GamblerPromotionUnlockedFlag, 1);
+            // EClass.pc.SetFlagValue(Constants.GamblerPromotionUnlockedFlag, 1);
         }
     }
 
@@ -43,18 +44,19 @@ internal class PostLoadPatching : EClass
 
         if (pc != null)
         {
-            // Run this save function when in the same zone to update them...
-            // For V1.02, if Lailah is already spawned, set her Promotion flag so she can use her abilities if necessary.
+            int version = pc.GetFlagValue(Constants.PromotionModVersionFlag);
+
+            // For V102, if Lailah is already spawned, set her Promotion flag so she can use her abilities if necessary.
             Chara lailah = pc.currentZone.FindChara(Constants.LailahCharaId);
             if (lailah != null)
             {
                 if (lailah.GetFlagValue(Constants.PromotionFeatFlag) == 0 && lailah.HasElement(Constants.FeatSharpshooter))
                 {
+                    Msg.Say("promotionmod_patching".langGame());
                     lailah.SetFlagValue(Constants.PromotionFeatFlag, Constants.FeatSharpshooter);
                 }
             }
-
-            // For V1.04, Update all the Knightcaller Captains with their respective promotion feat flags.
+            // For 104, Update all the Knightcaller Captains with their respective promotion feat flags.
             PostLoadPatching.PromotionMod_PatchCharaPromo(Constants.DinatogCharaId, Constants.FeatSniper);
             PostLoadPatching.PromotionMod_PatchCharaPromo(Constants.AlestieCharaId, Constants.FeatHermit);
             PostLoadPatching.PromotionMod_PatchCharaPromo(Constants.ValeroCharaId, Constants.FeatSentinel);
@@ -62,14 +64,10 @@ internal class PostLoadPatching : EClass
             PostLoadPatching.PromotionMod_PatchCharaPromo(Constants.ArkunCharaId, Constants.FeatSpellblade);
             PostLoadPatching.PromotionMod_PatchCharaPromo(Constants.DiasCharaId, Constants.FeatHeadhunter);
             PostLoadPatching.PromotionMod_PatchCharaPromo(Constants.RolingerCharaId, Constants.FeatBattlemage);
-
-            int version = pc.GetFlagValue(Constants.PromotionModVersionFlag);
-
-            if (version < Constants.PromotionModVersion)
-            {
-                // For V1.05 - Update Hermits and Snipers with their new abilities.
-                PostLoadPatching.PromotionMod_PatchHermitSniper();
-            }
+            // For 106 - Update Hermits and Snipers with their new abilities.
+            PostLoadPatching.PromotionMod_PatchHermitSniper();
+            // For 107 - Update Alraunes with Consume.
+            PostLoadPatching.PromotionMod_PatchAlraune();
 
             // Update the Flag Value so we can skip this stuff next time.
             pc.SetFlagValue(Constants.PromotionModVersionFlag, Constants.PromotionModVersion);
@@ -83,6 +81,7 @@ internal class PostLoadPatching : EClass
         {
             if (characterToPatch.GetFlagValue(Constants.PromotionFeatFlag) == 0 && characterToPatch.HasElement(promotionFeatId))
             {
+                Msg.Say("promotionmod_patching".langGame());
                 characterToPatch.SetFlagValue(Constants.PromotionFeatFlag, promotionFeatId);
             }
         }
@@ -100,12 +99,14 @@ internal class PostLoadPatching : EClass
                 {
                     if (!chara.HasElement(Constants.ActPreparationId))
                     {
+                        Msg.Say("promotionmod_patching".langGame());
                         chara.AddElement(Constants.ActPreparationId);
                     }
                 }
 
                 else
                 {
+                    Msg.Say("promotionmod_patching".langGame());
                     chara.ability.Add(Constants.ActPreparationId, 75, false);
                 }
             }
@@ -116,14 +117,36 @@ internal class PostLoadPatching : EClass
                 {
                     if (!chara.HasElement(Constants.ActTacticalRetreatId))
                     {
+                        Msg.Say("promotionmod_patching".langGame());
                         chara.AddElement(Constants.ActTacticalRetreatId);
                     }
                 }
 
                 else
                 {
+                    Msg.Say("promotionmod_patching".langGame());
                     chara.ability.Add(Constants.ActTacticalRetreatId, 50, false);
                 }
+            }
+        }
+    }
+
+    internal static void PromotionMod_PatchAlraune()
+    {
+        foreach (Chara chara in game.cards.globalCharas.Values.Where(gc => gc.HasElement(Constants.FeatAlraune)))
+        {
+            if (chara.IsPC)
+            {
+                if (!chara.HasElement(Constants.ActAlrauneConsumeId))
+                {
+                    Msg.Say("promotionmod_patching".langGame());
+                    chara.AddElement(Constants.ActAlrauneConsumeId);
+                }
+            }
+            else
+            {
+                Msg.Say("promotionmod_patching".langGame());
+                chara.ability.Add(Constants.ActAlrauneConsumeId, 50, false);
             }
         }
     }

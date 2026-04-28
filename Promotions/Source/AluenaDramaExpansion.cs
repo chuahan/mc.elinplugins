@@ -9,6 +9,7 @@ namespace PromotionMod.Source;
 
 internal class AluenaDramaExpansion : DramaOutcome
 {
+    public const string WarmHearthDailySpecialFlag = "whDay";
     private static bool TeaHouse_CanOrderTea(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
         if (EClass.pc.HasCondition<ConTeaTime>())
@@ -46,21 +47,16 @@ internal class AluenaDramaExpansion : DramaOutcome
 
     private static bool KariStateCheck(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
+        dm.RequiresActor(out Chara grandmaCat);
+
         if (EClass.pc.party.members.Any(c => c.hunger.GetPhase() >= StatsHunger.Hungry))
         {
             EClass.pc.SetFlagValue("partyHungry");
         }
 
-        return false;
-    }
-
-    private static bool DiningHall_FreeFoodEligible(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
-    {
-        if (EClass.pc.party.members.Any(c => c.hunger.GetPhase() >= StatsHunger.Hungry))
-        {
-            return true;
-        }
-
+        // If there's a daily special load it.
+        int dailySpecial = EClass.world.date.day % 7;
+        grandmaCat.SetFlagValue(WarmHearthDailySpecialFlag, dailySpecial is >= 1 and <= 5 ? dailySpecial : 0);
         return false;
     }
 
@@ -78,8 +74,6 @@ internal class AluenaDramaExpansion : DramaOutcome
                 target = meal
             });
             EClass.pc.SetFlagValue("partyHungry", 0);
-            // Add a cooldown of 1 day.
-
         }
 
         return false;

@@ -85,6 +85,7 @@
     <Compile Include="BuildingTools.cs" />
     <Compile Include="CoreDebugPatches.cs" />
     <Compile Include="FactionBranches.cs" />
+    <Compile Include="SourceLoadingPatches.cs" />
     <Compile Include="ZonePatches.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

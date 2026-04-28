@@ -16,11 +16,11 @@ public abstract class ActSovereignOrder : PromotionSpellAbility
     public abstract void AddLawCondition(Chara chara, int stacks);
     public abstract void AddChaosCondition(Chara chara, int stacks);
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         if (!CC.HasCondition<StanceSovereign>())
         {
-            if (CC.IsPC) Msg.Say("sovereign_nostance".langGame());
+            if (CC.IsPC && verbose) Msg.Say("sovereign_nostance".langGame());
             return false;
         }
         if (CC.HasCooldown(CooldownId)) return false;

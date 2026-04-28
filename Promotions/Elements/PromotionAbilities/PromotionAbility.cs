@@ -30,11 +30,22 @@ public abstract class PromotionAbility : Ability
             return false;
         }
 
-        return CanPerformExtra() && base.CanPerform();
+        return CanPerformExtra(true) && base.CanPerform();
+    }
+
+    public override bool ValidatePerform(Chara _cc, Card _tc, Point _tp)
+    {
+        if (!CC.MatchesPromotion(PromotionId))
+        {
+            Msg.Say("classlocked_ability".lang(PromotionString.lang()));
+            return false;
+        }
+
+        return CanPerformExtra(true);
     }
 
     // Extra validations.
-    public virtual bool CanPerformExtra()
+    public virtual bool CanPerformExtra(bool verbose)
     {
         return true;
     }

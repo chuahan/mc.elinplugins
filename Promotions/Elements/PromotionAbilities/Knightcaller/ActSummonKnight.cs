@@ -13,7 +13,7 @@ public class ActSummonKnight : PromotionSpellAbility
     public override string PromotionString => Constants.KnightcallerId;
     public override int AbilityId => Constants.ActSummonKnightId;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
         return CC.currentZone.CountMinions(CC) < CC.MaxSummon;
     }

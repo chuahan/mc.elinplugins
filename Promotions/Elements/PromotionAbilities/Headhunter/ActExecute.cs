@@ -17,7 +17,7 @@ public class ActExecute : PromotionCombatAbility
     public int Cooldown => 10;
     public override int AbilityId => Constants.ActExecuteId;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
 
         if (CC == TC || TC is not { isChara: true } || CC.Dist(TC) > 1)

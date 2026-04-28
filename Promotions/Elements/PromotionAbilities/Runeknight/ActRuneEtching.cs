@@ -8,11 +8,11 @@ public class ActRuneEtching : PromotionSpellAbility
     public override string PromotionString => Constants.RuneKnightId;
     public override int AbilityId => Constants.ActRuneEtchingId;
 
-    public override bool CanPerformExtra()
+    public override bool CanPerformExtra(bool verbose)
     {
-        if (CC.IsPC && CC.things.Find("tool_talisman") == null)
+        if (CC.IsPC && CC.things.Find("tool_talisman") == null && verbose)
         {
-            CC.Say("hint_runeknight_need_calligraphy");
+            CC.Say("runeknight_etching_needcalligraphy".langGame());
             return false;
         }
 

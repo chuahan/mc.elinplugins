@@ -10,12 +10,10 @@ public class ActFormationOrder : ActSovereignOrder
 
     public override void AddLawCondition(Chara chara, int stacks)
     {
-        chara.RemoveCondition<ConOrderSword>();
         chara.AddCondition<ConOrderBarricade>(stacks);
     }
     public override void AddChaosCondition(Chara chara, int stacks)
     {
-        chara.RemoveCondition<ConOrderBarricade>();
         chara.AddCondition<ConOrderSword>(stacks);
     }
 }

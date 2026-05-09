@@ -9,4 +9,10 @@ public class ConOrderBarricade : BaseBuff
     {
         return SpriteSheet.Get(source.alias);
     }
+
+    public override void OnStart()
+    {
+        owner.RemoveCondition<ConOrderSword>();
+        base.OnStart();
+    }
 }

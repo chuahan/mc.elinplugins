@@ -1,3 +1,5 @@
+using PromotionMod.Common;
+using PromotionMod.Stats.Jenei;
 using PromotionMod.Stats.WitchHunter;
 using UnityEngine;
 namespace PromotionMod.Elements.PromotionAbilities;
@@ -23,5 +25,30 @@ public abstract class PromotionSpellAbility : PromotionAbility
     {
         int power = base.GetPower(c);
         return power * Mathf.Max(100 + c.Evalue(ENC.encSpell) - c.Evalue(SKILL.antiMagic), 1) / 100;
+    }
+    
+    // In the Spell Ability, this is where the Jenei orb increase will be tracked for their Adept Abilities.
+    public override bool ValidatePerform(Chara _cc, Card _tc, Point _tp)
+    {
+        bool validateResult = CanPerformExtra(true);
+
+        if (!validateResult) return validateResult;
+        
+        // Jenei - Track Spellcasts for Impact/Fire/Cold/Lightning off their own abilities
+        if (_cc.HasElement(Constants.FeatJenei))
+        {
+            string spellType = this.act.source.aliasRef;
+            if (Constants.ElementAliasLookup.ContainsValue(spellType))
+            {
+                int element = Constants.ElementIdLookup[spellType];
+                if (element is Constants.EleImpact or Constants.EleFire or Constants.EleCold or Constants.EleLightning)
+                {
+                    ConJenei? jenei = _cc.GetCondition<ConJenei>() ?? _cc.AddCondition<ConJenei>() as ConJenei;
+                    jenei?.AddElement(element);
+                }
+            }
+        }
+
+        return validateResult;
     }
 }

@@ -3,7 +3,8 @@
 ## Changelog
 
 ### April 26th, 2026, 1.101 - Mini patch.
-- Fixed Alraune feat adding/removing abilties. Note, Alraune is technically playable, but is not completely fleshed out yet. I'm still working on adding an ability that represents their whole... man-eating schtick. If you are already an Alraune, don't worry, there are systems in game so I can patch the new ability whenever I finish thinking of it and coding it onto older characters. You can preview their abilitiies below.
+- Fixed Alraune feat adding/removing abilties.
+- Alraune now is "complete" and is entering feedback phase. Their 3rd Ability has been added: Consume Prey. Alraunes can now consume targets that fit the conditions and eat them, gaining attributes and skills based on the victim they consume. While they cannot gain abilities or spells like Slime can, they absorb far more attributes. If you are already an Alraune, don't worry, if you go in game and save, the new abilities will be added automatically.
 - Fixed Artificer Golems not being able to talk (partially, still working on the specific golem type documentation as opposed to dumping all of it at once.) Thanks 오징어
 - Fixed Necromancer's Corpse Explosion and Blessing of the Dead, they were using ints instead of floats which caused it to basically always do absolutely nothing. Thanks 오징어
 
@@ -246,24 +247,55 @@ Covert Operations from the Information Guild.
 ### Alraune
 A forest-dwelling plant monster with the upper body of a beautiful human, appearing to rise from an enormous, bulbous flower. It releases a sweet fragrance to entice living creatures, drawing them close before ensnaring and consuming them.
 
-This is the race I used as an example for the Custom Race/Class tutorial. I decided to revisit it and flesh out out a bit, giving them a statline and some perks.
+Alraunes are slow but durable creatures. They have a low speed score, high Charisma, and are magic leaning. They are innately immune to Poison and Acid, but extremely weak to Fire and moderately weak to Cold. Using their vines they can mimic an additional pair of Hands, but do not have Waist, Leg, or Feet equipment spots. Their unique plant constitution prevents them from benefiting as much from normal foods like other races, instead depending on consuming other creatures to satisfy their nutritional needs.
 
-Their Racial Trait is "Floral Metabolism", which will automatically cast Nature's Embrace on themselves for free when they are in sunlight. When they are in sunlight and are wet, they will gain hunger at 3x the normal rate. However, this is accompanied by the fact that Alraunes cannot absorb food as easily as other races and have severely reduced nutrition gains from consuming normal food.
-Their Racial Abilities are Sweet Scent and Wild Growth.
-Sweet Scent will reserve 10% of your mana to activate it as an aura, attempting to apply Infatuation and Drunk to nearby hostiles.
-Wild Growth is an AOE Ability that grabs nearby enemies within 3 tiles with poisonous vines. While this ability does not do damaage, it can inflict Poison and Entangle.
+Alraune Racial Trait: Floral Constitution.
+When exposed to the sunless winter air, they will gain fatigue twice as fast as other races. This effect is avoided if in sunlight or if the Alraune possesses enough cold resistance.
+When exposed to sunlight, they will automatically self-cast Nature's Embrace on themselves to boost their own regeneration.
+When they are exposed to sunlight and are also wet, they will digest food faster, gaining hunger at 3 times the normal rate.
+Alraunes will suffer a 70% penalty to nutrition, greatly decreasing the amount of gains they can recieve from normal food.
 
-The Alraune's main racial ability is Consume Prey. Usable on non boss and non unique enemies that are below 10% HP and afflicted with the Infatuated Status, if the Alraune is hungry they will grab the enemy and pull them into their flower, consuming them. Any of the victim's possessions will be spat out, heavily rusted if not acid proof. The Alraune will gain a large amount of attributes and skills from this act, as well as a Bad Condition: Overfed. Overfed will reduce speed, prevent hunger from ticking, and will prevent the use of Consume while active. The duration of Overfed is based on the the level difference between the Alraune and the target, and strong targets can take days to even months to finish digesting. Being in this state is dangerous, so use it carefully.
+Racial Ability: Sweet Scent (Aura)
+Reserve 10% of your mana to activate your Sweet Scent Aura, attempting to apply Infatuation and Drunk to nearby hostiles.
 
-Usable on non boss non unique enemies below 10% HP and afflicted with Infatuation to consume them and gain attributes based on the power of the victim,Spits out the victim's belongings,Cannot be used while still digesting a previous victim
+Racial Ability: Wild Growth
+AOE Debuff Ability that grabs nearby enemies within 3 tiles with poisonous vines. While this ability does not do damaage, it can inflict Poison and Entangle.
 
-Details: 
-Overfed Duration = Enemy Overlevel - the Alraune's level in Days. Any hunger the Alraune would gain during this condition would instead go towards the duration of this condition, so it pays off to be able to perform Floral Metabolism.
-Attribute/Skill Gain = Essentially the Alraune will benefit as if it was a baby drinking milk from the monster, except without the feat points. This does kind of make the Alraune VERY powerful once you reach scaled enemies as they are able to "quickly" raise their own stats.
-NPC Alraunes can use this ability if the conditions are met and they decide to do it. This could potentially get them killed. Not my fault.
+Racial Ability: Consume Prey.
+Usable on non boss, non unique enemies that are at or below 10% HP and afflicted with Infatuation. The Alraune must also be hungry.
+If the conditions are met, the Alraune will grab the enemy and pull them into their flower, consuming them.
+Any of the victim's possessions will be spat out with extra rust if not acid proof.
+The Alraune will gain a large amount of attributes, skills, and Feat Points from this act (Similar calculations to feeding a Baby Character milk.)
+The Alraune will also gain a unique Punishment Debuff called "Digesting Prey" which reduces their speed by 50% and can only wear off over time. The duration of this debuff is based off of the overlevel of the victim consumed in respect to the Alraune's own level. While under the affect of this Debuff, any hunger the Alraune would normally gain will be instead set to help reduce the duration of this debuff, and they cannot perform Consume Prey again.
 
 ### Gambler
 Evie is an adventurer who goes by the moniker Lucky Shot. She is known equally for her gunslinging skill as her penchant for gambling.  
 Evie wields the Fomalhaut hand cannon with deadly accuracy, specializing in hunting down bounty targets. If you run into her and complete her questline, she will unlock the Gambler Promotion for your run, allowing ANY class to advance into this lucky Promotion.  
   
 The Gambler is a luck based offshoot Promotion. Their abilities possess extreme randomness, making them capable of changing the tides of battle in either direction in a blink of an eye. Gamblers heavily depend on their Luck attribute, using it to increase the odds of their abilities producing positive results.
+
+### WIP, 1.2 - Aluèna
+- Welcome to Aluèna adventurers!
+
+#### Questlines
+- Lailah: Betrayed Soldier
+- Minari: Regicide à Deux
+- Vyers: War against the Dark guild
+- Evie: Gomidor's Bounty
+- Larissa: Rivalry with Sarvesh
+
+#### Non Recruitable NPCs.
+- Grandmeow Kari is runs the Warm Hearth Cafeteria.
+- Alder runs the Moonlit Boutique Tailor.
+- Ùshrir runs the Summer Mountain Forge.
+- Camellia runs the Viridian Grove Teahouse.
+- Vyers is the leader of the Adventurer's Guild.
+- Louise is the Secretary of the Adventurer's Guild.
+- Minari is the leader of the Information Guild.
+
+#### Recruitable NPCs
+- Evie is a recruitable Catsister Gambler, location varies.
+- Vessia is a recruitable Mifu Dancer that works at the Moonlit Boutique.
+- Azalea is a recruitable Alraune Druid that works at the Viridian Grove Teahouse.
+- Mitsune is a recruitable Nefu Dread Knight that works at the Adventurer's Guild.
+- Sena and Ruras are recruitable Juere Hermits that works at the Information Guild.

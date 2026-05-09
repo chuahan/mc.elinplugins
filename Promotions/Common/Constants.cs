@@ -22,8 +22,8 @@ public class Constants
     public const string UnlockedEliteEnemiesFlag = "eliteEnemiesUL";
     public const string IsEliteEnemyFlag = "eliteEnemy";
 
-    public const string PromotionModVersionFlag = "modVersion";
-    public const int PromotionModVersion = 107;
+    public const string PromotionModVersionFlag = "promoVer";
+    public const int PromotionModVersion = 108;
 
     #endregion
 

@@ -3,13 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using Cwl.API.Drama;
 using Cwl.Helper.Extensions;
+using PromotionMod.Common;
 using PromotionMod.Stats;
 using PromotionMod.Trait.Characters;
 namespace PromotionMod.Source;
 
 internal class AluenaDramaExpansion : DramaOutcome
 {
-    public const string WarmHearthDailySpecialFlag = "whDay";
+    private const string SmithySpecialTopicsFlag = "ushSpTopics";
+    private const string SmithyHammerReadyFlag = "ushHamRdy";
+    private const string SmithyRechargeReadyFlag = "ushRechRdy";
+    private const string SmithyRechargeIntroFlag = "ushRechIntro";
+    private const string SmithyRechargeUnlockedFlag = "ushRechUnlck";
+    private const string SmithyLailahConversationReadyFlag = "ushLaiRdy";
+    private const string SmithyLailahConversationCompleteFlag = "ushLaiComplete";
+    
+    private const string WarmHearthDailySpecialFlag = "whDay";
+    private const string WarmHearthFreeFoodTimerFlag = "whTime";
+    private const string WarmHearthPartyHungryFlag = "partyHungry";
+    
+    #region Teahouse 
     private static bool TeaHouse_CanOrderTea(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
         if (EClass.pc.HasCondition<ConTeaTime>())
@@ -44,14 +57,49 @@ internal class AluenaDramaExpansion : DramaOutcome
 
         return true;
     }
+    #endregion
+    
+    #region Smithy
+    private static bool SmithyUshrirStateCheck(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
+    {
+        dm.RequiresActor(out Chara ushrir);
+        EClass.pc.SetFlagValue(SmithySpecialTopicsFlag, 0);
 
-    private static bool KariStateCheck(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
+        // If Lailah is in the Party and hasn't had the interaction.
+        if (EClass.pc.GetFlagValue(SmithyLailahConversationCompleteFlag) > 0)
+        {
+            if (EClass.pc.party.members.Any(x => x.id == Constants.LailahCharaId))
+            {
+                EClass.pc.SetFlagValue(SmithyLailahConversationReadyFlag, 1);
+                EClass.pc.SetFlagValue(SmithySpecialTopicsFlag, 1);
+            }   
+        }
+        return false;
+    }
+
+    private static bool SmithyUshrirRunicHammerEnchant(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
+    {
+        dm.RequiresActor(out Chara ushrir);
+        if (EClass.pc.GetFlagValue(SmithyRechargeIntroFlag) == 0)
+        {
+            ushrir.ShowDialog("ushrir", "ushrirHammerFirstUse");            
+        }
+
+        return true;
+    }
+    #endregion
+
+    #region Dining Hall
+    private static bool DiningHallKariStateCheck(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
         dm.RequiresActor(out Chara grandmaCat);
-
-        if (EClass.pc.party.members.Any(c => c.hunger.GetPhase() >= StatsHunger.Hungry))
+        if (grandmaCat.GetFlagValue(WarmHearthFreeFoodTimerFlag) < EClass.world.date.GetRaw())
         {
-            EClass.pc.SetFlagValue("partyHungry");
+            grandmaCat.SetFlagValue(WarmHearthFreeFoodTimerFlag, 0);
+            if (EClass.pc.party.members.Any(c => c.hunger.GetPhase() >= StatsHunger.VeryHungry))
+            {
+                grandmaCat.SetFlagValue(WarmHearthPartyHungryFlag, 1);
+            }
         }
 
         // If there's a daily special load it.
@@ -64,7 +112,7 @@ internal class AluenaDramaExpansion : DramaOutcome
     {
         // Shove a meal into all the hungry party members.
         dm.RequiresActor(out Chara grandmaCat);
-        foreach (Chara c in EClass.pc.party.members.Where(c => c.hunger.GetPhase() >= StatsHunger.Hungry))
+        foreach (Chara c in EClass.pc.party.members.Where(c => c.hunger.GetPhase() >= StatsHunger.VeryHungry))
         {
             Msg.Say("grandmaCat_foodGift".langGame(c.NameSimple));
             Thing meal = TraitGrandmaCat.MakeGrandmaLunch(grandmaCat);
@@ -73,9 +121,12 @@ internal class AluenaDramaExpansion : DramaOutcome
             {
                 target = meal
             });
-            EClass.pc.SetFlagValue("partyHungry", 0);
+            grandmaCat.SetFlagValue(WarmHearthPartyHungryFlag, 0);
+            // Add a cooldown to prevent this from being used, can only be used once per day.
+            grandmaCat.SetFlagValue(WarmHearthFreeFoodTimerFlag, EClass.world.date.GetRaw() + 1440);
         }
 
         return false;
     }
+    #endregion
 }

@@ -8,4 +8,10 @@ public class ConSovereignChaos : BaseBuff
     {
         return SpriteSheet.Get(source.alias);
     }
+    
+    public override void OnStart()
+    {
+        owner.RemoveCondition<ConSovereignLaw>();
+        base.OnStart();
+    }
 }

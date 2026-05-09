@@ -5,7 +5,6 @@ namespace PromotionMod.Elements.PromotionAbilities.Sovereign;
 
 public abstract class ActSovereignOrder : PromotionSpellAbility
 {
-
     private float _effectRadius = 5F;
     public override int PromotionId => Constants.FeatSovereign;
     public override string PromotionString => Constants.SovereignId;
@@ -23,7 +22,6 @@ public abstract class ActSovereignOrder : PromotionSpellAbility
             if (CC.IsPC && verbose) Msg.Say("sovereign_nostance".langGame());
             return false;
         }
-        if (CC.HasCooldown(CooldownId)) return false;
         return true;
     }
 

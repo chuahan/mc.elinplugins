@@ -14,4 +14,10 @@ public class StanceChaosSovereign : StanceSovereign
         }
         base.Tick();
     }
+    
+    public override void OnStart()
+    {
+        owner.RemoveCondition<StanceLawSovereign>();
+        base.OnStart();
+    }
 }

@@ -8,4 +8,10 @@ public class ConOrderRout : BaseBuff
     {
         return SpriteSheet.Get(source.alias);
     }
+    
+    public override void OnStart()
+    {
+        owner.RemoveCondition<ConOrderRally>();
+        base.OnStart();
+    }
 }

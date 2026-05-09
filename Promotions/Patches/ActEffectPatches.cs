@@ -75,7 +75,8 @@ public class ActEffectPatches
                     }
                 }
             }
-
+            
+            /* TODO: Once Validated, Remove. This was chucked over into Act Patches.
             // Elementalist - Track Spellcasts
             if (chara.HasElement(Constants.FeatElementalist) &&
                 actRef.aliasEle != null &&
@@ -107,6 +108,7 @@ public class ActEffectPatches
                     }
                 }
             }
+            */
 
             if (tc is { isChara: true })
             {

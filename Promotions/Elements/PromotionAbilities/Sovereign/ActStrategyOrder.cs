@@ -10,8 +10,6 @@ public class ActStrategyOrder : ActSovereignOrder
     public override int AbilityId => Constants.ActStrategyOrderId;
     public override void AddLawCondition(Chara chara, int stacks)
     {
-        chara.RemoveCondition<ConOrderRout>();
-
         // Burst Heal Allies and provide protection and regen.
         int healingAmount = HelperFunctions.SafeDice("sovereign_rally", GetPower(CC));
         healingAmount *= stacks;
@@ -21,8 +19,6 @@ public class ActStrategyOrder : ActSovereignOrder
     }
     public override void AddChaosCondition(Chara chara, int stacks)
     {
-        chara.RemoveCondition<ConOrderRally>();
-
         ConWeapon holyIntonation = new ConWeapon();
         holyIntonation.SetElement(Constants.EleHoly);
         holyIntonation.power = GetPower(CC);

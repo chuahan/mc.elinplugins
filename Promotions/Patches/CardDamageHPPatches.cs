@@ -38,7 +38,7 @@ public class CardDamageHPPatches
 
     [HarmonyPatch(nameof(Card.DamageHP), typeof(long), typeof(int), typeof(int), typeof(AttackSource), typeof(Card), typeof(bool), typeof(Thing), typeof(Chara))]
     [HarmonyPrefix]
-    internal static bool OnDamageHP_Patches(Card __instance, ref long dmg, ref int ele, ref int eleP, AttackSource attackSource, Card? origin, bool showEffect, Thing weapon,
+    internal static bool PromotionMod_OnDamageHP_Patches(Card __instance, ref long dmg, ref int ele, ref int eleP, AttackSource attackSource, Card? origin, bool showEffect, Thing weapon,
         Chara originalTarget)
     {
         //if (__instance.isChara && ActiveAttackSources.Contains(attackSource))
@@ -496,26 +496,8 @@ public class CardDamageHPPatches
 
     [HarmonyPatch(nameof(Card.DamageHP), typeof(long), typeof(int), typeof(int), typeof(AttackSource), typeof(Card), typeof(bool), typeof(Thing), typeof(Chara))]
     [HarmonyTranspiler]
-    internal static IEnumerable<CodeInstruction> OnDamageHP_TranspilePatch(IEnumerable<CodeInstruction> instructions, ILGenerator il)
+    internal static IEnumerable<CodeInstruction> PromotionMod_DamageHPTranspile_ResistancePierce(IEnumerable<CodeInstruction> instructions, ILGenerator il)
     {
-        Type? displayClassType = typeof(Card)
-                .GetNestedTypes(BindingFlags.NonPublic | BindingFlags.Public)
-                .FirstOrDefault(t => t.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                        .Any(f => f.Name == "dmg" && f.FieldType == typeof(long)));
-        if (displayClassType == null) throw new Exception("Why was this removed?");
-        FieldInfo? dmgField = displayClassType.GetField("dmg", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-
-        MethodInfo secondaryDamageReduction = AccessTools.Method(
-            typeof(CardDamageHPPatches),
-            nameof(CardDamageHPPatches.ApplyDamageReduction),
-            new[]
-            {
-                typeof(Card),
-                typeof(Card),
-                typeof(long),
-                typeof(AttackSource)
-            });
-
         MethodInfo additonalResistancePierce = AccessTools.Method(
             typeof(CardDamageHPPatches),
             nameof(CardDamageHPPatches.CalculateAdditionalResistancePierce),
@@ -538,40 +520,220 @@ public class CardDamageHPPatches
 
         // We'll add this to the piercing power after.
         LocalBuilder pierceLocal = il.DeclareLocal(typeof(int));
+        List<CodeInstruction> code = new List<CodeInstruction>(instructions);
 
-        CodeMatcher matcher = new CodeMatcher(instructions, il)
-                // Apply Battlemage Pierce if needed.
-                .MatchForward(false, new CodeMatch(OpCodes.Call, getResistDamage))
-                .Advance(-1)
-                .Insert(
-                    new CodeInstruction(OpCodes.Ldarg, 5), // origin card
-                    new CodeInstruction(OpCodes.Ldarg_0), // __instance
-                    new CodeInstruction(OpCodes.Call, additonalResistancePierce),
-                    new CodeInstruction(OpCodes.Stloc, pierceLocal),
-                    new CodeInstruction(OpCodes.Ldloc, pierceLocal),
-                    new CodeInstruction(OpCodes.Add)
-                )
-                // Apply Secondary Damage Reduction
-                .MatchForward(false,
-                    new CodeMatch(OpCodes.Ldloc_0),
-                    new CodeMatch(OpCodes.Ldfld, dmgField),
-                    new CodeMatch(OpCodes.Ldc_I4, 99999999),
-                    new CodeMatch(OpCodes.Conv_I8),
-                    new CodeMatch(ci => ci.opcode == OpCodes.Ble || ci.opcode == OpCodes.Ble_S))
-                .Advance(1)
-                .Insert(
-                    new CodeInstruction(OpCodes.Ldloc_0),
-                    new CodeInstruction(OpCodes.Ldarg_S, 5),
-                    new CodeInstruction(OpCodes.Ldarg_0),
-                    new CodeInstruction(OpCodes.Ldloc_0),
-                    new CodeInstruction(OpCodes.Ldfld, dmgField),
-                    new CodeInstruction(OpCodes.Ldarg_S, 4),
-                    new CodeInstruction(OpCodes.Call, secondaryDamageReduction),
-                    new CodeInstruction(OpCodes.Stfld, dmgField)
-                );
-        return matcher.InstructionEnumeration();
+        int getResistDamageCallIndex = code.FindIndex(ci => ci.opcode == OpCodes.Call && Equals(ci.operand, getResistDamage));
+        if (getResistDamageCallIndex < 0)
+        {
+            throw new Exception("Failed to find Element.GetResistDamage call for additional resistance pierce injection.");
+        }
+
+        // Stack shape immediately before GetResistDamage call is expected to be [..., arg1, arg2, pierce].
+        // Compute extra pierce and add it to the current top stack value (pierce).
+        code.InsertRange(getResistDamageCallIndex, new[]
+        {
+            new CodeInstruction(OpCodes.Ldarg, 5), // origin card
+            new CodeInstruction(OpCodes.Ldarg_0), // __instance (target)
+            new CodeInstruction(OpCodes.Call, additonalResistancePierce),
+            new CodeInstruction(OpCodes.Stloc, pierceLocal),
+            new CodeInstruction(OpCodes.Ldloc, pierceLocal),
+            new CodeInstruction(OpCodes.Add)
+        });
+        return code;
     }
 
+    [HarmonyPatch(nameof(Card.DamageHP), typeof(long), typeof(int), typeof(int), typeof(AttackSource), typeof(Card), typeof(bool), typeof(Thing), typeof(Chara))]
+    [HarmonyTranspiler]
+    internal static IEnumerable<CodeInstruction> PromotionMod_DamageHPTranspile_SecondaryDamageReduction(IEnumerable<CodeInstruction> instructions, ILGenerator il)
+    {
+        static bool IsStlocOpcode(OpCode opcode)
+        {
+            return opcode == OpCodes.Stloc ||
+                   opcode == OpCodes.Stloc_S ||
+                   opcode == OpCodes.Stloc_0 ||
+                   opcode == OpCodes.Stloc_1 ||
+                   opcode == OpCodes.Stloc_2 ||
+                   opcode == OpCodes.Stloc_3;
+        }
+
+        MethodInfo? secondaryDamageReduction = AccessTools.Method(
+            typeof(CardDamageHPPatches),
+            nameof(CardDamageHPPatches.ApplyDamageReduction),
+            new[]
+            {
+                typeof(Card),
+                typeof(Card),
+                typeof(long),
+                typeof(AttackSource)
+            });
+
+        List<CodeInstruction> code = new List<CodeInstruction>(instructions);
+        CodeMatcher capInitMatcher = new CodeMatcher(code, il).Start().MatchForward(false,
+            new CodeMatch(OpCodes.Ldc_I4, 99999999),
+            new CodeMatch(OpCodes.Conv_I8),
+            new CodeMatch(ci => IsStlocOpcode(ci.opcode)));
+        int capInitIndex = capInitMatcher.IsValid ? capInitMatcher.Pos : -1;
+
+        if (capInitIndex < 0)
+        {
+            return code;
+        }
+
+        CodeMatcher damageFieldMatcher = new CodeMatcher(code, il).Start().Advance(capInitIndex + 3).MatchForward(false,
+            new CodeMatch(OpCodes.Ldloc_0),
+            new CodeMatch(ci =>
+                ci.opcode == OpCodes.Ldfld &&
+                ci.operand is FieldInfo field &&
+                field.FieldType == typeof(long) &&
+                field.Name == "dmg"));
+        FieldInfo? matchedDmgField = damageFieldMatcher.IsValid && damageFieldMatcher.InstructionAt(1).operand is FieldInfo matchedField
+            ? matchedField
+            : null;
+        if (matchedDmgField == null || secondaryDamageReduction == null)
+        {
+            return code;
+        }
+
+        code.InsertRange(capInitIndex + 3, new[]
+        {
+            new CodeInstruction(OpCodes.Ldloc_0),
+            new CodeInstruction(OpCodes.Ldarg_S, 5),
+            new CodeInstruction(OpCodes.Ldarg_0),
+            new CodeInstruction(OpCodes.Ldloc_0),
+            new CodeInstruction(OpCodes.Ldfld, matchedDmgField),
+            new CodeInstruction(OpCodes.Ldarg_S, 4),
+            new CodeInstruction(OpCodes.Call, secondaryDamageReduction),
+            new CodeInstruction(OpCodes.Stfld, matchedDmgField)
+        });
+        return code;
+    }
+
+    [HarmonyPatch(nameof(Card.DamageHP), typeof(long), typeof(int), typeof(int), typeof(AttackSource), typeof(Card), typeof(bool), typeof(Thing), typeof(Chara))]
+    [HarmonyTranspiler]
+    internal static IEnumerable<CodeInstruction> PromotionMod_DamageHPTranspile_RedirectGate(IEnumerable<CodeInstruction> instructions, ILGenerator il)
+    {
+        static bool IsLdlocOpcode(OpCode opcode)
+        {
+            return opcode == OpCodes.Ldloc ||
+                   opcode == OpCodes.Ldloc_S ||
+                   opcode == OpCodes.Ldloc_0 ||
+                   opcode == OpCodes.Ldloc_1 ||
+                   opcode == OpCodes.Ldloc_2 ||
+                   opcode == OpCodes.Ldloc_3;
+        }
+
+        static int InsertRedirectGateAfterSay(List<CodeInstruction> code, ILGenerator il, MethodInfo getCharaGetter, MethodInfo canRedirectDamage, MethodInfo damageHpMethod, string markerString, bool originFromSelf)
+        {
+            int insertions = 0;
+            int searchStart = 0;
+            while (searchStart < code.Count)
+            {
+                CodeMatcher markerMatcher = new CodeMatcher(code, il).Start().Advance(searchStart).MatchForward(false, new CodeMatch(OpCodes.Ldstr, markerString));
+                if (!markerMatcher.IsValid)
+                {
+                    break;
+                }
+                int markerIndex = markerMatcher.Pos;
+
+                int loopLocalLoadIndex = -1;
+                for (int i = markerIndex + 1; i < code.Count; i++)
+                {
+                    if (IsLdlocOpcode(code[i].opcode))
+                    {
+                        loopLocalLoadIndex = i;
+                        break;
+                    }
+                }
+                if (loopLocalLoadIndex < 0)
+                {
+                    searchStart = markerIndex + 1;
+                    continue;
+                }
+
+                CodeMatcher sayMatcher = new CodeMatcher(code, il).Start().Advance(markerIndex + 1).MatchForward(false,
+                    new CodeMatch(ci =>
+                        (ci.opcode == OpCodes.Call || ci.opcode == OpCodes.Callvirt) &&
+                        ci.operand is MethodInfo m &&
+                        m.Name == "Say"));
+                if (!sayMatcher.IsValid)
+                {
+                    searchStart = markerIndex + 1;
+                    continue;
+                }
+                int sayCallIndex = sayMatcher.Pos;
+
+                CodeMatcher redirectMatcher = new CodeMatcher(code, il).Start().Advance(sayCallIndex + 1).MatchForward(false,
+                    new CodeMatch(OpCodes.Callvirt, damageHpMethod));
+                if (!redirectMatcher.IsValid)
+                {
+                    searchStart = markerIndex + 1;
+                    continue;
+                }
+                int redirectCallIndex = redirectMatcher.Pos;
+
+                CodeMatcher retMatcher = new CodeMatcher(code, il).Start().Advance(redirectCallIndex + 1).MatchForward(false, new CodeMatch(OpCodes.Ret));
+                if (!retMatcher.IsValid)
+                {
+                    searchStart = markerIndex + 1;
+                    continue;
+                }
+                int retIndex = retMatcher.Pos;
+                if (retIndex < 0 || retIndex + 1 >= code.Count)
+                {
+                    searchStart = markerIndex + 1;
+                    continue;
+                }
+
+                Label proceedLabel = il.DefineLabel();
+                Label skipLabel = il.DefineLabel();
+                code[sayCallIndex + 1].labels.Add(proceedLabel);
+                code[retIndex + 1].labels.Add(skipLabel);
+
+                CodeInstruction loadLoopChara = new CodeInstruction(code[loopLocalLoadIndex].opcode, code[loopLocalLoadIndex].operand);
+                List<CodeInstruction> gate = new List<CodeInstruction>();
+                if (originFromSelf)
+                {
+                    gate.Add(new CodeInstruction(OpCodes.Ldarg_0));
+                    gate.Add(new CodeInstruction(OpCodes.Call, getCharaGetter));
+                    gate.Add(loadLoopChara);
+                }
+                else
+                {
+                    gate.Add(loadLoopChara);
+                    gate.Add(new CodeInstruction(OpCodes.Ldarg_0));
+                    gate.Add(new CodeInstruction(OpCodes.Call, getCharaGetter));
+                }
+
+                gate.Add(new CodeInstruction(OpCodes.Call, canRedirectDamage));
+                gate.Add(new CodeInstruction(OpCodes.Brtrue, proceedLabel));
+                gate.Add(new CodeInstruction(OpCodes.Br, skipLabel));
+                code.InsertRange(sayCallIndex + 1, gate);
+                searchStart = sayCallIndex + 1 + gate.Count;
+                insertions++;
+            }
+            return insertions;
+        }
+
+        MethodInfo? getCharaGetter = AccessTools.PropertyGetter(typeof(Card), nameof(Card.Chara));
+        MethodInfo? canRedirectDamage = AccessTools.Method(typeof(CardDamageHPPatches), nameof(CardDamageHPPatches.CanRedirectDamage), new[] { typeof(Chara), typeof(Chara) });
+        MethodInfo? damageHpMethod = AccessTools.Method(typeof(Card), nameof(Card.DamageHP), new[] { typeof(long), typeof(int), typeof(int), typeof(AttackSource), typeof(Card), typeof(bool), typeof(Thing), typeof(Chara) });
+        if (getCharaGetter == null || canRedirectDamage == null || damageHpMethod == null)
+        {
+            return instructions;
+        }
+
+        List<CodeInstruction> code = new List<CodeInstruction>(instructions);
+        InsertRedirectGateAfterSay(code, il, getCharaGetter, canRedirectDamage, damageHpMethod, "wall_bond", originFromSelf: true);
+        InsertRedirectGateAfterSay(code, il, getCharaGetter, canRedirectDamage, damageHpMethod, "wall_flesh", originFromSelf: false);
+        return code;
+    }
+    
+    internal static bool CanRedirectDamage(Chara origin, Chara target)
+    {
+        //Msg.Nerun("CanRedirectDamage hit");
+        return true;
+    }
+    
     internal static int CalculateAdditionalResistancePierce(Card origin, Card target)
     {
         // Battlemages in Focus Stance with mana remaining will pierce one tier.
@@ -592,7 +754,7 @@ public class CardDamageHPPatches
     internal static long ApplyDamageReduction(Card origin, Card target, long damage, AttackSource source)
     {
         Chara targetChara = target.Chara;
-        if (target.Chara == null) return damage;
+        if (targetChara == null) return damage;
         ILookup<Type, Condition> targetConditions = targetChara.conditions.ToLookup(c => c.GetType());
         Chara? originChara = origin?.Chara;
 

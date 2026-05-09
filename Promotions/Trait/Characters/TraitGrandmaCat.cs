@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using PromotionMod.Common;
 namespace PromotionMod.Trait.Characters;
 
@@ -87,9 +89,9 @@ public class TraitGrandmaCat : TraitPromotionUniqueCharacter
         CraftUtil.WrapIngredient(lunchbox, c, ThingGen.Create("101"), CraftUtil.WrapType.Love);
         CraftUtil.WrapIngredient(lunchbox, c, ThingGen.Create("692"), CraftUtil.WrapType.Love);
         CraftUtil.WrapIngredient(lunchbox, c, ThingGen.Create("695"), CraftUtil.WrapType.Love);
-        lunchbox.elements.SetBase(701, 0);
+        lunchbox.elements.SetBase(FOOD.food_cat, 0);
         lunchbox.c_dateCooked = world.date.GetRaw() + 2 * 48 * 60;
-        lunchbox.elements.SetBase(757, 1);
+        lunchbox.elements.SetBase(FOOD.justcooked, 1);
         return lunchbox;
     }
 
@@ -116,10 +118,10 @@ public class TraitGrandmaCat : TraitPromotionUniqueCharacter
         CraftUtil.WrapIngredient(lunchbox, c, grilledFish, CraftUtil.WrapType.Love);
         CraftUtil.WrapIngredient(lunchbox, c, rice, CraftUtil.WrapType.Love);
         CraftUtil.WrapIngredient(lunchbox, c, pickledVeggie, CraftUtil.WrapType.Love);
-        lunchbox.elements.SetBase(701, 0);
+        lunchbox.elements.SetBase(FOOD.food_cat, 0);
         lunchbox.c_dateCooked = world.date.GetRaw() + 2 * 48 * 60;
-        lunchbox.elements.SetBase(757, 1);
-        lunchbox.c_priceFix = -50;
+        lunchbox.elements.SetBase(FOOD.justcooked, 1);
+        lunchbox.c_priceFix = -75;
         return lunchbox;
     }
 
@@ -130,10 +132,10 @@ public class TraitGrandmaCat : TraitPromotionUniqueCharacter
         CraftUtil.WrapIngredient(heartySoup, c, ThingGen.Create("783"), CraftUtil.WrapType.Love);
         CraftUtil.WrapIngredient(heartySoup, c, ThingGen.Create("mushroom"), CraftUtil.WrapType.Love);
         CraftUtil.WrapIngredient(heartySoup, c, ThingGen.Create("seaweed"), CraftUtil.WrapType.Love);
-        heartySoup.elements.SetBase(701, 0);
+        heartySoup.elements.SetBase(FOOD.food_cat, 0);
         heartySoup.c_dateCooked = world.date.GetRaw() + 2 * 48 * 60;
-        heartySoup.elements.SetBase(757, 1);
-        heartySoup.c_priceFix = -50;
+        heartySoup.elements.SetBase(FOOD.justcooked, 1);
+        heartySoup.c_priceFix = -75;
         return heartySoup;
     }
 
@@ -143,10 +145,10 @@ public class TraitGrandmaCat : TraitPromotionUniqueCharacter
         wholeMeat.MakeRefFrom("dragon");
         CraftUtil.WrapIngredient(wholeMeat, c, ThingGen.Create("yakiimo"), CraftUtil.WrapType.Love); // Roasted Taters
         CraftUtil.WrapIngredient(wholeMeat, c, ThingGen.Create("108"), CraftUtil.WrapType.Love); // Stewed Veggies
-        wholeMeat.elements.SetBase(701, 0);
+        wholeMeat.elements.SetBase(FOOD.food_cat, 0);
         wholeMeat.c_dateCooked = world.date.GetRaw() + 2 * 48 * 60;
-        wholeMeat.elements.SetBase(757, 1);
-        wholeMeat.c_priceFix = -50;
+        wholeMeat.elements.SetBase(FOOD.justcooked, 1);
+        wholeMeat.c_priceFix = -75;
         return wholeMeat;
     }
 
@@ -158,10 +160,10 @@ public class TraitGrandmaCat : TraitPromotionUniqueCharacter
         CraftUtil.WrapIngredient(meal, c, meat, CraftUtil.WrapType.Love); // Meat on Bone
         CraftUtil.WrapIngredient(meal, c, ThingGen.Create("107"), CraftUtil.WrapType.Love); // Salad
         CraftUtil.WrapIngredient(meal, c, ThingGen.Create("fried_potato"), CraftUtil.WrapType.Love); // Fries
-        meal.elements.SetBase(701, 0);
+        meal.elements.SetBase(FOOD.food_cat, 0);
         meal.c_dateCooked = world.date.GetRaw() + 2 * 48 * 60;
-        meal.elements.SetBase(757, 1);
-        meal.c_priceFix = -50;
+        meal.elements.SetBase(FOOD.justcooked, 1);
+        meal.c_priceFix = -75;
         return meal;
     }
 
@@ -172,10 +174,10 @@ public class TraitGrandmaCat : TraitPromotionUniqueCharacter
         CraftUtil.WrapIngredient(meal, c, ThingGen.Create("785"), CraftUtil.WrapType.Love); // Lemon
         CraftUtil.WrapIngredient(meal, c, ThingGen.Create("sauce_soy"), CraftUtil.WrapType.Love); // Soy Sauce
         CraftUtil.WrapIngredient(meal, c, ThingGen.Create("692"), CraftUtil.WrapType.Love); // Cooked Rice
-        meal.elements.SetBase(701, 0);
+        meal.elements.SetBase(FOOD.food_cat, 0);
         meal.c_dateCooked = world.date.GetRaw() + 2 * 48 * 60;
-        meal.elements.SetBase(757, 1);
-        meal.c_priceFix = -50;
+        meal.elements.SetBase(FOOD.justcooked, 1);
+        meal.c_priceFix = -75;
         return meal;
     }
 
@@ -188,10 +190,10 @@ public class TraitGrandmaCat : TraitPromotionUniqueCharacter
         CraftUtil.WrapIngredient(meal, c, ThingGen.Create("carrot"), CraftUtil.WrapType.Love);
         CraftUtil.WrapIngredient(meal, c, ThingGen.Create("potato"), CraftUtil.WrapType.Love);
         CraftUtil.WrapIngredient(meal, c, ThingGen.Create("701"), CraftUtil.WrapType.Love); // Truffle
-        meal.elements.SetBase(701, 0);
+        meal.elements.SetBase(FOOD.food_cat, 0);
         meal.c_dateCooked = world.date.GetRaw() + 2 * 48 * 60;
-        meal.elements.SetBase(757, 1);
-        meal.c_priceFix = -50;
+        meal.elements.SetBase(FOOD.justcooked, 1);
+        meal.c_priceFix = -75;
         return meal;
     }
 
@@ -210,10 +212,10 @@ public class TraitGrandmaCat : TraitPromotionUniqueCharacter
         CraftUtil.WrapIngredient(meal, c, ThingGen.Create(randomFish.RandomItem()), CraftUtil.WrapType.Love); // Whole Meat
         CraftUtil.WrapIngredient(meal, c, ThingGen.Create("785"), CraftUtil.WrapType.Love); // Lemon
         CraftUtil.WrapIngredient(meal, c, ThingGen.Create("fried_potato"), CraftUtil.WrapType.Love); // Fries
-        meal.elements.SetBase(701, 0);
+        meal.elements.SetBase(FOOD.food_cat, 0);
         meal.c_dateCooked = world.date.GetRaw() + 2 * 48 * 60;
-        meal.elements.SetBase(757, 1);
-        meal.c_priceFix = -50;
+        meal.elements.SetBase(FOOD.justcooked, 1);
+        meal.c_priceFix = -75;
         return meal;
     }
 }

@@ -45,32 +45,34 @@ internal class PostLoadPatching : EClass
         if (pc != null)
         {
             int version = pc.GetFlagValue(Constants.PromotionModVersionFlag);
-
-            // For V102, if Lailah is already spawned, set her Promotion flag so she can use her abilities if necessary.
-            Chara lailah = pc.currentZone.FindChara(Constants.LailahCharaId);
-            if (lailah != null)
+            if (version < 108)
             {
-                if (lailah.GetFlagValue(Constants.PromotionFeatFlag) == 0 && lailah.HasElement(Constants.FeatSharpshooter))
+                // If Lailah is already spawned, set her Promotion flag so she can use her abilities if necessary.
+                Chara lailah = pc.currentZone.FindChara(Constants.LailahCharaId);
+                if (lailah != null)
                 {
-                    Msg.Say("promotionmod_patching".langGame());
-                    lailah.SetFlagValue(Constants.PromotionFeatFlag, Constants.FeatSharpshooter);
+                    if (lailah.GetFlagValue(Constants.PromotionFeatFlag) == 0 && lailah.HasElement(Constants.FeatSharpshooter))
+                    {
+                        Msg.Say("promotionmod_patching".langGame());
+                        lailah.SetFlagValue(Constants.PromotionFeatFlag, Constants.FeatSharpshooter);
+                    }
                 }
+                //Update all the Knightcaller Captains with their respective promotion feat flags.
+                PostLoadPatching.PromotionMod_PatchCharaPromo(Constants.DinatogCharaId, Constants.FeatSniper);
+                PostLoadPatching.PromotionMod_PatchCharaPromo(Constants.AlestieCharaId, Constants.FeatHermit);
+                PostLoadPatching.PromotionMod_PatchCharaPromo(Constants.ValeroCharaId, Constants.FeatSentinel);
+                PostLoadPatching.PromotionMod_PatchCharaPromo(Constants.EctoleCharaId, Constants.FeatSaint);
+                PostLoadPatching.PromotionMod_PatchCharaPromo(Constants.ArkunCharaId, Constants.FeatSpellblade);
+                PostLoadPatching.PromotionMod_PatchCharaPromo(Constants.DiasCharaId, Constants.FeatHeadhunter);
+                PostLoadPatching.PromotionMod_PatchCharaPromo(Constants.RolingerCharaId, Constants.FeatBattlemage);
+                
+                // Snipers, Hermits, and Alraunes get new abilities. Plus we need to clean up the duplicates.
+                PostLoadPatching.PromotionMod_PatchHermitSniper();
+                PostLoadPatching.PromotionMod_PatchAlraune();
+                
+                // Update the Flag Value so we can skip this stuff next time.
+                pc.SetFlagValue(Constants.PromotionModVersionFlag, Constants.PromotionModVersion);
             }
-            // For 104, Update all the Knightcaller Captains with their respective promotion feat flags.
-            PostLoadPatching.PromotionMod_PatchCharaPromo(Constants.DinatogCharaId, Constants.FeatSniper);
-            PostLoadPatching.PromotionMod_PatchCharaPromo(Constants.AlestieCharaId, Constants.FeatHermit);
-            PostLoadPatching.PromotionMod_PatchCharaPromo(Constants.ValeroCharaId, Constants.FeatSentinel);
-            PostLoadPatching.PromotionMod_PatchCharaPromo(Constants.EctoleCharaId, Constants.FeatSaint);
-            PostLoadPatching.PromotionMod_PatchCharaPromo(Constants.ArkunCharaId, Constants.FeatSpellblade);
-            PostLoadPatching.PromotionMod_PatchCharaPromo(Constants.DiasCharaId, Constants.FeatHeadhunter);
-            PostLoadPatching.PromotionMod_PatchCharaPromo(Constants.RolingerCharaId, Constants.FeatBattlemage);
-            // For 106 - Update Hermits and Snipers with their new abilities.
-            PostLoadPatching.PromotionMod_PatchHermitSniper();
-            // For 107 - Update Alraunes with Consume.
-            PostLoadPatching.PromotionMod_PatchAlraune();
-
-            // Update the Flag Value so we can skip this stuff next time.
-            pc.SetFlagValue(Constants.PromotionModVersionFlag, Constants.PromotionModVersion);
         }
     }
 
@@ -87,7 +89,7 @@ internal class PostLoadPatching : EClass
         }
     }
 
-    internal static void PromotionMod_PatchHermitSniper()
+        internal static void PromotionMod_PatchHermitSniper()
     {
         foreach (Chara chara in game.cards.globalCharas.Values
                          .Where(gc => gc.GetFlagValue(Constants.PromotionFeatFlag) == Constants.FeatHermit ||
@@ -106,8 +108,16 @@ internal class PostLoadPatching : EClass
 
                 else
                 {
-                    Msg.Say("promotionmod_patching".langGame());
-                    chara.ability.Add(Constants.ActPreparationId, 75, false);
+                    if (!chara.ability.Has(Constants.ActPreparationId))
+                    {
+                        Msg.Say("promotionmod_patching".langGame());
+                        chara.ability.Add(Constants.ActPreparationId, 75, false);
+                    }
+                    else if (chara.ability.Has(Constants.ActPreparationId))
+                    {
+                        chara._listAbility = chara._listAbility.Distinct().ToList();
+                        chara.ability.Refresh();
+                    }
                 }
             }
 
@@ -124,8 +134,16 @@ internal class PostLoadPatching : EClass
 
                 else
                 {
-                    Msg.Say("promotionmod_patching".langGame());
-                    chara.ability.Add(Constants.ActTacticalRetreatId, 50, false);
+                    if (!chara.ability.Has(Constants.ActTacticalRetreatId))
+                    {
+                        Msg.Say("promotionmod_patching".langGame());
+                        chara.ability.Add(Constants.ActTacticalRetreatId, 75, false);
+                    }
+                    else if (chara.ability.Has(Constants.ActTacticalRetreatId))
+                    {
+                        chara._listAbility = chara._listAbility.Distinct().ToList();
+                        chara.ability.Refresh();
+                    }
                 }
             }
         }
@@ -145,8 +163,16 @@ internal class PostLoadPatching : EClass
             }
             else
             {
-                Msg.Say("promotionmod_patching".langGame());
-                chara.ability.Add(Constants.ActAlrauneConsumeId, 50, false);
+                if (!chara.ability.Has(Constants.ActAlrauneConsumeId))
+                {
+                    Msg.Say("promotionmod_patching".langGame());
+                    chara.ability.Add(Constants.ActAlrauneConsumeId, 75, false);
+                }
+                else if (chara.ability.Has(Constants.ActAlrauneConsumeId))
+                {
+                    chara._listAbility = chara._listAbility.Distinct().ToList();
+                    chara.ability.Refresh();
+                }
             }
         }
     }

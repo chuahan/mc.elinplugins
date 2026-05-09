@@ -317,6 +317,7 @@
         <Compile Include="Patches\AbilityPatches.cs"/>
         <Compile Include="Patches\ActEffectPatches.cs"/>
         <Compile Include="Patches\ActMeleePatches.cs"/>
+        <Compile Include="Patches\ActPatches.cs" />
         <Compile Include="Patches\ActPrayPatches.cs"/>
         <Compile Include="Patches\ActRangedPatches.cs"/>
         <Compile Include="Patches\ActRidePatches.cs"/>

@@ -27,20 +27,13 @@ namespace PromotionMod.Patches;
 [HarmonyPatch(typeof(Chara))]
 internal class CharaPatches : EClass
 {
-    /*
-    [HarmonyPatch(nameof(Chara.UseAbility), typeof(string), typeof(Card), typeof(Point), typeof(bool))]
-    [HarmonyPrefix]
-    internal static bool DebuggingPatchUseAbility(Chara __instance, string idAct, Card tc, Point pos, bool pt)
+    [HarmonyPatch(nameof(Chara.MaxGeneSlot))]
+    [HarmonyPatch(MethodType.Getter)]
+    [HarmonyPostfix]
+    internal static void PromotionMod_MaxGeneSlot_Postfix(Chara __instance, ref int __result)
     {
-        Msg.Say(__instance.NameSimple);
-        Msg.Say(idAct);
-        Msg.Say(tc.Name);
-        Msg.Say(pt.ToString());
-        Act elementAct = __instance.elements.GetElement(idAct)?.act;
-        Act createAct = ACT.Create(idAct);
-        return true;
+        __result += __instance.Evalue(Constants.FeatArtificerGolemUpgradeId);
     }
-    */
 
     [HarmonyPatch(nameof(Chara.CanAcceptGift))]
     [HarmonyPrefix]

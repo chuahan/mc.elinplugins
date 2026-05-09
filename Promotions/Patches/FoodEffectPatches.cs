@@ -10,10 +10,9 @@ namespace PromotionMod.Patches;
 [HarmonyPatch(typeof(FoodEffect))]
 public class FoodEffectPatches
 {
-    // PromotionMod_AlrauneNutritionPenalty_FoodEffectPatches
     [HarmonyPatch(nameof(FoodEffect.Proc))]
     [HarmonyTranspiler]
-    internal static IEnumerable<CodeInstruction> MyNutritionTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
+    internal static IEnumerable<CodeInstruction> PromotionMod_AlrauneNutritionPenalty_FoodEffectPatches(IEnumerable<CodeInstruction> instructions, ILGenerator il)
     {
         Type? displayClassType = typeof(FoodEffect)
                 .GetNestedTypes(BindingFlags.NonPublic | BindingFlags.Public)

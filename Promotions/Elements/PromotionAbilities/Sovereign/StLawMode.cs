@@ -6,18 +6,25 @@ public class StLawMode : PromotionAbility
 {
     public override int PromotionId => Constants.FeatSovereign;
     public override string PromotionString => Constants.SovereignId;
-    public int Cooldown => 0;
+    public int Cooldown => 5;
     public override int AbilityId => Constants.StLawModeId;
 
     public override PromotionAbilityCostType PromotionAbilityCost => PromotionAbilityCostType.PromotionAbilityCostNone;
 
     public override bool Perform()
     {
-        CC.SayRaw($"sovereign_law_{EClass.rnd(5)}".langGame());
-        CC.RemoveCondition<StanceChaosSovereign>();
+        if (EClass.rnd(5) == 0) CC.SayRaw($"sovereign_law_{EClass.rnd(5)}".langGame());
         CC.AddCondition<StanceLawSovereign>();
-        CC.AddCooldown(Constants.StLawModeId, Cooldown);
-        CC.AddCooldown(Constants.StChaosModeId, Cooldown);
+        if (!CC.IsPC) // Force NPCs to have 4x the cooldown so they remain in that stance for a bit longer.
+        {
+            CC.AddCooldown(Constants.StLawModeId, Cooldown * 4);
+            CC.AddCooldown(Constants.StChaosModeId, Cooldown * 4);
+        }
+        else
+        {
+            CC.AddCooldown(Constants.StLawModeId, Cooldown);
+            CC.AddCooldown(Constants.StChaosModeId, Cooldown);
+        }
         return true;
     }
 }

@@ -18,4 +18,10 @@ public class ConOrderSword : BaseBuff
         FollowUpAvailable = true;
         base.Tick();
     }
+    
+    public override void OnStart()
+    {
+        owner.RemoveCondition<ConOrderBarricade>();
+        base.OnStart();
+    }
 }

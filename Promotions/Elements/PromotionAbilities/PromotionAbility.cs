@@ -35,12 +35,6 @@ public abstract class PromotionAbility : Ability
 
     public override bool ValidatePerform(Chara _cc, Card _tc, Point _tp)
     {
-        if (!CC.MatchesPromotion(PromotionId))
-        {
-            Msg.Say("classlocked_ability".lang(PromotionString.lang()));
-            return false;
-        }
-
         return CanPerformExtra(true);
     }
 

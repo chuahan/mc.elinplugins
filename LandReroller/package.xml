@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Meta>
+  <title>Land Reroller</title>
+  <id>han.landreroll.mod</id>
+  <author>Han</author>
+  <loadPriority>10</loadPriority>
+  <description>
+    A mod that lets you reroll the land feats of a property.
+  </description>
+  <tags>Cheat</tags>
+  <version>0.23.252</version>
+</Meta>

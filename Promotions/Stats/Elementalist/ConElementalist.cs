@@ -148,6 +148,7 @@ public class ConElementalist : ClassCondition
             List<int> elementsWithOrbs = ElementalStockpile.Where(s => s.Value > 0).Select(s => s.Key).ToList();
             if (elementsWithOrbs.Count == 0) return;
             ElementalStockpile[elementsWithOrbs.RandomItem()]--;
+            _decayDelay = 0;
         }
         else if (_decayDelay < DecayDelayMax)
         {

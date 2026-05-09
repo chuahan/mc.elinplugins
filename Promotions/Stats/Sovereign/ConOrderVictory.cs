@@ -8,4 +8,10 @@ public class ConOrderVictory : BaseBuff
     {
         return SpriteSheet.Get(source.alias);
     }
+    
+    public override void OnStart()
+    {
+        owner.RemoveCondition<ConOrderDeath>();
+        base.OnStart();
+    }
 }

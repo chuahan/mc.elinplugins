@@ -35,10 +35,17 @@ public class CardDamageHPPatches
         AttackSource.MoonSpear,
         AttackSource.None
     };
-
-    [HarmonyPatch(nameof(Card.DamageHP), typeof(long), typeof(int), typeof(int), typeof(AttackSource), typeof(Card), typeof(bool), typeof(Thing), typeof(Chara))]
+    
+    static MethodBase TargetMethod()
+    {
+        return typeof(Card)
+            .GetMethods()
+            .Where(m => m.Name == nameof(Card.DamageHP))
+            .First(m => m.GetParameters().Length > 3);
+    }
+    
     [HarmonyPrefix]
-    internal static bool PromotionMod_OnDamageHP_Patches(Card __instance, ref long dmg, ref int ele, ref int eleP, AttackSource attackSource, Card? origin, bool showEffect, Thing weapon,
+    internal static bool PromotionMod_OnDamageHP_Patch(Card __instance, ref long dmg, ref int ele, ref int eleP, AttackSource attackSource, Card? origin, bool showEffect, Thing weapon,
         Chara originalTarget)
     {
         //if (__instance.isChara && ActiveAttackSources.Contains(attackSource))
@@ -493,10 +500,9 @@ public class CardDamageHPPatches
         }
         return true;
     }
-
-    [HarmonyPatch(nameof(Card.DamageHP), typeof(long), typeof(int), typeof(int), typeof(AttackSource), typeof(Card), typeof(bool), typeof(Thing), typeof(Chara))]
+    
     [HarmonyTranspiler]
-    internal static IEnumerable<CodeInstruction> PromotionMod_DamageHPTranspile_ResistancePierce(IEnumerable<CodeInstruction> instructions, ILGenerator il)
+    internal static IEnumerable<CodeInstruction> PromotionMod_OnDamageHP_ResistancePierce_Transpile(IEnumerable<CodeInstruction> instructions, ILGenerator il)
     {
         MethodInfo additonalResistancePierce = AccessTools.Method(
             typeof(CardDamageHPPatches),
@@ -541,10 +547,9 @@ public class CardDamageHPPatches
         });
         return code;
     }
-
-    [HarmonyPatch(nameof(Card.DamageHP), typeof(long), typeof(int), typeof(int), typeof(AttackSource), typeof(Card), typeof(bool), typeof(Thing), typeof(Chara))]
+    
     [HarmonyTranspiler]
-    internal static IEnumerable<CodeInstruction> PromotionMod_DamageHPTranspile_SecondaryDamageReduction(IEnumerable<CodeInstruction> instructions, ILGenerator il)
+    internal static IEnumerable<CodeInstruction> PromotionMod_OnDamageHP_SecondaryDamageReduction_Transpile(IEnumerable<CodeInstruction> instructions, ILGenerator il)
     {
         static bool IsStlocOpcode(OpCode opcode)
         {
@@ -607,10 +612,9 @@ public class CardDamageHPPatches
         });
         return code;
     }
-
-    [HarmonyPatch(nameof(Card.DamageHP), typeof(long), typeof(int), typeof(int), typeof(AttackSource), typeof(Card), typeof(bool), typeof(Thing), typeof(Chara))]
+    
     [HarmonyTranspiler]
-    internal static IEnumerable<CodeInstruction> PromotionMod_DamageHPTranspile_RedirectGate(IEnumerable<CodeInstruction> instructions, ILGenerator il)
+    internal static IEnumerable<CodeInstruction> PromotionMod_OnDamageHP_RedirectGate_Transpile(IEnumerable<CodeInstruction> instructions, ILGenerator il)
     {
         static bool IsLdlocOpcode(OpCode opcode)
         {
@@ -731,6 +735,7 @@ public class CardDamageHPPatches
     internal static bool CanRedirectDamage(Chara origin, Chara target)
     {
         //Msg.Nerun("CanRedirectDamage hit");
+        if (origin.source.ContainsTag("noRedirect") || target.source.ContainsTag("noRedirect")) return false; 
         return true;
     }
     

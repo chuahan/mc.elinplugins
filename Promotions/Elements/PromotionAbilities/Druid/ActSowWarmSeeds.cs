@@ -95,7 +95,7 @@ public class ActSowWarmSeeds : PromotionSpellAbility
         plant.MakeMinion(CC);
 
         // Flowers are not killable. Blood Bond Exists.
-        // if (flowerSummoned) plant.AddCondition<ConInvulnerable>(30000);
+        if (flowerSummoned) plant.AddCondition<ConInvulnerable>(30000);
 
         // Apply the Aura Buff
         switch (toSummon)

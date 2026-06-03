@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
-namespace PromotionMod.Stats.Dancer;
+namespace PromotionMod.Stats;
 
 public class StanceDance : PromotionStance
 {

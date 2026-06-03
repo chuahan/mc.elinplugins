@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Stats;
-using PromotionMod.Stats.Spellblade;
 namespace PromotionMod.Trait.Artificer;
 
 public class TraitArtificerToolLightning : TraitArtificerTool

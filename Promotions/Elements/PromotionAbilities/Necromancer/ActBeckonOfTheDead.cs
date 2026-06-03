@@ -1,6 +1,7 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.Necromancer;
-namespace PromotionMod.Elements.PromotionAbilities.Necromancer;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public class ActBeckonOfTheDead : PromotionSpellAbility
 {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
-using PromotionMod.Stats.Artificer;
+using PromotionMod.Stats;
 namespace PromotionMod.Trait.Artificer;
 
 public class TraitArtificerToolTime : TraitArtificerTool

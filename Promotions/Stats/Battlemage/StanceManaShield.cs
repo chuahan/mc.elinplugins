@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
-namespace PromotionMod.Stats.Battlemage;
+namespace PromotionMod.Stats;
 
 /// <summary>
 ///     Skill - Mana Shield Stance

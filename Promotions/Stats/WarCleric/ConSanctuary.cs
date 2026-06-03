@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace PromotionMod.Stats.WarCleric;
+namespace PromotionMod.Stats;
 
 public class ConSanctuary : BaseBuff
 {

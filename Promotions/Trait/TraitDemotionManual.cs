@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Cwl.Helper.Extensions;
 using PromotionMod.Common;
-using PromotionMod.Elements.PromotionFeats;
+using PromotionMod.Elements;
 namespace PromotionMod.Trait;
 
 public class TraitDemotionManual : TraitScroll

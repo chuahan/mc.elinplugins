@@ -1,7 +1,8 @@
 using System.Linq;
 using PromotionMod.Common;
-using PromotionMod.Stats.Machinist;
-namespace PromotionMod.Elements.PromotionAbilities.Machinist;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public class ActOverclock : PromotionCombatAbility
 {

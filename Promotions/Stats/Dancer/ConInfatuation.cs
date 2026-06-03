@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace PromotionMod.Stats.Dancer;
+namespace PromotionMod.Stats;
 
 // Reduce hit chance and cast chance.
 public class ConInfatuation : Timebuff

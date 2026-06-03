@@ -1,6 +1,7 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.Dancer;
-namespace PromotionMod.Elements.PromotionAbilities.Dancer;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public abstract class ActBaseDance<TStance> : Act
         where TStance : StanceDance, new()

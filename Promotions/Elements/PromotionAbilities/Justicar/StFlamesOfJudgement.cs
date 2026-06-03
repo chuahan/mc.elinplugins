@@ -1,5 +1,5 @@
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.Justicar;
+namespace PromotionMod.Elements;
 
 // TODO: Need to Sprite in SFX.
 public class StFlamesOfJudgement : PromotionAbility

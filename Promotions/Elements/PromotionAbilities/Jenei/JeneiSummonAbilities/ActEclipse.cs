@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Stats;
-namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Lightning. Reduces enemy attack by 50%.

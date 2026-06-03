@@ -1,6 +1,6 @@
 using PromotionMod.Common;
 using UnityEngine;
-namespace PromotionMod.Stats.Dancer;
+namespace PromotionMod.Stats;
 
 public class ConJealousy : Timebuff
 {

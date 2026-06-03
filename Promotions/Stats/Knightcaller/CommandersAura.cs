@@ -1,5 +1,5 @@
 using PromotionMod.Common;
-namespace PromotionMod.Stats.Knightcaller;
+namespace PromotionMod.Stats;
 
 public class CommandersAura : ConAura
 {

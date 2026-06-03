@@ -1,5 +1,5 @@
 using PromotionMod.Common;
-namespace PromotionMod.Stats.Harbinger;
+namespace PromotionMod.Stats;
 
 public class ConSmotheringMiasma : ConHarbingerMiasma
 {

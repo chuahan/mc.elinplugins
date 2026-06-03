@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionFeats;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     A bolt from the blue. Snipers are distinguished archers who have honed their skills to the utmost.

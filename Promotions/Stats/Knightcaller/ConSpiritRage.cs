@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace PromotionMod.Stats.Knightcaller;
+namespace PromotionMod.Stats;
 
 public class ConSpiritRage : BaseBuff
 {

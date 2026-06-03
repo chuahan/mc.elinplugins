@@ -1,5 +1,5 @@
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.Sniper;
+namespace PromotionMod.Elements;
 
 public class ActTacticalRetreat : PromotionCombatAbility
 {

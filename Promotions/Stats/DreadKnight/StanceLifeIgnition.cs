@@ -1,6 +1,6 @@
 using PromotionMod.Common;
 using UnityEngine;
-namespace PromotionMod.Stats.DreadKnight;
+namespace PromotionMod.Stats;
 
 public class StanceLifeIgnition : PromotionStance
 {
@@ -22,7 +22,8 @@ public class StanceLifeIgnition : PromotionStance
         }
 
         // Reduce owner's HP by 10%.
-        int cost = (int)(Owner.MaxHP * 0.1F);
-        Owner.DamageHP(cost, AttackSource.Condition);
+        int hpCost = (int)(Owner.MaxHP * 0.1F);
+        Owner.hp -= hpCost;
+        EClass.pc.currentZone.FindChara("catsister");
     }
 }

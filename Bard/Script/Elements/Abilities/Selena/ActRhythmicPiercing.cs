@@ -1,8 +1,6 @@
 using BardMod.Common;
 using BardMod.Common.HelperFunctions;
-using BardMod.Patches;
 using BardMod.Stats;
-using BardMod.Stats.BardSongConditions;
 using UnityEngine;
 namespace BardMod.Elements.Abilities.Selena;
 
@@ -143,7 +141,7 @@ public class ActRhythmicPiercing : ActMelee
             TC.Chara.AddCondition(bardDebuff);
         }
         
-        TC.DamageHP(dmg: damage, ele: Constants.EleCold, eleP: 100, attackSource: AttackSource.MagicSword, origin: CC);
+        HelperFunctions.DamageHpWrapper(TC, damage, Constants.EleCold, 100, AttackSource.MagicSword, CC);
         TC.PlaySound("ab_magicsword");
         TC.PlayEffect("hit_slash").SetScale(1f);
 

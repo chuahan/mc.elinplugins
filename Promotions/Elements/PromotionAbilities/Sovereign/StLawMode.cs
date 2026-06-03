@@ -1,6 +1,7 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.Sovereign;
-namespace PromotionMod.Elements.PromotionAbilities.Sovereign;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public class StLawMode : PromotionAbility
 {

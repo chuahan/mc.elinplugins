@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace PromotionMod.Stats.Sharpshooter;
+namespace PromotionMod.Stats;
 
 public class ConMarked : BaseDebuff
 {

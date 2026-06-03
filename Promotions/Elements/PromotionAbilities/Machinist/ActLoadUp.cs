@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.Machinist;
+namespace PromotionMod.Elements;
 
 public class ActLoadUp : PromotionCombatAbility
 {

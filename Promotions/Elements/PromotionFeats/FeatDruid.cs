@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionFeats;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     The speaker for nature. Druids are able to call forth vitality even in the most barren places.

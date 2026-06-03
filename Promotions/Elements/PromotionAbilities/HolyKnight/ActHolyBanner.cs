@@ -1,7 +1,8 @@
 using System;
 using PromotionMod.Common;
-using PromotionMod.Stats.HolyKnight;
-namespace PromotionMod.Elements.PromotionAbilities.HolyKnight;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public class ActHolyBanner : PromotionSpellAbility
 {

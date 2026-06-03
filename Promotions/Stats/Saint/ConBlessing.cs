@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace PromotionMod.Stats.Saint;
+namespace PromotionMod.Stats;
 
 public class ConBlessing : BaseBuff
 {

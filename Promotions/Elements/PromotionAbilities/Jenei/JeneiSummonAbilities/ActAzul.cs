@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
 using UnityEngine;
-namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Cold. Inflicts Stun.

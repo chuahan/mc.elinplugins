@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using Cwl.Helper;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.Berserker;
+using PromotionMod.Patches;
+namespace PromotionMod.Elements;
 
 public class ActSunder : PromotionCombatAbility
 {
@@ -44,8 +46,8 @@ public class ActSunder : PromotionCombatAbility
             CC.Chara.AddCondition(targetDebuffs[i].source.alias, targetDebuffs[i].power, true);
             targetDebuffs[i].Kill();
         }
-
-        TC.DamageHP(damage, AttackSource.Melee, CC);
+        
+        HelperFunctions.DamageHpWrapper(TC, damage, 0, 100, AttackSource.Melee, CC);
         CC.HealHP(damage, HealSource.Magic);
         return true;
     }

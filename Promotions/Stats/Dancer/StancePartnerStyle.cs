@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
-namespace PromotionMod.Stats.Dancer;
+namespace PromotionMod.Stats;
 
 public class StancePartnerStyle : PromotionStance
 {

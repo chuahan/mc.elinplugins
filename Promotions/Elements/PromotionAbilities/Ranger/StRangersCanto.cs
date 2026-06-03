@@ -1,5 +1,5 @@
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.Ranger;
+namespace PromotionMod.Elements;
 
 public class StRangersCanto : PromotionAbility
 {

@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
-using PromotionMod.Elements.PromotionAbilities.Gambler;
-using PromotionMod.Stats.WarCleric;
+using PromotionMod.Stats;
 using UnityEngine;
-namespace PromotionMod.Elements.PromotionAbilities.WarCleric;
+namespace PromotionMod.Elements;
 
 public class ActDivineFist : PromotionCombatAbility
 {

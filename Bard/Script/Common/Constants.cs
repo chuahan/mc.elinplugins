@@ -49,17 +49,17 @@ public class Constants
     public const int ChorusSongDuration = 10;
 
     // Element strings
-    public const int EleFire = 910;
-    public const int EleCold = 911;
-    public const int EleLightning = 912;
-    public const int EleDarkness = 913;
-    public const int EleMind = 914;
-    public const int EleNether = 916;
-    public const int EleSound = 917;
-    public const int EleHoly = 919;
-    public const int EleMagic = 921;
-    public const int EleImpact = 925;
-    public const int EleVoid = 926;
+    public const int EleFire = SKILL.eleFire;
+    public const int EleCold = SKILL.eleCold;
+    public const int EleLightning = SKILL.eleLightning;
+    public const int EleDarkness = SKILL.eleDarkness;
+    public const int EleMind = SKILL.eleMind;
+    public const int EleNether = SKILL.eleNether;
+    public const int EleSound = SKILL.eleSound;
+    public const int EleHoly = SKILL.eleHoly;
+    public const int EleMagic = SKILL.eleMagic;
+    public const int EleImpact = SKILL.eleImpact;
+    public const int EleVoid = SKILL.eleVoid;
 
     public const int MusicSkill = 241;
     public const int ChaAttribute = 77;

@@ -1,6 +1,6 @@
 using PromotionMod.Common;
 using UnityEngine;
-namespace PromotionMod.Stats.Hexer;
+namespace PromotionMod.Stats;
 
 // They will set their own allies as priority targets.
 public class ConParanoia : Timebuff

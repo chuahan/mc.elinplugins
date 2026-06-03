@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using PromotionMod.Common;
 using UnityEngine;
-namespace PromotionMod.Stats.Runeknight;
+namespace PromotionMod.Stats;
 
 public class ConElementalAttunement : BaseBuff
 {

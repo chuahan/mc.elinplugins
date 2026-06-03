@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BardMod.Common;
 using BardMod.Source;
-using BardMod.Stats.BardSongConditions;
+using BardMod.Stats;
 namespace BardMod.Elements.BardSpells;
 
 public class ActBardEchoSong : ActBardSong

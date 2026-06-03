@@ -1,6 +1,5 @@
-using PromotionMod.Stats.Dancer;
 using UnityEngine;
-namespace PromotionMod.Elements.Abilities.Dancer;
+namespace PromotionMod.Stats;
 
 public class StanceFreedomDance : StanceDance
 {

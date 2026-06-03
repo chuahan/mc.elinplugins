@@ -1,6 +1,7 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.Knightcaller;
-namespace PromotionMod.Elements.PromotionAbilities.Knightcaller;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public class ActSpiritRage : PromotionSpellAbility
 {

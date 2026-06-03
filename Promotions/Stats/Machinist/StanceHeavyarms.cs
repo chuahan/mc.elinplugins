@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-namespace PromotionMod.Stats.Machinist;
+namespace PromotionMod.Stats;
 
 public class StanceHeavyarms : PromotionStance
 {

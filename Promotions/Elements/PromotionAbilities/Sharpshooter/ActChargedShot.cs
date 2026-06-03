@@ -1,6 +1,7 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.Sharpshooter;
-namespace PromotionMod.Elements.PromotionAbilities.Sharpshooter;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public class ActChargedShot : PromotionCombatAbility
 {

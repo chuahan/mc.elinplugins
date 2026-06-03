@@ -1,4 +1,4 @@
-namespace PromotionMod.Stats.AdvCombatSkills;
+namespace PromotionMod.Stats;
 
 public class ConRendHeaven : ConAttackResolveCondition
 {

@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
+using Cwl.Helper;
 using Cwl.Helper.Extensions;
 using PromotionMod.Common;
+using PromotionMod.Patches;
 using PromotionMod.Stats;
-using PromotionMod.Stats.Hermit;
-using PromotionMod.Stats.Spellblade;
-using PromotionMod.Stats.WitchHunter;
+
+
+
 using UnityEngine;
-namespace PromotionMod.Elements.PromotionAbilities.Gambler;
+namespace PromotionMod.Elements;
 
 public class ActSpinSlots : PromotionSpellAbility
 {
@@ -682,7 +684,7 @@ public class ActSpinSlots : PromotionSpellAbility
     {
         // Dark Ball on target.
         List<Chara> targetsHit = new List<Chara>();
-        ElementRef colorRef = setting.elements["eleDarkness"];
+        ElementRef colorRef = EClass.setting.elements[Constants.ElementAliasLookup[Constants.EleDarkness]];
         foreach (Point tile in _map.ListPointsInCircle(target.pos, 3f, false, false))
         {
             int distance = tile.Distance(target.pos);
@@ -713,7 +715,7 @@ public class ActSpinSlots : PromotionSpellAbility
         }
 
         targetsHit = new List<Chara>();
-        colorRef = setting.elements["eleLightning"];
+        colorRef = EClass.setting.elements[Constants.ElementAliasLookup[Constants.EleLightning]];
         foreach (Point tile in _map.ListPointsInCircle(target.pos, 3f, false, false))
         {
             int distance = tile.Distance(target.pos);
@@ -775,7 +777,7 @@ public class ActSpinSlots : PromotionSpellAbility
     public void ProcSunsettingSlash(Chara target, Chara caster)
     {
         new ActMeleeRangeless().Perform(caster, target);
-        target.DamageHP(target.hp / 2, AttackSource.Melee, caster);
+        HelperFunctions.DamageHpWrapper(target, target.hp / 2, 0, 100, AttackSource.Melee, caster);
     }
 
     public void ProcScatteringStrikes(Chara target, Chara caster)
@@ -841,7 +843,7 @@ public class ActSpinSlots : PromotionSpellAbility
         }
         damageRoll = damageRoll * mtp / 100;
         caster.DoHostileAction(target);
-        target.DamageHP(damageRoll, 925, 100, AttackSource.Throw, CC);
+        HelperFunctions.DamageHpWrapper(target, damageRoll, 0, 100, AttackSource.Throw, CC);
     }
 
     public List<Point> ListPath(Point start, Point end)
@@ -883,7 +885,7 @@ public class ActSpinSlots : PromotionSpellAbility
             {
                 int randomElement = Constants.ElementAliasLookup.Keys.RandomItem();
                 List<Chara> targetsHit = new List<Chara>();
-                ElementRef colorRef = setting.elements[Constants.ElementAliasLookup[randomElement]];
+                ElementRef colorRef = EClass.setting.elements[Constants.ElementAliasLookup[randomElement]];
                 Point randomPoint = target.pos.GetRandomNeighbor();
                 foreach (Point tile in _map.ListPointsInCircle(randomPoint, 2f, false, false))
                 {
@@ -930,7 +932,7 @@ public class ActSpinSlots : PromotionSpellAbility
         if (target.IsBoss())
         {
             Msg.Say("gambler_slots_jackpot_behead_grievous".langGame(target.NameSimple));
-            target.DamageHP(target.hp / 2, AttackSource.Melee, caster);
+            HelperFunctions.DamageHpWrapper(target, target.hp / 2, 0, 100, AttackSource.Throw, caster);
         }
         else
         {
@@ -953,7 +955,7 @@ public class ActSpinSlots : PromotionSpellAbility
                 cullRoll.sides = 12;
                 Msg.Say("gambler_slots_jackpot_behead_grievous".langGame(target.NameSimple));
                 int damage = (int)(target.MaxHP * ((cullRoll.Roll() + 1) * 7 / 100F));
-                target.DamageHP(damage, AttackSource.Melee, caster);
+                HelperFunctions.DamageHpWrapper(target, damage, 0, 100, AttackSource.Melee, caster);
             }
         }
         caster.RemoveCondition<ConDeathbringer>();

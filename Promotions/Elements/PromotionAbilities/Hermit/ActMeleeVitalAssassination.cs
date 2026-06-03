@@ -1,4 +1,4 @@
-namespace PromotionMod.Elements.PromotionAbilities.Hermit;
+namespace PromotionMod.Elements;
 
 public class ActMeleeVitalAssassination : ActMelee
 {

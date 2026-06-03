@@ -1,8 +1,6 @@
 using PromotionMod.Common;
-using PromotionMod.Stats;
-using PromotionMod.Stats.Dancer;
 using UnityEngine;
-namespace PromotionMod.Elements.Alraune;
+namespace PromotionMod.Stats;
 
 /// <summary>
 ///     Alraune stance that applies Infatuation and Drunkenness to targets repeatedly.

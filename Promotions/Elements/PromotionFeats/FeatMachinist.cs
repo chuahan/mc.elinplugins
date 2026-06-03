@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionFeats;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     A champion of technological revolution. The Machinist uses technology and firearms to face the oncoming threats

@@ -1,6 +1,6 @@
 using System;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.Druid;
+namespace PromotionMod.Elements;
 
 public class SpSummonTreeEnt : PromotionSpellAbility
 {

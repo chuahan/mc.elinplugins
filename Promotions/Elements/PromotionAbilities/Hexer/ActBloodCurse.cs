@@ -1,6 +1,5 @@
 using PromotionMod.Common;
-using PromotionMod.Elements.PromotionFeats;
-namespace PromotionMod.Elements.PromotionAbilities.Hexer;
+namespace PromotionMod.Elements;
 
 // Force applies one of the curses randomly at the cost of 10% life. Will prioritize curses you have not applied of the same tier that you roll.
 public class ActBloodCurse : PromotionSpellAbility

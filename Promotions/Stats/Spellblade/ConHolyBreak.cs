@@ -1,4 +1,4 @@
-namespace PromotionMod.Stats.Spellblade;
+namespace PromotionMod.Stats;
 
 public class ConHolyBreak : SubPoweredCondition
 {

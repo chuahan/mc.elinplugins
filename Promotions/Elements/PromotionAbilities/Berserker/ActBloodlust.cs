@@ -1,6 +1,7 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.Berserker;
-namespace PromotionMod.Elements.PromotionAbilities.Berserker;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public class ActBloodlust : PromotionAbility
 {

@@ -1,6 +1,7 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.Hermit;
-namespace PromotionMod.Elements.PromotionAbilities.Hermit;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Hermit Ability

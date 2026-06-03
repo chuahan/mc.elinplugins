@@ -1,5 +1,5 @@
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.Gambler;
+namespace PromotionMod.Elements;
 
 public class StFeelingLucky : PromotionAbility
 {

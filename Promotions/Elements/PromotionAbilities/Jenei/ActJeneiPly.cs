@@ -1,5 +1,5 @@
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.Jenei;
+namespace PromotionMod.Elements;
 
 public class ActJeneiPly : PromotionSpellAbility
 {

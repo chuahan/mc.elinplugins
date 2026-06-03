@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace PromotionMod.Stats.Justicar;
+namespace PromotionMod.Stats;
 
 public class ConManaLeak : Timebuff
 {

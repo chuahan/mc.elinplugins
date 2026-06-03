@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace PromotionMod.Stats.Hexer;
+namespace PromotionMod.Stats;
 
 // Stop all sources of healing
 public class ConCorruption : Timebuff

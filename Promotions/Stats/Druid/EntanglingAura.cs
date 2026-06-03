@@ -1,4 +1,4 @@
-namespace PromotionMod.Stats.Druid;
+namespace PromotionMod.Stats;
 
 public class EntanglingAura : ConAura
 {

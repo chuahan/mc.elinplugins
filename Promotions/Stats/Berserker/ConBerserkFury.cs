@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace PromotionMod.Stats.Berserker;
+namespace PromotionMod.Stats;
 
 public class ConBerserkFury : Timebuff
 {

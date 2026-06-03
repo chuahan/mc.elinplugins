@@ -1,5 +1,5 @@
 using PromotionMod.Common;
-namespace PromotionMod.Stats.Headhunter;
+namespace PromotionMod.Stats;
 
 public class ConHeadhunter : ClassCondition
 {

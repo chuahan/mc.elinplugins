@@ -1,5 +1,5 @@
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.Battlemage;
+namespace PromotionMod.Elements;
 
 public class StManaFocus : PromotionAbility
 {

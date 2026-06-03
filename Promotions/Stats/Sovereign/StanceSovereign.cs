@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 using UnityEngine;
-namespace PromotionMod.Stats.Sovereign;
+namespace PromotionMod.Stats;
 
 public class StanceSovereign : PromotionStance
 {

@@ -1,6 +1,7 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.Saint;
-namespace PromotionMod.Elements.PromotionAbilities.Saint;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public class ActInvigorate : PromotionSpellAbility
 {

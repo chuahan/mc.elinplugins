@@ -1,6 +1,7 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.Sentinel;
-namespace PromotionMod.Elements.PromotionAbilities.Sentinel;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public class StRage : PromotionAbility
 {

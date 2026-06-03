@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 using UnityEngine;
-namespace PromotionMod.Stats.Necromancer;
+namespace PromotionMod.Stats;
 
 public class ConDeadBeckon : BaseDebuff
 {

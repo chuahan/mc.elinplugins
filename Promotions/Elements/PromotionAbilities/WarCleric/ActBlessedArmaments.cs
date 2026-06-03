@@ -1,6 +1,7 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.WarCleric;
-namespace PromotionMod.Elements.PromotionAbilities.WarCleric;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public class ActBlessedArmaments : PromotionSpellAbility
 {

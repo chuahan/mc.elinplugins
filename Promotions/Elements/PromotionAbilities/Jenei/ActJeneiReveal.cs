@@ -1,7 +1,7 @@
 using PromotionMod.Common;
 using PromotionMod.Stats;
-using PromotionMod.Stats.Spellblade;
-namespace PromotionMod.Elements.PromotionAbilities.Jenei;
+
+namespace PromotionMod.Elements;
 
 public class ActJeneiReveal : PromotionSpellAbility
 {

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Stats;
-namespace PromotionMod.Elements.PromotionAbilities.Elementalist;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Elementalist Ability

@@ -1,4 +1,4 @@
-namespace PromotionMod.Elements.PromotionAbilities.Artificer;
+namespace PromotionMod.Elements;
 
 public class FeatHarpyGolemVision : Feat
 {

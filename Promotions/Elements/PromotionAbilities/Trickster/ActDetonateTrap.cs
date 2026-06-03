@@ -1,6 +1,6 @@
 using PromotionMod.Common;
 using PromotionMod.Trait.Trickster;
-namespace PromotionMod.Elements.PromotionAbilities.Trickster;
+namespace PromotionMod.Elements;
 
 public class ActDetonateTrap : PromotionSpellAbility
 {

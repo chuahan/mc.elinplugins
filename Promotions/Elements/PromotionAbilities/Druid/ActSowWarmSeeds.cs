@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using PromotionMod.Common;
-using PromotionMod.Stats.Druid;
-namespace PromotionMod.Elements.PromotionAbilities.Druid;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Druid Ability

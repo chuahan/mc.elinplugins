@@ -1,4 +1,4 @@
-namespace BardMod.Stats.BardSongConditions;
+namespace BardMod.Stats;
 
 public class ConAbyssalReflection : BaseDebuff
 {

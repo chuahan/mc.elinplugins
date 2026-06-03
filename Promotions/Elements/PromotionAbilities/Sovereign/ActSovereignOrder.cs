@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
-using PromotionMod.Stats.Sovereign;
-namespace PromotionMod.Elements.PromotionAbilities.Sovereign;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public abstract class ActSovereignOrder : PromotionSpellAbility
 {

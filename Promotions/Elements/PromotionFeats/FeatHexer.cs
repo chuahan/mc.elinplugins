@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Cwl.Helper.Extensions;
 using PromotionMod.Common;
-using PromotionMod.Stats.Hexer;
-namespace PromotionMod.Elements.PromotionFeats;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Practitioners of the forbidden arts. Hexers have learned creative new ways to cause pain and suffering.

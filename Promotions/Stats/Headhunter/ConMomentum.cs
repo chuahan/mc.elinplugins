@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace PromotionMod.Stats.Headhunter;
+namespace PromotionMod.Stats;
 
 public class ConMomentum : BaseBuff
 {

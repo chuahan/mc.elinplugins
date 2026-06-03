@@ -1,7 +1,7 @@
 using PromotionMod.Common;
 using PromotionMod.Stats;
-using PromotionMod.Stats.Justicar;
-namespace PromotionMod.Elements.PromotionAbilities.Justicar;
+
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Justicar Ability

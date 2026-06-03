@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using Cwl.Helper;
 using PromotionMod.Common;
-using PromotionMod.Stats.Headhunter;
-namespace PromotionMod.Elements.PromotionAbilities.Headhunter;
+using PromotionMod.Patches;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Headhunter Ability
@@ -51,7 +54,8 @@ public class ActExecute : PromotionCombatAbility
             CC.PlaySound("hit_finish");
             CC.Say("finish");
             CC.Say("finish2", CC, TC);
-            TC.DamageHP(TC.MaxHP, AttackSource.Finish, CC);
+            
+            HelperFunctions.DamageHpWrapper(TC, TC.MaxHP, 0, 100, AttackSource.Finish, CC);
 
             // If the cull was successful, do not add a cooldown and refund stamina cost.
             // Apply Momentum to all allies.

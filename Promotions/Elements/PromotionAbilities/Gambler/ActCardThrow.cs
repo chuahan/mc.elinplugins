@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.Gambler;
+namespace PromotionMod.Elements;
 
 public class ActCardThrow : PromotionCombatAbility
 {
@@ -115,8 +115,7 @@ public class ActCardThrow : PromotionCombatAbility
                 ENC.convertFire,
                 ENC.convertCold,
                 ENC.convertLightning,
-                ENC.convertHoly,
-                ENC.convertImpact
+                ENC.convertImpact,
             };
             throwingCard.elements.ModBase(convertElements.RandomItem(), 50);
             ActThrow.Throw(CC, TC.pos, TC, throwingCard);

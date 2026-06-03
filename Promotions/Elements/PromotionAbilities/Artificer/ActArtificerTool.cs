@@ -1,5 +1,5 @@
 using PromotionMod.Trait.Artificer;
-namespace PromotionMod.Elements.PromotionAbilities.Artificer;
+namespace PromotionMod.Elements;
 
 public class ActArtificerTool : Act
 {

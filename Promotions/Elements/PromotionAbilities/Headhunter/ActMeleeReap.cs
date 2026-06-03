@@ -1,5 +1,5 @@
 using System.Linq;
-namespace PromotionMod.Elements.PromotionAbilities.Headhunter;
+namespace PromotionMod.Elements;
 
 public class ActMeleeReap : ActMelee
 {

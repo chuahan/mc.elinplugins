@@ -1,5 +1,5 @@
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.Knightcaller;
+namespace PromotionMod.Elements;
 
 public class ActSpiritMobilize : PromotionSpellAbility
 {

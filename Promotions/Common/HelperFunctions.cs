@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using Cwl.Helper;
+using PromotionMod.Patches;
 using PromotionMod.Stats;
-using PromotionMod.Stats.Spellblade;
+
 using UnityEngine;
 namespace PromotionMod.Common;
 
@@ -151,7 +153,7 @@ public static class HelperFunctions
         }
 
         // Actually inflict the damage.
-        tc.DamageHP(adjustedDamage, ele, eleP, attackSource, cc);
+        HelperFunctions.DamageHpWrapper(tc, adjustedDamage, ele, eleP, attackSource, cc);
     }
 
     public static Condition Create(string alias, int power, int power2, Chara caster, Action<Condition>? onCreate = null)
@@ -261,5 +263,22 @@ public static class HelperFunctions
         scaledStockCount = scaledStockCount * (100 + EClass.pc.Evalue(1406) * 5) / 100f;
         scaledStockCount = Mathf.Min(scaledStockCount, maxItems);
         return (int)scaledStockCount;
+    }
+    
+    // Wrapper to use the CWL Helper.
+    public static void DamageHpWrapper(Card target, long damage, int element, int eleP, AttackSource source, Card origin, bool showEffect = true, Thing weapon = null, Chara originalTarget = null)
+    {
+        CardDamageHPPatches.TargetMethod().FastInvoke(target, new object[]
+        {
+            damage,
+            element,
+            eleP,
+            source,
+            origin,
+            showEffect,
+            weapon,
+            originalTarget,
+            0 // Resist Pen Placeholder
+        });
     }
 }

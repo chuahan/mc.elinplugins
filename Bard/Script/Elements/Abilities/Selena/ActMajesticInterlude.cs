@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using BardMod.Common;
 using BardMod.Common.HelperFunctions;
 using BardMod.Stats;
-using BardMod.Stats.BardSongConditions;
+using BardMod.Stats;
 using UnityEngine;
 namespace BardMod.Elements.Abilities.Selena;
 

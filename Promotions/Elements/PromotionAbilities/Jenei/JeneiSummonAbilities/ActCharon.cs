@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
+using Cwl.Helper;
 using Cwl.Helper.Extensions;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
+using PromotionMod.Patches;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Impact. 5% chance of instantly killing target.
@@ -14,7 +16,7 @@ public class ActCharon : JeneiSummonSequence
     public override bool PerformSummonAttack(Chara cc, int power)
     {
         cc.PlaySound("spell_breathe");
-        ElementRef colorRef = EClass.setting.elements["eleNether"];
+        ElementRef colorRef = EClass.setting.elements[Constants.ElementAliasLookup[Constants.EleNether]];
         List<Chara> targetsHit = new List<Chara>();
         foreach (Point tile in EClass._map.ListPointsInCircle(cc.pos, 5f, false, false))
         {
@@ -28,7 +30,7 @@ public class ActCharon : JeneiSummonSequence
                 // 1/20 chance of Instakill. Does not work on bosses.
                 if (EClass.rnd(20) == 0 && target.IsAliveInCurrentZone && !target.IsBoss())
                 {
-                    target.DamageHP(target.MaxHP, AttackSource.Finish, cc);
+                    HelperFunctions.DamageHpWrapper(target, target.MaxHP, Constants.EleVoid, 100, AttackSource.Finish, cc);
                 }
 
                 // Mark Target as hit.

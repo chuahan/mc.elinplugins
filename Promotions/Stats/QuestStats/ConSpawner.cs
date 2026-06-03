@@ -1,4 +1,4 @@
-namespace PromotionMod.Stats.QuestStats;
+namespace PromotionMod.Stats;
 
 public class ConSpawner : Condition
 {

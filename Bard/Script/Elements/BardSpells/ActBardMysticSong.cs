@@ -1,7 +1,7 @@
 using BardMod.Common;
 using BardMod.Common.HelperFunctions;
 using BardMod.Source;
-using BardMod.Stats.BardSongConditions;
+using BardMod.Stats;
 namespace BardMod.Elements.BardSpells;
 
 public class ActBardMysticSong : ActBardSong

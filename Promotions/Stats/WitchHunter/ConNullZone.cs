@@ -1,6 +1,6 @@
 using PromotionMod.Common;
 using UnityEngine;
-namespace PromotionMod.Stats.WitchHunter;
+namespace PromotionMod.Stats;
 
 public class ConNullZone : ConAura
 {

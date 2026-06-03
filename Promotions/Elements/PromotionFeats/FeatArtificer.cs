@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionFeats;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     A wonderous amalgamation of magic and technology. The Artificer focuses on the production of magical tools.

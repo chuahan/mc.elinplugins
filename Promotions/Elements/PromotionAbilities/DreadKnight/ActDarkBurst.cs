@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
-using PromotionMod.Stats.DreadKnight;
-namespace PromotionMod.Elements.PromotionAbilities.DreadKnight;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public class ActDarkBurst : PromotionSpellAbility
 {
@@ -66,7 +67,7 @@ public class ActDarkBurst : PromotionSpellAbility
         }
         else
         {
-            darkTrace = (ConDarkTraces)CC.AddCondition<ConDarkTraces>();
+            darkTrace = (ConDarkTraces)CC.AddCondition<ConDarkTraces>(100, true);
         }
 
         // User's consumed HP * 2 will be added as spellpower.
@@ -75,7 +76,7 @@ public class ActDarkBurst : PromotionSpellAbility
 
         int power = HelperFunctions.SafeAdd(GetPower(CC), HelperFunctions.SafeMultiplier(cost, 2));
         float adjustedEffectRadius = _effectRadius;
-        adjustedEffectRadius += darkTrace.GetStacks();
+        if (darkTrace != null) adjustedEffectRadius += darkTrace.GetStacks();
 
         Effect spellEffect = Effect.Get("Element/ball_Nether");
         List<Chara> targetsHit = new List<Chara>();

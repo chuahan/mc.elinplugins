@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
 using PromotionMod.Stats;
-namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Impact. Explosive axe strike. Applies PV Break of 50% to all enemies.

@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace PromotionMod.Stats.Artificer;
+namespace PromotionMod.Stats;
 
 public class ConHeavenlyEmbrace : BaseBuff
 {

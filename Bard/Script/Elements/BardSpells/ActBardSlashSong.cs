@@ -22,7 +22,7 @@ public class ActBardSlashSong : ActBardSong
         {
             int damage = HelperFunctions.SafeDice(Constants.BardSlashSongName, power);
             target.PlaySound("ab_magicsword");
-            target.DamageHP(dmg: damage, ele: Constants.EleSound, eleP: 100, attackSource: AttackSource.Shockwave, origin: bard);
+            HelperFunctions.DamageHpWrapper(target, damage, Constants.EleSound, 100, AttackSource.Shockwave, bard);
         }
     }
 }

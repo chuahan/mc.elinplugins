@@ -1,9 +1,8 @@
 using System;
 using HarmonyLib;
 using PromotionMod.Common;
-using PromotionMod.Elements.PromotionFeats;
+using PromotionMod.Elements;
 using PromotionMod.Stats;
-using PromotionMod.Stats.Sentinel;
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(ActMelee))]

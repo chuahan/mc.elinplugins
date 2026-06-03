@@ -2,7 +2,8 @@ using System;
 using System.Reflection;
 using HarmonyLib;
 using PromotionMod.Common;
-using PromotionMod.Stats.Battlemage;
+using PromotionMod.Stats;
+
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(Element))]

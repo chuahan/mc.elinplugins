@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Cwl.Helper.Extensions;
 using UnityEngine;
-namespace PromotionMod.Elements.PromotionFeats;
+namespace PromotionMod.Elements;
 
 public abstract class PromotionFeat : Feat
 {

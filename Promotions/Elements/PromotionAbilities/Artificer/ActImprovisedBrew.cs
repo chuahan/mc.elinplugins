@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.Artificer;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Artificer Ability

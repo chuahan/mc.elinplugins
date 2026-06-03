@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionFeats;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     The story of ancient valor. The Knightcaller performs in otherworldly songs that calls forth aid from a ghostly

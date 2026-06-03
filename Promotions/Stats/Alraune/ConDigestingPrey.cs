@@ -1,4 +1,4 @@
-namespace PromotionMod.Elements.Alraune;
+namespace PromotionMod.Stats;
 
 public class ConDigestingPrey : BaseDebuff
 {

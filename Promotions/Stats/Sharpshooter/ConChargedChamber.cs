@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-namespace PromotionMod.Stats.Sharpshooter;
+namespace PromotionMod.Stats;
 
 public class ConChargedChamber : BaseBuff
 {

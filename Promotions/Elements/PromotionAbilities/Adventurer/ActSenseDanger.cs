@@ -1,6 +1,7 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.Adventurer;
-namespace PromotionMod.Elements.PromotionAbilities.Adventurer;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public class ActSenseDanger : PromotionAbility
 {

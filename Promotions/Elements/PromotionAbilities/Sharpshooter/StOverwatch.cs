@@ -1,5 +1,5 @@
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.Sharpshooter;
+namespace PromotionMod.Elements;
 
 public class StOverwatch : PromotionAbility
 {

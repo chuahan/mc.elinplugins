@@ -1,7 +1,7 @@
 using System.Linq;
 using PromotionMod.Common;
 using UnityEngine;
-namespace PromotionMod.Stats.Sharpshooter;
+namespace PromotionMod.Stats;
 
 public class StanceOverwatch : PromotionStance
 {

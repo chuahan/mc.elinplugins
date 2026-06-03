@@ -1,5 +1,5 @@
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.Trickster;
+namespace PromotionMod.Elements;
 
 public class ActDiversion : PromotionSpellAbility
 {

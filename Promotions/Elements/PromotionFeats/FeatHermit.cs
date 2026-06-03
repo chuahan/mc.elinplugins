@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionFeats;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     The cloak and dagger. Hermits are stealthy warriors that are unnoticed in battles, only seen briefly by foes

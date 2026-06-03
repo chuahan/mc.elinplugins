@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace PromotionMod.Stats.Battlemage;
+namespace PromotionMod.Stats;
 
 public class StanceManaFocus : PromotionStance
 {

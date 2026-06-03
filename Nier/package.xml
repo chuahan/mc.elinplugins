@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Meta>
+  <title>Misery's Beloved: Nier</title>
+  <id>cantus.nier.mod</id>
+  <author>Cantus</author>
+  <loadPriority>100</loadPriority>
+  <description>
+    [h1] A warped young woman with an overwhelming desire for love and acceptance arrives in Ylva. [/h1]
+    A unique NPC to accompany you in your travels with her own feats, weapon, and spells. You can find her wandering the Lumiest Graveyard.
+    She is unlike other Unique NPCs though, in that you cannot recruit her through the usual methods, and instead is simply recruited by talking and listening to her. 
+    She is quite the strong ally. Use her at your own risk.
+    No, she does not have Death Reversed.
+    No, her story is not happy.
+
+    This mod is only in English, sorry.
+    Nier the character and the assets used in this mod are from the game Granblue Fantasy by Cygames.
+    Please report any bugs here or on the Elin Discord.
+
+    [h1] Compatibility [/h1]
+    This mod works with existing save files.
+
+    [h1] Requirements [/h1]
+    This mod requires the [b]Custom Whatever Loader[/b] mod.
+    https://steamcommunity.com/sharedfiles/filedetails/?id=3370512305
+
+  </description>
+  <tags>NPC,Ally</tags>
+  <version>0.23.129</version>
+</Meta>

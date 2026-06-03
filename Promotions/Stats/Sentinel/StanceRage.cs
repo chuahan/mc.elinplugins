@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace PromotionMod.Stats.Sentinel;
+namespace PromotionMod.Stats;
 
 public class StanceRage : PromotionStance
 {

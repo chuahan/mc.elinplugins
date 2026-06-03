@@ -1,6 +1,6 @@
 using HarmonyLib;
 using PromotionMod.Common;
-using PromotionMod.Stats.Battlemage;
+using PromotionMod.Stats;
 using UnityEngine;
 namespace PromotionMod.Patches;
 

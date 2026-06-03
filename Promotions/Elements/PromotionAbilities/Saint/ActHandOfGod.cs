@@ -1,6 +1,6 @@
 using PromotionMod.Common;
 using PromotionMod.Stats;
-namespace PromotionMod.Elements.PromotionAbilities.Saint;
+namespace PromotionMod.Elements;
 
 public class ActHandOfGod : PromotionSpellAbility
 {

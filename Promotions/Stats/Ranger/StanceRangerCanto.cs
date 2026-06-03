@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace PromotionMod.Stats.Ranger;
+namespace PromotionMod.Stats;
 
 public class StanceRangerCanto : PromotionStance
 {

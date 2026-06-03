@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
 using PromotionMod.Stats;
-using PromotionMod.Stats.Hermit;
-namespace PromotionMod.Elements.PromotionAbilities.Hermit;
+
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     This ability can only be used on targets that have been Marked for Death.

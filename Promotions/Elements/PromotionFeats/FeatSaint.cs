@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Cwl.Helper.Extensions;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionFeats;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Light our way! The Saint brings down the light of judgment upon their enemy.

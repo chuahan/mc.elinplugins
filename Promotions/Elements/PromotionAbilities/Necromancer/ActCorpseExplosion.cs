@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities;
+namespace PromotionMod.Elements;
 
 public class ActCorpseExplosion : PromotionSpellAbility
 {

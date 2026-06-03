@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace PromotionMod.Stats.Hexer;
+namespace PromotionMod.Stats;
 
 // Reduces strength/will
 public class ConMalaise : Timebuff

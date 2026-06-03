@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace PromotionMod.Stats.Trickster;
+namespace PromotionMod.Stats;
 
 public class ConDespair : BadCondition
 {
@@ -11,7 +11,9 @@ public class ConDespair : BadCondition
 
     public override void Tick()
     {
-        owner.DamageHP((long)(owner.MaxHP * 0.1F), AttackSource.Condition);
+        //owner.DamageHP((long)(owner.MaxHP * 0.1F), AttackSource.Condition);
+        int hpCost = (int)(owner.MaxHP * 0.1F);
+        owner.hp -= hpCost;
         base.Tick();
     }
 }

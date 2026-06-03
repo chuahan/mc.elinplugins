@@ -1,10 +1,7 @@
 using HarmonyLib;
 using PromotionMod.Common;
-using PromotionMod.Elements.PromotionAbilities;
-using PromotionMod.Elements.PromotionAbilities.Elementalist;
+using PromotionMod.Elements;
 using PromotionMod.Stats;
-using PromotionMod.Stats.Battlemage;
-using PromotionMod.Stats.Jenei;
 using UnityEngine;
 namespace PromotionMod.Patches;
 

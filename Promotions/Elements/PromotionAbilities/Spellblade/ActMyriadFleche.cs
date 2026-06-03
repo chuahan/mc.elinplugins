@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
 using UnityEngine;
-namespace PromotionMod.Elements.PromotionAbilities.Spellblade;
+namespace PromotionMod.Elements;
 
 public class ActMyriadFleche : ActRush
 {
@@ -16,7 +16,7 @@ public class ActMyriadFleche : ActRush
 
     public override bool CanPerform()
     {
-        if (CC != null && CC.Evalue(Constants.FeatSpellblade) == 0)
+        if (CC != null && !CC.MatchesPromotion(Constants.FeatSpellblade))
         {
             Msg.Say("classlocked_ability".lang(Constants.SpellbladeId.lang()));
             return false;
@@ -73,7 +73,6 @@ public class ActMyriadFleche : ActRush
         float distBonus = 1f + 0.1f * distance;
         distBonus *= (100 + EClass.curve(CC.Evalue(382), 50, 25, 65)) / 100f; // Add Momentum Bonus
         Attack(distBonus);
-        //new ActMelee().Perform(); //Attack(distBonus);
 
         // Proc a short-ranged breath attack on the target at point-blank to hit surrounding enemies.
         TweenUtil.Delay(0.2F, delegate

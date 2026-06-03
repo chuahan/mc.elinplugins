@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
-using PromotionMod.Stats.Harbinger;
-namespace PromotionMod.Elements.PromotionAbilities.Harbinger;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Harbinger Ability

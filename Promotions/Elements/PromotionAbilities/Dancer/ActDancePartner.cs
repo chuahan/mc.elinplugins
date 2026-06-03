@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
-using PromotionMod.Stats.Dancer;
-namespace PromotionMod.Elements.PromotionAbilities.Dancer;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public class ActDancePartner : PromotionCombatAbility
 {

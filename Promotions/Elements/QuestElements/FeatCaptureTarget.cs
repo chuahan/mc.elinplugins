@@ -1,4 +1,4 @@
-namespace PromotionMod.Elements.QuestElements;
+namespace PromotionMod.Elements;
 
 public class FeatCaptureTarget : Feat
 {

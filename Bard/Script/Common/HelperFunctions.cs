@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using BardMod.Patches;
 using BardMod.Traits;
+using Cwl.Helper;
 using UnityEngine;
 namespace BardMod.Common.HelperFunctions;
 
@@ -177,5 +179,22 @@ public static class HelperFunctions
         basePower = (int)HelperFunctions.SafeMultiplier(basePower, powerMultiplier);
 
         return basePower;
+    }
+
+    // Wrapper to use the CWL Helper.
+    public static void DamageHpWrapper(Card target, long damage, int element, int eleP, AttackSource source, Card origin, bool showEffect = true, Thing weapon = null, Chara originalTarget = null)
+    {
+        BardCardPatches.TargetMethod().FastInvoke(target, new object[]
+        {
+            damage,
+            element,
+            eleP,
+            source,
+            origin,
+            showEffect,
+            weapon,
+            originalTarget,
+            0 // Resist Pen Placeholder
+        });
     }
 }

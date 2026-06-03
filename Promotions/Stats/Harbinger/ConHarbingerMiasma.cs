@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Cwl.Helper;
 using PromotionMod.Common;
+using PromotionMod.Patches;
 using UnityEngine;
-namespace PromotionMod.Stats.Harbinger;
+namespace PromotionMod.Stats;
 
 /// <summary>
 ///     Overloaded Miasma Clone so that I can have Harbingers apply multiple miasmas.
@@ -25,7 +27,7 @@ public class ConHarbingerMiasma : TimeDebuff
         Dice dice = Dice.Create("miasma_", power);
         try
         {
-            owner.DamageHP(dice.Roll(), Element, EClass.rnd(power / 2) + power / 4, AttackSource.Condition);
+            HelperFunctions.DamageHpWrapper(owner, dice.Roll(), Element, EClass.rnd(power / 2) + power / 4, AttackSource.Condition, null);
             ApplyCondition(owner);
             if (owner.IsAliveInCurrentZone && value > 1)
             {

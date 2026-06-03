@@ -1,8 +1,7 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.Jenei;
-using PromotionMod.Stats.WitchHunter;
+using PromotionMod.Stats;
 using UnityEngine;
-namespace PromotionMod.Elements.PromotionAbilities;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     A wrapper class to help reduce duplicate code.

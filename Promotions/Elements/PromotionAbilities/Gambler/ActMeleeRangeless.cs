@@ -1,4 +1,4 @@
-namespace PromotionMod.Elements.PromotionAbilities.Gambler;
+namespace PromotionMod.Elements;
 
 public class ActMeleeRangeless : ActMelee
 {

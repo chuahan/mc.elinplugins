@@ -1,4 +1,4 @@
-namespace PromotionMod.Stats.Berserker;
+namespace PromotionMod.Stats;
 
 public class ConLifebreakAttack : ConAttackResolveCondition
 {

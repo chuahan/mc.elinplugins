@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace PromotionMod.Stats.Machinist;
+namespace PromotionMod.Stats;
 
 public class ConOverclock : BaseBuff
 {

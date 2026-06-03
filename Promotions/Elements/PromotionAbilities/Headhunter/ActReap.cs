@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using PromotionMod.Common;
 using PromotionMod.Stats;
-using PromotionMod.Stats.Headhunter;
-namespace PromotionMod.Elements.PromotionAbilities.Headhunter;
+
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Headhunter Ability

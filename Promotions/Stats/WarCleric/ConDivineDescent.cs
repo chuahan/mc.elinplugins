@@ -1,6 +1,6 @@
 using Cwl.Helper.Extensions;
 using UnityEngine;
-namespace PromotionMod.Stats.WarCleric;
+namespace PromotionMod.Stats;
 
 public class ConDivineDescent : BaseBuff
 {

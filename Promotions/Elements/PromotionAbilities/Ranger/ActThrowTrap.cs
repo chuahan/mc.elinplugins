@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Cwl.Helper.Extensions;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.Ranger;
+namespace PromotionMod.Elements;
 
 public class ActThrowTrap : PromotionCombatAbility
 {

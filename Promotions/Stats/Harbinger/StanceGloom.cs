@@ -1,5 +1,5 @@
-using PromotionMod.Elements.PromotionAbilities.Harbinger;
-namespace PromotionMod.Stats.Harbinger;
+using PromotionMod.Elements;
+namespace PromotionMod.Stats;
 
 public class StanceGloom : ConAura
 {

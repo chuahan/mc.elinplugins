@@ -3,22 +3,8 @@ using System.Linq;
 using Cwl.Helper.Extensions;
 using HarmonyLib;
 using PromotionMod.Common;
-using PromotionMod.Elements.PromotionAbilities;
-using PromotionMod.Stats.Adventurer;
-using PromotionMod.Stats.Artificer;
-using PromotionMod.Stats.Berserker;
-using PromotionMod.Stats.Dancer;
-using PromotionMod.Stats.Harbinger;
-using PromotionMod.Stats.Headhunter;
-using PromotionMod.Stats.Hermit;
-using PromotionMod.Stats.Machinist;
-using PromotionMod.Stats.Necromancer;
-using PromotionMod.Stats.Ranger;
-using PromotionMod.Stats.Runeknight;
-using PromotionMod.Stats.Sharpshooter;
-using PromotionMod.Stats.Sniper;
-using PromotionMod.Stats.Sovereign;
-using PromotionMod.Stats.WitchHunter;
+using PromotionMod.Elements;
+using PromotionMod.Stats;
 using PromotionMod.Trait;
 using PromotionMod.Trait.Artificer;
 using PromotionMod.Trait.Trickster;
@@ -303,7 +289,7 @@ internal class CharaPatches : EClass
 
     [HarmonyPatch(nameof(Chara._Move))]
     [HarmonyPrefix]
-    internal static bool MovePrefix(Chara __instance, Point newPoint, Card.MoveType type, ref Card.MoveResult __result)
+    internal static bool MovePrefix(Chara __instance, ref Card.MoveResult __result, Point newPoint, Card.MoveType type = Card.MoveType.Walk)
     {
         if (__instance.HasCondition<StanceHeavyarms>())
         {
@@ -317,7 +303,7 @@ internal class CharaPatches : EClass
 
     [HarmonyPatch(nameof(Chara._Move))]
     [HarmonyPostfix]
-    internal static void MovePostfix(Chara __instance, Point newPoint, Card.MoveType type, ref Card.MoveResult __result)
+    internal static void MovePostfix(Chara __instance, ref Card.MoveResult __result, Point newPoint, Card.MoveType type = Card.MoveType.Walk)
     {
         // For Quests:
         //if (EClass.pc.currentZone == QuestManager.)
@@ -453,6 +439,15 @@ internal class CharaPatches : EClass
                     activeConditions.Contains(typeof(ConWet)))
                 {
                     __instance.hunger.Mod(2);
+                }
+                
+                // Alraune - If Winter and the Alraune does not have 20 Cold Resistance or the tile does not have light, mod sleepiness an extra time.
+                if (__instance.HasElement(Constants.FeatAlraune) &&
+                    EClass.world.season.isWinter &&
+                    !__instance.pos.IsSunLit &&
+                    __instance.Evalue(SKILL.resCold) < 20)
+                {
+                    __instance.sleepiness.Mod(1);
                 }
                 break;
             }

@@ -1,5 +1,5 @@
-using PromotionMod.Elements.Abilities.Dancer;
-namespace PromotionMod.Elements.PromotionAbilities.Dancer;
+using PromotionMod.Stats;
+namespace PromotionMod.Elements;
 
 public class StFreedomDance : ActBaseDance<StanceFreedomDance>
 {

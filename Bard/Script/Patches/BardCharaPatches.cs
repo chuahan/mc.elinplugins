@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using BardMod.Common;
 using BardMod.Common.HelperFunctions;
 using BardMod.Stats;
-using BardMod.Stats.BardSongConditions;
+using BardMod.Stats;
 using HarmonyLib;
 namespace BardMod.Patches;
 
@@ -32,7 +32,7 @@ internal class BardCharaPatches : EClass
                             ephemeralFlowers.Caster) as ConEphemeralFlowersSong;
                 target.AddCondition(recursive);
                 target.AddCondition<ConFreeze>(30, true);
-                target.DamageHP(dmg: damage, ele: Constants.EleCold, eleP: 100, attackSource: AttackSource.Shockwave);
+                HelperFunctions.DamageHpWrapper(target, damage, Constants.EleCold, 100, AttackSource.Shockwave, null);
             }
 
             if (ephemeralFlowers.GodBlessed)

@@ -1,6 +1,7 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.Spellblade;
-namespace PromotionMod.Elements.PromotionAbilities.Spellblade;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public class ActSiphoningBlade : PromotionCombatAbility
 {

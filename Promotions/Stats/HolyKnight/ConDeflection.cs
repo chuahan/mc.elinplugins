@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace PromotionMod.Stats.HolyKnight;
+namespace PromotionMod.Stats;
 
 public class ConDeflection : BaseBuff
 {

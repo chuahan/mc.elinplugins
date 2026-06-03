@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace PromotionMod.Stats.Runeknight;
+namespace PromotionMod.Stats;
 
 public class ConWardingRune : BaseBuff
 {

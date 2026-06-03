@@ -1,6 +1,7 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.Ranger;
-namespace PromotionMod.Elements.PromotionAbilities.Ranger;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public class ActGimmickCoating : PromotionCombatAbility
 {

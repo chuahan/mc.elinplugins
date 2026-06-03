@@ -1,7 +1,7 @@
 using HarmonyLib;
 using PromotionMod.Stats;
-using PromotionMod.Stats.Machinist;
-using PromotionMod.Stats.Sharpshooter;
+
+
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(ActRanged))]

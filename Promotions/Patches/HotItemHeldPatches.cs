@@ -1,5 +1,5 @@
 using HarmonyLib;
-using PromotionMod.Elements.PromotionAbilities.Artificer;
+using PromotionMod.Elements;
 using PromotionMod.Trait.Artificer;
 namespace PromotionMod.Patches;
 

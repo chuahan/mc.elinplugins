@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Stats;
-namespace PromotionMod.Elements.PromotionAbilities.Trickster;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Consumes debuffs, provides self and allies Protection scaled to the amount of debuffs on the target.

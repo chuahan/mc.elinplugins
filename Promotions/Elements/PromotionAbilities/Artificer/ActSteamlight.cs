@@ -1,6 +1,7 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.Artificer;
-namespace PromotionMod.Elements.PromotionAbilities.Artificer;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public class ActSteamlight : Ability
 {

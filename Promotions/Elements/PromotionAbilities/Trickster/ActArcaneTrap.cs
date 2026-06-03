@@ -1,6 +1,6 @@
 using Cwl.Helper.Extensions;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.Trickster;
+namespace PromotionMod.Elements;
 
 public class ActArcaneTrap : PromotionSpellAbility
 {

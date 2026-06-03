@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.Hexer;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Attempts to consume a debuff on the Hexer and does damage equal to it's power against a target.

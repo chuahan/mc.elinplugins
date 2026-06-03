@@ -1,5 +1,6 @@
 using HarmonyLib;
-using PromotionMod.Stats.Dancer;
+using PromotionMod.Stats;
+
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(StatsStamina))]

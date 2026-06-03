@@ -1,4 +1,4 @@
-using PromotionMod.Elements.PromotionAbilities.Artificer;
+using PromotionMod.Elements;
 namespace PromotionMod.Trait.Artificer;
 
 /// <summary>

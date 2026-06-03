@@ -5,23 +5,9 @@ using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using PromotionMod.Common;
-using PromotionMod.Elements.PromotionAbilities.HolyKnight;
-using PromotionMod.Elements.PromotionFeats;
+using PromotionMod.Elements;
 using PromotionMod.Stats;
-using PromotionMod.Stats.AdvCombatSkills;
-using PromotionMod.Stats.Artificer;
-using PromotionMod.Stats.Battlemage;
-using PromotionMod.Stats.Gambler;
-using PromotionMod.Stats.Harbinger;
-using PromotionMod.Stats.Headhunter;
-using PromotionMod.Stats.Hermit;
-using PromotionMod.Stats.HolyKnight;
-using PromotionMod.Stats.Justicar;
-using PromotionMod.Stats.Runeknight;
-using PromotionMod.Stats.Sniper;
-using PromotionMod.Stats.Sovereign;
-using PromotionMod.Stats.Spellblade;
-using PromotionMod.Stats.WarCleric;
+
 namespace PromotionMod.Patches;
 
 [HarmonyPatch(typeof(Card))]
@@ -36,17 +22,16 @@ public class CardDamageHPPatches
         AttackSource.None
     };
     
-    static MethodBase TargetMethod()
+    public static MethodInfo TargetMethod()
     {
         return typeof(Card)
             .GetMethods()
-            .Where(m => m.Name == nameof(Card.DamageHP))
+            .Where(m => m.Name == "DamageHP")
             .First(m => m.GetParameters().Length > 3);
     }
     
     [HarmonyPrefix]
-    internal static bool PromotionMod_OnDamageHP_Patch(Card __instance, ref long dmg, ref int ele, ref int eleP, AttackSource attackSource, Card? origin, bool showEffect, Thing weapon,
-        Chara originalTarget)
+    internal static bool PromotionMod_OnDamageHP_Patch(Card __instance, MethodInfo __originalMethod, ref long dmg, ref int ele, ref int eleP, AttackSource attackSource, Card? origin, bool showEffect, Thing weapon, Chara originalTarget)
     {
         //if (__instance.isChara && ActiveAttackSources.Contains(attackSource))
         // This is the same attack source conditions as Wall of Flesh, so active attack sources.
@@ -97,7 +82,7 @@ public class CardDamageHPPatches
                 // Artificer - If the target is riding a Titan Golem, divert damage to the Titan Golem instead.
                 if (target.ride is { id: Constants.TitanGolemCharaId })
                 {
-                    target.ride.DamageHP(dmg, ele, eleP, attackSource, origin, showEffect, weapon, target);
+                    HelperFunctions.DamageHpWrapper(target, dmg, ele, eleP, attackSource, origin);
                     return false;
                 }
 
@@ -237,7 +222,7 @@ public class CardDamageHPPatches
                             // 25% chance to cull the target at or under 30% HP.
                             if (target.hp <= target.MaxHP * 0.30F && EClass.rnd(4) == 0)
                             {
-                                target.DamageHP(target.MaxHP, AttackSource.Finish, origin);
+                                HelperFunctions.DamageHpWrapper(target, target.MaxHP, 0, 100, AttackSource.Finish, origin);
                             }
                             target.AddCondition<ConDim>(sniperTarget.power);
                             target.AddCondition<ConSilence>(sniperTarget.power);
@@ -301,7 +286,7 @@ public class CardDamageHPPatches
                 if (targetAllies.Count(c => c.conditions.Any(cond => cond.GetType() == typeof(StanceVanguard))) > 0)
                 {
                     Chara holyKnightAlly = targetAllies.First(c => c.conditions.Any(cond => cond.GetType() == typeof(StanceVanguard)));
-                    holyKnightAlly.DamageHP(dmg, ele, eleP, attackSource, origin, showEffect, weapon, target);
+                    HelperFunctions.DamageHpWrapper(holyKnightAlly, dmg, ele, eleP, attackSource, origin, showEffect, weapon, target);
                     return false;
                 }
             }
@@ -462,41 +447,6 @@ public class CardDamageHPPatches
                     }
                 }
             }
-
-            /* Moved these into the Transpiler to trigger post Damage Reduction.
-            // Protection - Protects flat amount of damage.
-            if (targetConditions.Contains(typeof(ConProtection)))
-            {
-                ConProtection protection = (ConProtection)targetConditions[typeof(ConProtection)].Single();
-                if (protection.value >= dmg)
-                {
-                    protection.Mod((int)(0 - dmg));
-                    return false;
-                }
-
-                dmg -= protection.value;
-                protection.Kill();
-            }
-
-            // Mana Shield - Protects a flat amount of damage with shield gating.
-            // Taking any hit will reset the cooldown delay though.
-            if (targetConditions.Contains(typeof(StanceManaShield)))
-            {
-                StanceManaShield manaShield = (StanceManaShield)targetConditions[typeof(StanceManaShield)].Single();
-                if (manaShield.Stacks > 0)
-                {
-                    manaShield.ModShield((int)(0 - dmg));
-                    dmg = 0;
-                }
-            }
-
-            // Witch Hunter - When HP damage is done as a Witch Hunter with Melee/Ranged, they will also inflict 10% of the damage as mana.
-            if (originChara != null && originChara.MatchesPromotion(Constants.FeatWitchHunter && attackSource is AttackSource.Melee or AttackSource.Range && dmg > 0)
-            {
-                int manaDamage = (int)(dmg * 0.1F) * -1;
-                target.mana.Mod(manaDamage);
-            }
-            */
         }
         return true;
     }

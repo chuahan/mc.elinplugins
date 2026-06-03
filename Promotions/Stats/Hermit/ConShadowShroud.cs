@@ -1,6 +1,6 @@
 using PromotionMod.Common;
 using UnityEngine;
-namespace PromotionMod.Stats.Hermit;
+namespace PromotionMod.Stats;
 
 public class ConShadowShroud : BaseBuff
 {

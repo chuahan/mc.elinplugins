@@ -2,7 +2,7 @@ using BardMod.Common;
 using BardMod.Common.HelperFunctions;
 using BardMod.Patches;
 using BardMod.Source;
-using BardMod.Stats.BardSongConditions;
+using BardMod.Stats;
 namespace BardMod.Elements.BardSpells;
 
 public class ActBardScathingSong : ActBardSong
@@ -26,7 +26,7 @@ public class ActBardScathingSong : ActBardSong
             target.AddCondition<ConScathingSong>(scaledPower);
 
             int damage = HelperFunctions.SafeDice(Constants.BardScathingSongName, power);
-            target.DamageHP(dmg: damage, ele: Constants.EleMind, eleP: 100, attackSource: AttackSource.None, origin: bard);
+            HelperFunctions.DamageHpWrapper(target, damage, Constants.EleMind, 100, AttackSource.None, bard);
         }
     }
 }

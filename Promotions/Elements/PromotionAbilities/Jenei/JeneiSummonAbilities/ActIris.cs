@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Fire. Massive solar explosion that does full damage. Revives all allies. Restores all allies to full health.

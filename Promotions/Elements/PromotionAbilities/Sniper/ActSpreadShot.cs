@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.Sniper;
+namespace PromotionMod.Elements;
 
 public class ActSpreadShot : PromotionCombatAbility
 {

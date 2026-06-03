@@ -4,19 +4,8 @@ using System.Linq;
 using Cwl.Helper.Extensions;
 using HarmonyLib;
 using PromotionMod.Common;
-using PromotionMod.Elements.PromotionAbilities.Trickster;
-using PromotionMod.Elements.PromotionFeats;
+using PromotionMod.Elements;
 using PromotionMod.Stats;
-using PromotionMod.Stats.AdvCombatSkills;
-using PromotionMod.Stats.Berserker;
-using PromotionMod.Stats.Hermit;
-using PromotionMod.Stats.Machinist;
-using PromotionMod.Stats.Ranger;
-using PromotionMod.Stats.Sentinel;
-using PromotionMod.Stats.Sharpshooter;
-using PromotionMod.Stats.Sniper;
-using PromotionMod.Stats.Sovereign;
-using PromotionMod.Stats.Spellblade;
 using UnityEngine;
 namespace PromotionMod.Patches;
 
@@ -216,7 +205,7 @@ public class AttackProcessPatches
             {
                 int damage = originChara.Chara.MaxHP - originChara.Chara.hp;
                 damage = HelperFunctions.SafeMultiplier(damage, 1.3F);
-                target.Chara.DamageHP(damage, AttackSource.Melee, originChara);
+                HelperFunctions.DamageHpWrapper(target, damage, Constants.EleVoid, 100, AttackSource.Melee, originChara);
             }
             originConditions[typeof(ConLifebreakAttack)].Single().Kill();
         }
@@ -318,7 +307,7 @@ public class AttackProcessPatches
                 int basherEnc = originChara.Evalue(381);
                 long shieldPower = FeatSentinel.GetShieldPower(originChara);
                 shieldPower += (int)(target.MaxHP * .125F);
-                target.DamageHP(shieldPower, AttackSource.Melee, originChara);
+                HelperFunctions.DamageHpWrapper(target, shieldPower, Constants.EleVoid, 100, AttackSource.Melee, originChara);
                 if (target.IsAliveInCurrentZone)
                 {
                     if (EClass.rnd(2) == 0)
@@ -469,7 +458,7 @@ public class AttackProcessPatches
             // Nihil can deny this ability
             if (!HelperFunctions.NihilActivated(originChara))
             {
-                __instance.TC.DamageHP(999999999L, AttackSource.Finish, __instance.CC);
+                HelperFunctions.DamageHpWrapper(__instance.TC, 999999999L, Constants.EleVoid, 100, AttackSource.Finish, __instance.CC);
             }
         }
     }

@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
-using PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
-using PromotionMod.Elements.PromotionFeats;
-using PromotionMod.Stats.Jenei;
-namespace PromotionMod.Elements.PromotionAbilities.Jenei;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public class ActSpiritSummon : PromotionSpellAbility
 {

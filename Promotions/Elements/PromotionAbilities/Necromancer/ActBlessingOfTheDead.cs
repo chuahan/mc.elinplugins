@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
 using PromotionMod.Stats;
-namespace PromotionMod.Elements.PromotionAbilities;
+namespace PromotionMod.Elements;
 
 public class ActBlessingOfTheDead : PromotionSpellAbility
 {

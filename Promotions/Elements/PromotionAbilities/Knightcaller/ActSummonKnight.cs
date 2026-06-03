@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Cwl.Helper.Extensions;
 using PromotionMod.Common;
-using PromotionMod.Stats.Knightcaller;
+using PromotionMod.Stats;
 using PromotionMod.Trait;
-namespace PromotionMod.Elements.PromotionAbilities.Knightcaller;
+namespace PromotionMod.Elements;
 
 public class ActSummonKnight : PromotionSpellAbility
 {

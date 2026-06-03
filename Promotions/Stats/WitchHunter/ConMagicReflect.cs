@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace PromotionMod.Stats.WitchHunter;
+namespace PromotionMod.Stats;
 
 public class ConMagicReflect : BaseBuff
 {

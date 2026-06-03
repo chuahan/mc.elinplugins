@@ -37,8 +37,8 @@ public class ActBardKnockbackSong : ActBardSong
                     target.PlaySound("wave_hit_small");
                     target.AddCondition<ConParalyze>(20, true);
                 }
-            }
-            target.DamageHP(dmg: damage, ele: Constants.EleSound, eleP: 100, attackSource: AttackSource.Shockwave, origin: bard);
+            } ;
+            HelperFunctions.DamageHpWrapper(target, damage, Constants.EleSound, 100, AttackSource.Shockwave, bard);
         }
     }
 }

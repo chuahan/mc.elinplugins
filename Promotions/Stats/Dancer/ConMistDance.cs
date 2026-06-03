@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace PromotionMod.Stats.Dancer;
+namespace PromotionMod.Stats;
 
 public class ConMistDance : Timebuff
 {

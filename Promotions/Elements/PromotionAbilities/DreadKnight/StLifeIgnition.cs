@@ -1,6 +1,6 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.DreadKnight;
-namespace PromotionMod.Elements.PromotionAbilities.DreadKnight;
+
+namespace PromotionMod.Elements;
 
 public class StLifeIgnition : PromotionAbility
 {
@@ -12,7 +12,7 @@ public class StLifeIgnition : PromotionAbility
 
     public override bool CanPerformExtra(bool verbose)
     {
-
+        
         if (CC != null)
         {
             int hpCost = (int)(CC.MaxHP * 0.1F);
@@ -27,6 +27,7 @@ public class StLifeIgnition : PromotionAbility
         return true;
     }
 
+    /*
     public override bool Perform()
     {
         StanceLifeIgnition existingStance = CC.GetCondition<StanceLifeIgnition>();
@@ -40,4 +41,5 @@ public class StLifeIgnition : PromotionAbility
         }
         return true;
     }
+    */
 }

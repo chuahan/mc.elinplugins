@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
 using PromotionMod.Stats;
-using PromotionMod.Stats.Spellblade;
+using PromotionMod.Stats;
 namespace PromotionMod.Trait.Artificer;
 
 public class TraitArtificerToolCurse : TraitArtificerTool

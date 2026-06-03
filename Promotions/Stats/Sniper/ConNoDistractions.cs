@@ -1,6 +1,6 @@
 using PromotionMod.Common;
 using UnityEngine;
-namespace PromotionMod.Stats.Sniper;
+namespace PromotionMod.Stats;
 
 public class ConNoDistractions : BaseBuff
 {

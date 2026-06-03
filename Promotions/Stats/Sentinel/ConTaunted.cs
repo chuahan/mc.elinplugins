@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 using UnityEngine;
-namespace PromotionMod.Stats.Sentinel;
+namespace PromotionMod.Stats;
 
 public class ConTaunted : BaseDebuff
 {

@@ -3,7 +3,7 @@ using BardMod.Common;
 using BardMod.Common.HelperFunctions;
 using BardMod.Patches;
 using BardMod.Source;
-using BardMod.Stats.BardSongConditions;
+using BardMod.Stats;
 namespace BardMod.Elements.BardSpells.BardFinales;
 
 /*
@@ -60,7 +60,7 @@ public class BardEphemeralFlowersFinale : BardSongData
             {
                 ConEphemeralFlowersSong bardDebuff = ConBardSong.Create(nameof(ConEphemeralFlowersSong), power, rhythmStacks, godBlessed, bard) as ConEphemeralFlowersSong;
                 enemy.AddCondition(bardDebuff);
-                enemy.DamageHP(dmg: damage, ele: Constants.EleFire, eleP: 100, attackSource: AttackSource.Shockwave, origin: bard);
+                HelperFunctions.DamageHpWrapper(enemy, damage, Constants.EleFire, 100, AttackSource.Shockwave, bard);
                 enemy.AddCondition<ConFreeze>(rhythmStacks, true);
             }
         }

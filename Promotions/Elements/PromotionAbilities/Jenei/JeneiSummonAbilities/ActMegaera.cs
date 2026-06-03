@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
 using PromotionMod.Stats;
-namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Fire. Sword Rain. Boosts all allies attack power by 12.5%

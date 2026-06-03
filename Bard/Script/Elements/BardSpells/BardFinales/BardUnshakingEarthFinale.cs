@@ -65,8 +65,8 @@ public class BardUnshakingEarthFinale : BardSongData
             int damageWithModifier = damage;
             if (target.HasCondition<ConGravity>()) damage *= 2;
             if (target.IsLevitating) damage /= 2;
-
-            target.DamageHP(dmg: damageWithModifier, ele: Constants.EleImpact, eleP: 100, attackSource: AttackSource.None, origin: caster);
+            
+            HelperFunctions.DamageHpWrapper(target, damage, Constants.EleImpact, 100, AttackSource.None, caster);
 
             float newRadius = radius / 2.0f;
             int newDamage = damage / 2;

@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using Cwl.Helper;
 using PromotionMod.Common;
+using PromotionMod.Patches;
 using PromotionMod.Stats;
-namespace PromotionMod.Elements.PromotionAbilities.Justicar;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Justicar Ability
@@ -79,7 +81,8 @@ public class ActIntimidate : PromotionCombatAbility
             if (negativeKarma)
             {
                 int damage = HelperFunctions.SafeDice(Constants.IntimidateAlias, calcPower);
-                target.DamageHP(damage, AttackSource.Melee, CC);
+                
+                HelperFunctions.DamageHpWrapper(target, damage, Constants.EleVoid, 100, AttackSource.Melee, CC);
                 ActEffect.ProcAt(EffectId.Hand, calcPower, BlessedState.Normal, CC, target, target.pos, true, new ActRef
                 {
                     aliasEle = Constants.ElementAliasLookup[Constants.EleSound],

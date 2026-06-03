@@ -1,5 +1,5 @@
 using PromotionMod.Common;
-namespace PromotionMod.Stats.HolyKnight;
+namespace PromotionMod.Stats;
 
 public class RadiantAura : ConAura
 {

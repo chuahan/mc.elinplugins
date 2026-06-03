@@ -1,4 +1,4 @@
-namespace PromotionMod.Stats.Hermit;
+namespace PromotionMod.Stats;
 
 /// <summary>
 ///     Assassinate Condition

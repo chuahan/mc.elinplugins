@@ -1,6 +1,7 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.Sniper;
-namespace PromotionMod.Elements.PromotionAbilities.Sniper;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public class ActTargetLegs : PromotionCombatAbility
 {

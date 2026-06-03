@@ -47,7 +47,7 @@ public class ActBardElementalSong : ActBardSong
                 foreach (Chara enemy in potentialTargets)
                 {
                     enemy.PlaySound("wave_hit");
-                    enemy.DamageHP(dmg: damage, ele: randElement, eleP: 100, attackSource: AttackSource.MagicSword, origin: bard);
+                    HelperFunctions.DamageHpWrapper(enemy, damage, randElement, 100, AttackSource.MagicSword, bard);
                 }
             }
         }

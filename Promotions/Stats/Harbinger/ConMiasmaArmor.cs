@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
 using UnityEngine;
-namespace PromotionMod.Stats.Harbinger;
+namespace PromotionMod.Stats;
 
 public class ConMiasmaArmor : Timebuff
 {

@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using Cwl.Helper.Extensions;
 using PromotionMod.Common;
-using PromotionMod.Stats.Dancer;
+using PromotionMod.Stats;
 using UnityEngine;
-namespace PromotionMod.Elements.Alraune;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Consume Prey.

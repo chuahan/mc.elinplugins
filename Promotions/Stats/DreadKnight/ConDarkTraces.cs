@@ -1,5 +1,5 @@
 using PromotionMod.Common;
-namespace PromotionMod.Stats.DreadKnight;
+namespace PromotionMod.Stats;
 
 public class ConDarkTraces : ClassCondition
 {

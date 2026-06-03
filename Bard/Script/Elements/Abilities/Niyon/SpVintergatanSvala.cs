@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BardMod.Common;
 using BardMod.Common.HelperFunctions;
-using BardMod.Patches;
-using BardMod.Stats.BardSongConditions;
+using BardMod.Stats;
 using UnityEngine;
 namespace BardMod.Elements.Abilities.Niyon;
 
@@ -51,7 +50,7 @@ public class SpVintergatanSvala : Spell
         //spellEffect.Play(CC.pos);
         //CC.PlaySound("spell_ball");
         long damage = HelperFunctions.SafeDice(Constants.VintergatanSvalaName, GetPower(CC));
-        TC.DamageHP(dmg: damage, ele: Constants.EleCold, eleP: 100, attackSource: AttackSource.MagicSword, origin: CC);
+        HelperFunctions.DamageHpWrapper(TC, damage, Constants.EleCold, 100, AttackSource.MagicSword, CC);
         TC.PlaySound("ab_magicsword");
         TC.PlayEffect("hit_slash").SetScale(1f);
 

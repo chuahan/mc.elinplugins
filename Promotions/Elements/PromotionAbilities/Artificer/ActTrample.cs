@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using Cwl.Helper;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.Artificer;
+using PromotionMod.Patches;
+namespace PromotionMod.Elements;
 
 public class ActTrample : Ability
 {
@@ -107,7 +109,7 @@ public class ActTrample : Ability
             }
 
             // Inflict the damage against the targets that don't dodge it.
-            target.DamageHP(damage, AttackSource.Melee, CC);
+            HelperFunctions.DamageHpWrapper(target, damage, 0, 100, AttackSource.Melee, CC);
             impacted.Add(target);
         }
 

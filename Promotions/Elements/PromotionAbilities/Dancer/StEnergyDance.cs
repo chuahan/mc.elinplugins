@@ -1,5 +1,6 @@
-using PromotionMod.Stats.Dancer;
-namespace PromotionMod.Elements.PromotionAbilities.Dancer;
+
+using PromotionMod.Stats;
+namespace PromotionMod.Elements;
 
 public class StEnergyDance : ActBaseDance<StanceEnergyDance>
 {

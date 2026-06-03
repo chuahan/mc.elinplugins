@@ -1,6 +1,7 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.Battlemage;
-namespace PromotionMod.Elements.PromotionAbilities.Battlemage;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public class StManaShield : PromotionAbility
 {

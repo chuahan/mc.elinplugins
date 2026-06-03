@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using PromotionMod.Common;
-using PromotionMod.Elements.PromotionAbilities.Elementalist;
+using PromotionMod.Elements;
 using UnityEngine;
 namespace PromotionMod.Stats;
 

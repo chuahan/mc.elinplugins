@@ -1,6 +1,7 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.DreadKnight;
-namespace PromotionMod.Elements.PromotionAbilities.DreadKnight;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public class ActManaStarter : PromotionCombatAbility
 {
@@ -45,7 +46,7 @@ public class ActManaStarter : PromotionCombatAbility
         }
         else
         {
-            darkTrace = (ConDarkTraces)CC.AddCondition<ConDarkTraces>();
+            darkTrace = (ConDarkTraces)CC.AddCondition<ConDarkTraces>(100, true);
         }
 
         // User will restore 2x the cost in Mana.

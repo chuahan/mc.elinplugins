@@ -69,7 +69,7 @@ public class ActFlamingChord : Ability
         int strikes = specialEffect ? 3 : 1;
         for (int i = 0; i < strikes; i++)
         {
-            TC.DamageHP(dmg: damage, ele: Constants.EleFire, eleP: 100, attackSource: AttackSource.MagicSword, origin: CC);
+            HelperFunctions.DamageHpWrapper(TC, damage, Constants.EleFire, 100, AttackSource.MagicSword, CC);
             TC.PlaySound("ab_magicsword");
             TC.PlayEffect("hit_slash").SetScale(1f);
         }

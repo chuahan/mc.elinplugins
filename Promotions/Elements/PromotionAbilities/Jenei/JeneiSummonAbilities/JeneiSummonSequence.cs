@@ -1,4 +1,4 @@
-namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
+namespace PromotionMod.Elements;
 
 public abstract class JeneiSummonSequence
 {

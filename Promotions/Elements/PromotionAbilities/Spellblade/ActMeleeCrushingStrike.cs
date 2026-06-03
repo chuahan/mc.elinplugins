@@ -1,4 +1,4 @@
-namespace PromotionMod.Elements.PromotionAbilities.Spellblade;
+namespace PromotionMod.Elements;
 
 public class ActMeleeCrushingStrike : ActMelee
 {

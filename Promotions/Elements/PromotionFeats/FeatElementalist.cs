@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionFeats;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     The harbinger of the storm. Sometimes called Arsenal Magi, Elementalists are wizards who wield the entire spectrum

@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using Cwl.Helper;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.Hexer;
+using PromotionMod.Patches;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Does Mind Damage scaling on many negative conditions are on the enemy. 5 turn cooldown. 20% Mana cost.
@@ -44,7 +46,7 @@ public class ActTraumatize : PromotionSpellAbility
         {
             int damage = HelperFunctions.SafeDice(Constants.TraumatizeAlias, GetPower(CC));
             damage = HelperFunctions.SafeMultiplier(damage, negativeConditions.Count);
-            TC.DamageHP(damage, Constants.EleMind, 100, AttackSource.None, CC);
+            HelperFunctions.DamageHpWrapper(TC, damage, Constants.EleMind, 100, AttackSource.Condition, CC);
         }
         return true;
     }

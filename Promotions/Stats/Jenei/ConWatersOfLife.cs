@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace PromotionMod.Stats.Jenei;
+namespace PromotionMod.Stats;
 
 public class ConWatersOfLife : Timebuff
 {

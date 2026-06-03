@@ -1,4 +1,4 @@
-namespace PromotionMod.Elements.AdvancedCombatFeats;
+namespace PromotionMod.Elements;
 
 public class FeatGaleforce : Feat
 {

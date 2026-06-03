@@ -1,7 +1,7 @@
 using PromotionMod.Common;
 using PromotionMod.Stats;
-using PromotionMod.Stats.Sovereign;
-namespace PromotionMod.Elements.PromotionAbilities.Sovereign;
+
+namespace PromotionMod.Elements;
 
 public class ActStrategyOrder : ActSovereignOrder
 {

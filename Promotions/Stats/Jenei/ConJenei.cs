@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using PromotionMod.Common;
-using PromotionMod.Elements.PromotionFeats;
-namespace PromotionMod.Stats.Jenei;
+using PromotionMod.Elements;
+namespace PromotionMod.Stats;
 
 public class ConJenei : ClassCondition
 {

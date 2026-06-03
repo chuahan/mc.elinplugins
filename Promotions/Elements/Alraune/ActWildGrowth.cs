@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-namespace PromotionMod.Elements.Alraune;
+namespace PromotionMod.Elements;
 
 public class ActWildGrowth : Ability
 {

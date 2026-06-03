@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cwl.Helper.Extensions;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionFeats;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Shapers of the natural energies. Jenei are those who call upon the natural forces of Earth, Fire, Air, and Water.

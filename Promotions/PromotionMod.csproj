@@ -267,7 +267,6 @@
         <Compile Include="Elements\PromotionAbilities\Sovereign\StLawMode.cs"/>
         <Compile Include="Elements\PromotionAbilities\Spellblade\ActCrushingStrike.cs"/>
         <Compile Include="Elements\PromotionAbilities\Spellblade\ActMeleeCrushingStrike.cs"/>
-        <Compile Include="Elements\PromotionAbilities\Spellblade\ActMeleeMyriadFleche.cs"/>
         <Compile Include="Elements\PromotionAbilities\Spellblade\ActMyriadFleche.cs"/>
         <Compile Include="Elements\PromotionAbilities\Spellblade\ActSiphoningBlade.cs"/>
         <Compile Include="Elements\PromotionAbilities\Trickster\ActArcaneTrap.cs"/>

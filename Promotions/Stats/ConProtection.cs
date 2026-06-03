@@ -20,7 +20,7 @@ public class ConProtection : BaseBuff
         return SpriteSheet.Get(source.alias);
     }
 
-    public static int CalcAmount(int power)
+    private static int CalcAmount(int power)
     {
         return HelperFunctions.SafeMultiplier(4, 10 + power / 45 + power / 30);
     }
@@ -40,7 +40,7 @@ public class ConProtection : BaseBuff
         }
     }
 
-    public void AddProtection(int amount, bool scale = false)
+    public void AddProtection(int amount, bool scale = true)
     {
         value = Math.Min(_maxShield, scale ? HelperFunctions.SafeAdd(value, ConProtection.CalcAmount(amount)) : HelperFunctions.SafeAdd(value, amount));
         OnValueChanged();

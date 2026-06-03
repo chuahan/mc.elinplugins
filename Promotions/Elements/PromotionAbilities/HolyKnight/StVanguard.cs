@@ -1,5 +1,5 @@
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.HolyKnight;
+namespace PromotionMod.Elements;
 
 public class StVanguard : PromotionAbility
 {

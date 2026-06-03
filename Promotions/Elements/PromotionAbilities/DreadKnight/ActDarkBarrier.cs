@@ -1,7 +1,7 @@
 using PromotionMod.Common;
 using PromotionMod.Stats;
-using PromotionMod.Stats.DreadKnight;
-namespace PromotionMod.Elements.PromotionAbilities.DreadKnight;
+
+namespace PromotionMod.Elements;
 
 public class ActDarkBarrier : PromotionSpellAbility
 {
@@ -25,7 +25,7 @@ public class ActDarkBarrier : PromotionSpellAbility
         ConDarkTraces darkTrace = CC.GetCondition<ConDarkTraces>();
         int protectionAmount = (int)(CC.MaxHP * (darkTrace.GetStacks() * .05F));
         ConProtection? protection = (ConProtection)(pc.GetCondition<ConProtection>() ?? pc.AddCondition<ConProtection>());
-        protection?.AddProtection(protectionAmount, true); // This Protection scales power off of HP.
+        protection?.AddProtection(protectionAmount, false); // This Protection scales power off of HP.
         darkTrace.Kill();
         return true;
     }

@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace PromotionMod.Stats.Gambler;
+namespace PromotionMod.Stats;
 
 public class ConLuckyCat : BaseBuff
 {

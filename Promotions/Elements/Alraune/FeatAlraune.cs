@@ -1,6 +1,6 @@
 using Cwl.Helper.Extensions;
 using PromotionMod.Common;
-namespace PromotionMod.Elements.Alraune;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Alraune Feat

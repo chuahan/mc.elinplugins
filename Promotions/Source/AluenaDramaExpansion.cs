@@ -87,6 +87,17 @@ internal class AluenaDramaExpansion : DramaOutcome
 
         return true;
     }
+    
+    private static bool SmithyUshrirModUnlockRangedWeapon(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
+    {
+        dm.RequiresActor(out Chara ushrir);
+        if (EClass.pc.GetFlagValue(SmithyRechargeIntroFlag) == 0)
+        {
+            ushrir.ShowDialog("ushrir", "ushrirHammerFirstUse");            
+        }
+
+        return true;
+    }
     #endregion
 
     #region Dining Hall
@@ -126,6 +137,26 @@ internal class AluenaDramaExpansion : DramaOutcome
             grandmaCat.SetFlagValue(WarmHearthFreeFoodTimerFlag, EClass.world.date.GetRaw() + 1440);
         }
 
+        return false;
+    }
+    #endregion
+    
+    #region Boutique
+    private static bool BoutiqueAlderStateCheck(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
+    {
+        dm.RequiresActor(out Chara alder);
+        return false;
+    }
+    
+    private static bool BoutiqueAlderRepairClothing(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
+    {
+        dm.RequiresActor(out Chara alder);
+        return false;
+    }
+    
+    private static bool BoutiqueAlderRefitClothing(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
+    {
+        dm.RequiresActor(out Chara alder);
         return false;
     }
     #endregion

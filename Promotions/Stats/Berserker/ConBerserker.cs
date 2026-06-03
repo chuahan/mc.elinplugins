@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PromotionMod.Common;
-namespace PromotionMod.Stats.Berserker;
+namespace PromotionMod.Stats;
 
 /// <summary>
 ///     Berserker Class Condition

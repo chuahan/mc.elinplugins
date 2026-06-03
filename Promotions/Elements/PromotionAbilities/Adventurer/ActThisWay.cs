@@ -1,5 +1,5 @@
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities.Adventurer;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Adventurer Ability

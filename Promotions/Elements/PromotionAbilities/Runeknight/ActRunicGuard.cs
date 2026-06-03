@@ -1,6 +1,7 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.Runeknight;
-namespace PromotionMod.Elements.PromotionAbilities.Runeknight;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public class ActRunicGuard : PromotionSpellAbility
 {

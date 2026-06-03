@@ -1,6 +1,6 @@
 using System.Linq;
 using PromotionMod.Common;
-namespace PromotionMod.Stats.Sovereign;
+namespace PromotionMod.Stats;
 
 public class StanceLawSovereign : StanceSovereign
 {

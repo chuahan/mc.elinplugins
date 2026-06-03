@@ -5,14 +5,22 @@ using System.Reflection;
 using BardMod.Common;
 using BardMod.Common.HelperFunctions;
 using BardMod.Stats;
-using BardMod.Stats.BardSongConditions;
+using BardMod.Stats;
 using Cwl.Helper.Unity;
 using HarmonyLib;
 namespace BardMod.Patches;
 
-[HarmonyPatch]
+[HarmonyPatch(typeof(Card))]
 internal class BardCardPatches : EClass
 {
+    public static MethodInfo TargetMethod()
+    {
+        return typeof(Card)
+                .GetMethods()
+                .Where(m => m.Name == "DamageHP")
+                .First(m => m.GetParameters().Length > 3);
+    }
+    
     /*
      * Helper function to handle songs that defy death.
      */
@@ -58,14 +66,12 @@ internal class BardCardPatches : EClass
         return false;
     }
     
-    [HarmonyPatch(nameof(Card.DamageHP))]
-    [HarmonyPatch(typeof(Card), nameof(Card.DamageHP), typeof(long), typeof(int), typeof(int), typeof(AttackSource), typeof(Card), typeof(bool), typeof(Thing), typeof(Chara))]
     [HarmonyPrefix]
-    internal static bool OnDamageHP_Patch(Card __instance, ref long dmg, ref int ele, ref int eleP, AttackSource attackSource, Card origin, bool showEffect, Thing weapon, Chara originalTarget)
+    internal static bool BardMod_Card_DamageHP_Patch(Card __instance, MethodInfo __originalMethod, ref long dmg, ref int ele, ref int eleP, AttackSource attackSource, Card origin, bool showEffect, Thing weapon, Chara originalTarget)
     {
         // Prismatic Bridge to Tomorrow
         // If the damage dealer is charged, double a single instance of damage dealt.
-        if (origin != null && origin.isChara)
+        if (origin is { isChara: true })
         {
             if (origin.Chara.HasCondition<ConPrismaticBridgeSong>())
             {

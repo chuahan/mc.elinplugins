@@ -1,7 +1,7 @@
 using BardMod.Common;
 using BardMod.Common.HelperFunctions;
 using BardMod.Stats;
-using BardMod.Stats.BardSongConditions;
+using BardMod.Stats;
 using Cwl.Helper.Unity;
 using HarmonyLib;
 namespace BardMod.Patches;
@@ -43,7 +43,7 @@ internal class BardAttackProcessPatches : EClass
                         __instance.CC.PlaySound("whip");
                         int damage = HelperFunctions.SafeDice(Constants.BardFinaleLulwyStepName, conLulwyStepSong.power);
                         CoroutineHelper.Deferred(() => Msg.Say("windsong_retaliate".langGame(target.NameSimple)));
-                        __instance.CC.DamageHP(dmg: damage, ele: Constants.EleLightning, eleP: conLulwyStepSong.GetRetaliationPower() * 10, attackSource: AttackSource.Condition);
+                        HelperFunctions.DamageHpWrapper(__instance.CC, damage, Constants.EleLightning, conLulwyStepSong.GetRetaliationPower() * 10, AttackSource.Condition, __instance.TC);
                         __instance.CC.AddCondition<ConParalyze>(30 + conLulwyStepSong.GetRetaliationPower());
                         return false;
                     }

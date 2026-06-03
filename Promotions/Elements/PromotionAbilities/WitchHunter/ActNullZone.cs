@@ -1,6 +1,7 @@
 using PromotionMod.Common;
-using PromotionMod.Stats.WitchHunter;
-namespace PromotionMod.Elements.PromotionAbilities.WitchHunter;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 public class ActNullZone : PromotionCombatAbility
 {

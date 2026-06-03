@@ -1,6 +1,6 @@
 using System.Linq;
 using UnityEngine;
-namespace PromotionMod.Stats.Adventurer;
+namespace PromotionMod.Stats;
 
 public class ConSenseDanger : Timebuff
 {

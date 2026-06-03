@@ -4,11 +4,7 @@ using BepInEx;
 using Cwl.Helper.Extensions;
 using HarmonyLib;
 using PromotionMod.Common;
-using PromotionMod.Elements.PromotionAbilities.Elementalist;
 using PromotionMod.Stats;
-using PromotionMod.Stats.AdvCombatSkills;
-using PromotionMod.Stats.Jenei;
-using PromotionMod.Stats.WitchHunter;
 using UnityEngine;
 namespace PromotionMod.Patches;
 

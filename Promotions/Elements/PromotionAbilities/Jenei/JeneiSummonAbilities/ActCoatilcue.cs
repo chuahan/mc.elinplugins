@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using PromotionMod.Stats.Jenei;
-namespace PromotionMod.Elements.PromotionAbilities.Jenei.JeneiSummonAbilities;
+using PromotionMod.Stats;
+
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     Cold. Doesn't do damage. Heals all allies. Applies healing over time doing 60%, 50%, 40%, 30%, and 20%.

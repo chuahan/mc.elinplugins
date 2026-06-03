@@ -1,5 +1,5 @@
 using PromotionMod.Common;
-namespace PromotionMod.Elements.PromotionAbilities;
+namespace PromotionMod.Elements;
 
 /// <summary>
 ///     A wrapper class to help reduce duplicate code.

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using PromotionMod.Common;
 namespace PromotionMod.Trait.Artificer;
 
@@ -24,16 +25,13 @@ public class TraitArtificerToolFlash : TraitArtificerTool
         List<Chara> targets = HelperFunctions.GetCharasWithinRadius(pos, EffectRadius, cc, false, false);
         pos.PlayEffect("explosion");
         pos.PlaySound("whip");
-        foreach (Chara target in targets)
+        foreach (Chara target in targets.Where(target => target.IsHostile(cc)).ToList())
         {
-            if (target.IsHostile(cc))
+            ActEffect.ProcAt(EffectId.Debuff, power, BlessedState.Normal, Act.CC, target, target.pos, true, new ActRef
             {
-                ActEffect.ProcAt(EffectId.Debuff, power, BlessedState.Normal, Act.CC, target, target.pos, true, new ActRef
-                {
-                    origin = Act.CC.Chara,
-                    n1 = nameof(ConBlind)
-                });
-            }
+                origin = Act.CC.Chara,
+                n1 = nameof(ConBlind)
+            });
         }
         return true;
     }

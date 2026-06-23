@@ -1,3 +1,4 @@
+using System;
 using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 namespace PromotionMod.Elements;
@@ -13,6 +14,7 @@ public class FeatAlraune : Feat
     virtual internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
         if (hint) return;
+        
         if (add == 1)
         {
             if (owner.Chara.IsPC)

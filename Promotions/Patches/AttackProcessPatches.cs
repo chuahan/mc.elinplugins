@@ -54,20 +54,27 @@ public class AttackProcessPatches
         }
     }
 
-    [HarmonyPatch(nameof(AttackProcess.Perform))]
-    [HarmonyPrefix]
-    internal static bool PerformPrefixPatch(AttackProcess __instance, int count, ref bool hasHit, ref float dmgMulti, ref bool maxRoll, bool subAttack)
+    [HarmonyPatch(nameof(AttackProcess.GetRawDamage))]
+    [HarmonyPostfix]
+    internal static void GetRawDamagePostfixPatch(AttackProcess __instance, ref long __result, float dmgMulti, bool crit, bool maxRoll)
     {
-        // Sharpshooter - Charged Chamber applies the mana consumed (power) as a damage multiplier. Caps at 5x damage.
-        // BALANCE: This might... be a little too strong later?
+        // Sharpshooter - Charged Chamber applies the mana consumed (power) as a flat amount.
+        // This... could get out of hand though.
         if (__instance.CC != null &&
             __instance.CC.HasCondition<ConChargedChamber>() &&
             __instance.IsRanged)
         {
             ConChargedChamber charge = Act.CC.GetCondition<ConChargedChamber>();
-            dmgMulti += Math.Max(charge.power / 100F, 5F);
+            long bonusDamage = HelperFunctions.SafeMultiplier(charge.power, dmgMulti);
+            __result += bonusDamage;
+            charge.Kill();
         }
-
+    }
+    
+    [HarmonyPatch(nameof(AttackProcess.Perform))]
+    [HarmonyPrefix]
+    internal static bool PerformPrefixPatch(AttackProcess __instance, int count, ref bool hasHit, ref float dmgMulti, ref bool maxRoll, bool subAttack)
+    {
         // Crit Boost - Boosts Crit Damage
         if (__instance.TC != null &&
             __instance.TC.isChara &&

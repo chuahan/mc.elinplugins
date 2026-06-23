@@ -35,7 +35,8 @@ public class ActRangedPatches
     public static void PromoMod_ActRanged_Perform_Postfix()
     {
         // Sharpshooter - Charged Chamber is consumed on shot.
-        ConChargedChamber chargedChamber = Act.CC.GetCondition<ConChargedChamber>();
-        chargedChamber?.Kill();
+        // Update: Charged Chamber will reduce it's power by the consumed power, up to 500 consumed per shot.
+        //ConChargedChamber chargedChamber = Act.CC.GetCondition<ConChargedChamber>();
+        //chargedChamber?.Kill();
     }
 }

@@ -6,8 +6,6 @@ namespace PromotionMod.Trait;
 
 public class TraitDemotionManual : TraitScroll
 {
-
-
     private static readonly Dictionary<int, PromotionFeat?> DemotionMap = new Dictionary<int, PromotionFeat?>
     {
         {
@@ -96,6 +94,12 @@ public class TraitDemotionManual : TraitScroll
         },
         {
             Constants.FeatDreadKnight, new FeatDreadKnight()
+        },
+        {
+            Constants.FeatGambler, new FeatGambler()
+        },
+        {
+            Constants.FeatMartialArtist, new FeatMartialArtist()
         }
     };
 
@@ -118,7 +122,7 @@ public class TraitDemotionManual : TraitScroll
         int promotionFeatId = c.GetFlagValue(Constants.PromotionFeatFlag);
         DemotionMap[promotionFeatId]!.Demote(c);
         c.SetFlagValue(Constants.PromotionFeatFlag, 0);
-        Msg.Say("promotion_demoted".langGame(c.NameSimple, TraitPromotionManual.PromotionIdToPromotionNameMap[promotionFeatId].lang()));
+        Msg.Say("promotion_demoted".langGame(c.NameSimple, Constants.PromotionIdToPromotionNameMap[promotionFeatId].lang()));
 
         c.PlaySound("curse");
         c.PlayEffect("aura_heaven");

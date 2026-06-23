@@ -16,6 +16,7 @@ public class Constants
     public const string JeneiAttunementFlag = "jeAtt";
 
     public const string GamblerPromotionUnlockedFlag = "gUL";
+    public const string MartialArtistPromotionUnlockedFlag = "maUL";
 
     public const string ArtificerGolemCreated = "madeGol";
     public const string AdvancedCombatSkillFlag = "advSkill";
@@ -136,6 +137,7 @@ public class Constants
     public const int FeatHexer = 891027;
     public const int FeatArtificer = 891028;
     public const int FeatGambler = 891170;
+    public const int FeatMartialArtist = 1;
 
     public const string SentinelId = "sentinel";
     public const string BerserkerId = "berserker";
@@ -167,7 +169,107 @@ public class Constants
     public const string HexerId = "hexer";
     public const string ArtificerId = "artificer";
     public const string GamblerId = "gambler";
+    public const string MartialArtistId = "martialartist";
 
+    public static Dictionary<string, int> PromotionIdMap = new Dictionary<string, int>
+    {
+        {
+            Constants.SentinelId, Constants.FeatSentinel
+        },
+        {
+            Constants.BerserkerId, Constants.FeatBerserker
+        },
+        {
+            Constants.HermitId, Constants.FeatHermit
+        },
+        {
+            Constants.TricksterId, Constants.FeatTrickster
+        },
+        {
+            Constants.ElementalistId, Constants.FeatElementalist
+        },
+        {
+            Constants.NecromancerId, Constants.FeatNecromancer
+        },
+        {
+            Constants.JeneiId, Constants.FeatJenei
+        },
+        {
+            Constants.DruidId, Constants.FeatDruid
+        },
+        {
+            Constants.SniperId, Constants.FeatSniper
+        },
+        {
+            Constants.RangerId, Constants.FeatRanger
+        },
+        {
+            Constants.BattlemageId, Constants.FeatBattlemage
+        },
+        {
+            Constants.RuneKnightId, Constants.FeatRuneKnight
+        },
+        {
+            Constants.AdventurerId, Constants.FeatAdventurer
+        },
+        {
+            Constants.DancerId, Constants.FeatDancer
+        },
+        {
+            Constants.KnightcallerId, Constants.FeatKnightcaller
+        },
+        {
+            Constants.SaintId, Constants.FeatSaint
+        },
+        {
+            Constants.WarClericId, Constants.FeatWarCleric
+        },
+        {
+            Constants.SharpshooterId, Constants.FeatSharpshooter
+        },
+        {
+            Constants.MachinistId, Constants.FeatMachinist
+        },
+        {
+            Constants.WitchHunterId, Constants.FeatWitchHunter
+        },
+        {
+            Constants.JusticarId, Constants.FeatJusticar
+        },
+        {
+            Constants.SovereignId, Constants.FeatSovereign
+        },
+        {
+            Constants.HolyKnightId, Constants.FeatHolyKnight
+        },
+        {
+            Constants.HeadhunterId, Constants.FeatHeadhunter
+        },
+        {
+            Constants.HarbingerId, Constants.FeatHarbinger
+        },
+        {
+            Constants.SpellbladeId, Constants.FeatSpellblade
+        },
+        {
+            Constants.DreadKnightId, Constants.FeatDreadKnight
+        },
+        {
+            Constants.HexerId, Constants.FeatHexer
+        },
+        {
+            Constants.ArtificerId, Constants.FeatArtificer
+        },
+        {
+            Constants.GamblerId, Constants.FeatGambler
+        },
+        {
+            Constants.MartialArtistId, Constants.FeatMartialArtist
+        },
+    };
+
+    public static Dictionary<int, string> PromotionIdToPromotionNameMap = PromotionIdMap.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
+    
     #endregion
 
     #region Unique charas
@@ -468,12 +570,16 @@ public class Constants
     #endregion
 
     #region Alraune
-
     public const int FeatAlraune = 891164;
     public const int StSweetScentId = 891165;
     public const int ActWildGrowthId = 891166;
     public const int ActAlrauneConsumeId = 891176;
-
+    #endregion
+    
+    #region Naga
+    public const int FeatNaga = 891177;
+    public const int ActSerpentineAgility = 891178;
+    public const int ActSerpentineConstriction = 891179;
     #endregion
 
     #region Guild Stuff

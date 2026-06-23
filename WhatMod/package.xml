@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Meta>
+  <title>What Mod </title>
+  <id>han.whatmod.mod</id>
+  <author>Han</author>
+  <loadPriority>100</loadPriority>
+  <description>
+    On modded items, shows a tooltip of which mod the item came from.
+  </description>
+  <tags>Utility</tags>
+  <version>0.23.320</version>
+</Meta>

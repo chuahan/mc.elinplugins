@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cwl.Helper;
 using PromotionMod.Patches;
 using PromotionMod.Stats;
@@ -280,5 +281,32 @@ public static class HelperFunctions
             originalTarget,
             0 // Resist Pen Placeholder
         });
+    }
+    
+    /// <summary>
+    /// This is a helper function to search for the carrier of the linked condition.
+    /// It is used both on the dealing and receiving end.
+    /// </summary>
+    /// <param name="conditionCarrier">The character that has a condition that has a linked condition on another character.</param>
+    /// <param name="linkedUID">The UID of the character that is being looked for.</param>
+    /// <returns>If found, the character object that possesses the linked condition.</returns>
+    internal static Chara? FindLinkedConditionCarrier(Chara conditionCarrier, int linkedUID)
+    {
+        Chara linkedCarrier = null;
+        conditionCarrier.pos.ForeachNeighbor(delegate(Point p)
+        {
+            // ForeachNeighbor actually also grabs the original position too, so skip it if it's the same position as the victim.
+            if (!p.Equals(conditionCarrier.pos))
+            {
+                // Look to see if any of the neighboring characters is the character linked.
+                foreach (Chara potentialLink in p.Charas.Where(potentialLink => potentialLink.uid == linkedUID))
+                {
+                    linkedCarrier = potentialLink;
+                    break;
+                }
+            }
+        });
+        
+        return linkedCarrier;
     }
 }

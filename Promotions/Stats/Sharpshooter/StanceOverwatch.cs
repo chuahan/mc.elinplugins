@@ -5,26 +5,9 @@ namespace PromotionMod.Stats;
 
 public class StanceOverwatch : PromotionStance
 {
-    public const int FOVBuffAmount = 5;
-
     public override Sprite GetSprite()
     {
         return SpriteSheet.Get(source.alias);
-    }
-
-    public override void OnStartOrStack()
-    {
-        owner.RecalculateFOV();
-    }
-
-    public override void OnCalculateFov(Fov fov, ref int radius, ref float power)
-    {
-        radius += FOVBuffAmount;
-    }
-
-    public override void OnRemoved()
-    {
-        owner.RecalculateFOV();
     }
 
     public override void Tick()

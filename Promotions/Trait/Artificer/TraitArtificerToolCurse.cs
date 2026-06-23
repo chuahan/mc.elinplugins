@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using PromotionMod.Common;
 using PromotionMod.Stats;
 using PromotionMod.Stats;
@@ -36,28 +37,25 @@ public class TraitArtificerToolCurse : TraitArtificerTool
     {
         List<Chara> targets = HelperFunctions.GetCharasWithinRadius(pos, EffectRadius, cc, false, false);
         pos.PlayEffect("curse");
-        foreach (Chara target in targets)
+        foreach (Chara target in targets.Where(target => target.IsHostile(cc)).ToList())
         {
-            if (target.IsHostile(cc))
+            for (int i = 0; i < 3; i++)
             {
-                for (int i = 0; i < 3; i++)
+                string randomCondition = PossibleConditions.RandomItem();
+                if (randomCondition is nameof(ConAttackBreak) or nameof(ConArmorBreak) or nameof(ConStatBreak))
                 {
-                    string randomCondition = PossibleConditions.RandomItem();
-                    if (randomCondition is nameof(ConAttackBreak) or nameof(ConArmorBreak) or nameof(ConStatBreak))
-                    {
-                        target.AddCondition(SubPoweredCondition.Create(randomCondition, power, 5));
-                    }
-                    else
-                    {
-                        ActEffect.ProcAt(EffectId.Debuff, power, BlessedState.Normal, Act.CC, target, target.pos, true, new ActRef
-                        {
-                            origin = Act.CC.Chara,
-                            n1 = randomCondition
-                        });
-                    }
-
-                    target.AddCondition(SubPoweredCondition.Create(nameof(ConMagicBreak), power, 5));
+                    target.AddCondition(SubPoweredCondition.Create(randomCondition, power, 5));
                 }
+                else
+                {
+                    ActEffect.ProcAt(EffectId.Debuff, power, BlessedState.Normal, Act.CC, target, target.pos, true, new ActRef
+                    {
+                        origin = Act.CC.Chara,
+                        n1 = randomCondition
+                    });
+                }
+
+                target.AddCondition(SubPoweredCondition.Create(nameof(ConMagicBreak), power, 5));
             }
         }
         return true;

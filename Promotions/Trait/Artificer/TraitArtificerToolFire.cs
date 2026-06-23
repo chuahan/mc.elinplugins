@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using PromotionMod.Common;
 namespace PromotionMod.Trait.Artificer;
 
@@ -15,7 +16,7 @@ public class TraitArtificerToolFire : TraitArtificerTool
         List<Chara> targets = pos.Charas;
         pos.PlayEffect("hit_slash");
         pos.PlaySound("ab_magicsword");
-        foreach (Chara target in targets)
+        foreach (Chara target in pos.Charas.ToList())
         {
             if (target.IsHostile(cc))
             {
@@ -25,11 +26,14 @@ public class TraitArtificerToolFire : TraitArtificerTool
                 }
                 HelperFunctions.ProcSpellDamage(power, damage, cc, target, AttackSource.MagicSword, Constants.EleFire);
                 HelperFunctions.ApplyElementalBreak(Constants.EleFire, cc, target, power);
-                ActEffect.ProcAt(EffectId.Debuff, power, BlessedState.Normal, Act.CC, target, target.pos, true, new ActRef
+                if (target.IsAliveInCurrentZone)
                 {
-                    origin = Act.CC.Chara,
-                    n1 = nameof(ConBurning)
-                });
+                    ActEffect.ProcAt(EffectId.Debuff, power, BlessedState.Normal, Act.CC, target, target.pos, true, new ActRef
+                    {
+                        origin = Act.CC.Chara,
+                        n1 = nameof(ConBurning)
+                    });   
+                }
             }
         }
         return true;

@@ -55,6 +55,10 @@ public class ActArtificerTool : Act
             string toolUseString = $"{trait.ArtificerToolId}_use";
             CC.Say(toolUseString.langGame(CC.NameSimple, trait.ArtificerToolName));
             trait.owner.c_ammo--;
+            if (Act.CC.IsPC)
+            {
+                LayerInventory.SetDirty(trait.owner.Thing);
+            }
 
             CC.PlayEffect("rod");
             CC.PlaySound("rod");

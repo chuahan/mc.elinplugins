@@ -2,6 +2,14 @@
 
 ## Changelog
 
+### June 11th, 2026 - Fixes
+Joshyan pointed out a few things with the Sharpshooter and changes have been made, thanks!
+- Sharpshooter Overwatch nerfed, it was kind of blendering entire battlefields. It no longer confers increased crit/hit/vision range.
+- Fixed a bug with Charged Shot that it wasn't actually applying. It now should be adding it's full power to the flat damage.
+- Artificer: Fixed the Collection modified exceptions with all of the weapons. Thanks Greenwave!
+- Artificer: Artificer tools should now properly update their charges in your inventory.
+
+
 ### April 26th, 2026, 1.101 - Mini patch.
 - Fixed Alraune feat adding/removing abilties.
 - Alraune now is "complete" and is entering feedback phase. Their 3rd Ability has been added: Consume Prey. Alraunes can now consume targets that fit the conditions and eat them, gaining attributes and skills based on the victim they consume. While they cannot gain abilities or spells like Slime can, they absorb far more attributes. If you are already an Alraune, don't worry, if you go in game and save, the new abilities will be added automatically.

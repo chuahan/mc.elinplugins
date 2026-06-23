@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cwl.Helper.Extensions;
 using HarmonyLib;
@@ -523,6 +524,56 @@ internal class CharaPatches : EClass
             // If an enemy is an advanced enemy through spawn. Grant them a prefix so players know what to expect.
             int advancedCombatSkill = __instance.GetFlagValue(Constants.AdvancedCombatSkillFlag);
             if (advancedCombatSkill != 0) __result = $"{sources.elements.map[advancedCombatSkill].alias}_prefix".lang(__result);
+        }
+    }
+
+    [HarmonyPatch(nameof(Chara.DoHostileAction))]
+    [HarmonyPrefix]
+    internal static bool DoHostileAction_Prefix(Chara __instance, Card _tg, bool immediate = false)
+    {
+        // Naga - Cancel out Serpentine Agility upon doing a hostile action.
+        ConSerpentineAgility serpentineAgility = __instance.GetCondition<ConSerpentineAgility>();
+        serpentineAgility?.Kill();
+        return true;
+    }
+
+    [HarmonyPatch(nameof(Chara.OnCreate))]
+    [HarmonyPostfix]
+    internal static void Chara_OnCreate_Postfix(Chara __instance, int genLv)
+    {
+        // New Pre-promotion loading.
+        foreach (string? tag in __instance.source.tag)
+        {
+            if (!tag.StartsWith("promoted#") || __instance.GetFlagValue(Constants.PromotionFeatFlag) != 0) continue;
+            string[]? promoParams = tag.Split("#");
+            if (promoParams.Length < 2)
+                throw new Exception("Promotion Tag should have at least 2 sections split by #.");
+            // Get the Promotion to set it to.
+            string promotionName = promoParams[1];
+            int promotionId = Constants.PromotionIdMap[promotionName];
+            // If it's a Jenei, the 3rd parameter should be which subclass it evolved into.
+            if (promoParams.Length == 3 && promotionName == Constants.JeneiId)
+            {
+                Dictionary<string, int> jeneiMapping = new Dictionary<string, int>()
+                {
+                    {
+                        "venus", 1
+                    },
+                    {
+                        "mars", 1
+                    },
+                    {
+                        "jupiter", 1
+                    },
+                    {
+                        "mercury", 1
+                    }
+                };
+                __instance.SetFlagValue(Constants.JeneiAttunementFlag, jeneiMapping[promoParams[2]]);
+            }
+            
+            __instance.SetFeat(promotionId, 1);
+            __instance.SetFlagValue(Constants.PromotionFeatFlag, promotionId);
         }
     }
 }

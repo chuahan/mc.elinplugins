@@ -35,7 +35,7 @@ public class FeatAdventurer : PromotionFeat
     {
         // This shouldn't have anything. NPCs can't pick this class.
     }
-
+    
     override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
     {
         base._OnApply(add, eleOwner, hint);

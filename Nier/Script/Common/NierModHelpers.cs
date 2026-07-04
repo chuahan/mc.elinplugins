@@ -1,14 +1,10 @@
-using System;
+namespace NierMod.Common;
 
-namespace NierMod.Common
+public static class NierModHelpers
 {
-    public static class NierModHelpers
+    public static bool IsNierAndMarried(Chara character)
     {
-        public static bool IsNierAndMarried(Chara character)
-        {
-            return (character.id == Constants.nierCharaId) && 
-                   EClass.player.dialogFlags.TryGetValue("nierMarried", 0) >= 1;
-        }
+        return character.id == Constants.nierCharaId &&
+               EClass.player.dialogFlags.TryGetValue("nierMarried") >= 1;
     }
 }
-

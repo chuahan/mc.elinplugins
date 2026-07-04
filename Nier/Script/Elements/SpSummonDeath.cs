@@ -1,6 +1,5 @@
 using NierMod.Common;
 using UnityEngine;
-
 namespace NierMod.Elements;
 
 internal class SpSummonDeath : Spell
@@ -8,13 +7,13 @@ internal class SpSummonDeath : Spell
     public override bool CanPerform()
     {
         if (CC.currentZone.FindChara(Constants.deathCharaId) != null ||
-            (CC.currentZone.CountMinions(CC) >= CC.MaxSummon))
+            CC.currentZone.CountMinions(CC) >= CC.MaxSummon)
         {
             return false;
         }
         return true;
     }
-    
+
     public override Sprite GetSprite()
     {
         return SpriteSheet.Get(source.alias);
@@ -23,7 +22,7 @@ internal class SpSummonDeath : Spell
     public override bool Perform()
     {
         if (CC.currentZone.FindChara(Constants.deathCharaId) != null ||
-            (CC.currentZone.CountMinions(CC) >= CC.MaxSummon))
+            CC.currentZone.CountMinions(CC) >= CC.MaxSummon)
         {
             CC.Say("summonDeathFail", CC);
             return false;
@@ -35,7 +34,7 @@ internal class SpSummonDeath : Spell
             CC.Say("summonDeathFail", CC);
             return false;
         }
-       
+
         CC.Say("summonDeathSuccess", CC);
         //CC.PlaySound("death_screech");
         Chara deathSummon = CharaGen.Create(Constants.deathCharaId);

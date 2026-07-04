@@ -53,6 +53,7 @@ public abstract class PromotionFeat : Feat
                             owner.Chara.elements.SetBase(abilityId, 1);
                         }
                     }
+                    LayerAbility.Redraw();
                 }
                 else
                 {

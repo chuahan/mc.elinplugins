@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using BardMod.Common;
 using BardMod.Common.HelperFunctions;
-using BardMod.Patches;
-using Cwl.Helper.Unity;
 namespace BardMod.Stats;
 
 public class ConAfterTempestSong : ConBardSong

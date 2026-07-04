@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using BardMod.Common;
 using UnityEngine;
 namespace BardMod.Elements.Feats;
@@ -9,12 +10,13 @@ public class FeatTimelessSong : Feat
         return SpriteSheet.Get(source.alias);
     }
 
-    internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
+    public override List<string> Apply(int a, ElementContainer owner, bool hint = false)
     {
-        if (owner.Chara?.id is not Constants.SelenaCharaId)
+        if (!hint && owner.Chara?.id is not Constants.SelenaCharaId)
         {
             // Removes Feat if not on Selena
             owner.Remove(id);
         }
+        return base.Apply(a, owner, hint);
     }
 }

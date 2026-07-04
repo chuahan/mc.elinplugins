@@ -2,10 +2,9 @@ namespace NierMod.Traits;
 
 internal class TraitNier : TraitUniqueChara
 {
-    public static bool IsBefriendedThroughDialog => (
-        (EClass.player.dialogFlags.TryGetValue("nierBefriended", 0) >= 1) ||
-        ((EClass.player.dialogFlags.TryGetValue("nierFriend", 0) >= 1) ||
-        (EClass.player.dialogFlags.TryGetValue("nierMarried", 0) >= 1)));
+    private static bool IsBefriendedThroughDialog => player.dialogFlags.TryGetValue("nierBefriended") >= 1 ||
+                                                     player.dialogFlags.TryGetValue("nierFriend") >= 1 ||
+                                                     player.dialogFlags.TryGetValue("nierMarried") >= 1;
 
     public override bool CanInvite => IsBefriendedThroughDialog;
     public override bool CanJoinParty => IsBefriendedThroughDialog;

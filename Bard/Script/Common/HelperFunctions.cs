@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using BardMod.Patches;
 using BardMod.Traits;
-using Cwl.Helper;
+using EModding.Helper.Runtime;
 using UnityEngine;
 namespace BardMod.Common.HelperFunctions;
 

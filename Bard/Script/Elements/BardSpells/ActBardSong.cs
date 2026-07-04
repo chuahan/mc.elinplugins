@@ -166,22 +166,6 @@ public abstract class ActBardSong : AIAct
                         item.ShowEmo(Emo.angry);
                     }
                 }
-
-                List<Chara> list = owner.pos.ListWitnesses(owner, (int)SongData.SongRadius, WitnessType.music);
-                foreach (Chara item2 in list)
-                {
-                    if (owner == null)
-                    {
-                        break;
-                    }
-
-                    if (!reacted.Contains(item2))
-                    {
-                        reacted.Add(item2);
-                        // Add Music EXP.
-                        owner.elements.ModExp(Constants.MusicSkill, _zone.IsUserZone ? 10 : 50);
-                    }
-                }
             },
             onProgressComplete = delegate
             {
@@ -191,6 +175,8 @@ public abstract class ActBardSong : AIAct
                 {
                     return;
                 }
+                
+                owner.elements.ModExp(Constants.MusicSkill, _zone.IsUserZone ? 10 : 50);
 
                 int bardPower = GetPower(owner);
                 ActBardSong.DoBardMagic(owner, SongData, bardPower, tool);

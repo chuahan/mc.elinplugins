@@ -1,31 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
+namespace NierMod.Stats;
 
-namespace NierMod.Stats
+internal class ConUnfinishedBusiness : BaseDebuff
 {
-    internal class ConUnfinishedBusiness : BaseDebuff
+    public override bool AllowMultipleInstance => false;
+
+    public override ConditionType Type => ConditionType.Debuff;
+    public override Sprite GetSprite()
     {
-        public override Sprite GetSprite()
-        {
-            return SpriteSheet.Get(source.alias);
-        }
+        return SpriteSheet.Get(source.alias);
+    }
 
-        public override bool AllowMultipleInstance => false;
+    public override int GetPhase()
+    {
+        return 0;
+    }
 
-        public override int GetPhase()
-        {
-            return 0;
-        }
-
-        public override bool CanStack(Condition c)
-        {
-            return false;
-        }
-
-        public override ConditionType Type => ConditionType.Debuff;
+    public override bool CanStack(Condition c)
+    {
+        return false;
     }
 }

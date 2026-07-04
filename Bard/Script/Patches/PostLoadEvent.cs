@@ -1,12 +1,9 @@
-﻿using System.Linq;
-using Cwl.API.Attributes;
-using Cwl.API.Processors;
-namespace BardMod.Patches;
+﻿namespace BardMod.Patches;
 
 internal class PostLoadEvent : EClass
 {
-    [CwlPostLoad]
-    internal static void AddDebugItems(GameIOProcessor.GameIOContext context)
+    [ElinPostLoad]
+    internal static void AddDebugItems(GameIOContext context)
     {
         if (!core.IsGameStarted)
         {

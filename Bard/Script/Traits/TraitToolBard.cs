@@ -1,4 +1,3 @@
-using Cwl.Helper.Extensions;
 namespace BardMod.Traits;
 
 public class TraitToolBard : TraitTool
@@ -6,7 +5,7 @@ public class TraitToolBard : TraitTool
 
     public const string IsSelectedInstrumentFlag = "IsSelectedInstrument";
     public override bool CanBeDestroyed => false;
-    public bool IsSelectedInstrument => owner.GetFlagValue(IsSelectedInstrumentFlag) == 1 ? true : false;
+    public bool IsSelectedInstrument => owner.GetBool(IsSelectedInstrumentFlag);
 
     public override void WriteNote(UINote note, bool identified)
     {

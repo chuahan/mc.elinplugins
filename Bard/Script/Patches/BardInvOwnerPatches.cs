@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using BardMod.Common.HelperFunctions;
 using BardMod.Traits;
-using Cwl.Helper.Extensions;
 using HarmonyLib;
 namespace BardMod.Patches;
 
@@ -32,7 +31,7 @@ internal class BardInvOwnerPatches : EClass
                             {
                                 if ((instrument.trait as TraitToolBard).IsSelectedInstrument)
                                 {
-                                    (instrument.trait as TraitToolBard).owner.SetFlagValue(TraitToolBard.IsSelectedInstrumentFlag, 0);
+                                    (instrument.trait as TraitToolBard).owner.SetBool(TraitToolBard.IsSelectedInstrumentFlag, false);
                                     pc.Say("hintUnequippedBardInstrument".lang(pc.NameSimple, instrument.Name));
                                 }
                             }
@@ -41,7 +40,7 @@ internal class BardInvOwnerPatches : EClass
                         pc.Say("hintEquippedBardInstrument".lang(pc.NameSimple, t.Name));
                     }
 
-                    tool.owner.SetFlagValue(TraitToolBard.IsSelectedInstrumentFlag, newState ? 1 : 0);
+                    tool.owner.SetBool(TraitToolBard.IsSelectedInstrumentFlag, newState);
                     LayerInventory.SetDirty(t);
                     SE.ClickOk();
                 });

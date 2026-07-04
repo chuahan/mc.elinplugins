@@ -3,15 +3,15 @@ using System.Linq;
 using BardMod.Common;
 using BardMod.Common.HelperFunctions;
 using BardMod.Traits;
-using Cwl.Helper.Extensions;
 namespace BardMod.Source;
 
 internal class DramaExpansion : DramaOutcome
 {
-    private static bool set_bard_flags(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
+    [ElinDramaActionInvoke]
+    private static bool set_bard_flags(DramaManager dm, Dictionary<string, string> line)
     {
-        Chara niyon = game.cards.globalCharas.Values.FirstOrDefault(gc => gc.id == Constants.NiyonCharaId);
-        Chara selena = game.cards.globalCharas.Values.FirstOrDefault(gc => gc.id == Constants.SelenaCharaId);
+        Chara? niyon = game.cards.globalCharas.Values.FirstOrDefault(gc => gc.id == Constants.NiyonCharaId);
+        Chara? selena = game.cards.globalCharas.Values.FirstOrDefault(gc => gc.id == Constants.SelenaCharaId);
         if (selena is not null)
         {
             // Set Selena Friendship Affinity Flags
@@ -217,16 +217,9 @@ internal class DramaExpansion : DramaOutcome
         return true;
     }
 
-    private static bool add_bardskills(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
+    [ElinDramaActionInvoke]
+    private static bool add_bardskills(DramaManager dm, Dictionary<string, string> line, string teacher, int songTier)
     {
-        // Assert must have 2 paremeters, string dictating which tutor is teaching the skills, and int dictating which tier of music to grant.
-        if (parameters is not [{ } teacher, { } tier])
-        {
-            return false;
-        }
-
-        int songTier = int.Parse(tier);
-
         Dictionary<string, List<List<int>>> musicMap = new Dictionary<string, List<List<int>>>
         {
             {
@@ -296,11 +289,12 @@ internal class DramaExpansion : DramaOutcome
         // Add all songs to the player.
         foreach (int song in musicMap[teacher][songTier])
         {
-            player.chara.AddElement(song, 0);
+            player.chara.elements.SetBase(song, 1);
         }
         // niyonTier0SongsLearned;
         string flagKey = teacher + "Tier" + songTier + "SongsLearned";
         EClass.player.dialogFlags[flagKey] = 1;
+        LayerAbility.Redraw();
         return true;
     }
 

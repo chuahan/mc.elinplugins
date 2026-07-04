@@ -1,33 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace NierMod.Stats;
 
-namespace NierMod.Stats
+internal class StanceEvokeDeath : BaseStance
 {
-    internal class StanceEvokeDeath : BaseStance
+    public override string TextDuration => "";
+    
+    public override void Tick()
     {
-        public override void Tick()
+        if (_zone.IsRegion)
         {
-            if (_zone.IsRegion) {
-                return;
-            }
-            
-            if (owner.IsAliveInCurrentZone && base.value > 1)
+            return;
+        }
+
+        if (owner.IsAliveInCurrentZone && value > 1)
+        {
+            foreach (Chara? chara in _map.charas)
             {
-                foreach (var chara in _map.charas) {
-                    var domain = chara.GetCondition<ConDeathDomain>() ?? chara.AddCondition<ConDeathDomain>();
-                    if (domain is { value: >= 10 }) {
-                        continue;
-                    }
-
-                    if (chara.GetCondition<ConDeathDomain>() is { value: > 1 }) {
-                        continue;
-                    }
-
-                    domain?.Mod(1);
+                Condition? domain = chara.GetCondition<ConDeathDomain>() ?? chara.AddCondition<ConDeathDomain>();
+                if (domain is { value: >= 10 })
+                {
+                    continue;
                 }
+
+                if (chara.GetCondition<ConDeathDomain>() is { value: > 1 })
+                {
+                    continue;
+                }
+
+                domain?.Mod(1);
             }
         }
     }

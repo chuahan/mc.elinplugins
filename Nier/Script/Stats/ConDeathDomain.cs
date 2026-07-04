@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
+namespace NierMod.Stats;
 
-namespace NierMod.Stats
+internal class ConDeathDomain : BaseBuff
 {
-    internal class ConDeathDomain : BaseBuff
+    public override string TextDuration => "";
+    public override bool CanManualRemove => false;
+    public override Sprite GetSprite()
     {
-        public override Sprite GetSprite()
-        {
-            return SpriteSheet.Get(source.alias);
-        }
-
-        public override bool CanManualRemove => false;
+        return SpriteSheet.Get(source.alias);
     }
 }

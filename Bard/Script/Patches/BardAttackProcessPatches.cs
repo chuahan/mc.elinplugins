@@ -1,8 +1,6 @@
 using BardMod.Common;
 using BardMod.Common.HelperFunctions;
 using BardMod.Stats;
-using BardMod.Stats;
-using Cwl.Helper.Unity;
 using HarmonyLib;
 namespace BardMod.Patches;
 

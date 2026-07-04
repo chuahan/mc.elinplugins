@@ -38,8 +38,5 @@ public class FeatHeadhunter : PromotionFeat
         c.ability.Add(Constants.ActReapId, 75, false);
     }
 
-    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
-    {
-        base._OnApply(add, eleOwner, hint);
-    }
+
 }

@@ -1,4 +1,4 @@
-using Cwl.Helper.Extensions;
+
 using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Trait;
@@ -14,7 +14,7 @@ public class WindowCharaPatches
         // If the chara is promoted, change the job name into the promotion with the original job name in parentheses.
         if (__instance.chara != null)
         {
-            int promotionId = __instance.chara.GetFlagValue(Constants.PromotionFeatFlag);
+            int promotionId = __instance.chara.GetInt(Constants.PromotionFeatFlag, 0);
             if (promotionId > 0)
             {
                 __instance.textBio.text = $"{Constants.PromotionIdToPromotionNameMap[promotionId].lang()} ({__instance.chara.job.GetText().ToTitleCase()})";

@@ -1,9 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Cwl.Helper;
-using Cwl.Helper.Extensions;
 using PromotionMod.Common;
-using PromotionMod.Patches;
 namespace PromotionMod.Elements;
 
 /// <summary>
@@ -28,7 +25,7 @@ public class ActCharon : JeneiSummonSequence
                 HelperFunctions.ProcSpellDamage(power, damage, cc, target, ele: Constants.EleImpact);
 
                 // 1/20 chance of Instakill. Does not work on bosses.
-                if (EClass.rnd(20) == 0 && target.IsAliveInCurrentZone && !target.IsBoss())
+                if (EClass.rnd(20) == 0 && target.IsAliveInCurrentZone && target.c_bossType != 0)
                 {
                     HelperFunctions.DamageHpWrapper(target, target.MaxHP, Constants.EleVoid, 100, AttackSource.Finish, cc);
                 }

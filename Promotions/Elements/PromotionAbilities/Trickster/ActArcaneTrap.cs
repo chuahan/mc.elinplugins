@@ -1,4 +1,3 @@
-using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 namespace PromotionMod.Elements;
 
@@ -25,7 +24,7 @@ public class ActArcaneTrap : PromotionSpellAbility
     public override bool Perform()
     {
         Thing trap = ThingGen.Create(Constants.TricksterArcaneTrapAlias, -1, GetPower(CC));
-        if (CC.IsPCFaction) trap.SetFlagValue(Constants.IsPlayerFactionTrapFlag);
+        if (CC.IsPCFaction) trap.SetBool(Constants.IsPlayerFactionTrapFlag, true);
         Zone.ignoreSpawnAnime = true;
         _zone.AddCard(trap, TP).Install();
         return true;

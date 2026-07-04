@@ -31,40 +31,43 @@ public class FeatArtificer : PromotionFeat
         // This shouldn't have anything. NPCs can't use this class.
     }
 
-    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
+    public override List<string> Apply(int a, ElementContainer owner, bool hint = false)
     {
-        base._OnApply(add, eleOwner, hint);
-        // Add all the Artificer Recipes here.
-        if (!player.recipes.IsKnown("artificer_workbench")) player.recipes.Add("artificer_workbench");
-        if (!player.recipes.IsKnown("artificer_refined_crystal")) player.recipes.Add("artificer_refined_crystal");
-        if (!player.recipes.IsKnown("artificer_cursecube")) player.recipes.Add("artificer_cursecube");
-        if (!player.recipes.IsKnown("artificer_earthgauntlet")) player.recipes.Add("artificer_earthgauntlet");
-        if (!player.recipes.IsKnown("artificer_firesword")) player.recipes.Add("artificer_firesword");
-        if (!player.recipes.IsKnown("artificier_heavenpearl")) player.recipes.Add("artificier_heavenpearl");
-        if (!player.recipes.IsKnown("artificer_iceaxe")) player.recipes.Add("artificer_iceaxe");
-        if (!player.recipes.IsKnown("artificer_lifeflower")) player.recipes.Add("artificer_lifeflower");
-        if (!player.recipes.IsKnown("artificer_lightningspear")) player.recipes.Add("artificer_lightningspear");
-        if (!player.recipes.IsKnown("artificer_timehourglass")) player.recipes.Add("artificer_timehourglass");
-        if (!player.recipes.IsKnown("artificer_elementalbow")) player.recipes.Add("artificer_elementalbow");
-        if (!player.recipes.IsKnown("artificer_sonicbomb")) player.recipes.Add("artificer_sonicbomb");
-        if (!player.recipes.IsKnown("artificer_biobomb")) player.recipes.Add("artificer_biobomb");
-        if (!player.recipes.IsKnown("artificer_flashbomb")) player.recipes.Add("artificer_flashbomb");
-        if (!player.recipes.IsKnown("artificer_golem_core")) player.recipes.Add("artificer_golem_core");
-        if (!player.recipes.IsKnown("artificer_golem_limbs")) player.recipes.Add("artificer_golem_limbs");
-        if (!player.recipes.IsKnown("artificer_golem_flight")) player.recipes.Add("artificer_golem_flight");
-        if (!player.recipes.IsKnown("artificer_golem_aquatic")) player.recipes.Add("artificer_golem_aquatic");
-        if (!player.recipes.IsKnown("artificer_golem_pilot")) player.recipes.Add("artificer_golem_pilot");
-        if (!player.recipes.IsKnown("artificer_golem_frame_mim")) player.recipes.Add("artificer_golem_frame_mim");
-        if (!player.recipes.IsKnown("artificer_golem_frame_harpy")) player.recipes.Add("artificer_golem_frame_harpy");
-        if (!player.recipes.IsKnown("artificer_golem_frame_siren")) player.recipes.Add("artificer_golem_frame_siren");
-        if (!player.recipes.IsKnown("artificer_golem_frame_titan")) player.recipes.Add("artificer_golem_frame_titan");
-        if (!player.recipes.IsKnown("artificer_golem_precept_vanguard")) player.recipes.Add("artificer_golem_precept_vanguard");
-        if (!player.recipes.IsKnown("artificer_golem_precept_tower")) player.recipes.Add("artificer_golem_precept_tower");
-        if (!player.recipes.IsKnown("artificer_golem_precept_siege")) player.recipes.Add("artificer_golem_precept_siege");
-        if (!player.recipes.IsKnown("artificer_golem")) player.recipes.Add("artificer_golem");
-        if (!player.recipes.IsKnown("artificer_golem_memorychip")) player.recipes.Add("artificer_golem_memorychip");
-        if (!player.recipes.IsKnown("artificer_golem_componentchip")) player.recipes.Add("artificer_golem_componentchip");
-        if (!player.recipes.IsKnown("artificer_steamlight")) player.recipes.Add("artificer_steamlight");
-        if (!player.recipes.IsKnown("artificer_steamlight_book")) player.recipes.Add("artificer_steamlight_book");
+        if (!hint)
+        {
+            // Add all the Artificer Recipes here.
+            if (!player.recipes.IsKnown("artificer_workbench")) player.recipes.Add("artificer_workbench");
+            if (!player.recipes.IsKnown("artificer_refined_crystal")) player.recipes.Add("artificer_refined_crystal");
+            if (!player.recipes.IsKnown("artificer_cursecube")) player.recipes.Add("artificer_cursecube");
+            if (!player.recipes.IsKnown("artificer_earthgauntlet")) player.recipes.Add("artificer_earthgauntlet");
+            if (!player.recipes.IsKnown("artificer_firesword")) player.recipes.Add("artificer_firesword");
+            if (!player.recipes.IsKnown("artificier_heavenpearl")) player.recipes.Add("artificier_heavenpearl");
+            if (!player.recipes.IsKnown("artificer_iceaxe")) player.recipes.Add("artificer_iceaxe");
+            if (!player.recipes.IsKnown("artificer_lifeflower")) player.recipes.Add("artificer_lifeflower");
+            if (!player.recipes.IsKnown("artificer_lightningspear")) player.recipes.Add("artificer_lightningspear");
+            if (!player.recipes.IsKnown("artificer_timehourglass")) player.recipes.Add("artificer_timehourglass");
+            if (!player.recipes.IsKnown("artificer_elementalbow")) player.recipes.Add("artificer_elementalbow");
+            if (!player.recipes.IsKnown("artificer_sonicbomb")) player.recipes.Add("artificer_sonicbomb");
+            if (!player.recipes.IsKnown("artificer_biobomb")) player.recipes.Add("artificer_biobomb");
+            if (!player.recipes.IsKnown("artificer_flashbomb")) player.recipes.Add("artificer_flashbomb");
+            if (!player.recipes.IsKnown("artificer_golem_core")) player.recipes.Add("artificer_golem_core");
+            if (!player.recipes.IsKnown("artificer_golem_limbs")) player.recipes.Add("artificer_golem_limbs");
+            if (!player.recipes.IsKnown("artificer_golem_flight")) player.recipes.Add("artificer_golem_flight");
+            if (!player.recipes.IsKnown("artificer_golem_aquatic")) player.recipes.Add("artificer_golem_aquatic");
+            if (!player.recipes.IsKnown("artificer_golem_pilot")) player.recipes.Add("artificer_golem_pilot");
+            if (!player.recipes.IsKnown("artificer_golem_frame_mim")) player.recipes.Add("artificer_golem_frame_mim");
+            if (!player.recipes.IsKnown("artificer_golem_frame_harpy")) player.recipes.Add("artificer_golem_frame_harpy");
+            if (!player.recipes.IsKnown("artificer_golem_frame_siren")) player.recipes.Add("artificer_golem_frame_siren");
+            if (!player.recipes.IsKnown("artificer_golem_frame_titan")) player.recipes.Add("artificer_golem_frame_titan");
+            if (!player.recipes.IsKnown("artificer_golem_precept_vanguard")) player.recipes.Add("artificer_golem_precept_vanguard");
+            if (!player.recipes.IsKnown("artificer_golem_precept_tower")) player.recipes.Add("artificer_golem_precept_tower");
+            if (!player.recipes.IsKnown("artificer_golem_precept_siege")) player.recipes.Add("artificer_golem_precept_siege");
+            if (!player.recipes.IsKnown("artificer_golem")) player.recipes.Add("artificer_golem");
+            if (!player.recipes.IsKnown("artificer_golem_memorychip")) player.recipes.Add("artificer_golem_memorychip");
+            if (!player.recipes.IsKnown("artificer_golem_componentchip")) player.recipes.Add("artificer_golem_componentchip");
+            if (!player.recipes.IsKnown("artificer_steamlight")) player.recipes.Add("artificer_steamlight");
+            if (!player.recipes.IsKnown("artificer_steamlight_book")) player.recipes.Add("artificer_steamlight_book");   
+        }
+        return base.Apply(a, owner, hint);
     }
 }

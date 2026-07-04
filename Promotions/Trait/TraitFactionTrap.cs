@@ -1,4 +1,4 @@
-using Cwl.Helper.Extensions;
+
 using PromotionMod.Common;
 namespace PromotionMod.Trait;
 
@@ -37,7 +37,7 @@ public class TraitFactionTrap : TraitTrap
 
     public bool IsPCFactionTrap()
     {
-        return owner.GetFlagValue(Constants.IsPlayerFactionTrapFlag) > 0;
+        return owner.GetBool(Constants.IsPlayerFactionTrapFlag);
     }
 
     public override void OnStepped(Chara c)

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 namespace PromotionMod.Elements;
 
@@ -24,7 +23,7 @@ public class FeatGambler : PromotionFeat
 
     protected override bool Requirement()
     {
-        return pc.GetFlagValue(Constants.GamblerPromotionUnlockedFlag) > 0;
+        return pc.GetBool(Constants.GamblerPromotionUnlockedFlag);
     }
 
     protected override void ApplyInternalNPC(Chara c)
@@ -36,8 +35,5 @@ public class FeatGambler : PromotionFeat
         c.ability.Add(Constants.StFeelingLuckyId, 100, false);
     }
 
-    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
-    {
-        base._OnApply(add, eleOwner, hint);
-    }
+
 }

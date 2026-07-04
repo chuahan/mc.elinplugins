@@ -2,19 +2,15 @@ using System.Collections.Generic;
 using PromotionMod.Common;
 namespace PromotionMod.Trait.Characters;
 
-public class TraitLailah : TraitPromotionUniqueCharacter
+public class TraitLailah : TraitPromotionRecruitable
 {
-
     private static readonly List<int> RareScrollStock = new List<int>
     {
         8280, // Flying
         8288, // Reconstruction
         8281 // Faith
     };
-
-    public override bool IsBefriendedThroughDialog => player.dialogFlags.TryGetValue("lailahRecruited") > 0;
-
-    public override int Prepromotion => Constants.FeatSharpshooter;
+    
     public override int RestockDay => 7;
 
     public void _OnBarter()

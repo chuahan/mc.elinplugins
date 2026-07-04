@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Cwl.Helper.Extensions;
+
 using HarmonyLib;
 using PromotionMod.Common;
 namespace PromotionMod.Patches;
@@ -53,14 +53,14 @@ public class ZonePatches
     [HarmonyPostfix]
     internal static void TryGenerateEvolved_AddCombatSkill(Zone __instance, ref Chara __result, bool force, Point p)
     {
-        if (EClass.pc.GetFlagValue(Constants.UnlockedEliteEnemiesFlag) > 0)
+        if (EClass.pc.GetBool(Constants.UnlockedEliteEnemiesFlag))
         {
             if (__instance.DangerLv > Constants.EliteEnemiesSpawnLevel)
             {
                 // Do I want to have two tiers of spawning this? At some point you get the +'s
                 int randomCombatSkill = T1SpawnableCombatSkills.RandomItem();
                 __result.SetFeat(randomCombatSkill);
-                __result.SetFlagValue(Constants.AdvancedCombatSkillFlag, randomCombatSkill);
+                __result.SetInt(Constants.AdvancedCombatSkillFlag, randomCombatSkill);
             }
         }
     }

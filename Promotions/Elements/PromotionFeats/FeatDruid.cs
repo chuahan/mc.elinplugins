@@ -35,8 +35,5 @@ public class FeatDruid : PromotionFeat
         c.ability.Add(Constants.ActLivingArmorId, 80, true);
     }
 
-    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
-    {
-        base._OnApply(add, eleOwner, hint);
-    }
+
 }

@@ -1,23 +1,32 @@
 using System.Collections.Generic;
 using System.Linq;
-using Cwl.API.Drama;
-using Cwl.Helper.Extensions;
 using PromotionMod.Common;
-namespace PromotionMod.Source;
+namespace PromotionMod.Source.Drama;
 
-internal class PromoDramaExpansion : DramaOutcome
+internal class LailahDramaExpansion : DramaOutcome
 {
     private const int KumiBookPoints = 50;
+    
+    #region Flags
+    /// lailahStateCheck
+    /// lailahIntroComplete
+    /// lailahWorking
+    /// lailahManualDeciphered
+    /// lailahManualReady
+    /// lailahShopOpen
+    /// lailahFriendship1Complete
+    ///
+    /// 
+    #endregion
 
-    private static bool SetPromoFlag(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
+    [ElinDramaActionInvoke]
+    private static bool LailahStateCheck(DramaManager dm, Dictionary<string, string> line)
     {
         // Set Affinity Flags
-        PromoDramaExpansion.SetAffinityFlags(Constants.LailahCharaId);
-        PromoDramaExpansion.SetAffinityFlags(Constants.MinariCharaId);
-        PromoDramaExpansion.SetAffinityFlags(Constants.VyersCharaId);
+        HelperFunctions.SetAffinityFlags(Constants.LailahCharaId);
 
         // Set Deciphering Status
-        PromoDramaExpansion.SetDecipheringStatus();
+        LailahDramaExpansion.SetDecipheringStatus();
 
         // Set Lailah Quest Requirements:
         //EClass.player.dialogFlags["lailahFriendship1Available"];
@@ -45,7 +54,7 @@ internal class PromoDramaExpansion : DramaOutcome
 
         return true;
     }
-
+    
     private static void SetDecipheringStatus()
     {
         EClass.player.dialogFlags.TryGetValue("lailahManualDeciphered", out int lailahManualDeciphered);
@@ -92,23 +101,8 @@ internal class PromoDramaExpansion : DramaOutcome
         }
     }
 
-    private static void SetAffinityFlags(string charaId)
-    {
-        Chara dramaCharacter = game.cards.globalCharas.Values.FirstOrDefault(gc => gc.id == charaId);
-        if (dramaCharacter != null)
-        {
-            int charaAffinity = dramaCharacter._affinity;
-            EClass.player.dialogFlags[$"{charaId}Friendship"] = charaAffinity switch
-            {
-                >= 75 => 3,
-                >= 50 => 2,
-                >= 25 => 1,
-                _ => 0
-            };
-        }
-    }
-
-    private static bool CheckManualMaterials(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
+    [ElinDramaActionInvoke]
+    private static bool CheckManualMaterials(DramaManager dm, Dictionary<string, string> line)
     {
         EClass.player.dialogFlags.TryGetValue("lailahDeciphering", out int decipheringProgress);
 
@@ -177,19 +171,12 @@ internal class PromoDramaExpansion : DramaOutcome
         }
 
         EClass.player.dialogFlags["lailahDeciphering"] = decipheringProgress;
-        PromoDramaExpansion.SetDecipheringStatus();
+        LailahDramaExpansion.SetDecipheringStatus();
         return decipheringProgress >= 100;
     }
 
-    private static bool SetEventTimer(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
-    {
-        // Store the current time onto the player.
-        parameters.Requires(out string timerName, out string timerLength);
-        EClass.player.dialogFlags[timerName] = EClass.world.date.GetRaw() + timerLength.AsInt(4320); // 3 Days, 1440 turns a day.
-        return false;
-    }
-
-    private static bool HasNoManualMaterials(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
+    [ElinDramaActionInvoke]
+    private static bool HasNoManualMaterials(DramaManager dm, Dictionary<string, string> line)
     {
         // Search in Inventory
         List<Thing> allStorage = new List<Thing>();
@@ -215,5 +202,18 @@ internal class PromoDramaExpansion : DramaOutcome
 
         bool hasBookMaterial = !allStorage.Any(thing => thing.id is "book_ancient" or "book_kumiromi");
         return hasBookMaterial;
+    }
+    
+    [ElinDramaActionInvoke]
+    private static bool AddCassandraToCottage(DramaManager dm, Dictionary<string, string> line)
+    {
+        if (EClass.pc.currentZone.id == "lailahCottage")
+        {
+            Point lailahLocation = EClass.pc.currentZone.FindChara(Constants.LailahCharaId).pos;
+            Chara cassandra = CharaGen.Create(Constants.CassandraCharaId);
+            _zone.AddCard(cassandra, lailahLocation.GetNearestPoint());
+        }
+
+        return true;
     }
 }

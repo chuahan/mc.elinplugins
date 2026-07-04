@@ -49,8 +49,5 @@ public class FeatSniper : PromotionFeat
         c.ability.Add(Constants.ActTacticalRetreatId, 50, false);
     }
 
-    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
-    {
-        base._OnApply(add, eleOwner, hint);
-    }
+
 }

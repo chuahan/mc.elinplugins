@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cwl.Helper;
+using EModding.Helper.Runtime;
 using PromotionMod.Patches;
 using PromotionMod.Stats;
 
@@ -108,7 +108,7 @@ public static class HelperFunctions
         // Shatter Reproduction
         bool canShatter = ele != 910 && ele != 911;
         if (cc.IsPCFactionOrMinion && (cc.HasElement(1651) || EClass.pc.Evalue(1651) >= 2)) canShatter = false;
-        if (canShatter) EClass._map.TryShatter(tc.pos, ele, power);
+        if (canShatter) EClass._map.TryShatter(tc.pos, ele, power, cc);
 
         // Defense Reproduction - All of these should be redirectable.
         if (tc.isChara && cc.isChara)
@@ -156,18 +156,7 @@ public static class HelperFunctions
         // Actually inflict the damage.
         HelperFunctions.DamageHpWrapper(tc, adjustedDamage, ele, eleP, attackSource, cc);
     }
-
-    public static Condition Create(string alias, int power, int power2, Chara caster, Action<Condition>? onCreate = null)
-    {
-        SourceStat.Row row = EClass.sources.stats.alias[alias];
-        Condition con = ClassCache.Create<Condition>(row.type.IsEmpty(alias), "Elin");
-        con.power = power;
-        con.id = row.id;
-        con._source = row;
-        onCreate?.Invoke(con);
-        return con;
-    }
-
+    
     public static string GetRandomEnum<T>() where T : Enum
     {
         string[] names = Enum.GetNames(typeof(T));
@@ -308,5 +297,30 @@ public static class HelperFunctions
         });
         
         return linkedCarrier;
+    }
+    
+    public static void SetAffinityFlags(string charaId)
+    {
+        Chara dramaCharacter = EClass.game.cards.globalCharas.Values.FirstOrDefault(gc => gc.id == charaId);
+        if (dramaCharacter != null)
+        {
+            int charaAffinity = dramaCharacter._affinity;
+            EClass.player.dialogFlags[$"{charaId}Friendship"] = charaAffinity switch
+            {
+                >= 75 => 3,
+                >= 50 => 2,
+                >= 25 => 1,
+                _ => 0
+            };
+        }
+    }
+    
+    [ElinDramaActionInvoke]
+    public static bool SetEventTimer(DramaManager dm, Dictionary<string, string> line, string timerName, int timerLength = -1)
+    {
+        // Store the current time onto the player.
+        EClass.player.dialogFlags[timerName] = EClass.world.date.GetRaw() + timerLength; 
+        // 4320 == 3 Days, 1440 turns a day.
+        return false;
     }
 }

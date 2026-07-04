@@ -43,10 +43,7 @@ public class FeatSentinel : PromotionFeat
         c.ability.Add(Constants.StRestraintId, 100, false);
     }
 
-    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
-    {
-        base._OnApply(add, eleOwner, hint);
-    }
+
 
     public static long GetShieldPower(Chara cc)
     {

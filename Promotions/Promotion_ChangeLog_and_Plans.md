@@ -2,13 +2,51 @@
 
 ## Changelog
 
+### July 3rd, 2026 - Migration
+- Migrated away from CWL. Thank you DK!
+- Nerfed Alraune a little bit, reduced their gain slightly from consuming living things.
+- Fixed NRE bug with Machinist Heavyarms
+- Fixed a lot of bugs related to the latest stable.
+
+Hello folks, still working at it! A lot of good games came out recently so I've been a bit preoccupied, and they're still coming to be honest, but I've been making progress. My main goal will be to get the Information Guild, Adventurer's Guild, and Aluèna coded up.
+- Aluèna as a zone has been designed and completely created and populated.
+    - The Cafeteria run by Grandmeow Cat, a source of good pre-made food for new adventurers. (100% complete)
+    - The Moonlight Boutique run by Alder, a place to buy fine clothing, and unique tailoring services. (50% complete)
+    - The Summer Forge run by Ùshrir, with unique services for ranged weapons. (50% complete)
+    - The Viridian Grove run by Azalea and Camellia, a place to enjoy a fine tea service for temporary long lasting buffs. (75% complete)
+- The Crow Information Guild storyline has been laid out. (50% complete)
+    - The Information Guild - Upon recieving a recommendation from Lailah, test your hand in Covert Ops quests, and work together with Minari and her Crows to take on her enemies. (Danger level 60)
+    - The Dark Guild - Working together with the Information Guild, take on a shady band of assassins trying to take control of Aluèna. (Danger level 70)
+- The Adventurer's Guild storyline has been laid out. (Not Started)
+    - The "Adventurer's" Guild - Working with the branch of Aluèna, take on the new Warfare Ops quests, testing your offensive and defensive strategies, standing against threats from afar. (Danger level 130) (Not Started)
+
+For the Roadmap Update... 
+- 144 new characters, ranging from potential allies to bosses. They have been designed, and their code is mostly complete. I just need to work on sprites for most of them. This includes 60 generic new enemies that you might find in your travels once conditions have been met.
+- The Desert City of Tiranth, ruled by the Naga King Raksha.
+- 10 new static nefia.
+- "Superbosses" based off of Morgoth the Lord of Darkness, with Wraith Lords and High Demons under his command.
+
+New Characters being worked on.
+- Lailah will be made recruitable as an Elean Sharpshooter, made available after completing her questline. (100% Complete)
+- Cassandra is a recruitable Golem Sharpshooter, made available after completing Lailah's questline. (100% Complete)
+- Evie is a recruitable Catsister Gambler, location varies. She is available after completing her own questline. (50% Complete)
+- Vessia is a recruitable Mifu Dancer that works at the Moonlit Boutique in Aluèna who has a mostly normal recruitment pattern (Cake is involved.) (100% Complete)
+- Azalea is a recruitable Alraune Druid that works at the Viridian Grove Teahouse. She has a normal recruitment pattern. (100% Complete)
+- Mitsune is a recruitable Nefu Dread Knight available through the Adventurer's Guild questline. (Not Started)
+- Sena and Ruras are recruitable Juere Hermits available through the Information Guild questline. (50% complete)
+- Thrain is a recruitable Yerles Justicar available through Evie's questline. (Not Started)
+- Sazria is a recruitable Rabbitkin Sniper available through Evie's questline. (Not Started)
+- Crowe is a recruitable Yerles Holy Knight, made available through the Information Guild questline. (Not Started)
+- Yari is a recruitable Vampire Hexer made available through Arthur's questline. (Not Started)
+- Daxan is a recruitable Vampire Harbinger made available through Arthur's questline. (Not Started)
+- And more... from Dragonrider Demigods to the Harpy Dragoon Knights.
+
 ### June 11th, 2026 - Fixes
 Joshyan pointed out a few things with the Sharpshooter and changes have been made, thanks!
 - Sharpshooter Overwatch nerfed, it was kind of blendering entire battlefields. It no longer confers increased crit/hit/vision range.
 - Fixed a bug with Charged Shot that it wasn't actually applying. It now should be adding it's full power to the flat damage.
 - Artificer: Fixed the Collection modified exceptions with all of the weapons. Thanks Greenwave!
 - Artificer: Artificer tools should now properly update their charges in your inventory.
-
 
 ### April 26th, 2026, 1.101 - Mini patch.
 - Fixed Alraune feat adding/removing abilties.
@@ -282,28 +320,7 @@ Evie wields the Fomalhaut hand cannon with deadly accuracy, specializing in hunt
   
 The Gambler is a luck based offshoot Promotion. Their abilities possess extreme randomness, making them capable of changing the tides of battle in either direction in a blink of an eye. Gamblers heavily depend on their Luck attribute, using it to increase the odds of their abilities producing positive results.
 
-### WIP, 1.2 - Aluèna
-- Welcome to Aluèna adventurers!
-
-#### Questlines
-- Lailah: Betrayed Soldier
-- Minari: Regicide à Deux
-- Vyers: War against the Dark guild
-- Evie: Gomidor's Bounty
-- Larissa: Rivalry with Sarvesh
-
-#### Non Recruitable NPCs.
-- Grandmeow Kari is runs the Warm Hearth Cafeteria.
-- Alder runs the Moonlit Boutique Tailor.
-- Ùshrir runs the Summer Mountain Forge.
-- Camellia runs the Viridian Grove Teahouse.
-- Vyers is the leader of the Adventurer's Guild.
-- Louise is the Secretary of the Adventurer's Guild.
-- Minari is the leader of the Information Guild.
-
-#### Recruitable NPCs
-- Evie is a recruitable Catsister Gambler, location varies.
-- Vessia is a recruitable Mifu Dancer that works at the Moonlit Boutique.
-- Azalea is a recruitable Alraune Druid that works at the Viridian Grove Teahouse.
-- Mitsune is a recruitable Nefu Dread Knight that works at the Adventurer's Guild.
-- Sena and Ruras are recruitable Juere Hermits that works at the Information Guild.
+### Martial Artist
+The Martial Artist is close combat offshoot Promotion. They focus on basic attacks while changing between different Combat Stances to fit the situation.
+Through consecutive basic attacks and timely Combat Stance swapping, Martial Artists enter a Flow state which not only improves their combat capabilities, but also allows them to fully unlock the potential of their active Combat Stance.
+However, these Stances require the user to be using Martial Arts as their weapon style to function.

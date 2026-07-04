@@ -44,8 +44,5 @@ public class FeatRuneknight : PromotionFeat
         c.ability.Add(Constants.ActRuneEtchingId, 100, true);
     }
 
-    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
-    {
-        base._OnApply(add, eleOwner, hint);
-    }
+
 }

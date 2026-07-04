@@ -41,8 +41,5 @@ public class FeatBattlemage : PromotionFeat
         c.ability.Add(50600 + PromotionFeat.GetAdditionalSpellElement(c), 50, false);
     }
 
-    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
-    {
-        base._OnApply(add, eleOwner, hint);
-    }
+
 }

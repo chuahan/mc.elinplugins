@@ -103,6 +103,7 @@ public class LayerCraftPatches
                 EClass.pc.party.AddMemeber(newGolem);
                 Msg.Say("artificer_golem_created".langGame());
                 EClass.pc.PlaySound("revive");
+                EClass.pc.SetBool(Constants.ArtificerGolemCreated, true);
 
                 // Consume ingredients.
                 __instance.recipe.ingredients[0].thing.Destroy(); // Golem Core.

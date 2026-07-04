@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 using PromotionMod.Stats;
 
@@ -67,10 +66,7 @@ public class FeatHexer : PromotionFeat
         c.ability.Add(Constants.ActRevengeId, 50, false);
     }
 
-    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
-    {
-        base._OnApply(add, eleOwner, hint);
-    }
+
 
     public static void ApplyCondition(Chara target, Chara caster, int power, bool force)
     {
@@ -92,7 +88,7 @@ public class FeatHexer : PromotionFeat
             if (inactiveConditions.Count == 0) inactiveConditions = UncommonConditions;
         }
         // Don't use Death Sentense on bosses.
-        else if (EClass.rnd(10) != 0 || target.IsBoss())
+        else if (EClass.rnd(10) != 0 || target.c_bossType != 0)
         {
             gachaString = "hexer_rare_gacha";
             inactiveConditions = RareConditions.Except(activeConditions).ToList();

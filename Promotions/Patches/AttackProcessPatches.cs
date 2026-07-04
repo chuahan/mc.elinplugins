@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cwl.Helper.Extensions;
+
 using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Elements;
@@ -65,7 +65,8 @@ public class AttackProcessPatches
             __instance.IsRanged)
         {
             ConChargedChamber charge = Act.CC.GetCondition<ConChargedChamber>();
-            long bonusDamage = HelperFunctions.SafeMultiplier(charge.power, dmgMulti);
+            // long bonusDamage = HelperFunctions.SafeMultiplier(charge.power, dmgMulti);
+            long bonusDamage = (long)(charge.power * (__result / (__result + 10F))); 
             __result += bonusDamage;
             charge.Kill();
         }
@@ -454,7 +455,7 @@ public class AttackProcessPatches
         // Lethality - 50% chance to instant kill non boss targets.
         if (__instance.CC != null &&
             __instance.TC.isChara &&
-            !__instance.TC.Chara.IsBoss() &&
+            __instance.TC.Chara.c_bossType == 0 &&
             __instance is { crit: true } &&
             __instance.CC.HasElement(Constants.FeatLethalityId) &&
             EClass.rnd(2) == 0)

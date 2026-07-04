@@ -45,10 +45,6 @@
             <HintPath>$(ElinGamePath)\BepInEx\core\BepInEx.Unity.dll</HintPath>
             <Private>False</Private>
         </Reference>
-        <Reference Include="CustomWhateverLoader">
-            <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\2135150\3370512305\CustomWhateverLoader.dll</HintPath>
-            <Private>False</Private>
-        </Reference>
         <Reference Include="DOTween">
             <HintPath>$(ElinGamePath)\Elin_Data\Managed\DOTween.dll</HintPath>
             <Private>False</Private>
@@ -56,6 +52,10 @@
         <Reference Include="Elin">
             <HintPath>$(ElinGamePath)\Elin_Data\Managed\Elin.dll</HintPath>
             <Private>False</Private>
+        </Reference>
+        <Reference Include="ElinModdingKit">
+          <HintPath>$(ElinGamePath)\Package\_ModdingKit\ElinModdingKit.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="mscorlib">
             <HintPath>$(ElinGamePath)\Elin_Data\Managed\mscorlib.dll</HintPath>
@@ -72,6 +72,10 @@
         <Reference Include="Plugins.BaseCore">
             <HintPath>$(ElinGamePath)\Elin_Data\Managed\Plugins.BaseCore.dll</HintPath>
             <Private>False</Private>
+        </Reference>
+        <Reference Include="Plugins.Modding">
+          <HintPath>$(ElinGamePath)\Elin_Data\Managed\Plugins.Modding.dll</HintPath>
+          <Private>False</Private>
         </Reference>
         <Reference Include="Plugins.Sound">
             <HintPath>$(ElinGamePath)\Elin_Data\Managed\Plugins.Sound.dll</HintPath>
@@ -347,11 +351,13 @@
         <Compile Include="Patches\WindowCharaPatches.cs" />
         <Compile Include="Patches\ZonePatches.cs" />
         <Compile Include="PromotionMod.cs" />
-        <Compile Include="Source\GolemDramaExpansion.cs" />
+        <Compile Include="Source\Drama\AluenaDramaExpansion.cs" />
+        <Compile Include="Source\Drama\GolemDramaExpansion.cs" />
+        <Compile Include="Source\Drama\LailahDramaExpansion.cs" />
+        <Compile Include="Source\Drama\MinariDramaExpansion.cs" />
         <Compile Include="Source\GuildAdventurer.cs" />
         <Compile Include="Source\GuildInformation.cs" />
         <Compile Include="Source\PostLoadPatching.cs" />
-        <Compile Include="Source\PromoDramaExpansion.cs" />
         <Compile Include="Source\CustomGuild.cs" />
         <Compile Include="Source\QuestEventSystem\MonthlyEvent.cs" />
         <Compile Include="Source\QuestEventSystem\MonthlyEventManager.cs" />
@@ -377,7 +383,6 @@
         <Compile Include="Source\QuestEventSystem\QuestZones\ZoneInstanceRescue.cs" />
         <Compile Include="Source\QuestEventSystem\QuestZones\ZoneInstanceRout.cs" />
         <Compile Include="Source\QuestEventSystem\SpawnerConfigurations\SpawnSetup.cs" />
-        <Compile Include="Source\AluenaDramaExpansion.cs" />
         <Compile Include="Source\Zones\ZoneLailahCottage.cs" />
         <Compile Include="Stats\AdvCombatSkills\ConLuna.cs" />
         <Compile Include="Stats\AdvCombatSkills\ConMetalBreak.cs" />
@@ -558,25 +563,15 @@
         <Compile Include="Trait\Artificer\TraitArtificerToolTime.cs" />
         <Compile Include="Trait\Artificer\TraitArtificerToolTrinity.cs" />
         <Compile Include="Trait\Artificer\TraitArtificerWorkbench.cs" />
-        <Compile Include="Trait\Characters\TraitAzalea.cs" />
-        <Compile Include="Trait\Characters\TraitBoutiqueShopkeeper.cs" />
-        <Compile Include="Trait\Characters\TraitCrowAgent.cs" />
-        <Compile Include="Trait\Characters\TraitEvie.cs" />
+        <Compile Include="Trait\Characters\TraitAlder.cs" />
         <Compile Include="Trait\Characters\TraitGrandmaCat.cs" />
-        <Compile Include="Trait\Characters\TraitPromotionUniqueCharacter.cs" />
+        <Compile Include="Trait\Characters\TraitPromotionRecruitable.cs" />
+        <Compile Include="Trait\Characters\TraitPromotionUniqueBoss.cs" />
+        <Compile Include="Trait\Characters\TraitPromotionUnrecruitable.cs" />
         <Compile Include="Trait\Characters\TraitLailah.cs" />
-        <Compile Include="Trait\Characters\TraitLailahGolem.cs" />
-        <Compile Include="Trait\Characters\TraitLouise.cs" />
-        <Compile Include="Trait\Characters\TraitMinari.cs" />
-        <Compile Include="Trait\Characters\TraitMitsune.cs" />
-        <Compile Include="Trait\Characters\TraitRuras.cs" />
-        <Compile Include="Trait\Characters\TraitSena.cs" />
-        <Compile Include="Trait\Characters\TraitTeahouseMaiden.cs" />
+        <Compile Include="Trait\Characters\TraitPromotionWraithLord.cs" />
         <Compile Include="Trait\Characters\TraitUshrir.cs" />
-        <Compile Include="Trait\Characters\TraitVessia.cs" />
         <Compile Include="Trait\Characters\TraitVyers.cs" />
-        <Compile Include="Trait\Characters\TraitWatcherAgent.cs" />
-        <Compile Include="Trait\Characters\TraitWatcherSoldier.cs" />
         <Compile Include="Trait\QuestTraits\TraitSnagBall.cs" />
         <Compile Include="Trait\QuestTraits\TraitBodyguard.cs" />
         <Compile Include="Trait\QuestTraits\TraitRareEnemy.cs" />

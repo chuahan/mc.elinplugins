@@ -48,9 +48,4 @@ public class FeatTrickster : PromotionFeat
         c.ability.Add(Constants.ActDiversionId, 75, false);
         c.ability.Add(Constants.ActReversalId, 50, false);
     }
-
-    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
-    {
-        base._OnApply(add, eleOwner, hint);
-    }
 }

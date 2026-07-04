@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 namespace PromotionMod.Elements;
 
@@ -46,7 +45,7 @@ public class FeatJenei : PromotionFeat
     protected override void ApplyInternalNPC(Chara c)
     {
         c.ability.Add(Constants.ActSpiritSummonId, 30, false);
-        switch (c.GetFlagValue(Constants.JeneiAttunementFlag))
+        switch (c.GetInt(Constants.JeneiAttunementFlag))
         {
             // All elements get two spells of that element.
             case 0: // Venus
@@ -76,34 +75,33 @@ public class FeatJenei : PromotionFeat
         }
     }
 
-    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
+    public override List<string> Apply(int a, ElementContainer owner, bool hint = false)
     {
-        if (hint) return;
         // For PCs, depending on which element they attuned to, add their two abilities.
-        if (owner.Chara.IsPC)
+        if (owner.Chara.IsPC && !hint)
         {
-            switch (owner.Chara.GetFlagValue(Constants.JeneiAttunementFlag))
+            switch (owner.Chara.GetInt(Constants.JeneiAttunementFlag))
             {
                 // All elements get two spells of that element.
                 case 0: // Venus
-                    owner.Chara.AddElement(Constants.ActJeneiMoveId, 0);
-                    owner.Chara.AddElement(Constants.ActJeneiMotherGaiaId, 0);
+                    owner.Chara.elements.SetBase(Constants.ActJeneiMoveId, 1);
+                    owner.Chara.elements.SetBase(Constants.ActJeneiMotherGaiaId, 1);
                     break;
                 case 1: // Mars
-                    owner.Chara.AddElement(Constants.ActJeneiBlazeId, 0);
-                    owner.Chara.AddElement(Constants.ActJeneiDragonFumeId, 0);
+                    owner.Chara.elements.SetBase(Constants.ActJeneiBlazeId, 1);
+                    owner.Chara.elements.SetBase(Constants.ActJeneiDragonFumeId, 1);
                     break;
                 case 2: // Jupiter
-                    owner.Chara.AddElement(Constants.ActJeneiRevealId, 0);
-                    owner.Chara.AddElement(Constants.ActJeneiShinePlasmaId, 0);
+                    owner.Chara.elements.SetBase(Constants.ActJeneiRevealId, 1);
+                    owner.Chara.elements.SetBase(Constants.ActJeneiShinePlasmaId, 1);
                     break;
                 case 3: // Mercury
-                    owner.Chara.AddElement(Constants.ActJeneiDelugeId, 0);
-                    owner.Chara.AddElement(Constants.ActJeneiPlyId, 0);
+                    owner.Chara.elements.SetBase(Constants.ActJeneiDelugeId, 1);
+                    owner.Chara.elements.SetBase(Constants.ActJeneiPlyId, 1);
                     break;
             }
         }
-        base._OnApply(add, eleOwner, hint);
+        return base.Apply(a, owner, hint);
     }
 
     override internal void Demote(Chara c)

@@ -1,9 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Cwl.Helper;
-using Cwl.Helper.Extensions;
 using PromotionMod.Common;
-using PromotionMod.Patches;
 using PromotionMod.Stats;
 
 
@@ -929,7 +926,7 @@ public class ActSpinSlots : PromotionSpellAbility
         target.PlayEffect("hit_slash").SetScale(1f);
 
         // Bosses can't instantly die, but will lose 50% of their current HP.
-        if (target.IsBoss())
+        if (target.c_bossType != 0)
         {
             Msg.Say("gambler_slots_jackpot_behead_grievous".langGame(target.NameSimple));
             HelperFunctions.DamageHpWrapper(target, target.hp / 2, 0, 100, AttackSource.Throw, caster);

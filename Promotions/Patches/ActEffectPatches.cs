@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using BepInEx;
-using Cwl.Helper.Extensions;
+
 using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Stats;
@@ -227,13 +227,13 @@ public class ActEffectPatches
 
     private static bool HasAltSummonBits(Chara caster)
     {
-        return caster.GetFlagValue(Constants.PromotionFeatFlag) is Constants.FeatElementalist or Constants.FeatBattlemage or Constants.FeatSpellblade;
+        return caster.GetInt(Constants.PromotionFeatFlag, 0) is Constants.FeatElementalist or Constants.FeatBattlemage or Constants.FeatSpellblade;
     }
 
     private static void SummonAltBits(Chara caster, int power, Point tp, ActRef actRef = default(ActRef))
     {
         Element element = Element.Create(actRef.aliasEle.IsEmpty("eleFire"), power / 10);
-        int promotion = caster.GetFlagValue(Constants.PromotionFeatFlag);
+        int promotion = caster.GetInt(Constants.PromotionFeatFlag, 0);
         if (EClass._zone.CountMinions(caster) >= caster.MaxSummon || caster.c_uidMaster != 0)
         {
             caster.Say("summon_ally_fail", caster);

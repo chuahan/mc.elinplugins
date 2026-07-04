@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 namespace PromotionMod.Elements;
 
@@ -32,7 +31,7 @@ public class ActThrowTrap : PromotionCombatAbility
     public override bool Perform()
     {
         Thing trap = ThingGen.Create(PossibleTraps.RandomItem());
-        if (CC.IsPCFaction) trap.SetFlagValue(Constants.IsPlayerFactionTrapFlag);
+        if (CC.IsPCFaction) trap.SetBool(Constants.IsPlayerFactionTrapFlag, true);
         Zone.ignoreSpawnAnime = true;
         _zone.AddCard(trap, TP).Install();
         return true;

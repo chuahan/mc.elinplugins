@@ -47,8 +47,5 @@ public class FeatHolyKnight : PromotionFeat
         c.ability.Add(Constants.ActHolyBannerId, 25, false);
     }
 
-    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
-    {
-        base._OnApply(add, eleOwner, hint);
-    }
+
 }

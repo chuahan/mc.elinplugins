@@ -53,8 +53,5 @@ public class FeatDreadKnight : PromotionFeat
         c.ability.Add(SPELL.arrow_Nether, 50, false); // Nether Arrow
     }
 
-    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
-    {
-        base._OnApply(add, eleOwner, hint);
-    }
+
 }

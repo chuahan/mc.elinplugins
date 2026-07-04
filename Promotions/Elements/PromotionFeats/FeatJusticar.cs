@@ -53,8 +53,5 @@ public class FeatJusticar : PromotionFeat
         c.ability.Add(Constants.StFlamesOfJudgementId, 60, false);
     }
 
-    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
-    {
-        base._OnApply(add, eleOwner, hint);
-    }
+
 }

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Cwl.Helper.Extensions;
+
 using PromotionMod.Common;
 namespace PromotionMod.Trait;
 
@@ -34,7 +34,7 @@ public class TraitBookCombat : TraitScroll
 
     public override bool CanRead(Chara c)
     {
-        if (c.GetFlagValue(Constants.AdvancedCombatSkillFlag) > 0) return false;
+        if (c.GetInt(Constants.AdvancedCombatSkillFlag, 0) > 0) return false;
         return !c.isBlind;
     }
 
@@ -62,7 +62,7 @@ public class TraitBookCombat : TraitScroll
     {
         //owner.Say(IsPlan ? "skillbook_learnPlan" : "skillbook_learn", c, source.GetName());
         c.SetFeat(idEle);
-        c.SetFlagValue(Constants.AdvancedCombatSkillFlag, idEle);
+        c.SetInt(Constants.AdvancedCombatSkillFlag, idEle);
         Msg.Say("combatskilllearned".langGame(c.NameSimple, sources.elements.map[idEle].GetName()));
 
         c.Say("spellbookCrumble", owner.Duplicate(1));

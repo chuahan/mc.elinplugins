@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cwl.API.Drama;
-using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 using PromotionMod.Stats;
 using PromotionMod.Trait.Characters;
-namespace PromotionMod.Source;
+namespace PromotionMod.Source.Drama;
 
 internal class AluenaDramaExpansion : DramaOutcome
 {
@@ -23,6 +21,7 @@ internal class AluenaDramaExpansion : DramaOutcome
     private const string WarmHearthPartyHungryFlag = "partyHungry";
     
     #region Teahouse 
+    [ElinDramaActionInvoke]
     private static bool TeaHouse_CanOrderTea(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
         if (EClass.pc.HasCondition<ConTeaTime>())
@@ -33,10 +32,9 @@ internal class AluenaDramaExpansion : DramaOutcome
         return true;
     }
 
-    private static bool TeaHouse_OrderTea(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
+    [ElinDramaActionInvoke]
+    private static bool TeaHouse_OrderTea(DramaManager dm, Dictionary<string, string> line, string teaName)
     {
-        parameters.Requires(out string teaName);
-
         // Deduct Orens
         if (!EClass.pc.TryPay(100 * EClass.pc.party.Count()))
         {
@@ -60,27 +58,29 @@ internal class AluenaDramaExpansion : DramaOutcome
     #endregion
     
     #region Smithy
+    [ElinDramaActionInvoke]
     private static bool SmithyUshrirStateCheck(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
-        dm.RequiresActor(out Chara ushrir);
-        EClass.pc.SetFlagValue(SmithySpecialTopicsFlag, 0);
+        var ushrir = dm.GetChara(line["actor"]);
+        EClass.pc.SetInt(SmithySpecialTopicsFlag, 0);
 
         // If Lailah is in the Party and hasn't had the interaction.
-        if (EClass.pc.GetFlagValue(SmithyLailahConversationCompleteFlag) > 0)
+        if (EClass.pc.GetBool(SmithyLailahConversationCompleteFlag))
         {
             if (EClass.pc.party.members.Any(x => x.id == Constants.LailahCharaId))
             {
-                EClass.pc.SetFlagValue(SmithyLailahConversationReadyFlag, 1);
-                EClass.pc.SetFlagValue(SmithySpecialTopicsFlag, 1);
+                EClass.pc.SetInt(SmithyLailahConversationReadyFlag, 1);
+                EClass.pc.SetInt(SmithySpecialTopicsFlag, 1);
             }   
         }
         return false;
     }
 
+    [ElinDramaActionInvoke]
     private static bool SmithyUshrirRunicHammerEnchant(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
-        dm.RequiresActor(out Chara ushrir);
-        if (EClass.pc.GetFlagValue(SmithyRechargeIntroFlag) == 0)
+        var ushrir = dm.GetChara(line["actor"]);
+        if (EClass.pc.GetInt(SmithyRechargeIntroFlag, 0) == 0)
         {
             ushrir.ShowDialog("ushrir", "ushrirHammerFirstUse");            
         }
@@ -88,10 +88,11 @@ internal class AluenaDramaExpansion : DramaOutcome
         return true;
     }
     
+    [ElinDramaActionInvoke]
     private static bool SmithyUshrirModUnlockRangedWeapon(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
-        dm.RequiresActor(out Chara ushrir);
-        if (EClass.pc.GetFlagValue(SmithyRechargeIntroFlag) == 0)
+        var ushrir = dm.GetChara(line["actor"]);
+        if (EClass.pc.GetInt(SmithyRechargeIntroFlag, 0) == 0)
         {
             ushrir.ShowDialog("ushrir", "ushrirHammerFirstUse");            
         }
@@ -101,28 +102,31 @@ internal class AluenaDramaExpansion : DramaOutcome
     #endregion
 
     #region Dining Hall
+    
+    [ElinDramaActionInvoke]
     private static bool DiningHallKariStateCheck(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
-        dm.RequiresActor(out Chara grandmaCat);
-        if (grandmaCat.GetFlagValue(WarmHearthFreeFoodTimerFlag) < EClass.world.date.GetRaw())
+        var grandmaCat = dm.GetChara(line["actor"]);
+        if (grandmaCat.GetInt(WarmHearthFreeFoodTimerFlag, 0) < EClass.world.date.GetRaw())
         {
-            grandmaCat.SetFlagValue(WarmHearthFreeFoodTimerFlag, 0);
+            grandmaCat.SetInt(WarmHearthFreeFoodTimerFlag, 0);
             if (EClass.pc.party.members.Any(c => c.hunger.GetPhase() >= StatsHunger.VeryHungry))
             {
-                grandmaCat.SetFlagValue(WarmHearthPartyHungryFlag, 1);
+                grandmaCat.SetInt(WarmHearthPartyHungryFlag, 1);
             }
         }
 
         // If there's a daily special load it.
         int dailySpecial = EClass.world.date.day % 7;
-        grandmaCat.SetFlagValue(WarmHearthDailySpecialFlag, dailySpecial is >= 1 and <= 5 ? dailySpecial : 0);
+        grandmaCat.SetInt(WarmHearthDailySpecialFlag, dailySpecial is >= 1 and <= 5 ? dailySpecial : 0);
         return false;
     }
 
+    [ElinDramaActionInvoke]
     private static bool DiningHall_EatFreeFood(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
         // Shove a meal into all the hungry party members.
-        dm.RequiresActor(out Chara grandmaCat);
+        var grandmaCat = dm.GetChara(line["actor"]);
         foreach (Chara c in EClass.pc.party.members.Where(c => c.hunger.GetPhase() >= StatsHunger.VeryHungry))
         {
             Msg.Say("grandmaCat_foodGift".langGame(c.NameSimple));
@@ -132,9 +136,9 @@ internal class AluenaDramaExpansion : DramaOutcome
             {
                 target = meal
             });
-            grandmaCat.SetFlagValue(WarmHearthPartyHungryFlag, 0);
+            grandmaCat.SetInt(WarmHearthPartyHungryFlag, 0);
             // Add a cooldown to prevent this from being used, can only be used once per day.
-            grandmaCat.SetFlagValue(WarmHearthFreeFoodTimerFlag, EClass.world.date.GetRaw() + 1440);
+            grandmaCat.SetInt(WarmHearthFreeFoodTimerFlag, EClass.world.date.GetRaw() + 1440);
         }
 
         return false;
@@ -142,21 +146,24 @@ internal class AluenaDramaExpansion : DramaOutcome
     #endregion
     
     #region Boutique
+    [ElinDramaActionInvoke]
     private static bool BoutiqueAlderStateCheck(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
-        dm.RequiresActor(out Chara alder);
+        var chara = dm.GetChara(line["actor"]);
         return false;
     }
     
+    [ElinDramaActionInvoke]
     private static bool BoutiqueAlderRepairClothing(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
-        dm.RequiresActor(out Chara alder);
+        var chara = dm.GetChara(line["actor"]);
         return false;
     }
     
+    [ElinDramaActionInvoke]
     private static bool BoutiqueAlderRefitClothing(DramaManager dm, Dictionary<string, string> line, params string[] parameters)
     {
-        dm.RequiresActor(out Chara alder);
+        var chara = dm.GetChara(line["actor"]);
         return false;
     }
     #endregion

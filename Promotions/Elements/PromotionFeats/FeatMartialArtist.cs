@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Cwl.Helper.Extensions;
+
 using PromotionMod.Common;
 namespace PromotionMod.Elements;
 
@@ -16,7 +16,7 @@ public class FeatMartialArtist : PromotionFeat
 
     protected override bool Requirement()
     {
-        return pc.GetFlagValue(Constants.MartialArtistPromotionUnlockedFlag) > 0;
+        return pc.GetBool(Constants.MartialArtistPromotionUnlockedFlag);
     }
 
     protected override void ApplyInternalNPC(Chara c)
@@ -25,8 +25,5 @@ public class FeatMartialArtist : PromotionFeat
         //c.ability.Add(Constants.ActLuckyCatId, 75, true);
     }
 
-    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
-    {
-        base._OnApply(add, eleOwner, hint);
-    }
+
 }

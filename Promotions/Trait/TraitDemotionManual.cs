@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Cwl.Helper.Extensions;
+
 using PromotionMod.Common;
 using PromotionMod.Elements;
 namespace PromotionMod.Trait;
@@ -119,9 +119,9 @@ public class TraitDemotionManual : TraitScroll
     public void Demote(Chara c)
     {
         // Get the Promotion Feat from the Promotion Feat Flag.
-        int promotionFeatId = c.GetFlagValue(Constants.PromotionFeatFlag);
+        int promotionFeatId = c.GetInt(Constants.PromotionFeatFlag, 0);
         DemotionMap[promotionFeatId]!.Demote(c);
-        c.SetFlagValue(Constants.PromotionFeatFlag, 0);
+        c.SetInt(Constants.PromotionFeatFlag, 0);
         Msg.Say("promotion_demoted".langGame(c.NameSimple, Constants.PromotionIdToPromotionNameMap[promotionFeatId].lang()));
 
         c.PlaySound("curse");

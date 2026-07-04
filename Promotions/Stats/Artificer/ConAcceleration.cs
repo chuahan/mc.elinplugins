@@ -11,7 +11,7 @@ public class ConAcceleration : BaseBuff
     public override void Tick()
     {
         // Having this condition ticks cooldowns faster.
-        owner.TickCooldown();
+        if (CC._cooldowns is { Count: > 0 }) CC.TickCooldown();
         base.Tick();
     }
 }

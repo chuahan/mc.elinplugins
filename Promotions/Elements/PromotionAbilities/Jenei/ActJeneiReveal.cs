@@ -35,7 +35,7 @@ public class ActJeneiReveal : PromotionSpellAbility
         {
             TC.Chara.AddCondition(SubPoweredCondition.Create(nameof(ConMagicBreak), GetPower(CC), 5));
         }
-        //Msg.Nerun(TC.GetFlagValue(Constants.PromotionFeatFlag).ToString());
+        //Msg.Nerun(TC.GetInt(Constants.PromotionFeatFlag, 0).ToString());
         return true;
     }
 }

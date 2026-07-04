@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Cwl.Helper.Extensions;
+
 using UnityEngine;
 namespace PromotionMod.Elements;
 
@@ -29,8 +29,7 @@ public abstract class PromotionFeat : Feat
 
     // Add NPC Specific Class applications. This involves picking which abilities to add with weights.
     protected abstract void ApplyInternalNPC(Chara c);
-
-    /*
+    
     public override List<string> Apply(int a, ElementContainer owner, bool hint = false)
     {
         if (!hint)
@@ -51,7 +50,7 @@ public abstract class PromotionFeat : Feat
                     {
                         if (!owner.Chara.HasElement(abilityId))
                         {
-                            owner.Chara.AddElement(abilityId);
+                            owner.Chara.elements.SetBase(abilityId, 1);
                         }
                     }
                 }
@@ -63,39 +62,6 @@ public abstract class PromotionFeat : Feat
         }
         
         return base.Apply(a, owner, hint);
-    }
-    */
-    
-    virtual internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
-    {
-        if (!hint)
-        {
-            if (!Requirement() && !IsTourist)
-            {
-                owner.Remove(id);
-                foreach (int abilityId in PromotionAbilities)
-                {
-                    owner.Remove(abilityId);
-                }
-            }
-            else
-            {
-                if (owner.Chara.IsPC)
-                {
-                    foreach (int abilityId in PromotionAbilities)
-                    {
-                        if (!owner.Chara.HasElement(abilityId))
-                        {
-                            owner.Chara.AddElement(abilityId);
-                        }
-                    }
-                }
-                else
-                {
-                    ApplyInternalNPC(owner.Chara);
-                }
-            }
-        }
     }
 
     virtual internal void Demote(Chara c)

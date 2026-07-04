@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Cwl.Helper.Extensions;
+
 using PromotionMod.Common;
 namespace PromotionMod.Elements;
 
@@ -41,11 +41,8 @@ public class FeatSaint : PromotionFeat
         c.ability.Add(SPELL.arrow_Holy, 75, false);
         c.ability.Add(SPELL.flare_Holy, 75, false);
         c.ability.Add(SPELL.SpHeal, 75, true);
-        c.AddElement(FEAT.featHealer);
+        c.elements.ModBase(FEAT.featHealer, 1);
     }
 
-    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
-    {
-        base._OnApply(add, eleOwner, hint);
-    }
+
 }

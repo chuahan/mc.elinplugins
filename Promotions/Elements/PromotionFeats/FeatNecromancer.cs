@@ -40,8 +40,5 @@ public class FeatNecromancer : PromotionFeat
         c.ability.Add(Constants.SpSummonSkeletonId, 90, false);
     }
 
-    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
-    {
-        base._OnApply(add, eleOwner, hint);
-    }
+
 }

@@ -54,8 +54,5 @@ public class FeatSovereign : PromotionFeat
         c.ability.Add(Constants.ActFormationOrderId, 85, false);
     }
 
-    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
-    {
-        base._OnApply(add, eleOwner, hint);
-    }
+
 }

@@ -75,7 +75,9 @@
   <ItemGroup>
     <Compile Include="LivestockTweaks.cs" />
     <Compile Include="LivestockTweaksConfig.cs" />
+    <Compile Include="Patches\CharaPatch.cs" />
     <Compile Include="Patches\ConSleepPatches.cs" />
+    <Compile Include="Patches\ZonePatch.cs" />
     <Compile Include="Patches\TraitFoodEggFertilizedPatches.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

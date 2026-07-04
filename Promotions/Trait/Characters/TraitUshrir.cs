@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using PromotionMod.Common;
 namespace PromotionMod.Trait.Characters;
 
-public class TraitUshrir : TraitPromotionUniqueCharacter
+public class TraitUshrir : TraitPromotionUnrecruitable
 {
 
     public static List<string> UshrirWeapons = new List<string>
@@ -21,8 +21,6 @@ public class TraitUshrir : TraitPromotionUniqueCharacter
         "sword_valor",
         "sword_armorslayer"
     };
-
-    public override bool IsBefriendedThroughDialog => false;
 
     public override int RestockDay => 5;
 

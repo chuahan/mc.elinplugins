@@ -54,8 +54,5 @@ public class FeatElementalist : PromotionFeat
         }
     }
 
-    override internal void _OnApply(int add, ElementContainer eleOwner, bool hint)
-    {
-        base._OnApply(add, eleOwner, hint);
-    }
+
 }

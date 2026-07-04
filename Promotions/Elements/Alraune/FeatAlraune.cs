@@ -1,5 +1,3 @@
-using System;
-using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 namespace PromotionMod.Elements;
 
@@ -21,15 +19,15 @@ public class FeatAlraune : Feat
             {
                 if (!owner.Chara.HasElement(Constants.StSweetScentId))
                 {
-                    owner.Chara.AddElement(Constants.StSweetScentId);
+                    owner.Chara.elements.SetBase(Constants.StSweetScentId, 1);
                 }
                 if (!owner.Chara.HasElement(Constants.ActWildGrowthId))
                 {
-                    owner.Chara.AddElement(Constants.ActWildGrowthId);
+                    owner.Chara.elements.SetBase(Constants.ActWildGrowthId, 1);
                 }
                 if (!owner.Chara.HasElement(Constants.ActAlrauneConsumeId))
                 {
-                    owner.Chara.AddElement(Constants.ActAlrauneConsumeId);
+                    owner.Chara.elements.SetBase(Constants.ActAlrauneConsumeId, 1);
                 }
             }
             else

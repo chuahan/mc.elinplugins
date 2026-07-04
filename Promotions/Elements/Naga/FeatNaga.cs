@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 namespace PromotionMod.Elements;
 
@@ -13,8 +12,8 @@ public class FeatNaga : Feat
         {
             if (owner.Chara.IsPC)
             {
-                if (!owner.Chara.HasElement(Constants.ActSerpentineConstriction)) owner.Chara.AddElement(Constants.ActSerpentineConstriction);
-                if (!owner.Chara.HasElement(Constants.ActSerpentineAgility)) owner.Chara.AddElement(Constants.ActSerpentineAgility);
+                if (!owner.Chara.HasElement(Constants.ActSerpentineConstriction)) owner.Chara.elements.SetBase(Constants.ActSerpentineConstriction, 1);
+                if (!owner.Chara.HasElement(Constants.ActSerpentineAgility)) owner.Chara.elements.SetBase(Constants.ActSerpentineAgility, 1);
 
                 // This is the process used to add a permanent spell to the PC.
                 owner.Chara._listAbility ??= new List<int>();

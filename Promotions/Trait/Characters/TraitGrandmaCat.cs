@@ -3,13 +3,9 @@ using System.Linq;
 using PromotionMod.Common;
 namespace PromotionMod.Trait.Characters;
 
-public class TraitGrandmaCat : TraitPromotionUniqueCharacter
+public class TraitGrandmaCat : TraitPromotionUnrecruitable
 {
-    public override bool IsBefriendedThroughDialog => false;
-
     public override int RestockDay => 1;
-
-    public override int Prepromotion => Constants.FeatSentinel;
 
     public void _OnBarter()
     {

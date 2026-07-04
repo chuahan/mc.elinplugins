@@ -9,7 +9,7 @@ public class Constants
 
     public const int PromotionLevelRequirement = 20;
 
-    #region CWL Flags
+    #region Flags
 
     public const string PromotionFeatFlag = "promo";
     public const string IsPlayerFactionTrapFlag = "pcTrap";
@@ -275,6 +275,7 @@ public class Constants
     #region Unique charas
 
     public const string LailahCharaId = "lailah";
+    public const string CassandraCharaId = "cassandra";
     public const string MinariCharaId = "minari";
     public const string VyersCharaId = "vyers";
     public const string RurasCharaId = "ruras";
@@ -296,14 +297,15 @@ public class Constants
     public const string BasicGuardCharaId = "armed_guard";
     public const string EliteGuardCharaId = "elite_armed_guard";
 
-    public const string CouncilSaroCharaId = "council_saro";
-    public const string CouncilCademCharaId = "council_cadem";
-    public const string CouncilDorenCharaId = "council_doren";
-    public const string CouncilWyndinCharaId = "council_wyndin";
-    public const string CouncilArthurCharaId = "council_arthur";
-    public const string CouncilLarissaCharaId = "council_larissa";
-    public const string CouncilGomidorCharaId = "council_gomidor";
-    public const string CouncilSarveshCharaId = "council_sarvesh";
+    public const string CouncilSaroCharaId = "promo_saro";
+    public const string CouncilCademCharaId = "promo_cadem";
+    public const string CouncilDorenCharaId = "promo_doren";
+    public const string CouncilWyndinCharaId = "promo_wyndin";
+    public const string CouncilArthurCharaId = "promo_arthur";
+    public const string CouncilLarissaCharaId = "promo_larissa";
+    public const string CouncilGomidorCharaId = "promo_gomidor";
+    public const string CouncilSarveshCharaId = "promo_sarvesh";
+    public const string CouncilEricaCharaId = "promo_erica";
 
     // Knightcaller Commanders
     public const string ValeroCharaId = "knight_valero";

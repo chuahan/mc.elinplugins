@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cwl.Helper.Extensions;
 using HarmonyLib;
 using PromotionMod.Common;
 namespace PromotionMod.Patches;
@@ -17,7 +16,7 @@ public class RecipeManagerPatches
         {
             // If a golem has been crafted, remove this recipe from the craftable list.
             // Do I want to remove the golem parts too?
-            if (EClass.pc.GetFlagValue(Constants.ArtificerGolemCreated) > 0)
+            if (EClass.pc.GetBool(Constants.ArtificerGolemCreated))
             {
                 RecipeSource golemRecipe = __result.FirstOrDefault(r => r.id == "artificer_golem");
                 if (golemRecipe != null) __result.Remove(golemRecipe);

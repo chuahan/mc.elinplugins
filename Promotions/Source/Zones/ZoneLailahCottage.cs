@@ -62,6 +62,5 @@ public class ZoneLailahCottage : Zone_Civilized
             _zone.AddCard(lailah, lailahSpot);
             lailah.homeZone = this;
         }
-        ;
     }
 }

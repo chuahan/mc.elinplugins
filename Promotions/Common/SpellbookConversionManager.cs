@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Cwl.Helper.Extensions;
 namespace PromotionMod.Common;
 
 /// <summary>
@@ -50,7 +49,7 @@ public static class SpellbookConversionManager
 
     public static bool CanConvertSpellbook(Chara chara, TraitSpellbook spellbook)
     {
-        int promotionClassFeatId = chara.GetFlagValue(Constants.PromotionFeatFlag);
+        int promotionClassFeatId = chara.GetInt(Constants.PromotionFeatFlag, 0);
         if (promotionClassFeatId == 0) return false; // Unpromoted.
         if (chara.Evalue(promotionClassFeatId) == 0) return false; // Sanity Check
         return Conversions.TryGetValue(promotionClassFeatId, out SpellbookConversion? converter) && converter.CanConvert(spellbook.owner.refVal);
@@ -58,7 +57,7 @@ public static class SpellbookConversionManager
 
     public static bool TryConvert(Chara chara, TraitSpellbook spellbook)
     {
-        int promotionClassFeatId = chara.GetFlagValue(Constants.PromotionFeatFlag);
+        int promotionClassFeatId = chara.GetInt(Constants.PromotionFeatFlag, 0);
         if (promotionClassFeatId == 0) return false;
         if (Conversions.TryGetValue(promotionClassFeatId, out SpellbookConversion? converter) &&
             converter.CanConvert(spellbook.owner.refVal))

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Cwl.Helper.Extensions;
 using PromotionMod.Common;
 using PromotionMod.Stats;
 using UnityEngine;
@@ -42,7 +41,7 @@ public class ActAlrauneConsume : Ability
             if (CC.hunger.GetPhase() < 3) return false;
             if (!TC.HasCondition<ConInfatuation>()) return false;
             if (!TC.Chara.IsHostile(CC)) return false;
-            if (TC.Chara.Quality > 3 || TC.Chara.IsBoss() || TC.Chara.IsMultisize) return false;
+            if (TC.Chara.Quality > 3 || TC.Chara.c_bossType != 0 || TC.Chara.IsMultisize) return false;
             if (TC.Chara.hp > TC.Chara.MaxHP * 0.1F) return false;
         }
 
@@ -80,7 +79,7 @@ public class ActAlrauneConsume : Ability
             return false;
         }
 
-        if (TC.Chara.Quality > 3 || TC.Chara.IsBoss() || TC.Chara.IsMultisize)
+        if (TC.Chara.Quality > 3 || TC.Chara.c_bossType != 0 || TC.Chara.IsMultisize)
         {
             if (CC.IsPC) Msg.Say("alraune_consume_toopowerful".langGame());
             return false;
@@ -125,7 +124,7 @@ public class ActAlrauneConsume : Ability
         TC.SetLv(Mathf.Clamp(5 + levelDifference * 5, 1, 20 + CC.Evalue(237)));
         List<Element> attributes = TC.elements.ListBestAttributes();
         List<Element> skills = TC.elements.ListBestSkills();
-        int gainScaling = 100;
+        int gainScaling = 200;
         foreach (Element item in attributes)
         {
             Element element = TC.elements.GetElement(item.id);
@@ -135,9 +134,9 @@ public class ActAlrauneConsume : Ability
                 // Msg.Say($"Gained {attributeGain} levels of {item.Name}");
                 CC.elements.ModBase(item.id, attributeGain);
             }
-            gainScaling += 50;
+            gainScaling += 100;
         }
-        gainScaling = 100;
+        gainScaling = 200;
         foreach (Element item in skills)
         {
             Element element = TC.elements.GetElement(item.id);
@@ -152,7 +151,7 @@ public class ActAlrauneConsume : Ability
                     CC.AddExp(10 * skillGain);
                     CC.Chara.CalculateMaxStamina();
                 }
-                gainScaling += 50;
+                gainScaling += 100;
             }
         }
 

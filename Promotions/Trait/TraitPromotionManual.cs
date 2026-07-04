@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Cwl.Helper.Extensions;
+
 using PromotionMod.Common;
 namespace PromotionMod.Trait;
 
@@ -66,7 +66,7 @@ public class TraitPromotionManual : TraitScroll
             }
 
             // Add the Attunement Flag
-            c.SetFlagValue(Constants.JeneiAttunementFlag, idx);
+            c.SetInt(Constants.JeneiAttunementFlag, idx);
             Promote(Constants.JeneiId, c);
             return true;
         }, true);
@@ -76,7 +76,7 @@ public class TraitPromotionManual : TraitScroll
     {
         // TODO Text : Add Promote Text.
         c.SetFeat(Constants.PromotionIdMap[promotionId]);
-        c.SetFlagValue(Constants.PromotionFeatFlag, Constants.PromotionIdMap[promotionId]);
+        c.SetInt(Constants.PromotionFeatFlag, Constants.PromotionIdMap[promotionId]);
         // The Promotion Feat should handle the abilities for both PC and NPCs once it gets added with OnApply.
         c.PlaySound("godbless");
         c.PlayEffect("aura_heaven");
@@ -236,7 +236,7 @@ public class TraitPromotionManual : TraitScroll
         }
 
         // Add Custom Unlock Classes
-        if (pc.GetFlagValue(Constants.GamblerPromotionUnlockedFlag) > 0) promotionIds.Add(Constants.GamblerId);
+        if (pc.GetBool(Constants.GamblerPromotionUnlockedFlag)) promotionIds.Add(Constants.GamblerId);
 
         return promotionIds;
     }
@@ -262,7 +262,7 @@ public class TraitPromotionManual : TraitScroll
             return false;
         }
 
-        int promotedFeat = c.GetFlagValue(Constants.PromotionFeatFlag);
+        int promotedFeat = c.GetInt(Constants.PromotionFeatFlag, 0);
         if (promotedFeat != 0 && c.Evalue(promotedFeat) > 0)
         {
             Msg.Say("promotion_alreadypromoted".langGame(c.Name));

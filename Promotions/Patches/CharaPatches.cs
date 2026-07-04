@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cwl.Helper.Extensions;
+
 using HarmonyLib;
 using PromotionMod.Common;
 using PromotionMod.Elements;
@@ -55,7 +55,7 @@ internal class CharaPatches : EClass
                 return true;
             }
 
-            if (__instance.GetFlagValue(Constants.PromotionFeatFlag) != 0)
+            if (__instance.GetInt(Constants.PromotionFeatFlag, 0) != 0)
             {
                 __result = true;
                 return false;
@@ -416,7 +416,7 @@ internal class CharaPatches : EClass
                 // Update class-specific passives every turn.
                 // Berserker
                 // Sniper
-                int promotionId = __instance.GetFlagValue(Constants.PromotionFeatFlag);
+                int promotionId = __instance.GetInt(Constants.PromotionFeatFlag, 0);
                 switch (promotionId)
                 {
                     case Constants.FeatBerserker:
@@ -519,10 +519,10 @@ internal class CharaPatches : EClass
     internal static void CharaName_PrefixSkill_Patch(Chara __instance, ref string __result, NameStyle style, int num)
     {
         // Do I want to make promoted enemies also have a title?
-        if (!__instance.IsPCFactionOrMinion && __instance.GetFlagValue(Constants.IsEliteEnemyFlag) != 0)
+        if (!__instance.IsPCFactionOrMinion && __instance.GetBool(Constants.IsEliteEnemyFlag))
         {
             // If an enemy is an advanced enemy through spawn. Grant them a prefix so players know what to expect.
-            int advancedCombatSkill = __instance.GetFlagValue(Constants.AdvancedCombatSkillFlag);
+            int advancedCombatSkill = __instance.GetInt(Constants.AdvancedCombatSkillFlag, 0);
             if (advancedCombatSkill != 0) __result = $"{sources.elements.map[advancedCombatSkill].alias}_prefix".lang(__result);
         }
     }
@@ -544,7 +544,7 @@ internal class CharaPatches : EClass
         // New Pre-promotion loading.
         foreach (string? tag in __instance.source.tag)
         {
-            if (!tag.StartsWith("promoted#") || __instance.GetFlagValue(Constants.PromotionFeatFlag) != 0) continue;
+            if (!tag.StartsWith("promoted#") || __instance.GetInt(Constants.PromotionFeatFlag, 0) != 0) continue;
             string[]? promoParams = tag.Split("#");
             if (promoParams.Length < 2)
                 throw new Exception("Promotion Tag should have at least 2 sections split by #.");
@@ -569,11 +569,11 @@ internal class CharaPatches : EClass
                         "mercury", 1
                     }
                 };
-                __instance.SetFlagValue(Constants.JeneiAttunementFlag, jeneiMapping[promoParams[2]]);
+                __instance.SetInt(Constants.JeneiAttunementFlag, jeneiMapping[promoParams[2]]);
             }
             
             __instance.SetFeat(promotionId, 1);
-            __instance.SetFlagValue(Constants.PromotionFeatFlag, promotionId);
+            __instance.SetInt(Constants.PromotionFeatFlag, promotionId);
         }
     }
 }

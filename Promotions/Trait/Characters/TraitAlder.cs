@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 namespace PromotionMod.Trait.Characters;
 
-public class TraitBoutiqueShopkeeper : TraitPromotionUniqueCharacter
+public class TraitAlder : TraitPromotionUnrecruitable
 {
-
     public static List<int> PossibleMaterials = new List<int>
     {
         73, // cashmere
@@ -15,7 +14,7 @@ public class TraitBoutiqueShopkeeper : TraitPromotionUniqueCharacter
         81 // spidersilk
     };
 
-    public override bool IsBefriendedThroughDialog => false;
+    public override bool RecruitmentCondition => false;
 
     public override int RestockDay => 5;
 

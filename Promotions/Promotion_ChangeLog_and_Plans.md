@@ -19,6 +19,7 @@ Hello folks, still working at it! A lot of good games came out recently so I've 
     - The Dark Guild - Working together with the Information Guild, take on a shady band of assassins trying to take control of Aluèna. (Danger level 70)
 - The Adventurer's Guild storyline has been laid out. (Not Started)
     - The "Adventurer's" Guild - Working with the branch of Aluèna, take on the new Warfare Ops quests, testing your offensive and defensive strategies, standing against threats from afar. (Danger level 130) (Not Started)
+- With this update, a large portion of the dialog and text will be complete. At this point I will begin using MTL to translate everything into Japanese. If that goes well, I'll work on Chinese as well.
 
 For the Roadmap Update... 
 - 144 new characters, ranging from potential allies to bosses. They have been designed, and their code is mostly complete. I just need to work on sprites for most of them. This includes 60 generic new enemies that you might find in your travels once conditions have been met.
